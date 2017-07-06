@@ -1,1 +1,21 @@
-# Created by .ignore support plugin (hsz.mobi)
+*.iml
+.idea
+.ipr
+.iws
+*.diff
+*.patch
+*.bak
+.DS_Store
+node_modules/
+.project
+.settings
+npm-debug.log
+.*proj
+.svn/
+*.swp
+*.swo
+*.log
+dist/
+yarn-error.log
+test/unit/coverage
+.vscode
