@@ -1,0 +1,72 @@
+.td-map-container {
+    display: -webkit-box;
+}
+
+.td-map-container {
+    .scale-group {
+        position: absolute;
+        right: 10px;
+        bottom: 35px;
+        z-index: 999999;
+    }
+    .scale-group a {
+        display: block;
+        width: 24px;
+        height: 24px;
+        line-height: 22px;
+        text-align: center;
+        background: #fff;
+        margin-top: 5px;
+        color: #666;
+        cursor: pointer;
+    }
+    .legend {
+        position: absolute;
+        list-style: none;
+        height: auto;
+        font-size: 12px;
+        padding: 10px;
+        left: 35px;
+        bottom: 35px;
+        text-align: center;
+        background: rgba(255, 255, 255, 0.7);
+        box-shadow: rgba(8, 16, 34, 0.3) 2px 0px 7px;
+        border-radius: 5px;
+        z-index: 9999;
+    }
+    .legend li {
+        height: 20px;
+        text-align: start;
+    }
+    .legend li .bg {
+        display: inline-block;
+        width: 14px;
+        height: 14px;
+        background: rgba(200, 200, 50, 1);
+        vertical-align: sub;
+    }
+    .tooltip {
+        position: fixed;
+        display: none;
+        pointer-events: none;
+        border-style: solid;
+        white-space: nowrap;
+        z-index: 9999999;
+        transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1), top 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        background-color: rgba(50, 50, 50, 0.7);
+        border-width: 0px;
+        border-color: rgb(51, 51, 51);
+        border-radius: 4px;
+        color: rgb(255, 255, 255);
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        font-stretch: normal;
+        font-size: 14px;
+        font-family: sans-serif;
+        line-height: 21px;
+        padding: 5px;
+        left: 323px;
+        top: 451px;
+    }
+}
