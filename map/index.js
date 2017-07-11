@@ -44,13 +44,13 @@ export class Map {
 
         //设置 地图工具容器
         let toolDom = this.crtateContainer(mapDom);
-        let _tdmapOption = {};
-        Object.assign(_tdmapOption, this.option, {
+        let _inMapOption = {};
+        Object.assign(_inMapOption, this.option, {
             mapDom: mapDom,
             toolDom: toolDom
         });
 
-        bmap._tdmapOption = _tdmapOption;
+        bmap._inMapOption = _inMapOption;
 
         if (this.option.mpZoom.show) {
             //添加地图级别工具条

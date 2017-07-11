@@ -3,7 +3,7 @@ import {
 } from './../../common/workerMrg';
 
 let baseClassCounter = 0;
-let tdmap_instances = {};
+let inMap_instances = {};
 let _count = 0; //消息ID key
 /**
  * 父类继承
@@ -26,7 +26,7 @@ Function.prototype.inherits = function (parentClass, className) {
     return p;
 };
 let Instance = function (hashCode) {
-    return tdmap_instances[hashCode];
+    return inMap_instances[hashCode];
 };
 
 
@@ -37,7 +37,7 @@ let Instance = function (hashCode) {
  * @name BaseClass
  */
 let BaseClass = function (hc) {
-    tdmap_instances[(this.hashCode = (hc || BaseClass.guid()))] = this;
+    inMap_instances[(this.hashCode = (hc || BaseClass.guid()))] = this;
 };
 
 /** @ignore */
@@ -55,7 +55,7 @@ BaseClass.guid = function () {
  */
 BaseClass.prototype.dispose = function () {
     if (this.hashCode) {
-        tdmap_instances[this.hashCode] = null;
+        inMap_instances[this.hashCode] = null;
     }
 
     for (let i in this) {
@@ -71,17 +71,17 @@ BaseClass.prototype.dispose = function () {
  */
 BaseClass.prototype.getHashCode = function () {
     if (!this.hashCode) {
-        tdmap_instances[(this.hashCode = BaseClass.guid())] = this;
+        inMap_instances[(this.hashCode = BaseClass.guid())] = this;
     }
     return this.hashCode;
 };
 
 /**
- * 从tdmap_instances数组中将对象的引用删除掉。
+ * 从inMap_instances数组中将对象的引用删除掉。
  * 删除之后就无法使用I()函数获取对象了。
  */
 BaseClass.prototype.decontrol = function () {
-    tdmap_instances[this.hashCode] = null;
+    inMap_instances[this.hashCode] = null;
 };
 
 let baidu = BMap || {};

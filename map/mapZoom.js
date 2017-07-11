@@ -1,8 +1,8 @@
 export class MapZoom {
     constructor(map) {
         this.map = map;
-        this.dom = map._tdmapOption.toolDom;
-        this.mpZoom = map._tdmapOption.mpZoom;
+        this.dom = map._inMapOption.toolDom;
+        this.mpZoom = map._inMapOption.mpZoom;
         this.createDom();
     }
 

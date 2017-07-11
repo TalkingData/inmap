@@ -206,7 +206,7 @@ export class Parameter extends CanvasOverlay {
             this.tooltipDom = document.createElement('div');
             this.tooltipDom.classList.add('tooltip');
             // this.tooltipDom.style.cssText = "position: fixed; display: none; pointer-events :none; border-style: solid;white-space: nowrap;z-index: 9999999;transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1), top 0.4s cubic-bezier(0.23, 1, 0.32, 1);background-color: rgba(50, 50, 50, 0.7);border-width: 0px;border-color: rgb(51, 51, 51);border-radius: 4px;color: rgb(255, 255, 255);font-style: normal;font-variant: normal;font-weight: normal;font-stretch: normal;font-size: 14px;font-family: sans-serif;line-height: 21px;padding: 5px;left: 323px;top: 451px;"
-            this.map._tdmapOption.toolDom.appendChild(this.tooltipDom);
+            this.map._inMapOption.toolDom.appendChild(this.tooltipDom);
         }
         if (this.overItem) {
             let formatter = this.tooltip.formatter;
@@ -240,11 +240,11 @@ export class Parameter extends CanvasOverlay {
         if (legend == null || legend.show == false) return;
 
         let legendData = legend.data;
-        let ul = this.map._tdmapOption.toolDom.querySelector('ul.legend');
+        let ul = this.map._inMapOption.toolDom.querySelector('ul.legend');
         if (ul == null) {
             ul = document.createElement('ul');
             ul.classList.add('legend')
-            this.map._tdmapOption.toolDom.appendChild(ul);
+            this.map._inMapOption.toolDom.appendChild(ul);
         }
 
         let str = "";

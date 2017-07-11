@@ -2,16 +2,16 @@
  * Created by lu on 2016/12/5.
  */
 var path = require('path');
-var fileName = 'TDMap';
+var fileName = 'inMap';
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 var option = {
   entry: {
-    tdmap: './tdmap/main.js',
-    worker: './tdmap/worker/index.js'
+    inMap: './main.js',
+    worker: './worker/index.js'
   },
   output: {
-    path: path.join(__dirname, './lib'),
+    path: path.join(__dirname, './dist'),
     libraryTarget: 'umd',
     library: fileName,
     umdNamedDefine: true,
@@ -40,7 +40,7 @@ var option = {
   },
 
   plugins: [
-    new ExtractTextPlugin("tdmap.style.css"),
+    new ExtractTextPlugin("inMap.style.css"),
   ]
 };
 

@@ -1,9 +1,6 @@
 import {
     DotOverlay
 } from './overlay/DotOverlay';
-import {
-    DotTileOverlay
-} from './overlay/DotTileOverlay';
 
 import {
     GriddingOverlay
@@ -22,7 +19,6 @@ import {
 export {
     Map,
     DotOverlay,
-    DotTileOverlay,
     GriddingOverlay,
     BoundaryOverlay,
     HeatOverlay,

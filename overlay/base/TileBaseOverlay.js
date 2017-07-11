@@ -114,7 +114,7 @@ export class TileBaseOverlay extends CanvasOverlay {
         let me = this;
         if (result.requestTiles.length > 0) {
             ajax({
-                url: "/tdmap/tile",
+                url: "/inMap/tile",
                 type: "post",
                 data: result.requestTiles,
                 success(data) {

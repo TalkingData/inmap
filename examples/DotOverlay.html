@@ -23,18 +23,18 @@
             font-size: 14px;
         }
     </style>
-    <script>
+  <script>
         window.TD = {
-            config: {
-                apiPath: 'http://localhost:3000',
-                workerPath: 'http://localhost:8088/lib/worker.js'
+            config: {      
+                workerPath: '../dist/worker.js'
             }
         };
     </script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
     <script type="text/javascript" src="http://huiyan.baidu.com/mapv/demo/js/lib/BaiduMap_cityCenter.js"></script>
-    <link rel="stylesheet" href="../../lib/tdmap.style.css" class="src">
-    <script src="../../lib/tdmap.js"></script>
+    <script src="./data/shenzhen.js"></script>
+    <link rel="stylesheet" href="../dist/inMap.style.css" class="src">
+    <script src="../dist/inMap.js"></script>
     <title></title>
 </head>
 
@@ -45,7 +45,7 @@
 
 </html>
 <script>
-    var tdmap = new TDMap.Map({
+    var map = new inMap.Map({
         id: 'allmap',
         mpZoom: {
             show: true
@@ -55,7 +55,7 @@
 
 
 
-    tdmap.map.centerAndZoom(new BMap.Point(105.403119, 38.028658), 5)
+    map.map.centerAndZoom(new BMap.Point(105.403119, 38.028658), 5)
 
 
     var data = []; // 取城市的点来做示例展示的点数据
@@ -99,7 +99,7 @@
     // }]
 
 
-    var overlay = new TDMap.DotOverlay({
+    var overlay = new inMap.DotOverlay({
         tooltip: {
             show: true,
             position: 'top',
@@ -188,5 +188,5 @@
         // },
         // 半径
     });
-    tdmap.add(overlay);
+    map.add(overlay);
 </script>
