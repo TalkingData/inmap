@@ -1,19 +1,19 @@
 import {
     HeatOverlay,
     HeatTileOverlay,
-} from './transform/HeatOverlay'
+} from "./transform/HeatOverlay"
 import {
     GriddingOverlay
-} from './transform/GriddingOverlay'
+} from "./transform/GriddingOverlay"
 import {
     BoundaryOverlay
-} from './transform/BoundaryOverlay';
+} from "./transform/BoundaryOverlay";
 
 let callbackList = {
     "HeatOverlay": HeatOverlay,
-    'HeatTileOverlay': HeatTileOverlay,
+    "HeatTileOverlay": HeatTileOverlay,
     "GriddingOverlay": GriddingOverlay,
-    'BoundaryOverlay': BoundaryOverlay
+    "BoundaryOverlay": BoundaryOverlay
 }
 
 /**
@@ -32,12 +32,12 @@ let handler = {}
  * worker方法执行解析
  */
 let callback = function (data) {
-    //	console.log('TD.callback', data)
+    //	console.log("TD.callback", data)
     var request = data.request;
     var classPath = request.classPath;
     var hashCode = request.hashCode;
     var msgId = request.msgId;
-    var p = classPath.split('.'),
+    var p = classPath.split("."),
         index = 0,
         callback = callbackList;
     while (p[index]) {
@@ -45,7 +45,7 @@ let callback = function (data) {
         index++;
         if (index >= p.length) {
             //唯一生效队列控制
-            handler[classPath] = hashCode + '_' + msgId;
+            handler[classPath] = hashCode + "_" + msgId;
             //查找到执行方法，并执行方法
             var obj = callback(data);
             TDpost(obj.data, obj.client);
@@ -53,7 +53,7 @@ let callback = function (data) {
         }
 
         if (!callback) {
-            console.log(p[index - 1] + 'worker ' + classPath + ' is not a function');
+            console.log(p[index - 1] + "worker " + classPath + " is not a function");
             return;
         }
     }
@@ -72,11 +72,11 @@ export var TDpost = function (data, client) {
     var msgId = request.msgId;
     var handler = callbackList[classPath];
     //唯一生效队列判断
-    if (handler && (handler != hashCode + '_' + msgId)) {
+    if (handler && (handler != hashCode + "_" + msgId)) {
         return;
     };
     opts.response = {
-        type: 'worker',
+        type: "worker",
         data: data
     }
     postMessage(opts)

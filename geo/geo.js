@@ -1,6 +1,6 @@
 import {
     MercatorProjection
-} from './MercatorProjection';
+} from "./MercatorProjection";
 
 export var geo = {
     pointToPixel(point, zoom, center, size) {

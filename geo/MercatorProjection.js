@@ -1,12 +1,12 @@
 import {
     Projection
-} from './Projection';
+} from "./Projection";
 import {
     Point
-} from './Point';
+} from "./Point";
 import {
     Pixel
-} from './Pixel';
+} from "./Pixel";
 export class MercatorProjection extends Projection {
     constructor() {
         super();

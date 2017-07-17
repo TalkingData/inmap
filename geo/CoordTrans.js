@@ -1046,7 +1046,7 @@ export var CoordTrans = {
         var minDis = 1294723000,
             secMinDis = 1294723000;
         for (var i = 0; i < this.correct_pts[city].length; i++) {
-            //alert(correct_pts[i].j +',jgh,'+correct_pts[i].w+',jgh,'+j+',jgh,'+w);
+            //alert(correct_pts[i].j +",jgh,"+correct_pts[i].w+",jgh,"+j+",jgh,"+w);
             var dis = this.getDis(this.correct_pts[city][i].utm_x, this.correct_pts[city][i].utm_y, utm_x, utm_y);
             //alert(dis);
             if (dis < secMinDis) {
@@ -1061,7 +1061,7 @@ export var CoordTrans = {
                 }
 
             }
-            //alert(dis +',jgh,'+leftTop+',jgh,'+rightBottom+',jgh,'+minDis+',jgh,'+secMinDis);
+            //alert(dis +",jgh,"+leftTop+",jgh,"+rightBottom+",jgh,"+minDis+",jgh,"+secMinDis);
         }
         return {
             lt: leftTop,
@@ -1110,11 +1110,11 @@ export var CoordTrans = {
             dw1 = this.correct_pts[city][index0].utm_y;
         var dj2 = this.correct_pts[city][index1].utm_x,
             dw2 = this.correct_pts[city][index1].utm_y;
-        //alert(dj1+','+dj2+','+dw1+','+dw2+','+x_1+','+x_2+','+y_1+','+y_2);
+        //alert(dj1+","+dj2+","+dw1+","+dw2+","+x_1+","+x_2+","+y_1+","+y_2);
         var a = Math.abs((dj2 - dj1) * 100000 / (x_2 - x_1));
         var b = Math.abs((dw2 - dw1) * 100000 / (y_2 - y_1));
         //a,b每十万像素对应的经纬度
-        //alert(a+',ddddxy,'+b);
+        //alert(a+",ddddxy,"+b);
         return {
             j: a,
             w: b,
@@ -1145,7 +1145,7 @@ export var CoordTrans = {
             dw_s = dw - dw1;
         var x = dj_s * dgPix.x + x_1;
         var y = -dw_s * dgPix.y + y_1;
-        //alert(dgPix.x+',xy,'+dgPix.y);
+        //alert(dgPix.x+",xy,"+dgPix.y);
 
         var r = this.toMap(city, x, y);
         return r;
@@ -1162,14 +1162,14 @@ export var CoordTrans = {
         //var dj1=gpsToDegree(gp_src.j),dw1=gpsToDegree(gp_src.w);
         var dj1 = gp_src.utm_x,
             dw1 = gp_src.utm_y;
-        //alert(dgPix.x+',xy,'+dgPix.y);
+        //alert(dgPix.x+",xy,"+dgPix.y);
 
         var x_1 = px_src.x;
         var y_1 = px_src.y;
 
         var px_s = px.x - x_1,
             py_s = y_1 - px.y;
-        //alert(dgPix.x+','+dgPix.y);
+        //alert(dgPix.x+","+dgPix.y);
         var gp_j = px_s / dgPix.x + dj1;
         var gp_w = py_s / dgPix.y + dw1;
         return {

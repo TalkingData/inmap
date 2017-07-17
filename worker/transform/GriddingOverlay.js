@@ -1,12 +1,12 @@
 import {
     geo
-} from '../../geo/geo';
+} from "../../geo/geo";
 import {
     Pixel 
-} from './../../geo/Pixel';
+} from "./../../geo/Pixel";
 import {
     Point 
-} from './../../geo/Point';
+} from "./../../geo/Point";
 export let GriddingOverlay = {
     toRecGrids: function (webObj) {
 
@@ -85,7 +85,7 @@ export let GriddingOverlay = {
 
         for (let i = 0; i < stockXA.length; i++) {
             for (let j = 0; j < stockYA.length; j++) {
-                let name = stockXA[i] + '_' + stockYA[j];
+                let name = stockXA[i] + "_" + stockYA[j];
                 grids[name] = [];
             }
         }
@@ -101,7 +101,7 @@ export let GriddingOverlay = {
                     for (let k = 0; k < stockYA.length; k++) {
                         let dataY = Number(stockYA[k]);
                         if (y >= dataY && y < dataY + gridStep) {
-                            grids[stockXA[j] + '_' + stockYA[k]].push(val);
+                            grids[stockXA[j] + "_" + stockYA[k]].push(val);
 
                         }
                     }

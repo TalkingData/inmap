@@ -1,10 +1,14 @@
  import config from './../config';
  let instances = {};
+ let workerContent = "[workerContentString]";
  class WorkerMrg {
      constructor() {
-        // var bb = new Blob(["importScripts('" + config.workerPath + "');"]);
-        // this.worker = new Worker(window.URL.createObjectURL(bb));
-        this.worker = new Worker(config.workerPath);
+
+         var workerUrl = workerContent.length == 21 ? config.workerPath :
+             URL.createObjectURL(new Blob([workerContent], {
+                 type: 'application/javascript'
+             }));
+         this.worker = new Worker(workerUrl);
          this.worker.addEventListener('message', this.message);
          this.worker.onerror = function (e) {
              console.log('worker.onerror', e)

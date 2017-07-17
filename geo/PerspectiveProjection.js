@@ -1,12 +1,12 @@
 import {
     MercatorProjection
-} from './MercatorProjection';
+} from "./MercatorProjection";
 import {
     Point
-} from './Point';
+} from "./Point";
 import {
     Pixel 
-} from './Pixel';
+} from "./Pixel";
 
 /**
  * 透视图投影

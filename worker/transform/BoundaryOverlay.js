@@ -1,13 +1,13 @@
 import {
     isArray
-} from './../../common/util';
+} from "./../../common/util";
 
 import {
     pointToPixelWorker
-} from '../../geo/index';
+} from "../../geo/index";
 import {
     Point
-} from './../../geo/Point';
+} from "./../../geo/Point";
 export let BoundaryOverlay = {
     calculatePixel: function (webObj) {
         let data = webObj,

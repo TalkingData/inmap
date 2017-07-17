@@ -1,9 +1,9 @@
 import {
     geo
-} from './geo.js';
+} from "./geo.js";
 import {
     isArray
-} from './../common/util'
+} from "./../common/util"
 export function pointToPixel(point, map) {
     var zoom = map.getZoom();
     var center = map.getCenter();

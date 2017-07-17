@@ -1,6 +1,6 @@
 import {
     Point
-} from './Point';
+} from "./Point";
 
 /**
  * @fileoverview 关于矩形地理区域类文件
