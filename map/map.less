@@ -1,5 +1,6 @@
 .td-map-container {
     display: -webkit-box;
+    font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
 }
 
 .td-map-container {
@@ -13,6 +14,7 @@
         display: block;
         width: 24px;
         height: 24px;
+        font-size: 17px;
         line-height: 22px;
         text-align: center;
         background: #fff;
@@ -35,8 +37,22 @@
         z-index: 9999;
     }
     .legend li {
-        height: 20px;
         text-align: start;
+        position: relative;
+    }
+    .legend li.title {
+        min-height: auto;
+        width: auto;
+        float: none;
+        padding: 0;
+        padding-bottom: 5px;
+    }
+    .legend li.item {
+        height: 20px;
+        min-height: auto;
+        width: auto;
+        float: none;
+        padding: 0;
     }
     .legend li .bg {
         display: inline-block;
@@ -44,6 +60,16 @@
         height: 14px;
         background: rgba(200, 200, 50, 1);
         vertical-align: sub;
+    }
+    .legend li .infinity {
+        font-size: 22px;
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.8);
+        position: absolute;
+        top: -9px;
+        padding-left: 4px;
+        top: -6px;
+        padding-left: 2px;
     }
     .tooltip {
         position: fixed;

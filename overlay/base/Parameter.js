@@ -184,6 +184,7 @@ export class Parameter extends CanvasOverlay {
         // let filterFun = new Function('item', 'with(item){ return ' + exp + ' }');
 
         if (this.workerData.length > 0) {
+            this.selectItem = this.workerData.filter(this.filterFun);
             this._dataRender();
         }
 
@@ -248,16 +249,19 @@ export class Parameter extends CanvasOverlay {
         }
 
         let str = "";
+        if (legend.title) {
+            str = `<li class='title'>${legend.title}</li>`;
+        }
         let legendFunc = this.legend.formatter; //回调 设置复杂显示
         splitList.forEach(function (val, index, arr) {
             let text = null;
             if (legendData) {
                 text = isFunction(legendFunc) ? legendFunc(val.start, val.end) : legendData[index];
             } else {
-                text = `${val.start} ~ ${ val.end==null ?'max':val.end}`
+                text = `${val.start} ~ ${ val.end==null ?"<span class='infinity'>∞</span>":val.end}`;
             }
             str += `
-            <li>
+            <li class='item'>
                 <span class='bg' style="background: ${val.backgroundColor};"></span>
                 <span>${text}</span>
             </li>`;
