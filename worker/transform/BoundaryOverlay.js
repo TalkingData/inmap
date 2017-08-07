@@ -8,6 +8,7 @@ import {
 import {
     Point
 } from "./../../geo/Point";
+import polylabel from './../../common/polylabel'
 export let BoundaryOverlay = {
     calculatePixel: function (webObj) {
         let data = webObj,
@@ -22,6 +23,7 @@ export let BoundaryOverlay = {
                     tmp.push([pixel.x, pixel.y, parseFloat(points[j].geo[i][2])]);
                 }
                 points[j].pgeo = tmp;
+                points[j]['bestCell'] = polylabel([tmp]);
             }
         }
 

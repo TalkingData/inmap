@@ -10,7 +10,7 @@ export class BoundaryOverlay extends Parameter {
     resize() {
         this.drawMap();
     }
-    getGeoCenter(geo) {
+    getMaxWidth(geo) {
         let minX = geo[0][0];
         let minY = geo[0][1];
         let maxX = geo[0][0];
@@ -21,7 +21,7 @@ export class BoundaryOverlay extends Parameter {
             minY = Math.min(minY, geo[i][1]);
             maxY = Math.max(maxY, geo[i][1]);
         }
-        return [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
+        return maxX - minX;
     }
     findIndexSelectItem(item) {
         let index = -1;
@@ -108,38 +108,43 @@ export class BoundaryOverlay extends Parameter {
             for (let j = 1; j < geo.length; j++) {
                 this.ctx.lineTo(geo[j][0], geo[j][1]);
             }
-            this.ctx.closePath();
-            //debugger
+            //debugger 
             let style = this.setDrawStyle(item);
+            this.ctx.shadowColor = style.shadowColor || 'transparent';
+            this.ctx.shadowBlur = style.shadowBlur || 10;
+            this.ctx.shadowOffsetX = 0;
+            this.ctx.shadowOffsetY = 0;
+            //debugger 'rgba(150,150,150,1)'  
             this.ctx.fillStyle = style.backgroundColor;
             this.ctx.fill();
             this.ctx.strokeStyle = style.borderColor;
             this.ctx.lineWidth = style.borderWidth;
 
             this.ctx.stroke();
-            let label = this.label,
-                zoom = this.map.getZoom();
-            if (label && label.show && (!label.minZoom || label.minZoom && zoom >= label.minZoom)) {
-                if (label.fillStyle) {
-                    this.ctx.fillStyle = label.fillStyle;
-                }
-                let center = this.getGeoCenter(geo);
-                let text = label.text,
-                    fontsize = label.font.replace('px', ''),
-                    d = data[i],
-                    re, x, y;
-                for (let k in d) {
-                    if (!isString(d[k]) && !isNumber(d[k])) {
-                        continue
-                    }
-                    re = new RegExp('{@' + k + '}', 'gi');
-                    text = text.replace(re, d[k]);
-                }
-                x = center[0] - getBlen(text) * fontsize / 4;
-                this.ctx.fillText(text, x, center[1]);
-            }
+
         }
         this.ctx.closePath();
+        for (let i = 0, len = data.length; i < len; i++) {
+            let item = data[i];
+            let geo = item.pgeo;
+            let bestCell = item.bestCell;
+            // let bestCell = polylabel([geo]);
+            let label = this.labelStyle;
+            if (label && label.show) {
+                this.ctx.shadowBlur = 0;
+                this.ctx.lineWidth = 1;
+                this.ctx.font = label.font || '12px sans-serif';
+                this.ctx.fillStyle = label.color || "rgb(0,0,0)";
+                if (label.selected && this.selectItemContains(item)) {
+                    this.ctx.fillStyle = label.selected.color;
+                }
+                let width = this.ctx.measureText(item.name).width;
+                if (this.getMaxWidth(geo) > width) {
+                    this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
+                }
+            }
+        }
+
 
     }
 }

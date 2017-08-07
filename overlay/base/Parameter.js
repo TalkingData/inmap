@@ -2,6 +2,9 @@ import {
     CanvasOverlay
 } from './CanvasOverlay';
 import {
+    Color
+} from './../../common/Color';
+import {
     isFunction,
     isString,
     encodeHTML
@@ -40,6 +43,7 @@ export class Parameter extends CanvasOverlay {
         let normal = this.style.normal, //正常样式
             mouseOverStyle = this.style.mouseOver, //悬浮样式
             selectedStyle = this.style.selected; //选中样式
+        let shadowColor = {};
         let result = {};
         Object.assign(result, normal);
         //区间样式
@@ -59,17 +63,38 @@ export class Parameter extends CanvasOverlay {
         let size = result.size;
 
         if (mouseOverStyle && this.overItem == item) {
+            if (mouseOverStyle.shadowBlur != null && mouseOverStyle.shadowColor == null) {
+                // debugger
+                shadowColor["shadowColor"] = this.brightness(result.backgroundColor, 0.1);
+            }
             //  debugger
             Object.assign(result, normal, mouseOverStyle, {
-                size: size * mouseOverStyle.scale
-            });
+                size: size * mouseOverStyle.scale,
+                backgroundColor: this.brightness(result.backgroundColor, 0.1)
+            }, shadowColor);
         }
         if (selectedStyle && this.selectItemContains(item)) {
+            if (selectedStyle.shadowBlur != null && selectedStyle.shadowColor == null) {
+                shadowColor["shadowColor"] = this.brightness(selectedStyle.backgroundColor, 0.1);
+            }
             Object.assign(result, normal, selectedStyle, {
                 size: size * mouseOverStyle.scale
-            });
+            }, shadowColor);
         }
         return result;
+
+    }
+    /** 
+     * 亮度效果 
+     */
+    brightness(rgba, delta) {
+        // debugger 
+        let color = new Color(rgba);
+        color.r += delta;
+        color.g += delta;
+        color.b += delta;
+        return color.getStyle();
+
 
     }
     /**
@@ -165,6 +190,40 @@ export class Parameter extends CanvasOverlay {
         }
 
     }
+    setCenterAndZoom(geo, exp) {
+        let arr = [];
+        geo.forEach(val => {
+            arr.push(new BMap.Point(val[0], val[1]))
+
+        });
+        let view = this.map.getViewport(arr);
+        let me = this;
+
+        function zoomEnd() {
+            // debugger
+            me.map.removeEventListener("zoomend", zoomEnd);
+            me.map.panTo(view.center);
+        }
+
+        function moveend() {
+            // debugger
+            me.map.removeEventListener("moveend", moveend);
+            me.parserExp(exp)
+            if (me.workerData.length > 0) {
+                me.selectItem = me.workerData.filter(me.filterFun);
+                me._dataRender();
+            }
+        }
+        let scale = view.zoom - 1;
+        this.map.addEventListener("zoomend", zoomEnd);
+        this.map.addEventListener("moveend", moveend);
+        if (this.map.getZoom() == scale) {
+            zoomEnd();
+        } else {
+            this.map.setZoom(scale);
+        }
+
+    }
     cancerExp() {
         this.selectedExp.show = false;
         this.selectedExp.exp = null;
@@ -183,9 +242,13 @@ export class Parameter extends CanvasOverlay {
         // this.selectedExp.xp = exp;
         // let filterFun = new Function('item', 'with(item){ return ' + exp + ' }');
 
-        if (this.workerData.length > 0) {
-            this.selectItem = this.workerData.filter(this.filterFun);
-            this._dataRender();
+        if (this.points.length > 0) {
+            let filterFun = new Function('item', 'with(item){ return ' + exp + ' }');
+            let temp = this.points.filter(filterFun);
+            // debugger
+            if (temp.length > 0) {
+                this.setCenterAndZoom(temp[0].geo, exp); //default first
+            }
         }
 
     }
@@ -304,13 +367,11 @@ export class Parameter extends CanvasOverlay {
         let result = this.getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
         if (temp != this.overItem) { //防止过度重新绘画
-            //console.log(this.overItem)
             this.overItem = temp;
-            if (this.overItem) {
+            if (temp) {
                 this.swopData(result.index, result.item);
-                this._dataRender();
             }
-
+            this._dataRender();
         }
         this.setTooltip(event);
 
