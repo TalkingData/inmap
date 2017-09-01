@@ -8,12 +8,16 @@ import {
 import {
     BoundaryOverlay
 } from "./transform/BoundaryOverlay";
+import {
+    Circuit
+} from './transform/Circuit';
 
 let callbackList = {
     "HeatOverlay": HeatOverlay,
     "HeatTileOverlay": HeatTileOverlay,
     "GriddingOverlay": GriddingOverlay,
-    "BoundaryOverlay": BoundaryOverlay
+    "BoundaryOverlay": BoundaryOverlay,
+    "Circuit": Circuit
 }
 
 /**

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+    <script>
+        window.TD = {
+            config: {
+                workerPath: '../dist/worker.js'
+            }
+        };
+    </script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
+    <script type="text/javascript" src="http://huiyan.baidu.com/mapv/demo/js/lib/BaiduMap_cityCenter.js"></script>
+    <script src="./data/car.js"></script>
+    <link rel="stylesheet" href="../dist/inMap.style.css" class="src">
+    <script src="../dist/inMap.js"></script>
+    <title></title>
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    var map = new inMap.Map({
+        id: 'allmap',
+        mpZoom: {
+            show: true
+        }
+    });
+    map.map.centerAndZoom(new BMap.Point(106.563777, 29.578285), 12); // 初始化地图,设置中心点坐标和地图级别
+    map.map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+
+    // lineCap
+    // :
+    // "butt"
+    // lineDashOffset
+    // :
+    // 0
+    // lineJoin
+    // :
+    // "miter"
+    //miterLimit:10
+
+    var overlay = new inMap.Circuit({
+        tooltip: {
+            show: false,
+            position: 'top',
+            // formatter: function (params) {
+            //     return params.count;
+            // }
+            formatter: "{name}~{count}"
+        },
+        legend: {
+            show: false,
+            title: "道路规划"
+        },
+        style: {
+            normal: {
+                borderColor: 'rgba(50, 50, 255, 0.8)',
+                borderWidth: 0.05,
+            },
+        },
+        data: [],
+        event: {}
+    });
+    map.add(overlay);
+    setTimeout(function () {
+        // debugger
+        // data.length = 500;
+        console.log(data.length);
+        overlay.setPoints(data);
+    }, 2000);
+
+
+   
+</script>

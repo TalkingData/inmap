@@ -15,6 +15,9 @@ import {
 import {
     Map
 } from './map/index';
+import {
+    Circuit
+} from './overlay/Circuit';
 
 export {
     Map,
@@ -22,5 +25,5 @@ export {
     GriddingOverlay,
     BoundaryOverlay,
     HeatOverlay,
-
+    Circuit
 };

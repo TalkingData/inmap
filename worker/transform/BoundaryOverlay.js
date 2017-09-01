@@ -10,11 +10,12 @@ import {
 } from "./../../geo/Point";
 import polylabel from './../../common/polylabel'
 export let BoundaryOverlay = {
+   
     calculatePixel: function (webObj) {
         let data = webObj,
             points = isArray(data) ? data : data.request.data,
             map = data.request.map;
-
+        // debugger
         for (let j = 0; j < points.length; j++) {
             if (points[j].geo) {
                 let tmp = [];
