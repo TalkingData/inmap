@@ -29,7 +29,7 @@
                 apiPath: 'http://localhost:3000',
                 workerPath: 'http://localhost:8088/lib/worker.js'
             }
-        };
+        }
     </script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
     <script type="text/javascript" src="http://huiyan.baidu.com/mapv/demo/js/lib/BaiduMap_cityCenter.js"></script>
@@ -50,8 +50,11 @@
             show: true
         }
     })
-    // inmap.map.centerAndZoom(new BMap.Point(105.403119, 38.028658), 5)
+    // inmap.map.centerAndZoom(new BMap.Point(113.258145, 23.140359), 19); // 初始化地图,设置中心点坐标和地图级别
+    //bmap.addControl(new BMap.MapTypeControl()); //添加地图类型控件
 
+
+    // bmap.centerAndZoom(new BMap.Point(105.403119, 38.028658), 5)
 
     var data = []; // 取城市的点来做示例展示的点数据
     data = data.concat(getCityCenter(cityData.municipalities));
@@ -78,20 +81,24 @@
         return data;
     };
 
-    var overlay = new inmap.HeatOverlay({
-        style: {
-            normal: {
-                radius: 30, // 半径
-                minOpacity: 0, // 最小透明度
-                maxOpacity: 0.8, // 最大透明度
-                minValue: 0, // 最   小权重
-                maxValue: 16, // 最大权重
-                minScope: 0, // 最小区间,小于此区间的不显示
-                maxScope: 1, // 最大区间,大于此区间的不显示
-            },
-            colors:[]
+    var overlay = new inmap.DotTileOverlay(null, {
+        fillStyle: 'rgba(200, 200, 50, 1)', // 填充颜色
+        lineWidth: 3, // 描边宽度
+        strokeStyle: 'rgba(255,255,255,1)',
+        size: function (count) {
+            if (count > 0 && count < 2) {
+                return 3;
+            } else if (count > 2 && count < 5) {
+                return 6;
+            } else if (count > 5 && count < 7) {
+                return 9
+            } else {
+                return 12
+            }
         },
-        data: data
+
+        // 半径
     });
     inmap.add(overlay)
+    // overlay.setPoints(data)
 </script>

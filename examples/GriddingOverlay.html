@@ -23,19 +23,19 @@
             font-size: 14px;
         }
     </style>
-   <script>
+    <script>
         window.TD = {
             config: {
-               
-                workerPath: '../dist/worker.js'
+                apiPath: 'http://localhost:3000',
+                workerPath: '../../lib/worker.js'
             }
         };
     </script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
     <script type="text/javascript" src="http://huiyan.baidu.com/mapv/demo/js/lib/BaiduMap_cityCenter.js"></script>
-    <script src="./data/shenzhen.js"></script>
-    <link rel="stylesheet" href="../dist/inMap.style.css" class="src">
-    <script src="../dist/inMap.js"></script>
+    <script src="../../lib/inmap.js"></script>
+    <link rel="stylesheet" href="../../lib/inmap.style.css" class="src">
+    <script src="./data/beijing.js"></script>
     <title></title>
 </head>
 
@@ -46,44 +46,17 @@
 
 </html>
 <script>
-    var map = new inMap.Map({
+    var map = new inmap.Map({
         id: document.getElementById('allmap'),
-        mpZoom: {
+        zoom: {
             show: true,
-            max: 7,
+            max: 22,
             min: 5
         }
     })
 
-    map.map.centerAndZoom(new BMap.Point(105.403119, 38.028658), 5)
-
-
-    var data = []; // 取城市的点来做示例展示的点数据
-    data = data.concat(getCityCenter(cityData.municipalities));
-    data = data.concat(getCityCenter(cityData.provinces));
-    data = data.concat(getCityCenter(cityData.other));
-
-    for (var i = 0; i < cityData.provinces.length; i++) {
-        var citys = cityData.provinces[i].cities;
-        data = data.concat(getCityCenter(citys));
-    }
-
-    function getCityCenter(citys) {
-        var data = [];
-        for (var i = 0; i < citys.length; i++) {
-            var city = citys[i];
-            var center = city.g.split('|')[0];
-            center = center.split(',');
-            data.push({
-                lng: center[0],
-                lat: center[1],
-                count: Math.random() * 10
-            });
-        }
-        return data;
-    };
-
-    var overlay = new inMap.GriddingOverlay({
+    // map.map.centerAndZoom('北京')
+    var overlay = new inmap.GriddingOverlay({
         tooltip: {
             show: true,
             position: 'top',
@@ -94,7 +67,7 @@
         },
         legend: {
             show: true,
-
+            title: "图例"
 
         },
         style: {
@@ -113,19 +86,20 @@
                 backgroundColor: 'rgba(200, 200, 200, 1)',
                 scale: 1,
             },
-            // selected: {
-            //     backgroundColor: 'rgba(184,0,0,1)',
-            //     borderColor: "rgba(255,255,255,1)"
-            // },
+            selected: {
+                backgroundColor: 'rgba(184,0,0,1)',
+                borderColor: "rgba(255,255,255,1)"
+            },
 
         },
         data: data
     });
     map.add(overlay)
+    //inmap.remove(overlay)
     //overlay.setPoints(data)
     setTimeout(function (overlay) {
         //  bmap.removeOverlay(overlay);
-        // overlay.dispose();
+        overlay.dispose();
     }, 2000, overlay);
     //document.removeEventListener
 </script>

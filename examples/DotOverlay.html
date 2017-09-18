@@ -23,18 +23,18 @@
             font-size: 14px;
         }
     </style>
-  <script>
+    <script>
         window.TD = {
-            config: {      
-                workerPath: '../dist/worker.js'
+            config: {
+                apiPath: 'http://localhost:3000',
+                workerPath: 'http://localhost:8088/lib/worker.js'
             }
         };
     </script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
     <script type="text/javascript" src="http://huiyan.baidu.com/mapv/demo/js/lib/BaiduMap_cityCenter.js"></script>
-    <script src="./data/shenzhen.js"></script>
-    <link rel="stylesheet" href="../dist/inMap.style.css" class="src">
-    <script src="../dist/inMap.js"></script>
+    <link rel="stylesheet" href="../../lib/inmap.style.css" class="src">
+    <script src="../../lib/inmap.js"></script>
     <title></title>
 </head>
 
@@ -45,9 +45,9 @@
 
 </html>
 <script>
-    var map = new inMap.Map({
+    var map = new inmap.Map({
         id: 'allmap',
-        mpZoom: {
+        zoom: {
             show: true
         }
     })
@@ -55,7 +55,7 @@
 
 
 
-    map.map.centerAndZoom(new BMap.Point(105.403119, 38.028658), 5)
+    // map.map.centerAndZoom('北京',5)
 
 
     var data = []; // 取城市的点来做示例展示的点数据
@@ -83,23 +83,7 @@
         return data;
     };
     // debugger
-    
-    // [
-    //     {
-    //     name: '书香府邸一期',
-    //     lng: "103.9846294449259",
-    //     lag: "30.738273060036416"
-
-    // },
-    //  {
-    //     name: '紫荆岁月',
-    //     lng: "104.05211988617903",
-    //     lag: "30.62875347918938"
-
-    // }]
-
-
-    var overlay = new inMap.DotOverlay({
+    var overlay = new inmap.DotOverlay({
         tooltip: {
             show: true,
             position: 'top',
@@ -110,6 +94,7 @@
         },
         legend: {
             show: true,
+            title: "标题",
             data: ["描述1", "描述2", "描述3", "描述4"],
             formatter: function (start, end) {
                 // debugger
@@ -171,22 +156,6 @@
                 //能获取当前点的信息
             }
         }
-
-        // fillStyle: 'rgba(200, 200, 50, 1)', // 填充颜色
-        // lineWidth: 3, // 描边宽度
-        // strokeStyle: 'rgba(255,255,255,1)',
-        // size: function (count) {
-        //     if (count > 0 && count < 2) {
-        //         return 3;
-        //     } else if (count > 2 && count < 5) {
-        //         return 6;
-        //     } else if (count > 5 && count < 7) {
-        //         return 9
-        //     } else {
-        //         return 12
-        //     }
-        // },
-        // 半径
     });
     map.add(overlay);
 </script>
