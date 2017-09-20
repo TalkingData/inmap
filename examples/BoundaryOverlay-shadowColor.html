@@ -32,44 +32,36 @@
     <script>
         window.TD = {
             config: {
-                apiPath: 'http://localhost:3000',
-                workerPath: 'http://localhost:8088/lib/worker.js'
+                workerPath: '../dist/worker.js'
             }
         };
     </script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
-    <script type="text/javascript" src="http://huiyan.baidu.com/mapv/demo/js/lib/BaiduMap_cityCenter.js"></script>
+    <script type="text/javascript" src="http://huiyan.baidu.com/mapv/demo/js/dist/BaiduMap_cityCenter.js"></script>
     <script src="./lib/vue.js"></script>
     <script src="./data/shenzhen.js"></script>
     <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
         crossorigin="anonymous">
-    <link rel="stylesheet" href="../../lib/inmap.style.css" class="src">
-    <script src="../../lib/inmap.js"></script>
+    <link rel="stylesheet" href="../dist/inmap.style.css" class="src">
+    <script src="../dist/inmap.js"></script>
 </head>
 </head>
 <title></title>
 </head>
 
 <body>
-
     <div id="allmap"></div>
     <div style="position:absolute;top:0; width:100%;z-index:9999" id='app'>
         <button type="button" class="btn btn-default" @click='wiriteClick'> 白色主题</button>
         <button type="button" class="btn btn-primary" @click='blueClick'>蓝色主题 </button>
-        <div>
+    </div>
 
 </body>
-
-</html>
 <script>
+    // debugger
     var inMapVue = new Vue({
         el: '#app',
-        data: {
-        },
-        watch: {
-
-        },
         methods: {
             wiriteClick: function () {
                 overlay.setOptionStyle(skin2);
@@ -77,16 +69,14 @@
             blueClick: function () {
                 overlay.setOptionStyle(skin1);
             }
-        },
-        mounted: function () {
-
         }
     })
 
-    var inmap = new inmap.Map({
+    var map = new inMap.Map({
         id: 'allmap',
+        center: ["114.16248337214269", "22.559515429553684"],
         zoom: {
-            value:15,
+            value: 11,
             show: true,
             max: 22
         }
@@ -148,7 +138,6 @@
         }
     };
     var skin2 = {
-
         skin: "WhiteLover",
         tooltip: {
             show: true,
@@ -204,27 +193,22 @@
             }
         }
     };
-
-
-    // inmap.map.centerAndZoom(new BMap.Point("114.16248337214269", "22.559515429553684"), 11); // 初始化地图,设置中心点坐标和地图级别
-    var overlay = new inmap.BoundaryOverlay(skin1);
-    inmap.add(overlay);
+    var overlay = new inMap.BoundaryOverlay(skin1);
+    map.add(overlay);
     overlay.setPoints(data);
-    // debugger
-    let point = inmap.map.getCenter();
+    // // debugger
+    // let point = map.map.getCenter();
+    // for (let i = 0; i < data.length; i++) {
+    //     if (inMap.utils.isPolyContainsPt(point.lng, point.lat, data[i].geo)) {
 
-    for (let i = 0; i < data.length; i++) {
-        if (inmap.utils.isPolyContainsPt(point.lng, point.lat, data[i].geo)) {
-            
-        };
-
-    }
-    // debugger 
-
+    //     };
+    // }
     // debugger
     // overlay.setSelectd("name=='石岩'", true)
-    // setTimeout(function (inmap,ov) {
+    // setTimeout(function (map,ov) {
     //     // debugger
-    //     inmap.remove(ov);
-    // }, 2000, inmap,overlay)
+    //     map.remove(ov);
+    // }, 2000, map,overlay)
 </script>
+
+</html>

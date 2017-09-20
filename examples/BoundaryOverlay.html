@@ -30,16 +30,15 @@
     <script>
         window.TD = {
             config: {
-                apiPath: 'http://localhost:3000',
-                workerPath: 'http://localhost:8088/lib/worker.js'
+                workerPath: '../dist/worker.js'
             }
         };
     </script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
-    <script type="text/javascript" src="http://huiyan.baidu.com/mapv/demo/js/lib/BaiduMap_cityCenter.js"></script>
-    <script src="./data/car.js"></script>
-    <link rel="stylesheet" href="../../lib/inmap.style.css" class="src">
-    <script src="../../lib/inmap.js"></script>
+    <script type="text/javascript" src="http://huiyan.baidu.com/mapv/demo/js/dist/BaiduMap_cityCenter.js"></script>
+    <script src="./data/shenzhen.js"></script>
+    <link rel="stylesheet" href="../dist/inmap.style.css" class="src">
+    <script src="../dist/inmap.js"></script>
     <link rel="stylesheet" type="text/css" href="http://unpkg.com/iview/dist/styles/iview.css">
     <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
     <script type="text/javascript" src="http://unpkg.com/iview/dist/iview.min.js"></script>
@@ -60,25 +59,18 @@
 
 </html>
 <script>
-    // panTo(center: Point, opts: PanOptions)
-    //   moveend	{type, target}	地图移动结束时触发此事件
-    // zoomend	{type, target}	地图更改缩放级别结束时触发触发此事件
-    //setZoom(zoom: Number)
     var inMapVue = new Vue({
         el: '#app',
         data: {
-            boundarys: [
-
-            ],
+            boundarys: [],
             model: ''
         },
         watch: {
             model: function (newVal, oldVal) {
                 console.log(newVal);
-                overlay.setSelectd("name=='" + newVal + "'");
+                overlay.setSelectd("name=='" + newVal + "'",true);
             }
         },
-        methods: {},
         mounted: function () {
             data.forEach(function (element) {
                 this.boundarys.push({
@@ -89,15 +81,16 @@
         }
     })
 
-    var inmap = new inmap.Map({
+    var inmap = new inMap.Map({
         id: 'allmap',
+        center: ["114.16248337214269", "22.559515429553684"],
         zoom: {
-            show: true
+            value: 11,
+            show: true,
+            max: 22
         }
     })
-
-   // inmap.map.centerAndZoom(new BMap.Point(114.19609339499546, 22.666806146181997), 11); // 初始化地图,设置中心点坐标和地图级别
-    var overlay = new inmap.BoundaryOverlay({
+    var overlay = new inMap.BoundaryOverlay({
         tooltip: {
             show: true,
             position: 'top',
@@ -178,5 +171,5 @@
     // debugger
     overlay.setPoints(data);
     //判断点是否在围栏内
-    console.log(inmap.utils.isPolyContainsPt(114.16248337214269, 22.559515429553684, data[0].geo));
+    //  console.log(inmap.utils.isPolyContainsPt(114.16248337214269, 22.559515429553684, data[0].geo));
 </script>

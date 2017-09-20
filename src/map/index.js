@@ -48,7 +48,7 @@ export class Map {
 
         bmap._inmapOption = _inmapOption;
         let center = this.option.center;
-        // debugger
+        //  debugger
         bmap.centerAndZoom(new BMap.Point(center[0], center[1]), this.option.zoom.value);
         // debugger
         if (this.option.zoom.show) {

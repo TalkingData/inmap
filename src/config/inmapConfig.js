@@ -2,7 +2,7 @@
  * 默认inmap 默认
  */
 module.exports = {
-    center: ["120.355711", "31.250033"],
+    center: [],
     id: null,
     skin: null, //Blueness WhiteLover
     zoom: {

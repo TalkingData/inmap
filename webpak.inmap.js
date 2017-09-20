@@ -2,7 +2,7 @@
  * Created by lu on 2016/12/5.
  */
 var path = require('path');
-var fileName = 'inmap';
+var fileName = 'inMap';
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 var option = {
@@ -11,7 +11,7 @@ var option = {
     worker: './src/worker/index.js'
   },
   output: {
-    path: path.join(__dirname, './lib'),
+    path: path.join(__dirname, './dist'),
     libraryTarget: 'umd',
     library: fileName,
     umdNamedDefine: true,
