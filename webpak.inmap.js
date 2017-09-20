@@ -22,25 +22,14 @@ var option = {
         test: /\.js$/,
         loader: 'babel-loader',
         exclude: /node_modules/
-      }, {
-        test: /\.css$/,
-        use: ExtractTextPlugin.extract({
-          use: ['css-loader?minimize', 'autoprefixer-loader'],
-          fallback: 'style-loader'
-        })
       },
       {
-        test: /\.less/,
-        use: ExtractTextPlugin.extract({
-          use: ['css-loader?minimize', 'autoprefixer-loader', 'less-loader'],
-          fallback: 'style-loader'
-        })
+        test: /\.(less|css)$/,
+        use: ['style-loader', 'css-loader', 'less-loader'],
       },
     ]
   },
-
   plugins: [
-    new ExtractTextPlugin("inmap.style.css"),
   ]
 };
 
