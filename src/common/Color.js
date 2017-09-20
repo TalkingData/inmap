@@ -360,7 +360,7 @@ Color.prototype = {
             } else {
 
                 // unknown color
-                console.warn('THREE.Color: Unknown color ' + style);
+          
 
             }
 

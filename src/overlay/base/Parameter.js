@@ -330,7 +330,12 @@ export class Parameter extends CanvasOverlay {
      */
     setlegend(legend, splitList) {
         //  debugger
-        if (legend == null || legend.show == false) return;
+        if (legend == null || legend.show == false) {
+            if (this.legendDom) {
+                this.legendDom.style.display = 'none';
+            }
+            return;
+        }
 
         let legendData = legend.data;
         if (this.legendDom == null) {
