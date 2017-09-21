@@ -23,7 +23,7 @@ import {
 export class Parameter extends CanvasOverlay {
     constructor(ops) {
         super();
-        this._setOptionStyle(ops);
+        this._setOptionStyle(baseConfig, ops);
         this.points = ops.data;
         this.multiSelect = ops.multiSelect;
         this.selectItem = []; //选中
@@ -40,10 +40,11 @@ export class Parameter extends CanvasOverlay {
         }
     }
 
-    _setOptionStyle(ops) {
+    _setOptionStyle(config, ops) {
         // debugger
-        let opstion = deepmerge.all([baseConfig, {
-                event: this.event
+        let opstion = deepmerge.all([config,
+            {
+                event: this.event || {}
             },
             ops
         ]);
@@ -415,7 +416,7 @@ export class Parameter extends CanvasOverlay {
 
     }
     triggerClick() {
-        // debugger
+        //  debugger
         this.event.onMouseClick && this.event.onMouseClick(this.selectItem, {
             x: event.clientX,
             y: event.clientY

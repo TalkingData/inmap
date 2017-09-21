@@ -18,6 +18,10 @@ import {
 import {
     Circuit
 } from './overlay/Circuit';
+
+import {
+    HoneycombOverlay
+} from './overlay/HoneycombOverlay';
 import {
     Map
 } from './map/index';
@@ -35,6 +39,7 @@ export {
     BoundaryOverlay,
     HeatOverlay,
     Circuit,
+    HoneycombOverlay,
     workerMrg
 
 };

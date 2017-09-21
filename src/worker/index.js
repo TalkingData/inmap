@@ -11,12 +11,17 @@ import {
 import {
     Circuit
 } from './transform/Circuit';
+import {
+    HoneycombOverlay
+} from './transform/HoneycombOverlay';
+
 let callbackList = {
     "HeatOverlay": HeatOverlay,
     'HeatTileOverlay': HeatTileOverlay,
     "GriddingOverlay": GriddingOverlay,
     "BoundaryOverlay": BoundaryOverlay,
-    "Circuit": Circuit
+    "Circuit": Circuit,
+    "HoneycombOverlay": HoneycombOverlay
 }
 
 /**

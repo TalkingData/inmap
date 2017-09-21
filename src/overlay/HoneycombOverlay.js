@@ -2,19 +2,25 @@ import {
     Parameter
 } from './base/Parameter.js';
 import baseConfig from './../config/griddingConfig.js';
-
-export class GriddingOverlay extends Parameter {
+export class HoneycombOverlay extends Parameter {
     constructor(ops) {
         super(ops);
         this.delteOption();
         this.compileColor = {};
-        // debugger
         this._setOptionStyle(baseConfig, ops);
     }
+
     delteOption() {
         this.style["selected"] = null;
     }
     resize() {
+        this.drawMap();
+    }
+    setPoints(points) {
+        if (!points) {
+            return;
+        }
+        this.points = points;
         this.drawMap();
     }
     drawMap() {
@@ -27,7 +33,7 @@ export class GriddingOverlay extends Parameter {
         let size = style.size * zoomUnit;
         let nwMcX = mcCenter.x - me.map.getSize().width / 2 * zoomUnit;
         let nwMc = new BMap.Pixel(nwMcX, mcCenter.y + me.map.getSize().height / 2 * zoomUnit);
-
+        // debugger
         let params = {
             points: me.points,
             size: size,
@@ -37,40 +43,40 @@ export class GriddingOverlay extends Parameter {
             mapCenter: me.map.getCenter(),
             zoom: zoom
         };
-        //   debugger
-        this.postMessage("GriddingOverlay.toRecGrids", params, function (gridsObj) {
+        this.postMessage("HoneycombOverlay.toRecGrids", params, function (gridsObj) {
             if (me.eventType == 'onmoving') {
-                return;
+                return
             };
-            let grids = gridsObj.grids;
-            let max = gridsObj.max;
-            let min = gridsObj.min;
-            //清除
             me.clearCanvas();
             me.canvasResize();
 
-            me.setWorkerData({
+            let grids = gridsObj.grids;
+            let max = gridsObj.max;
+            let min = gridsObj.min;
+
+            let obj = {
                 size: size,
                 zoomUnit: zoomUnit,
                 max: max,
                 min: min,
-                grids: []
-            });
-            me.createColorSplit(grids);
-            me.drawRec(size, zoomUnit, max, min, grids);
-
+                grids: grids,
+                margin: me.margin
+            };
+            me.setWorkerData(obj);
+            me.drawRec(obj);
         });
     }
-    TInit() {
-        //覆盖方法
-    }
-    setPoints(points) {
-        if (!points) {
-            return;
+    getColor(count) {
+        let color = null;
+        if (count == 0) {
+            color = "rgba(255,255,255,0)";
+        } else {
+            let style = this.setDrawStyle({
+                count: count
+            });
+            color = style.backgroundColor;
         }
-        this.points = points;
-
-        this.drawMap();
+        return color;
     }
     getTarget(x, y) {
         // debugger
@@ -110,60 +116,31 @@ export class GriddingOverlay extends Parameter {
             item: null
         };
     }
-    createColorSplit(grids) {
-        let data = [];
-        for (let key in grids) {
-            let count = grids[key];
-            //debugger
-            if (count > 0) {
-                data.push({
-                    name: key,
-                    count: count
-                });
-            }
-
-        }
-
-        if (this.style.colors.length > 0) {
-            this.compileSplitList(data);
-        }
-
-    }
-    setlegendParams() {
-
-    }
-    getColor(count) {
-        let color = null;
-        if (count == 0) {
-            color = "rgba(255,255,255,0)";
-        } else {
-            let style = this.setDrawStyle({
-                count: count
-            });
-            color = style.backgroundColor;
-            // color = this.compileColor[count];
-        }
-        return color;
-    }
-    drawRec(size, zoomUnit, max, min, grids) {
+    drawRec({size, zoomUnit, max, min, grids}) {
         this.workerData.grids = [];
-        let gridStep = size / zoomUnit;
-        let step = (max - min + 1) / 10;
-        let style = this.style.normal;
+        var gridsW = size / zoomUnit;
         for (let i in grids) {
-            let sp = i.split('_');
-            let x = sp[0];
-            let y = sp[1];
-            let count = grids[i];
-            let color = this.getColor(count);
-            this.ctx.fillStyle = color;
-            this.ctx.fillRect(x, y, gridStep - style.borderWidth, gridStep - style.borderWidth);
+            let x = grids[i].x;
+            let y = grids[i].y;
+            let count = grids[i].len;
             if (count > 0) {
-                this.workerData.grids.push({
-                    pixels: [x, y],
-                    count: count
-                });
+                let color = this.getColor(count);
+                this.drawLine(x, y, gridsW - 1, color, this.ctx);
             }
+
+
         }
+    }
+    drawLine(x, y, gridStep, color, ctx) {
+        ctx.beginPath();
+        ctx.fillStyle = color;
+        ctx.moveTo(x, y - gridStep / 2);
+        ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
+        ctx.lineTo(x + gridStep / 2, y + gridStep / 4);
+        ctx.lineTo(x, y + gridStep / 2);
+        ctx.lineTo(x - gridStep / 2, y + gridStep / 4);
+        ctx.lineTo(x - gridStep / 2, y - gridStep / 4);
+        ctx.fill();
+        ctx.closePath();
     }
 }
