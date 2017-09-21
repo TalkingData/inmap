@@ -84,3 +84,4 @@ export var TDpost = function (data, client) {
     }
     postMessage(opts)
 }
+export var boundaryOverlay = BoundaryOverlay;

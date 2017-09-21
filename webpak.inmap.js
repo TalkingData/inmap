@@ -8,7 +8,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 var option = {
   entry: {
     inmap: './src/main.js',
-    worker: './src/worker/index.js'
+    // worker: './src/worker/index.js'
   },
   output: {
     path: path.join(__dirname, './dist'),

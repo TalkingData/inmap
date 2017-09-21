@@ -4,8 +4,8 @@
   "description": "Map visualization",
   "main": "index.js",
   "scripts": {
-    "inmap": "webpack --watch --config  webpak.inmap.js",
-    "build-inmap": "webpack --config webpak.inmap.pro.js && node build-worker"
+    "dev": "webpack --watch --config  webpak.inmap.js",
+    "build": "webpack --config webpak.inmap.pro.js && node build-worker"
   },
   "repository": {
     "type": "git",

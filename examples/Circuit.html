@@ -24,11 +24,7 @@
         }
     </style>
     <script>
-        window.TD = {
-            config: {
-                workerPath: '../dist/worker.js'
-            }
-        };
+         
     </script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
     <script type="text/javascript" src="http://huiyan.baidu.com/mapv/demo/js/dist/BaiduMap_cityCenter.js"></script>
@@ -46,6 +42,7 @@
 
 </html>
 <script>
+     inMap.workerMrg.create('../dist/worker.js');
     var map = new inMap.Map({
         id: 'allmap',
         skin: 'Blueness',

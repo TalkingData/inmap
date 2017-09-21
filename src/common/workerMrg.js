@@ -1,22 +1,24 @@
- import config from './../config/config';
  let instances = {};
+ let workerContent = `[workerContentString]`;
+
  class WorkerMrg {
-     constructor() {
-        // var bb = new Blob(["importScripts('" + config.workerPath + "');"]);
-        // this.worker = new Worker(window.URL.createObjectURL(bb));
-        this.worker = new Worker(config.workerPath);
+     constructor() {}
+     create(workerPath) {
+         var workerUrl = workerContent.length == 21 ? workerPath :
+             URL.createObjectURL(new Blob([workerContent], {
+                 type: 'application/javascript'
+             }));
+         this.worker = new Worker(workerUrl);
          this.worker.addEventListener('message', this.message);
          this.worker.onerror = function (e) {
              console.log('worker.onerror', e)
          };
-
      }
      message(e) {
          var data = e.data;
          var hashCode = data.request.hashCode;
          var msgId = data.request.msgId;
          var classPath = data.request.classPath;
-         //console.log(TD.workerMrg.instances[classPath], hashCode+'_'+msgId, TD.workerMrg.instances[classPath] && TD.workerMrg.instances[classPath] == hashCode+'_'+msgId)
          if (instances[classPath + '_' + hashCode] && instances[classPath + '_' + hashCode] == hashCode + '_' + msgId) {
              instances[hashCode + '_' + msgId](data.response.data);
          } else {
@@ -29,7 +31,6 @@
       * @param {Function} callback 返回的回调
       */
      postMessage(data, callback) {
-         //console.log('callback', callback)
          var hashCode = data.request.hashCode;
          var msgId = data.request.msgId;
          var classPath = data.request.classPath;

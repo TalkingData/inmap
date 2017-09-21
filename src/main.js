@@ -22,6 +22,9 @@ import {
     Map
 } from './map/index';
 import * as utils from './common/util';
+import {
+    workerMrg
+} from './common/workerMrg';
 
 export {
     utils,
@@ -31,6 +34,7 @@ export {
     GriddingOverlay,
     BoundaryOverlay,
     HeatOverlay,
-    Circuit
+    Circuit,
+    workerMrg
 
 };
