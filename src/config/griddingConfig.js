@@ -15,7 +15,7 @@ module.exports = {
         color: "rgba(75,80,86,1)",
     },
     legend: {
-        show: true,
+        show: true, 
         title: "图例"
 
     },

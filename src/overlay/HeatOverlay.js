@@ -1,6 +1,7 @@
 import {
     Parameter
 } from './base/Parameter';
+import baseConfig from './../config/heatConfig';
 export class HeatOverlay extends Parameter {
     constructor(ops) {
         super(ops);
@@ -12,6 +13,9 @@ export class HeatOverlay extends Parameter {
             0.85: "yellow",
             1.0: "rgb(255,0,0)"
         };
+        this.minValue = 0; // 最小权重
+        this.maxValue = 0; // 最大权重
+        this._setOptionStyle(baseConfig, ops);
     }
     resize() {
         this.drawMap();
@@ -37,6 +41,14 @@ export class HeatOverlay extends Parameter {
         this.points = points;
         this.drawMap();
     }
+    getMax() {
+        this.maxValue = 0;
+        for (let i = 0, len = this.points.length; i < len; i++) {
+            if (this.points[i].count > this.maxValue) {
+                this.maxValue = this.points[i].count;
+            }
+        }
+    }
     drawMap() {
         let me = this;
         this.postMessage('HeatOverlay.pointsToPixels', this.points, function (pixels) {
@@ -46,19 +58,22 @@ export class HeatOverlay extends Parameter {
             };
             me.clearCanvas();
             me.canvasResize();
-            //me.workerData = pixels;
             me.setWorkerData(pixels);
             me._dataRender();
 
         });
     }
     _dataRender() {
-        //debugger
+        // debugger
+        if (this.maxValue == 0) {
+            this.getMax();
+        }
+
         let normal = this.style.normal;
         let ctx = this.ctx;
         for (let i = 0, len = this.workerData.length; i < len; i++) {
             let item = this.workerData[i];
-            let opacity = (item.count - normal.minValue) / (normal.maxValue - normal.minValue);
+            let opacity = (item.count - this.minValue) / (this.maxValue - this.minValue);
             this.drawPoint(item.pixel.x, item.pixel.y, normal.radius, opacity);
         }
 
