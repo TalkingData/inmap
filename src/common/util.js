@@ -169,18 +169,8 @@ export function isPolyContains(lng, lat, pointLat, pointLng) {
     }
     return ret
 }
-/**
- * 判断pont点是否在围栏内
- * @param {*} lng 经度 
- * @param {*} lat 纬度
- * @param {*} geos  围栏数据
- */
-export function isPolyContainsPt(lng, lat, geos) {
-    var lats = [];
-    var lngs = [];
-    for (var j = 0, len = geos.length; j < len; j++) {
-        lats.push(parseFloat(geos[j][1]));
-        lngs.push(parseFloat(geos[j][0]));
+export function forEach(arr, fn){
+    for(let i = 0; i < arr.length; i++){
+        if(fn(arr[i], i) === false) break;
     }
-    return isPolyContains(lats, lngs, lng, lat);
 }

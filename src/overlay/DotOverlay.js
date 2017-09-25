@@ -1,12 +1,19 @@
-import {
-    Parameter
-} from './base/Parameter';
 /*
  * 点的绘制
  */
+
+import {
+    Parameter
+} from './base/Parameter';
+
+import {
+    LabelRender
+} from './helper/LabelRender.js';
+
 export class DotOverlay extends Parameter {
     constructor(opts) {
         super(opts);
+        this.labelRender = new LabelRender(opts);
     }
     resize() {
         this.drawMap();
@@ -73,6 +80,7 @@ export class DotOverlay extends Parameter {
         this.clearCanvas();
         this.canvasResize();
         this._loopDraw(this.ctx, this.workerData);
+        this._drawLabel(this.ctx, this.workerData);
     }
     _loopDraw(ctx, pixels) {
         for (var i = 0, len = pixels.length; i < len; i++) {
@@ -90,6 +98,17 @@ export class DotOverlay extends Parameter {
             }
             this._drawCircle(ctx, pixel.x, pixel.y, style.size, style.backgroundColor, style.borderWidth, style.borderColor);
         }
+    }
+    _drawLabel(ctx, pixels){
+        var labelRender = this.labelRender;
+
+        labelRender.drawLabel(ctx, pixels);
+
+        // pixels.forEach(function(item) {
+        //     let pixel = item.pixel;
+
+        //     // ctx.fillText(item.name, pixel.x, pixel.y)
+        // })
     }
     _drawCircle(ctx, x, y, radius, color, lineWidth, strokeStyle) {
         ctx.beginPath();
