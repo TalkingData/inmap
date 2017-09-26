@@ -127,4 +127,13 @@
         }
     });
     map.add(overlay);
+
+    var point = new BMap.Point(118.796834, 32.086727),
+        marker =  new BMap.Marker(point);
+
+        map.map.addOverlay(marker);
+
+        marker.addEventListener("click", function(e){
+            console.log(e)
+        });
 </script>

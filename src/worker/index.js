@@ -14,6 +14,9 @@ import {
 import {
     HoneycombOverlay
 } from './transform/HoneycombOverlay';
+import {
+    LabelHelper
+} from './transform/LabelHelper.js';
 
 let callbackList = {
     "HeatOverlay": HeatOverlay,
@@ -21,7 +24,8 @@ let callbackList = {
     "GriddingOverlay": GriddingOverlay,
     "BoundaryOverlay": BoundaryOverlay,
     "Circuit": Circuit,
-    "HoneycombOverlay": HoneycombOverlay
+    "HoneycombOverlay": HoneycombOverlay,
+    'LabelHelper': LabelHelper
 }
 
 /**
