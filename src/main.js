@@ -1,9 +1,6 @@
 import {
     DotOverlay
 } from './overlay/DotOverlay';
-import {
-    DotTileOverlay
-} from './overlay/DotTileOverlay';
 
 import {
     GriddingOverlay
@@ -23,6 +20,9 @@ import {
     HoneycombOverlay
 } from './overlay/HoneycombOverlay';
 import {
+    ImgOverlay
+} from './overlay/ImgOverlay';
+import {
     Map
 } from './map/index';
 import * as utils from './common/util';
@@ -34,12 +34,11 @@ export {
     utils,
     Map,
     DotOverlay,
-    DotTileOverlay,
     GriddingOverlay,
     BoundaryOverlay,
     HeatOverlay,
     Circuit,
     HoneycombOverlay,
-    workerMrg
-
+    workerMrg,
+    ImgOverlay
 };

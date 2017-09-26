@@ -410,7 +410,12 @@ export class Parameter extends CanvasOverlay {
             if (temp) {
                 this.swopData(result.index, result.item);
             }
-            this._dataRender();
+            this._dataRender();         
+        }
+        if(temp){
+            this.map.setDefaultCursor("pointer");
+        }else{
+            this.map.setDefaultCursor("default");
         }
         this.setTooltip(event);
 
