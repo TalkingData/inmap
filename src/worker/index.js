@@ -15,6 +15,9 @@ import {
     HoneycombOverlay
 } from './transform/HoneycombOverlay';
 import {
+    polymeOverlay
+} from './transform/polymeOverlay';
+import {
     LabelHelper
 } from './transform/LabelHelper.js';
 
@@ -25,7 +28,8 @@ let callbackList = {
     "BoundaryOverlay": BoundaryOverlay,
     "Circuit": Circuit,
     "HoneycombOverlay": HoneycombOverlay,
-    'LabelHelper': LabelHelper
+    'LabelHelper': LabelHelper,
+    'polymeOverlay': polymeOverlay
 }
 
 /**

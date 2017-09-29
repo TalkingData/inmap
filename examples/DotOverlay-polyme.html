@@ -31,6 +31,7 @@
 </head>
 
 <body>
+
     <div id="allmap"></div>
 </body>
 
@@ -1602,30 +1603,28 @@
         "lat": "30.03601",
         "count": 1
     }]
-data.length=1;
+    // data.length = 35;
     var map = new inMap.Map({
         id: 'allmap',
         center: [105.403119, 38.028658],
         zoom: {
             value: 5,
             show: true,
-            max: 18,
-            min: 5
+            max: 22,
+            min: 1
         },
     })
 
     // debugger
-    var img = "./img/bso.svg";
-    // var img2="./img/mark (2).png";
-    // var img3="./img/market.png";
-    var overlay = new inMap.ImgOverlay({
+    var overlay = new inMap.DotOverlay({
+        type: 'polyme',
         tooltip: {
             show: true,
             position: 'top',
-            // formatter: function (params) {
-            //     return params.count;
-            // }
-            formatter: "{count}~<br/>{count}"
+            formatter: function (params) {
+                return params.pixel.radius;
+            }
+            // formatter: "{count}~<br/>{count}"
         },
         legend: {
             show: true,
@@ -1635,57 +1634,44 @@ data.length=1;
                 // debugger
                 return start + "万~" + (end || "max") + "万";
             },
-
+            position: "right"
         },
         style: {
             normal: {
-                icon: img,
-                width: 40,
-                height: 40,
-                scale: 1,
-                offsets: {
-                    top: "-100%",  
-                    left: "-50%",
-                  
-                }
-
+                backgroundColor: 'rgba(200, 200, 50, 1)',
+                borderWidth: 1,
+                borderColor: "rgba(255,255,255,1)",
+                size: 10,
+                mergeCount: 1,
             },
-            // mouseOver: {
-            //     icon: img2,
-            //     scale: 1,
-            // },
-            // selected: {
-            //     icon: img,
-            //     scale: 1
-            // },
-            splitList: [{ //设置区间颜色
-                    start: 0,
-                    end: 2,
-                    icon: img,
-                },
-                {
-                    start: 2,
-                    end: 5,
-                    icon: img,
-
-                },
-                {
-                    start: 5,
-                    end: 7,
-                    icon: img,
-                },
-                {
-                    start: 7,
-                    icon: img,
-                }
-            ],
+            mouseOver: {
+                backgroundColor: 'rgba(200, 200, 200, 1)',
+                borderColor: "rgba(255,255,255,1)",
+                borderWidth: 4,
+                scale: 1,
+            },
+            selected: {
+                backgroundColor: 'rgba(184,0,0,1)',
+                borderColor: "rgba(255,255,255,1)"
+            },
+            splitList: [],
         },
         data: data,
         event: {
             onMouseClick: function (item) {
                 //能获取当前点的信息
+                console.log(item);
             }
         }
     });
     map.add(overlay);
+
+    // var point = new BMap.Point(118.796834, 32.086727),
+    //     marker =  new BMap.Marker(point);
+
+    //     map.map.addOverlay(marker);
+
+    //     marker.addEventListener("click", function(e){
+    //         console.log(e)
+    //     });
 </script>

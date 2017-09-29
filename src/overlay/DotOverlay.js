@@ -14,13 +14,22 @@ export class DotOverlay extends Parameter {
     constructor(opts) {
         super(opts);
         this.labelRender = new LabelRender(opts);
+        // debugger
+        this.polyme = opts.type == 'polyme';
     }
     resize() {
         this.drawMap();
     }
     drawMap() {
+        // debugger
         let me = this;
-        this.postMessage('HeatOverlay.pointsToPixels', this.points, function (pixels) {
+        let path = me.polyme ? 'polymeOverlay.mergePoint' : 'HeatOverlay.pointsToPixels';
+
+        this.postMessage(path, {
+            points: this.points,
+            mergeCount: this.style.normal.mergeCount,
+            size: this.style.normal.size
+        }, function (pixels) {
             if (me.eventType == 'onmoving') {
                 return;
             };
@@ -86,7 +95,8 @@ export class DotOverlay extends Parameter {
         for (var i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.pixel;
-            let style = this.setDrawStyle(item);
+            // debugger
+            let style = this.polyme ? this.style.normal : this.setDrawStyle(item);
             if (style.shadowBlur) {
                 ctx.shadowBlur = style.shadowBlur;
             }
@@ -96,10 +106,11 @@ export class DotOverlay extends Parameter {
             if (style.globalCompositeOperation) {
                 ctx.globalCompositeOperation = style.globalCompositeOperation;
             }
-            this._drawCircle(ctx, pixel.x, pixel.y, style.size, style.backgroundColor, style.borderWidth, style.borderColor);
+            let size = this.polyme ? pixel.radius : style.size;
+            this._drawCircle(ctx, pixel.x, pixel.y, size, style.backgroundColor, style.borderWidth, style.borderColor);
         }
     }
-    _drawLabel(ctx, pixels){
+    _drawLabel(ctx, pixels) {
         var labelRender = this.labelRender;
 
         labelRender.drawLabel(ctx, pixels);

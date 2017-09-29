@@ -410,11 +410,11 @@ export class Parameter extends CanvasOverlay {
             if (temp) {
                 this.swopData(result.index, result.item);
             }
-            this._dataRender();         
+            this._dataRender();
         }
-        if(temp){
+        if (temp) {
             this.map.setDefaultCursor("pointer");
-        }else{
+        } else {
             this.map.setDefaultCursor("default");
         }
         this.setTooltip(event);
@@ -435,19 +435,18 @@ export class Parameter extends CanvasOverlay {
         }
         // debugger
         let item = result.item;
-        if (this.selectItemContains(item)) {
-            this.multiSelect && this.deleteSelectItem(item); //二次点击取消选中
-
+        if (this.multiSelect) {
+            if (this.selectItemContains(item)) {
+                this.deleteSelectItem(item); //二次点击取消选中
+            } else {
+                this.selectItem.push(result.item);
+            }
 
         } else {
-            if (this.multiSelect) {
-                this.selectItem.push(result.item);
-            } else {
-                this.selectItem = [result.item];
-            }
-            this.swopData(result.index, item);
+            this.selectItem = [result.item];
         }
-
+        
+        this.swopData(result.index, item);
         this.triggerClick();
         this.cancerExp();
         this._dataRender();
