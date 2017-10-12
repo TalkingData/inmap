@@ -24,12 +24,13 @@ export class DotOverlay extends Parameter {
         // debugger
         let me = this;
         let path = me.polyme ? 'polymeOverlay.mergePoint' : 'HeatOverlay.pointsToPixels';
-
-        this.postMessage(path, {
+        let data = me.polyme ? {
             points: this.points,
             mergeCount: this.style.normal.mergeCount,
             size: this.style.normal.size
-        }, function (pixels) {
+        } : this.points;
+
+        this.postMessage(path, data, function (pixels) {
             if (me.eventType == 'onmoving') {
                 return;
             };

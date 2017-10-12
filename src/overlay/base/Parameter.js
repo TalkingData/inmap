@@ -46,7 +46,7 @@ export class Parameter extends CanvasOverlay {
             {
                 event: this.event || {}
             },
-            ops
+            ops||{}
         ]);
         // debugger
         this.tooltip = opstion.tooltip;

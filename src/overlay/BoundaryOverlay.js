@@ -213,7 +213,7 @@ export class BoundaryOverlay extends Parameter {
             if (bestCell  && label.show) {
                 //    debugger
                 let style = this.setDrawStyle(item).label;
-                this.ctx.shadowBlur = style.shadowBlur;
+                this.ctx.shadowBlur =0;
                 this.ctx.lineWidth = style.lineWidth;
                 this.ctx.font = style.font;
                 this.ctx.fillStyle = style.color;
