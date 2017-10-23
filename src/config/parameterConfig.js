@@ -28,14 +28,17 @@ module.exports = {
         normal: {
             borderWidth: 0.1,
             backgroundColor: 'rgba(200, 200, 200, 0.5)',
-            label: {}
+            label: {},
+            scale: 1
         },
         mouseOver: {
+            scale: 1,
             label: {
 
             }
         },
         selected: {
+            scale: 1,
             label: {
 
             }

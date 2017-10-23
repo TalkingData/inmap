@@ -4,7 +4,7 @@
  class WorkerMrg {
      constructor() {}
      create(workerPath) {
-         var workerUrl = workerContent.length == 21 ? workerPath :
+         var workerUrl = workerContent.length == 21 ? URL.createObjectURL(new Blob(["importScripts('" + workerPath + "');"])) :
              URL.createObjectURL(new Blob([workerContent], {
                  type: 'application/javascript'
              }));
@@ -13,7 +13,7 @@
          this.worker.onerror = function (e) {
              console.log('worker.onerror', e)
          };
-     }
+     } 
      message(e) {
          var data = e.data;
          var hashCode = data.request.hashCode;

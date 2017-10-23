@@ -48,7 +48,6 @@ export class Parameter extends CanvasOverlay {
             },
             ops||{}
         ]);
-        // debugger
         this.tooltip = opstion.tooltip;
         this.legend = opstion.legend;
         this.labelStyle = opstion.label;
@@ -99,7 +98,6 @@ export class Parameter extends CanvasOverlay {
         let shadowColor = {};
 
         if (mouseOverStyle && this.overItem == item) {
-            //  debugger
             if (mouseOverStyle.shadowBlur != null && mouseOverStyle.shadowColor == null) {
                 //  debugger
                 shadowColor["shadowColor"] = this.brightness(result.backgroundColor, 50);
