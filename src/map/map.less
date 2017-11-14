@@ -24,7 +24,7 @@
         color: #666;
         cursor: pointer;
     }
-    .legend {
+    ul.legend {
         position: absolute;
         list-style: none;
         opacity: 1;
@@ -63,6 +63,18 @@
         height: 14px;
         background: rgba(200, 200, 50, 1);
         vertical-align: sub;
+        position: relative;
+    }
+    .legend li .bg:before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: #fff;
+        z-index: -1;
     }
     .legend li .infinity {
         font-size: 18px;
