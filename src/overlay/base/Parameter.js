@@ -46,7 +46,7 @@ export class Parameter extends CanvasOverlay {
             {
                 event: this.event || {}
             },
-            ops||{}
+            ops || {}
         ]);
         this.tooltip = opstion.tooltip;
         this.legend = opstion.legend;
@@ -81,6 +81,7 @@ export class Parameter extends CanvasOverlay {
         let result = {};
         Object.assign(result, normal);
         //区间样式
+        // debugger
         let splitList = this.style.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];
@@ -98,6 +99,7 @@ export class Parameter extends CanvasOverlay {
         let shadowColor = {};
 
         if (mouseOverStyle && this.overItem == item) {
+            debugger
             if (mouseOverStyle.shadowBlur != null && mouseOverStyle.shadowColor == null) {
                 //  debugger
                 shadowColor["shadowColor"] = this.brightness(result.backgroundColor, 50);
@@ -109,6 +111,7 @@ export class Parameter extends CanvasOverlay {
             }, shadowColor);
         }
         if (selectedStyle && this.selectItemContains(item)) {
+            debugger
             if (selectedStyle.shadowBlur != null && selectedStyle.shadowColor == null) {
                 shadowColor["shadowColor"] = this.brightness(selectedStyle.backgroundColor, 0.1);
             }
@@ -404,11 +407,14 @@ export class Parameter extends CanvasOverlay {
         let result = this.getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
         if (temp != this.overItem) { //防止过度重新绘画
+            console.log(temp);
             this.overItem = temp;
             if (temp) {
+                console.log('_dataRender',this.workerData)
                 this.swopData(result.index, result.item);
             }
             this._dataRender();
+            console.log('_dataRender')
         }
         if (temp) {
             this.map.setDefaultCursor("pointer");
@@ -443,7 +449,7 @@ export class Parameter extends CanvasOverlay {
         } else {
             this.selectItem = [result.item];
         }
-        
+
         this.swopData(result.index, item);
         this.triggerClick();
         this.cancerExp();

@@ -47,25 +47,28 @@ export class ImgOverlay extends Parameter {
             let style = this.setDrawStyle(item);
             ctx.beginPath();
             let img = this.cacheImg[style.icon];
-
+            //img  Not Loaded return 
+            if (!img) break;
             if (style.width && style.height) {
-                let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, img.width, img.height, 1);
-                if (this._isMouseOver(x, y, xy.x, xy.y, img.width, img.height)) {
-                    // debugger
-                    return {
-                        index: i,
-                        item: item
-                    };
-                }
-
-            } else {
-                let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height, style.scale);
+                let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height, 1);
+                // debugger
                 if (this._isMouseOver(x, y, xy.x, xy.y, style.width * style.scale, style.height * style.scale)) {
                     return {
                         index: i,
                         item: item
                     };
                 }
+            } else {
+
+                let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height, style.scale);
+                if (this._isMouseOver(x, y, xy.x, xy.y, img.width, img.height)) {
+
+                    return {
+                        index: i,
+                        item: item
+                    };
+                }
+
             }
 
         }
@@ -94,6 +97,7 @@ export class ImgOverlay extends Parameter {
     }
     loadImg(img, fun) {
         let me = this;
+        // debugger
         if (isString(img)) {
             let image = me.cacheImg[img];
             if (!image) {
@@ -154,7 +158,7 @@ export class ImgOverlay extends Parameter {
         let result = {};
         Object.assign(result, normal);
         //区间样式
-        // debugger
+        //  debugger
         let splitList = this.style.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];
@@ -172,13 +176,12 @@ export class ImgOverlay extends Parameter {
         let shadowColor = {};
 
         if (mouseOverStyle && this.overItem == item) {
-            // debugger
-            Object.assign(result, normal,result, mouseOverStyle);
+            Object.assign(result, result,mouseOverStyle);
         }
         if (selectedStyle && this.selectItemContains(item)) {
-            Object.assign(result, normal, selectedStyle);
+            Object.assign(result, selectedStyle);
         }
-              
+
         return result;
 
     }
@@ -187,7 +190,6 @@ export class ImgOverlay extends Parameter {
             let item = pixels[i];
             let pixel = item.pixel;
             let style = this.setDrawStyle(item);
-
             this.loadImg(style.icon, (img) => {
                 if (style.width && style.height) {
                     let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height, style.scale);
