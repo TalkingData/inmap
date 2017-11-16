@@ -99,7 +99,7 @@ export class Parameter extends CanvasOverlay {
         let shadowColor = {};
 
         if (mouseOverStyle && this.overItem == item) {
-            debugger
+            // debugger
             if (mouseOverStyle.shadowBlur != null && mouseOverStyle.shadowColor == null) {
                 //  debugger
                 shadowColor["shadowColor"] = this.brightness(result.backgroundColor, 50);
