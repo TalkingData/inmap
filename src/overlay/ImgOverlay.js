@@ -152,9 +152,7 @@ export class ImgOverlay extends Parameter {
      * @param {*} item 
      */
     setDrawStyle(item) {
-        let normal = this.style.normal, //正常样式
-            mouseOverStyle = this.style.mouseOver, //悬浮样式
-            selectedStyle = this.style.selected; //选中样式
+        let normal = this.style.normal;//正常样式
         let result = {};
         Object.assign(result, normal);
         //区间样式
@@ -172,15 +170,7 @@ export class ImgOverlay extends Parameter {
                 break;
             }
         }
-        let size = result.size;
-        let shadowColor = {};
-
-        if (mouseOverStyle && this.overItem == item) {
-            Object.assign(result, result,mouseOverStyle);
-        }
-        if (selectedStyle && this.selectItemContains(item)) {
-            Object.assign(result, selectedStyle);
-        }
+        
 
         return result;
 
