@@ -8,6 +8,7 @@ const path = require('path');
 module.exports = merge(config, {
   output: {
     path: path.join(__dirname, './dist'),
+    filename: "[name].min.js"
   },
   plugins: [
     new webpack.optimize.UglifyJsPlugin({
