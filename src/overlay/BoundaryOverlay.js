@@ -1,7 +1,7 @@
 import {
     Parameter
 } from './base/Parameter.js';
-import polylabel from './../common/polylabel'
+import polylabel from './../common/polylabel';
 
 export class BoundaryOverlay extends Parameter {
     constructor(ops) {
@@ -33,7 +33,7 @@ export class BoundaryOverlay extends Parameter {
     }
     setMapCenter(geo, exp) {
         let me = this;
-        this.parserExp(exp)
+        this.parserExp(exp);
         // debugger
         // this.map.panTo(this.getGeoCenter);
         if (me.workerData.length > 0) {
@@ -44,7 +44,7 @@ export class BoundaryOverlay extends Parameter {
     setMapCenterAndZoom(geo, exp) {
         let arr = [];
         geo.forEach(val => {
-            arr.push(new BMap.Point(val[0], val[1]))
+            arr.push(new BMap.Point(val[0], val[1]));
 
         });
         // debugger
@@ -53,14 +53,14 @@ export class BoundaryOverlay extends Parameter {
 
         function zoomEnd() {
             // debugger
-            me.map.removeEventListener("zoomend", zoomEnd);
+            me.map.removeEventListener('zoomend', zoomEnd);
             me.map.panTo(view.center);
         }
 
         function moveend() {
             // debugger
-            me.map.removeEventListener("moveend", moveend);
-            me.parserExp(exp)
+            me.map.removeEventListener('moveend', moveend);
+            me.parserExp(exp);
             if (me.workerData.length > 0) {
                 me.selectItem = me.workerData.filter(me.filterFun);
                 me._dataRender();
@@ -69,8 +69,8 @@ export class BoundaryOverlay extends Parameter {
         // debugger
 
         let scale = view.zoom - 1;
-        this.map.addEventListener("zoomend", zoomEnd);
-        this.map.addEventListener("moveend", moveend);
+        this.map.addEventListener('zoomend', zoomEnd);
+        this.map.addEventListener('moveend', moveend);
         if (this.map.getZoom() == scale) {
             zoomEnd();
         } else {
@@ -176,7 +176,7 @@ export class BoundaryOverlay extends Parameter {
     drawLine(data) {
         // debugger
         //console.log('drawLine')
-        this.ctx.lineCap = "round";
+        this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
         this.ctx.miterLimit = 4;
         for (let i = 0, len = data.length; i < len; i++) {

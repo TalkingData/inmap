@@ -11,7 +11,7 @@ export class HoneycombOverlay extends Parameter {
     }
 
     delteOption() {
-        this.style["selected"] = null;
+        this.style['selected'] = null;
     }
     resize() {
         this.drawMap();
@@ -43,10 +43,10 @@ export class HoneycombOverlay extends Parameter {
             mapCenter: me.map.getCenter(),
             zoom: zoom
         };
-        this.postMessage("HoneycombOverlay.toRecGrids", params, function (gridsObj) {
+        this.postMessage('HoneycombOverlay.toRecGrids', params, function (gridsObj) {
             if (me.eventType == 'onmoving') {
-                return
-            };
+                return;
+            }
             me.clearCanvas();
             me.canvasResize();
 
@@ -69,7 +69,7 @@ export class HoneycombOverlay extends Parameter {
     getColor(count) {
         let color = null;
         if (count == 0) {
-            color = "rgba(255,255,255,0)";
+            color = 'rgba(255,255,255,0)';
         } else {
             let style = this.setDrawStyle({
                 count: count

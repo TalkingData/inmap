@@ -22,7 +22,7 @@ export class ImgOverlay extends Parameter {
         this.postMessage('HeatOverlay.pointsToPixels', this.points, function (pixels) {
             if (me.eventType == 'onmoving') {
                 return;
-            };
+            }
             me.setWorkerData(pixels);
             me._dataRender();
         });
@@ -75,7 +75,7 @@ export class ImgOverlay extends Parameter {
         return {
             index: -1,
             item: null
-        }
+        };
 
 
     }
@@ -88,7 +88,7 @@ export class ImgOverlay extends Parameter {
             });
         }
 
-        return index
+        return index;
     }
     _dataRender() {
         this.clearCanvas();
@@ -107,7 +107,7 @@ export class ImgOverlay extends Parameter {
                     // debugger
                     me.cacheImg[img] = image;
                     fun(image);
-                }
+                };
             } else {
                 fun(image);
             }
@@ -145,7 +145,7 @@ export class ImgOverlay extends Parameter {
         return {
             x: x,
             y: y
-        }
+        };
     }
     /**
      * 根据用户配置，设置用户绘画样式

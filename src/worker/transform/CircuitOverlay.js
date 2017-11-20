@@ -1,13 +1,13 @@
 import {
     isArray
-} from "./../../common/util";
+} from './../../common/util';
 
 import {
     pointToPixelWorker
-} from "../../geo/index";
+} from '../../geo/index';
 import {
     Point
-} from "./../../geo/Point";
+} from './../../geo/Point';
 
 export let CircuitOverlay = {
     transferCoordinate(_coordinates, nwMc, zoomUnit) {
@@ -53,6 +53,6 @@ export let CircuitOverlay = {
         return {
             data: points,
             client: webObj
-        }
+        };
     }
-}
+};

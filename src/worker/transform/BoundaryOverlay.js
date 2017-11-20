@@ -9,7 +9,7 @@ import {
 import {
     Point
 } from './../../geo/Point';
-import polylabel from './../../common/polylabel'
+import polylabel from './../../common/polylabel';
 export let BoundaryOverlay = {
     calculatePixel: function (webObj) {
         let data = webObj,
@@ -26,7 +26,7 @@ export let BoundaryOverlay = {
                 points[j].pgeo = tmp;
                 let bestCell = polylabel([tmp]);
                 if(bestCell==null){
-                    console.error(`${points[j].name}围栏数据有问题！`)
+                    console.error(`${points[j].name}围栏数据有问题！`);
                 }
 
                 points[j]['bestCell'] = bestCell;
@@ -36,6 +36,6 @@ export let BoundaryOverlay = {
         return {
             data: points,
             client: webObj
-        }
+        };
     }
-}
+};

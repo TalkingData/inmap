@@ -1,8 +1,8 @@
 
 export let LabelHelper = {
-	arrangeLabels: function(webObj) {
-		console.log(webObj)
+    arrangeLabels: function(webObj) {
+        console.log(webObj);
 
-		return {}
-	}
-}
+        return {};
+    }
+};

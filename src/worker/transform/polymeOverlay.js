@@ -70,15 +70,15 @@ export let polymeOverlay = {
                 x: pixel.x,
                 y: pixel.y,
                 radius: radius
-            }
+            };
         });
         let temp = polymeOverlay.merge(data, radius);
         let result = [];
-        console.log(result)
+        console.log(result);
 
         return {
             data: temp,
             client: webObj
-        }
+        };
     }
 };

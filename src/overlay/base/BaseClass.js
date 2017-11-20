@@ -15,7 +15,7 @@ Function.prototype.inherits = function (parentClass, className) {
         C = function () {};
     C.prototype = parentClass.prototype;
     p = this.prototype = new C();
-    if (typeof (className) == "string") {
+    if (typeof (className) == 'string') {
         p.className = className;
     }
     for (i in op) {
@@ -42,7 +42,7 @@ let BaseClass = function (hc) {
 
 /** @ignore */
 BaseClass.guid = function () {
-    return "td_" + (baseClassCounter++).toString(36);
+    return 'td_' + (baseClassCounter++).toString(36);
 };
 
 
@@ -59,7 +59,7 @@ BaseClass.prototype.dispose = function () {
     }
 
     for (let i in this) {
-        if (typeof this[i] != "function") {
+        if (typeof this[i] != 'function') {
             this[i] = null;
         }
     }
@@ -85,7 +85,7 @@ BaseClass.prototype.decontrol = function () {
 };
 
 let baidu = BMap || {};
-BaseClass.inherits(baidu.Overlay, "BaseClass");
+BaseClass.inherits(baidu.Overlay, 'BaseClass');
 
 
 /**
@@ -124,11 +124,11 @@ BaseClass.prototype.postMessage = function (workerClassPath, data, callback) {
     }, callback);
 };
 BaseClass.prototype.getMsgId = function () {
-    return "msgId_" + _count.toString(36);
-}
+    return 'msgId_' + _count.toString(36);
+};
 BaseClass.prototype.setMsgId = function () {
-    _count++
-    return "msgId_" + (_count).toString(36);
+    _count++;
+    return 'msgId_' + (_count).toString(36);
 };
 
 export default BaseClass;

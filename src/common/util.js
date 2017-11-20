@@ -4,7 +4,7 @@
  * @returns {Boolean}
  */
 export function isFunction(func) {
-    return typeof func == "function";
+    return typeof func == 'function';
 }
 /**
  * 是否是数字
@@ -12,7 +12,7 @@ export function isFunction(func) {
  * @returns {Boolean}
  */
 export function isNumber(number) {
-    return typeof number == "number";
+    return typeof number == 'number';
 }
 /**
  * 是否是字符串
@@ -20,7 +20,7 @@ export function isNumber(number) {
  * @returns {Boolean}
  */
 export function isString(string) {
-    return typeof string == "string";
+    return typeof string == 'string';
 }
 /**
  * 是否定义
@@ -28,7 +28,7 @@ export function isString(string) {
  * @returns {Boolean}
  */
 export function isDefined(object) {
-    return typeof object != "undefined";
+    return typeof object != 'undefined';
 }
 /**
  * 是否为对象类型
@@ -45,44 +45,18 @@ export function isObject(object) {
  */
 export function isArray(source) {
     return '[object Array]' == Object.prototype.toString.call(source);
-};
+}
 /**
  * 判断字符串长度英文占1个字符，中文汉字占2个字符
  * @param {Object} str
  */
 export function getBlen(str) {
-    return str.replace(/[^\x00-\xff]/g, "01").length;
+    return str.replace(/[^\x00-\xff]/g, '01').length;
 }
 
-/*
- *获取鼠标相对于canvas 的距离
- */
-export function captureMouse(element) {
-    var mouse = {
-        x: 0,
-        y: 0,
-        event: null
-    };
-
-    element.addEventListener('mousemove', function (event) {
-        var bounding = element.getBoundingClientRect();
-        var offsetLeft = bounding.left;
-        var offsetTop = bounding.top;
-        var body_scrollTop = document.body.scrollTop;
-        var body_scrollLeft = document.body.scrollLeft;
-        var x, y;
-        x = event.pageX - offsetLeft - body_scrollLeft;
-        y = event.pageY - offsetTop - body_scrollTop;
-        mouse.x = x;
-        mouse.y = y;
-        mouse.event = event;
-    }, false);
-
-    return mouse;
-};
 export var extend = function (target, source) {
 
-    if (target && source && typeof (source) == "object") {
+    if (target && source && typeof (source) == 'object') {
         for (var p in source) {
             target[p] = source[p];
         }
@@ -122,7 +96,7 @@ export function encodeHTML(source) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
-};
+}
 export function deepCopy(data) {
     const t = typeOf(data);
     let o;
@@ -163,14 +137,24 @@ export function isPolyContains(lng, lat, pointLat, pointLng) {
         for (var i = 0; i < lat.length; i++) {
             var j = (i + 1) % lat.length;
             if ((lat[i] < pointLat) != (lat[j] < pointLat) && (pointLng < (lng[j] - lng[i]) * (pointLat - lat[i]) / (lat[j] - lat[i]) + lng[i])) {
-                ret = !ret
+                ret = !ret;
             }
         }
     }
-    return ret
+    return ret;
 }
-export function forEach(arr, fn){
-    for(let i = 0; i < arr.length; i++){
-        if(fn(arr[i], i) === false) break;
+/**
+ * 判断pont点是否在围栏内
+ * @param {*} lng 经度 
+ * @param {*} lat 纬度
+ * @param {*} geos  围栏数据
+ */
+export function isPolyContainsPt(lng, lat, geos) {
+    var lats = [];
+    var lngs = [];
+    for (var j = 0, len = geos.length; j < len; j++) {
+        lats.push(parseFloat(geos[j][1]));
+        lngs.push(parseFloat(geos[j][0]));
     }
+    return isPolyContains(lats, lngs, lng, lat);
 }

@@ -33,7 +33,7 @@ export class DotOverlay extends Parameter {
         this.postMessage(path, data, function (pixels) {
             if (me.eventType == 'onmoving') {
                 return;
-            };
+            }
             // debugger
             // me.workerData = pixels;
             me.setWorkerData(pixels);
@@ -42,7 +42,7 @@ export class DotOverlay extends Parameter {
     }
     setPoints(points) {
         if (!points) {
-            return
+            return;
         }
         this.cancerSelectd();
         this.points = points;
@@ -71,7 +71,7 @@ export class DotOverlay extends Parameter {
         return {
             index: -1,
             item: null
-        }
+        };
 
 
     }
@@ -84,7 +84,7 @@ export class DotOverlay extends Parameter {
             });
         }
 
-        return index
+        return index;
     }
     _dataRender() {
         this.clearCanvas();

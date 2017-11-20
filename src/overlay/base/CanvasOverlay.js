@@ -32,13 +32,13 @@ export class CanvasOverlay extends BaseClass {
         map.getPanes().mapPane.appendChild(this.container);
         this.setCanvasSize();
         map.addEventListener('resize', me.tOnResize);
-        map.addEventListener("moveend", me.tOnMoveend);
-        map.addEventListener("zoomstart", me.tOnZoomstart);
-        map.addEventListener("zoomend", me.tOnZoomend);
-        map.addEventListener("moving", me.tOnMoving);
-        map.addEventListener("mousemove", me.tMousemove);
+        map.addEventListener('moveend', me.tOnMoveend);
+        map.addEventListener('zoomstart', me.tOnZoomstart);
+        map.addEventListener('zoomend', me.tOnZoomend);
+        map.addEventListener('moving', me.tOnMoving);
+        map.addEventListener('mousemove', me.tMousemove);
         this.container.addEventListener('mouseleave', me.tMouseleave);
-        map.addEventListener("click", me.tMouseClick);
+        map.addEventListener('click', me.tMouseClick);
         return this.container;
     }
 
@@ -49,19 +49,19 @@ export class CanvasOverlay extends BaseClass {
     }
     tOnMoveend(event) {
         // debugger
-        console.log(this.hashCode, event.type)
+        console.log(this.hashCode, event.type);
         this.eventType = event.type;
         this.tDraw(this, event);
     }
     tOnZoomstart() {
-        this.clearCanvas()
+        this.clearCanvas();
     }
     tOnZoomend(e) {
         // debugger
         this.tDraw(this, e);
     }
     tOnMoving(e) {
-        this.eventType = e.type
+        this.eventType = e.type;
     }
     tMouseleave() {
         //debugger
@@ -148,13 +148,13 @@ export class CanvasOverlay extends BaseClass {
     dispose() {
         //debugger
         this.map.removeEventListener('resize', this.tOnResize);
-        this.map.removeEventListener("moveend", this.tOnMoveend);
-        this.map.removeEventListener("zoomstart", this.tOnZoomstart);
-        this.map.removeEventListener("zoomend", this.tOnZoomend);
-        this.map.removeEventListener("moving", this.tOnMoving);
-        this.map.removeEventListener("mousemove", this.tMousemove);
+        this.map.removeEventListener('moveend', this.tOnMoveend);
+        this.map.removeEventListener('zoomstart', this.tOnZoomstart);
+        this.map.removeEventListener('zoomend', this.tOnZoomend);
+        this.map.removeEventListener('moving', this.tOnMoving);
+        this.map.removeEventListener('mousemove', this.tMousemove);
         this.container.removeEventListener('mouseleave', this.tMouseleave);
-        this.map.removeEventListener("click", this.tMouseClick);
+        this.map.removeEventListener('click', this.tMouseClick);
         this.Tclear();
         this.map.removeOverlay(this);
 

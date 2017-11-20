@@ -36,7 +36,7 @@ export function Point(lng, lat) {
 }
 Point.isInRange = function (pt) {
     return pt && pt.lng <= 180 && pt.lng >= -180 && pt.lat <= 74 && pt.lat >= -74;
-}
+};
 Point.prototype.equals = function (other) {
     return other && this.lat == other.lat && this.lng == other.lng;
 };

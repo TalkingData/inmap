@@ -3,12 +3,12 @@ import {
 } from './geo.js';
 import {
     isArray
-} from './../common/util'
+} from './../common/util';
 export function pointToPixel(point, map) {
     var zoom = map.getZoom();
     var center = map.getCenter();
-    var size = map.getSize()
-    return geo.pointToPixel(point, zoom, center, size)
+    var size = map.getSize();
+    return geo.pointToPixel(point, zoom, center, size);
 }
 
 export function pointsToPixels(points, map) {
@@ -26,7 +26,7 @@ export function pointToPixelWorker(point, map) {
     var zoom = map.zoom;
     var center = map.center;
     var size = map.size;
-    return geo.pointToPixel(point, zoom, center, size)
+    return geo.pointToPixel(point, zoom, center, size);
 }
 
 export function pointsToPixelsWoker(points, map) {
@@ -38,4 +38,4 @@ export function pointsToPixelsWoker(points, map) {
         pixels.push(pointToPixelWorker(points[i], map));
     }
     return pixels;
-};
+}

@@ -76,7 +76,7 @@ export class MercatorProjection extends Projection {
                 factor = this.MC2LL[i];
                 break;
             }
-        };
+        }
         var lnglat = this.convertor(point, factor);
         var point = new Point(lnglat.lng.toFixed(6), lnglat.lat.toFixed(6));
         return point;
@@ -146,14 +146,14 @@ export class MercatorProjection extends Projection {
         if (b != null) {
             v = Math.min(v, b);
         }
-        return v
+        return v;
     }
     getLoop(v, a, b) {
         while (v > b) {
-            v -= b - a
+            v -= b - a;
         }
         while (v < a) {
-            v += b - a
+            v += b - a;
         }
         return v;
     }
@@ -205,7 +205,7 @@ export class MercatorProjection extends Projection {
             return;
         }
         point = this.lngLatToMercator(point, curCity);
-        mapCenter = this.lngLatToMercator(mapCenter)
+        mapCenter = this.lngLatToMercator(mapCenter);
         var zoomUnits = this.getZoomUnits(zoom);
         var x = Math.round((point.lng - mapCenter.lng) / zoomUnits + mapSize.width / 2);
         var y = Math.round((mapCenter.lat - point.lat) / zoomUnits + mapSize.height / 2);

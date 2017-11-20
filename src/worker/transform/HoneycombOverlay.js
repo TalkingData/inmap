@@ -26,7 +26,7 @@ export let HoneycombOverlay = {
         return {
             data: gridsObj,
             client: webObj
-        }
+        };
     },
     _calculatePixel: function (map, data, mapSize, mapCenter, zoom) {
 

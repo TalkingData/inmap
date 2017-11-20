@@ -28,7 +28,7 @@ export let GriddingOverlay = {
             data: gridsObj,
             client: webObj
 
-        }
+        };
     },
     _calculatePixel: function (map, data, mapSize, mapCenter, zoom) {
 
@@ -54,7 +54,7 @@ export let GriddingOverlay = {
 
     recGrids: function (data, map, nwMc, size, zoomUnit, mapSize, mapCenter) {
         //isAvg 聚合的方式
-        debugger
+        debugger;
         let max = 0;
         let min = 0;
 

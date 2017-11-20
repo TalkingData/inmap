@@ -7,11 +7,11 @@ import {
 } from './base/CanvasOverlay';
 import {
     pointToPixel
-} from "../geo/index";
+} from '../geo/index';
 
 import {
     Point
-} from "./../geo/Point";
+} from './../geo/Point';
 export class CircuitOverlay extends CanvasOverlay {
     constructor(ops) {
         super();
@@ -46,7 +46,7 @@ export class CircuitOverlay extends CanvasOverlay {
         this.postMessage('CircuitOverlay.calculatePixel', params, function (pixels) {
             if (me.eventType == 'onmoving') {
                 return;
-            };
+            }
             me.clearCanvas();
             me.canvasResize();
             me.drawLine(pixels);
@@ -102,9 +102,9 @@ export class CircuitOverlay extends CanvasOverlay {
         this.ctx.shadowBlur = 0;
         this.ctx.shadowOffsetX = 0;
         this.ctx.shadowOffsetY = 0;
-        this.ctx.lineCap = "butt";
-        this.ctx.lineJoin = "miter";
-        this.ctx.globalCompositeOperation = "lighter";
+        this.ctx.lineCap = 'butt';
+        this.ctx.lineJoin = 'miter';
+        this.ctx.globalCompositeOperation = 'lighter';
         this.ctx.miterLimit = 10;
         this.ctx.strokeStyle = normal.borderColor;
         this.ctx.lineWidth = normal.borderWidth;

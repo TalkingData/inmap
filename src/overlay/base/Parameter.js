@@ -3,7 +3,7 @@ import baseConfig from './../../config/parameterConfig';
 import {
     WhiteLover,
     Blueness
-} from "./../../config/mapStyle";
+} from './../../config/mapStyle';
 import {
     CanvasOverlay
 } from './CanvasOverlay';
@@ -37,7 +37,7 @@ export class Parameter extends CanvasOverlay {
         this.selectedExp = {
             show: false,
             exp: null,
-        }
+        };
     }
 
     _setOptionStyle(config, ops) {
@@ -102,7 +102,7 @@ export class Parameter extends CanvasOverlay {
             // debugger
             if (mouseOverStyle.shadowBlur != null && mouseOverStyle.shadowColor == null) {
                 //  debugger
-                shadowColor["shadowColor"] = this.brightness(result.backgroundColor, 50);
+                shadowColor['shadowColor'] = this.brightness(result.backgroundColor, 50);
             }
             // debugger
             Object.assign(result, normal, mouseOverStyle, {
@@ -111,9 +111,9 @@ export class Parameter extends CanvasOverlay {
             }, shadowColor);
         }
         if (selectedStyle && this.selectItemContains(item)) {
-            debugger
+            debugger;
             if (selectedStyle.shadowBlur != null && selectedStyle.shadowColor == null) {
-                shadowColor["shadowColor"] = this.brightness(selectedStyle.backgroundColor, 0.1);
+                shadowColor['shadowColor'] = this.brightness(selectedStyle.backgroundColor, 0.1);
             }
             Object.assign(result, normal, selectedStyle, {
                 size: size * mouseOverStyle.scale
@@ -162,7 +162,7 @@ export class Parameter extends CanvasOverlay {
         index > -1 && this.selectItem.splice(index, 1);
     }
     compileTemplate(formatter) {
-        formatter = "`" + formatter.replace(/\{/g, '${overItem.') + "`";
+        formatter = '`' + formatter.replace(/\{/g, '${overItem.') + '`';
         this.tooltipTemplate = new Function('overItem', 'return ' + formatter);
     }
     TInit() {
@@ -207,7 +207,7 @@ export class Parameter extends CanvasOverlay {
                     end: end,
                     backgroundColor: colors[colorIndex],
                     borderColor: this.style.normal.borderColor || this.getColorOpacity(colors[colorIndex])
-                })
+                });
                 colorIndex++;
                 star = data[i].count;
             }
@@ -219,7 +219,7 @@ export class Parameter extends CanvasOverlay {
                 end: null,
                 backgroundColor: colors[colorIndex],
                 borderColor: this.style.normal.borderColor || this.getColorOpacity(colors[colorIndex])
-            })
+            });
 
         }
 
@@ -293,7 +293,7 @@ export class Parameter extends CanvasOverlay {
         if (!this.tooltip.show) {
             this.tooltipDom.style.display = 'none';
             return;
-        };
+        }
         if (this.overItem) {
             let formatter = this.tooltip.formatter;
             let overItem = this.overItem;
@@ -304,11 +304,11 @@ export class Parameter extends CanvasOverlay {
                     this.compileTemplate(formatter);
                 }
                 // debugger
-                this.tooltipDom.innerHTML = this.tooltipTemplate(overItem)
+                this.tooltipDom.innerHTML = this.tooltipTemplate(overItem);
             }
             this.tooltipDom.style.left = event.clientX + 'px';
             this.tooltipDom.style.top = event.clientY + 'px';
-            this.tooltipDom.style.display = 'block'
+            this.tooltipDom.style.display = 'block';
         } else {
             this.tooltipDom.style.display = 'none';
         }
@@ -342,12 +342,12 @@ export class Parameter extends CanvasOverlay {
         let legendData = legend.data;
         if (this.legendDom == null) {
             let ul = document.createElement('ul');
-            ul.classList.add('legend')
+            ul.classList.add('legend');
             this.map._inmapOption.toolDom.appendChild(ul);
             this.legendDom = ul;
         }
 
-        let str = "";
+        let str = '';
         if (legend.title) {
             str = `<li class='title'>${legend.title}</li>`;
         }
@@ -358,7 +358,7 @@ export class Parameter extends CanvasOverlay {
             if (legendData) {
                 text = isFunction(legendFunc) ? legendFunc(me.toFixed(val.start), me.toFixed(val.end)) : legendData[index];
             } else {
-                text = `${me.toFixed(val.start)} ~ ${ val.end==null ?"<span class='infinity'>∞</span>":me.toFixed(val.end)}`
+                text = `${me.toFixed(val.start)} ~ ${ val.end==null ?'<span class=\'infinity\'>∞</span>':me.toFixed(val.end)}`;
             }
             str += `
             <li class='item'>
@@ -381,7 +381,7 @@ export class Parameter extends CanvasOverlay {
         return {
             item: null,
             index: -1
-        }
+        };
     }
     /**
      * 绘画
@@ -410,16 +410,16 @@ export class Parameter extends CanvasOverlay {
             console.log(temp);
             this.overItem = temp;
             if (temp) {
-                console.log('_dataRender',this.workerData)
+                console.log('_dataRender',this.workerData);
                 this.swopData(result.index, result.item);
             }
             this._dataRender();
-            console.log('_dataRender')
+            console.log('_dataRender');
         }
         if (temp) {
-            this.map.setDefaultCursor("pointer");
+            this.map.setDefaultCursor('pointer');
         } else {
-            this.map.setDefaultCursor("default");
+            this.map.setDefaultCursor('default');
         }
         this.setTooltip(event);
 

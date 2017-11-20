@@ -1,17 +1,17 @@
  let instances = {};
- let workerContent = `[workerContentString]`;
+ let workerContent = '[workerContentString]';
 
  class WorkerMrg {
      constructor() {}
      create(workerPath) {
-         var workerUrl = workerContent.length == 21 ? URL.createObjectURL(new Blob(["importScripts('" + workerPath + "');"])) :
+         var workerUrl = workerContent.length == 21 ? URL.createObjectURL(new Blob(['importScripts(\'' + workerPath + '\');'])) :
              URL.createObjectURL(new Blob([workerContent], {
                  type: 'application/javascript'
              }));
          this.worker = new Worker(workerUrl);
          this.worker.addEventListener('message', this.message);
          this.worker.onerror = function (e) {
-             console.log('worker.onerror', e)
+             console.log('worker.onerror', e);
          };
      } 
      message(e) {

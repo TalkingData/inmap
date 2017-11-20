@@ -8,10 +8,10 @@ export class HeatOverlay extends Parameter {
         this.delteOption();
 
         this.gradient = {
-            0.25: "rgb(0,0,255)",
-            0.55: "rgb(0,255,0)",
-            0.85: "yellow",
-            1.0: "rgb(255,0,0)"
+            0.25: 'rgb(0,0,255)',
+            0.55: 'rgb(0,255,0)',
+            0.85: 'yellow',
+            1.0: 'rgb(255,0,0)'
         };
         this.minValue = 0; // 最小权重
         this.maxValue = 0; // 最大权重
@@ -29,10 +29,10 @@ export class HeatOverlay extends Parameter {
         };
         this.legend = {
             show: false
-        }
-        this.style["mouseOver"] = null;
-        this.style["selected"] = null;
-        this.style["splitList"] = null;
+        };
+        this.style['mouseOver'] = null;
+        this.style['selected'] = null;
+        this.style['splitList'] = null;
     }
     setPoints(points) {
         if (!points) {
@@ -54,8 +54,8 @@ export class HeatOverlay extends Parameter {
         this.postMessage('HeatOverlay.pointsToPixels', this.points, function (pixels) {
 
             if (me.eventType == 'onmoving') {
-                return
-            };
+                return;
+            }
             me.clearCanvas();
             me.canvasResize();
             me.setWorkerData(pixels);
@@ -149,7 +149,7 @@ export class HeatOverlay extends Parameter {
 
         paletteCtx.fillStyle = gradient;
         paletteCtx.fillRect(0, 0, 256, 1);
-        return paletteCtx.getImageData(0, 0, 256, 1).data;;
+        return paletteCtx.getImageData(0, 0, 256, 1).data;
     }
 
 }

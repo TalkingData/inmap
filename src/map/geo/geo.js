@@ -4,7 +4,7 @@ import {
 
 export var geo = {
     pointToPixel(point, zoom, center, size) {
-        return this.projection.pointToPixel(point, zoom, center, size)
+        return this.projection.pointToPixel(point, zoom, center, size);
     },
 
     pixelToPoint(piexl) {
@@ -20,6 +20,6 @@ export var geo = {
         return this.projection.convertLL2MC(point);
     },
     projection: new MercatorProjection()
-}
+};
 
 

@@ -1,4 +1,4 @@
-import config from './../config/config'
+import config from './../config/config';
 /*eslint-disable */
 
 export function toQueryPair(key, value) {

@@ -1,10 +1,10 @@
 import {
     HeatOverlay,
     HeatTileOverlay,
-} from './transform/HeatOverlay'
+} from './transform/HeatOverlay';
 import {
     GriddingOverlay
-} from './transform/GriddingOverlay'
+} from './transform/GriddingOverlay';
 import {
     BoundaryOverlay
 } from './transform/BoundaryOverlay';
@@ -22,15 +22,15 @@ import {
 } from './transform/LabelHelper.js';
 
 let callbackList = {
-    "HeatOverlay": HeatOverlay,
+    'HeatOverlay': HeatOverlay,
     'HeatTileOverlay': HeatTileOverlay,
-    "GriddingOverlay": GriddingOverlay,
-    "BoundaryOverlay": BoundaryOverlay,
-    "CircuitOverlay": CircuitOverlay,
-    "HoneycombOverlay": HoneycombOverlay,
+    'GriddingOverlay': GriddingOverlay,
+    'BoundaryOverlay': BoundaryOverlay,
+    'CircuitOverlay': CircuitOverlay,
+    'HoneycombOverlay': HoneycombOverlay,
     'LabelHelper': LabelHelper,
     'polymeOverlay': polymeOverlay
-}
+};
 
 /**
  * 接收worker消息
@@ -39,11 +39,11 @@ let callbackList = {
 onmessage = function message(e) {
     var data = e.data;
     callback(data);
-}
+};
 /**
  * 唯一生效队列控制全家对象
  */
-let handler = {}
+let handler = {};
 /**
  * worker方法执行解析
  */
@@ -73,7 +73,7 @@ let callback = function (data) {
             return;
         }
     }
-}
+};
 
 
 /**
@@ -90,11 +90,11 @@ export var TDpost = function (data, client) {
     //唯一生效队列判断
     if (handler && (handler != hashCode + '_' + msgId)) {
         return;
-    };
+    }
     opts.response = {
         type: 'worker',
         data: data
-    }
-    postMessage(opts)
-}
+    };
+    postMessage(opts);
+};
 export var boundaryOverlay = BoundaryOverlay;

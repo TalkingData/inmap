@@ -4,7 +4,7 @@ import {
 import {
     WhiteLover,
     Blueness
-} from "./../config/mapStyle";
+} from './../config/mapStyle';
 import {
     MapZoom
 } from './mapZoom';
@@ -15,7 +15,7 @@ export class Map {
     constructor(ops) {
         this.map = null;
         // debugger
-        this.option = deepmerge.all([inmapConfig, ops])
+        this.option = deepmerge.all([inmapConfig, ops]);
         this.create();
     }
 
@@ -59,16 +59,19 @@ export class Map {
 
         this.map = bmap;
     }
+    getMap() {
+        return this.map;
+    }
     crtateContainer(mapDom) {
         let parent = mapDom;
-        let div = document.createElement("div");
+        let div = document.createElement('div');
         div.classList.add('td-map-container');
         parent.appendChild(div);
         return div;
 
     }
     add(overlay) {
-        this.map.addOverlay(overlay)
+        this.map.addOverlay(overlay);
     }
     remove(overlay) {
         overlay.dispose();

@@ -12,7 +12,7 @@ export class GriddingOverlay extends Parameter {
         this._setOptionStyle(baseConfig, ops);
     }
     delteOption() {
-        this.style["selected"] = null;
+        this.style['selected'] = null;
     }
     resize() {
         this.drawMap();
@@ -38,10 +38,10 @@ export class GriddingOverlay extends Parameter {
             zoom: zoom
         };
         //   debugger
-        this.postMessage("GriddingOverlay.toRecGrids", params, function (gridsObj) {
+        this.postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj) {
             if (me.eventType == 'onmoving') {
                 return;
-            };
+            }
             let grids = gridsObj.grids;
             let max = gridsObj.max;
             let min = gridsObj.min;
@@ -135,7 +135,7 @@ export class GriddingOverlay extends Parameter {
     getColor(count) {
         let color = null;
         if (count == 0) {
-            color = "rgba(255,255,255,0)";
+            color = 'rgba(255,255,255,0)';
         } else {
             let style = this.setDrawStyle({
                 count: count

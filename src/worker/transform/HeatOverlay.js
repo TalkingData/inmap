@@ -43,14 +43,14 @@ export var HeatOverlay = {
     pointsToPixels: function (webObj) {
         //debugger
         webObj.request.data.forEach((val) => {
-            val["pixel"] = pointToPixelWorker(val, webObj.request.map);
+            val['pixel'] = pointToPixelWorker(val, webObj.request.map);
         });
         return {
             data: webObj.request.data,
             client: webObj
-        }
+        };
     }
-}
+};
 export var HeatTileOverlay = {
     pointsToPixels: function (webObj) {
         webObj.request.data.forEach((item) => {
@@ -59,7 +59,7 @@ export var HeatTileOverlay = {
         return {
             data: webObj.request.data,
             client: webObj
-        }
+        };
 
     }
-}
+};
