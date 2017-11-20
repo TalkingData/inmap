@@ -17,10 +17,6 @@ import {
 import {
     polymeOverlay
 } from './transform/polymeOverlay';
-import {
-    LabelHelper
-} from './transform/LabelHelper.js';
-
 let callbackList = {
     'HeatOverlay': HeatOverlay,
     'HeatTileOverlay': HeatTileOverlay,
@@ -28,7 +24,6 @@ let callbackList = {
     'BoundaryOverlay': BoundaryOverlay,
     'CircuitOverlay': CircuitOverlay,
     'HoneycombOverlay': HoneycombOverlay,
-    'LabelHelper': LabelHelper,
     'polymeOverlay': polymeOverlay
 };
 
@@ -36,10 +31,12 @@ let callbackList = {
  * 接收worker消息
  * @param {Event} e
  */
-onmessage = function message(e) {
-    var data = e.data;
+/*eslint-disable */
+onmessage = function onmessage(e) {
+    let data = e.data;
     callback(data);
-};
+}
+/*eslint-enable */
 /**
  * 唯一生效队列控制全家对象
  */
@@ -69,7 +66,9 @@ let callback = function (data) {
         }
 
         if (!callback) {
-            console.log(p[index - 1] + 'worker ' + classPath + ' is not a function');
+            /*eslint-disable */
+            console.error(p[index - 1] + 'worker ' + classPath + ' is not a function');
+            /*eslint-enable */
             return;
         }
     }

@@ -78,8 +78,8 @@ export class MercatorProjection extends Projection {
             }
         }
         var lnglat = this.convertor(point, factor);
-        var point = new Point(lnglat.lng.toFixed(6), lnglat.lat.toFixed(6));
-        return point;
+        var newPoint = new Point(lnglat.lng.toFixed(6), lnglat.lat.toFixed(6));
+        return newPoint;
     }
 
     /**
@@ -92,14 +92,14 @@ export class MercatorProjection extends Projection {
         point.lng = this.getLoop(point.lng, -180, 180);
         point.lat = this.getRange(point.lat, -74, 74);
         temp = new Point(point.lng, point.lat);
-        for (var i = 0; i < this.LLBAND.length; i++) {
+        for (let i = 0; i < this.LLBAND.length; i++) {
             if (temp.lat >= this.LLBAND[i]) {
                 factor = this.LL2MC[i];
                 break;
             }
         }
         if (!factor) {
-            for (var i = this.LLBAND.length - 1; i >= 0; i--) {
+            for (let i = this.LLBAND.length - 1; i >= 0; i--) {
                 if (temp.lat <= -this.LLBAND[i]) {
                     factor = this.LL2MC[i];
                     break;
@@ -107,8 +107,8 @@ export class MercatorProjection extends Projection {
             }
         }
         var mc = this.convertor(point, factor);
-        var point = new Point(mc.lng.toFixed(2), mc.lat.toFixed(2));
-        return point;
+        var newPoint = new Point(mc.lng.toFixed(2), mc.lat.toFixed(2));
+        return newPoint;
     }
     convertor(fromPoint, factor) {
         if (!fromPoint || !factor) {

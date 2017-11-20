@@ -1,20 +1,13 @@
 import {
     Parameter
 } from './base/Parameter.js';
-import polylabel from './../common/polylabel';
+ 
 
 export class BoundaryOverlay extends Parameter {
     constructor(ops) {
         super(ops);
-
-        // this.setStyle(ops);
+ 
     }
-    // setStyle(ops) {
-    //     this.labelStyle = ops.label;
-    //     this.style = ops.style || {};
-    //     this.drawMap();
-    // }
-
     resize() {
         this.drawMap();
     }
@@ -101,7 +94,7 @@ export class BoundaryOverlay extends Parameter {
     findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-            // debugger
+          
             index = this.selectItem.findIndex(function (val) {
                 return val && val.name == item.name;
             });

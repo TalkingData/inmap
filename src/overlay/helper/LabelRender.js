@@ -4,28 +4,25 @@
  * author zhenjia.hao
  * date 20170725
  */
-
 import deepmerge from 'deepmerge';
 import BaseClass from '../base/BaseClass';
 import baseConfig from './../../config/parameterConfig';
 import {
-	forEach,
-	isObject
+    forEach,
+    isObject
 } from '../../common/util.js';
 import {
     workerMrg
 } from '../../common/workerMrg';
 
 import {
-	TextRender
+    TextRender
 } from './TextRender';
 
-export class LabelRender extends BaseClass{
+export class LabelRender extends BaseClass {
     constructor(opts) {
         opts = deepmerge({}, baseConfig, opts);
-
         super(opts);
-
         this.labelStyle = opts.label;
         this.textRender = null;
         this.ctx = null;
@@ -33,56 +30,55 @@ export class LabelRender extends BaseClass{
         this.pixelsGroup = [];
         this.pixelsMap = {};
         this.offset = 5;
-
         this.setTextRender();
     }
-	/**
-	 * 设置TextRender，用于label标注
-	 * @param {String} type [description]
-	 */
-    setTextRender(type = 'normal'){
+    /**
+     * 设置TextRender，用于label标注
+     * @param {String} type [description]
+     */
+    setTextRender(type = 'normal') {
         let textRender = this.textRender,
             labelStyle = this.labelStyle[type];
 
-        if(!textRender){
+        if (!textRender) {
             textRender = this.textRender = new TextRender(labelStyle);
-        }else{
+        } else {
             textRender.setOption(labelStyle);
         }
 
         return textRender;
     }
-	/**
-	 * 重写BaseClass的postMessage方法，因为该子类不需要this.map
-	 * @param  {[type]}   workerClassPath [description]
-	 * @param  {[type]}   data            [description]
-	 * @param  {Function} callback        [description]
-	 * @return {[type]}                   [description]
-	 */
-    postMessage(workerClassPath, data, callback){
-	    let msgId = this.setMsgId();
-	    let request = {
-	        'type': 'web',
-	        'data': data,
-	        'hashCode': this.hashCode,
-	        'className': this.className,
-	        'classPath': workerClassPath,
-	        'msgId': msgId
-	    };
-	    workerMrg.postMessage({
-	        request: request
-	    }, callback);
+    /**
+     * 重写BaseClass的postMessage方法，因为该子类不需要this.map
+     * @param  {[type]}   workerClassPath [description]
+     * @param  {[type]}   data            [description]
+     * @param  {Function} callback        [description]
+     * @return {[type]}                   [description]
+     */
+    postMessage(workerClassPath, data, callback) {
+        let msgId = this.setMsgId();
+        let request = {
+            'type': 'web',
+            'data': data,
+            'hashCode': this.hashCode,
+            'className': this.className,
+            'classPath': workerClassPath,
+            'msgId': msgId
+        };
+        workerMrg.postMessage({
+            request: request
+        }, callback);
     }
-	/**
-	 * 渲染label
-	 * @param  {[type]} ctx    [description]
-	 * @param  {[type]} pixels [description]
-	 * @return {[type]}        [description]
-	 */
+    /**
+     * 渲染label
+     * @param  {[type]} ctx    [description]
+     * @param  {[type]} pixels [description]
+     * @return {[type]}        [description]
+     */
     drawLabel(ctx, pixels) {
-        let that = this;
 
-        if(!this.textRender.isShow()) return;
+
+        if (!this.textRender.isShow()) return;
 
         this.ctx = ctx;
         this.pixels = pixels;
@@ -91,71 +87,71 @@ export class LabelRender extends BaseClass{
         this.groupPixelsByDistance();
         this.drawByGroup();
     }
-	/**
-	 * 清空缓存的坐标点信息
-	 * @return {[type]} [description]
-	 */
-    reset(){
+    /**
+     * 清空缓存的坐标点信息
+     * @return {[type]} [description]
+     */
+    reset() {
         this.pixelsGroup = [];
         this.pixelsMap = {};
     }
-	/**
-	 * 将所有的点按照距离分类，找出可能相交的点
-	 * @return {[type]} [description]
-	 */
-    groupPixelsByDistance(){
+    /**
+     * 将所有的点按照距离分类，找出可能相交的点
+     * @return {[type]} [description]
+     */
+    groupPixelsByDistance() {
         let that = this,
             pixels = this.pixels,
             pixelsGroup = this.pixelsGroup,
             isNear,
             item, i = 0;
-	
+
         this.sortPixels(pixels);
 
-        while(i < pixels.length){
+        while (i < pixels.length) {
             item = pixels[i];
             isNear = false;
-            forEach(pixelsGroup, function(groupItem){
-                forEach(groupItem, function(pixel){
+            forEach(pixelsGroup, function (groupItem) {
+                forEach(groupItem, function (pixel) {
                     isNear = that.isNear(item, pixel);
 
-                    if(isNear && (item != pixel)){
+                    if (isNear && (item != pixel)) {
                         groupItem.push(item);
                         return false;
                     }
                 });
                 return !isNear;
             });
-			//都不靠近的话，pixelsGroup增加一条
+            //都不靠近的话，pixelsGroup增加一条
             !isNear && pixelsGroup.push([item]);
             i++;
         }
     }
-	/**
-	 * 将所有的点排序，排序规则x值从小到大，x值相等时，按照y值从小到大的顺序排排列
-	 * @param  {[type]} pixels [description]
-	 * @return {[type]}        [description]
-	 */
-    sortPixels(pixels){
-        pixels.sort(function(a, b){
+    /**
+     * 将所有的点排序，排序规则x值从小到大，x值相等时，按照y值从小到大的顺序排排列
+     * @param  {[type]} pixels [description]
+     * @return {[type]}        [description]
+     */
+    sortPixels(pixels) {
+        pixels.sort(function (a, b) {
             let result;
 
             b = b.pixel;
             a = a.pixel;
 
-            result = a.x - b.x ;
+            result = a.x - b.x;
 
-            if(result === 0){
+            if (result === 0) {
                 result = b.y - a.y;
             }
 
             return result;
         });
     }
-	/**
-	 * 将所有的点以x,y坐标值为id缓存到map中，以保证标注label过程中，不污染源数据
-	 */
-    setPixelsMap(){
+    /**
+     * 将所有的点以x,y坐标值为id缓存到map中，以保证标注label过程中，不污染源数据
+     */
+    setPixelsMap() {
         let pixels = this.pixels,
             map = this.pixelsMap,
             item, key, mapItem;
@@ -174,22 +170,22 @@ export class LabelRender extends BaseClass{
             this.setLabelPixelAndBounds(mapItem);
         }
     }
-	/**
-	 * 按照ID或者源数据中的pixel，取得pixelsMap对应的item
-	 * @param  {[type]} pixel [description]
-	 * @return {[type]}       [description]
-	 */
-    getPixelsMapItem(pixel){
+    /**
+     * 按照ID或者源数据中的pixel，取得pixelsMap对应的item
+     * @param  {[type]} pixel [description]
+     * @return {[type]}       [description]
+     */
+    getPixelsMapItem(pixel) {
         let map = this.pixelsMap,
             key = isObject(pixel) ? this.getPixelsId(pixel) : pixel;
 
         return map[key];
     }
-	/**
-	 * 设置Label标注后占据的区域，及Label文案的起始点
-	 * @param {[type]} item [description]
-	 */
-    setLabelPixelAndBounds(item, position = item.labelPosition){
+    /**
+     * 设置Label标注后占据的区域，及Label文案的起始点
+     * @param {[type]} item [description]
+     */
+    setLabelPixelAndBounds(item, position = item.labelPosition) {
         let ctx = this.ctx,
             pixel = item.pixel,
             textRender = this.textRender,
@@ -199,14 +195,12 @@ export class LabelRender extends BaseClass{
             boundsWidth,
             boundsHeight,
             boundsMinX,
-            boundsMaxX,
-            boundsMinY,
-            boundsMaxY,
+            boundsMinY,   
             labelPixel = {};
 
         item.labelPosition = position;
 
-        switch(position){
+        switch (position) {
             case 'top':
                 boundsWidth = textWidth;
                 boundsHeight = textHeight + offset;
@@ -256,7 +250,7 @@ export class LabelRender extends BaseClass{
                     x: boundsMinX,
                     y: boundsMinY + boundsHeight
                 };
-				
+
                 break;
             case 'bottomLeft':
                 boundsWidth = textWidth + offset;
@@ -289,7 +283,7 @@ export class LabelRender extends BaseClass{
                 };
                 break;
             case 'none':
-                item.isShow = 0; 
+                item.isShow = 0;
                 boundsWidth = boundsHeight = 1;
                 boundsMinX = pixel.x;
                 boundsMinY = pixel.y;
@@ -307,44 +301,41 @@ export class LabelRender extends BaseClass{
             maxY: boundsMinY + boundsHeight
         };
     }
-	/**
-	 * 按照分组绘制Label，每组只有一个点时直接标注，两个点时，将左侧的点label设置为左侧，三个以上点时自动避让
-	 * @return {[type]} [description]
-	 */
-    drawByGroup(){
+    /**
+     * 按照分组绘制Label，每组只有一个点时直接标注，两个点时，将左侧的点label设置为左侧，三个以上点时自动避让
+     * @return {[type]} [description]
+     */
+    drawByGroup() {
         let that = this,
-            group = this.pixelsGroup,
-            mapItem;
-
-        forEach(group, function(item){
-            if(item.length > 1){
+            group = this.pixelsGroup;
+            
+        forEach(group, function (item) {
+            if (item.length > 1) {
                 that.avoidLabelByGroup(item);
             }
 
             that.drawPixels(item);
         });
     }
-	/**
-	 * 按照组将重叠的Label避让标注
-	 * @param  {[type]} pixels [description]
-	 * @return {[type]}        [description]
-	 */
-    avoidLabelByGroup(pixels){
-        let group = this.setGroupBounds(pixels),
-            overlappedPixels;
-
+    /**
+     * 按照组将重叠的Label避让标注
+     * @param  {[type]} pixels [description]
+     * @return {[type]}        [description]
+     */
+    avoidLabelByGroup(pixels) {
+        let group = this.setGroupBounds(pixels);
         this.setGirdMatrix(group);
         this.setPixelsToGird(group);
         this._avoidLabel(group);
 
-		// this._drawGird(group.matrix);
+        
     }
-	/**
-	 * 自动避让该组中，重叠的Label
-	 * @param  {[type]} group [description]
-	 * @return {[type]}       [description]
-	 */
-    _avoidLabel(group){
+    /**
+     * 自动避让该组中，重叠的Label
+     * @param  {[type]} group [description]
+     * @return {[type]}       [description]
+     */
+    _avoidLabel(group) {
         let overlappedPixels = this._getOverlappedPixels(group);
 
         forEach(overlappedPixels, (pixel) => {
@@ -353,34 +344,34 @@ export class LabelRender extends BaseClass{
                 let overlapped = this._getOverlappedPixels(group, 'map'),
                     mapItem;
 
-                if(overlapped[pixel]){
+                if (overlapped[pixel]) {
                     mapItem = this.getPixelsMapItem(pixel);
                     this.setLabelPixelAndBounds(mapItem, position);
                     this.setPixelsToGird(group);
-                }else{
+                } else {
                     return false;
                 }
             });
         });
     }
-	/**
-	 * 获取该组中Label重叠的点
-	 * @param  {[type]} group [description]
-	 * @return {[type]}       [description]
-	 */
-    _getOverlappedPixels(group, type = 'array'){
+    /**
+     * 获取该组中Label重叠的点
+     * @param  {[type]} group [description]
+     * @return {[type]}       [description]
+     */
+    _getOverlappedPixels(group, type = 'array') {
         let matrix = group.matrix,
             overlappedPixels = [],
             pixelsMap = {},
             result;
 
-        forEach(matrix, function(row){
-            forEach(row, function(item){
+        forEach(matrix, function (row) {
+            forEach(row, function (item) {
                 let pixels = item.pixels;
 
-                if(pixels.length > 1){
-                    forEach(pixels, function(pixel){
-                        if(!pixelsMap[pixel]){
+                if (pixels.length > 1) {
+                    forEach(pixels, function (pixel) {
+                        if (!pixelsMap[pixel]) {
                             overlappedPixels.push(pixel);
                             pixelsMap[pixel] = true;
                         }
@@ -396,7 +387,7 @@ export class LabelRender extends BaseClass{
 
         return result[type];
     }
-    setGroupBounds(pixels){
+    setGroupBounds(pixels) {
         let that = this,
             i = 0,
             group = {
@@ -411,8 +402,8 @@ export class LabelRender extends BaseClass{
             minX, maxX,
             minY, maxY;
 
-		//确定所有点中的最大，最小x,y坐标
-        while(i < pixels.length){
+        //确定所有点中的最大，最小x,y坐标
+        while (i < pixels.length) {
             item = that.getPixelsMapItem(pixels[i]);
             pixel = item.pixel;
             group.pixels.push(that.getPixelsId(pixels[i]));
@@ -420,15 +411,15 @@ export class LabelRender extends BaseClass{
             minY = (!minY || minY > pixel.y) ? pixel.y : minY;
             maxY = (!maxY || maxY < pixel.y) ? pixel.y : maxY;
 
-            if(!minX || minX > pixel.x){
+            if (!minX || minX > pixel.x) {
                 left = item;
                 minX = pixel.x;
             }
-            if(!maxX || maxX < pixel.x){
+            if (!maxX || maxX < pixel.x) {
                 right = item;
                 maxX = pixel.x;
             }
-			
+
             i++;
         }
 
@@ -441,21 +432,22 @@ export class LabelRender extends BaseClass{
 
         return group;
     }
-    setGirdMatrix(group){
+    setGirdMatrix(group) {
         let matrix = [],
-            i = 0, row, item,
+            i = 0,
+            row, 
             girdSize = this.textRender.getFontSize() / 2,
             bounds = group.bounds,
             x,
             y = bounds.minY;
 
-        while(y < bounds.maxY){
-            if(!matrix[i]){
+        while (y < bounds.maxY) {
+            if (!matrix[i]) {
                 matrix[i] = [];
             }
             row = matrix[i];
             x = bounds.minX;
-            while(x < bounds.maxX){
+            while (x < bounds.maxX) {
                 row.push({
                     bounds: {
                         minX: x,
@@ -475,7 +467,7 @@ export class LabelRender extends BaseClass{
         group.matrix = matrix;
         group.girdSize = girdSize;
     }
-    setPixelsToGird(group){
+    setPixelsToGird(group) {
         let that = this,
             pixels = group.pixels,
             girdSize = group.girdSize,
@@ -483,10 +475,10 @@ export class LabelRender extends BaseClass{
             groupBounds = group.bounds;
 
         this.clearPixelsGird(group);
-		//当组内pixels的个数大于等于3时才微移label标注，两个点简单的调整就能达到避让的效果
-		// pixels.length > 2 && this.nudgeLabelByGird(group);
+        //当组内pixels的个数大于等于3时才微移label标注，两个点简单的调整就能达到避让的效果
+        // pixels.length > 2 && this.nudgeLabelByGird(group);
 
-        forEach(pixels, function(item){
+        forEach(pixels, function (item) {
             let pixelItem = that.getPixelsMapItem(item),
                 labelBounds = pixelItem.labelBounds,
                 startCol = Math.floor((labelBounds.minX - groupBounds.minX) / girdSize),
@@ -496,9 +488,9 @@ export class LabelRender extends BaseClass{
                 x = startRow, //行, 从0开始
                 y; //列, 从0开始
 
-            while(pixelItem.isShow && x < endRow){
+            while (pixelItem.isShow && x < endRow) {
                 y = startCol;
-                while(y < endCol){
+                while (y < endCol) {
                     matrix[x][y] && matrix[x][y].pixels.push(pixelItem);
                     y++;
                 }
@@ -506,23 +498,21 @@ export class LabelRender extends BaseClass{
             }
         });
     }
-    clearPixelsGird(group){
-        forEach(group.matrix, function(row){
-            forEach(row, function(item){
+    clearPixelsGird(group) {
+        forEach(group.matrix, function (row) {
+            forEach(row, function (item) {
                 item.pixels = [];
             });
         });
     }
-    getIndex(max, min, size){
-        return Math.floor((max - min)/size);
+    getIndex(max, min, size) {
+        return Math.floor((max - min) / size);
     }
-    _drawGird(matrix){
+    _drawGird(matrix) {
         let that = this,
-            ctx = this.ctx,
-            tl, tr, bl, br;
-
-        forEach(matrix, function(row){
-            forEach(row, function(item){
+            ctx = this.ctx;
+        forEach(matrix, function (row) {
+            forEach(row, function (item) {
                 let bounds = item.bounds;
                 ctx.beginPath();
                 ctx.lineWidth = '1';
@@ -530,17 +520,20 @@ export class LabelRender extends BaseClass{
                 ctx.rect(bounds.minX, bounds.minY, bounds.maxX - bounds.minX, bounds.maxY - bounds.minY);
                 ctx.stroke();
 
-                item.pixels.length && that.drawText(item.pixels.length, {x: bounds.minX, y: bounds.maxY}, 'red');
+                item.pixels.length && that.drawText(item.pixels.length, {
+                    x: bounds.minX,
+                    y: bounds.maxY
+                }, 'red');
             });
         });
     }
-    getPixelsId(pixel){
+    getPixelsId(pixel) {
         pixel = pixel.pixel;
 
         return 'x' + pixel.x + 'y' + pixel.y;
     }
-    isNear(target, point){
-        var targetPixel, pointPixel,boundary;
+    isNear(target, point) {
+        var targetPixel, pointPixel, boundary;
 
         target = this.getPixelsMapItem(target);
         point = this.getPixelsMapItem(point);
@@ -561,10 +554,11 @@ export class LabelRender extends BaseClass{
             this.drawText(ctx, pixels);
         }
     }
-    drawPixels(pixels){
-        let that = this, item;
+    drawPixels(pixels) {
+        let that = this,
+            item;
 
-        forEach(pixels, function(pixel, index){
+        forEach(pixels, function (pixel) {
             item = that.getPixelsMapItem(pixel);
 
             item.isShow && that.drawText(item.text, item.labelPixel);

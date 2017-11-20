@@ -26,14 +26,6 @@ export class PerspectiveProjection extends MercatorProjection {
         var mercator = new Point(point.x, point.y);
         return this.convertMC2LL(this._convert3DTo2D(mapCity, mercator));
     }
-    _convert2DTo3D(city, point) {
-        var p = CoordTrans.getOMap_pts(city || 'bj', point);
-        return new Point(p.x, p.y);
-    }
-    _convert3DTo2D(city, point) {
-        var p = CoordTrans.getMapJw_pts(city || 'bj', point);
-        return new Point(p.lng, p.lat);
-    }
     getZoomUnits(zoom) {
         return Math.pow(2, (20 - zoom));
     }

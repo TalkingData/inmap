@@ -73,15 +73,14 @@ export class GriddingOverlay extends Parameter {
         this.drawMap();
     }
     getTarget(x, y) {
-        // debugger
+       
         let data = this.workerData;
         let size = data.size;
         let zoomUnit = data.zoomUnit;
-        let max = data.max;
-        let min = data.min;
+        
         let grids = data.grids || [];
         let gridStep = size / zoomUnit;
-        let step = (max - min + 1) / 10;
+       
         let style = this.style.normal;
         let width = gridStep - style.borderWidth;
         for (let i = 0; i < grids.length; i++) {
@@ -89,13 +88,13 @@ export class GriddingOverlay extends Parameter {
 
             let x1 = parseFloat(item.pixels[0]);
             let y1 = parseFloat(item.pixels[1]);
-            //debugger
+            
             this.ctx.beginPath();
             this.ctx.moveTo(x1, y1);
             this.ctx.lineTo(x1 + width, y1);
             this.ctx.lineTo(x1 + width, y1 + width);
             this.ctx.lineTo(x1, y1 + width);
-            // this.ctx.fillRect(x, y, gridStep - style.borderWidth, gridStep - style.borderWidth);
+         
             this.ctx.closePath();
             if (this.ctx.isPointInPath(x, y)) {
                 return {
@@ -114,7 +113,7 @@ export class GriddingOverlay extends Parameter {
         let data = [];
         for (let key in grids) {
             let count = grids[key];
-            //debugger
+           
             if (count > 0) {
                 data.push({
                     name: key,
@@ -148,7 +147,7 @@ export class GriddingOverlay extends Parameter {
     drawRec(size, zoomUnit, max, min, grids) {
         this.workerData.grids = [];
         let gridStep = size / zoomUnit;
-        let step = (max - min + 1) / 10;
+       
         let style = this.style.normal;
         for (let i in grids) {
             let sp = i.split('_');

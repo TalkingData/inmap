@@ -1030,7 +1030,7 @@ export var CoordTrans = {
                     rightBottom = leftTop;
                     leftTop = i;
                 } else {
-                    sedMinDis = dis;
+
                     rightBottom = i;
                 }
             }
@@ -1056,7 +1056,7 @@ export var CoordTrans = {
                     rightBottom = leftTop;
                     leftTop = i;
                 } else {
-                    sedMinDis = dis;
+
                     rightBottom = i;
                 }
 
@@ -1185,10 +1185,11 @@ export var CoordTrans = {
         return this.getMapJw_index(city, pts.lng, 9998336 - pts.lat, pts.lt, pts.rb);
     },
     getOMap_index: function (city, utm_x, utm_y, lt, rb) {
+        var index = null;
         if (!lt || !rb) {
-            var index = this.getOMapIndex_mm(city, utm_x, utm_y);
+            index = this.getOMapIndex_mm(city, utm_x, utm_y);
         } else {
-            var index = {
+            index = {
                 lt: lt,
                 rb: rb
             };
@@ -1202,10 +1203,11 @@ export var CoordTrans = {
         };
     },
     getMapJw_index: function (city, x, y, lt, rb) {
+        let index = null;
         if (!lt || !rb) {
-            var index = this.getLnglatIndex(city, x, y);
+            index = this.getLnglatIndex(city, x, y);
         } else {
-            var index = {
+            index = {
                 lt: lt,
                 rb: rb
             };

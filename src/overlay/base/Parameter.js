@@ -13,7 +13,7 @@ import {
 import {
     isFunction,
     isString,
-    encodeHTML
+ 
 } from './../../common/util';
 
 
@@ -41,7 +41,7 @@ export class Parameter extends CanvasOverlay {
     }
 
     _setOptionStyle(config, ops) {
-        // debugger
+        
         let opstion = deepmerge.all([config,
             {
                 event: this.event || {}
@@ -57,7 +57,7 @@ export class Parameter extends CanvasOverlay {
         //设置皮肤
         if (opstion.skin && this.map) {
             let setStyle = opstion.skin == 'Blueness' ? Blueness : WhiteLover;
-            // debugger
+          
             this.map.setMapStyle({
                 styleJson: setStyle
             });
@@ -81,7 +81,7 @@ export class Parameter extends CanvasOverlay {
         let result = {};
         Object.assign(result, normal);
         //区间样式
-        // debugger
+       
         let splitList = this.style.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];
@@ -99,19 +99,19 @@ export class Parameter extends CanvasOverlay {
         let shadowColor = {};
 
         if (mouseOverStyle && this.overItem == item) {
-            // debugger
+            
             if (mouseOverStyle.shadowBlur != null && mouseOverStyle.shadowColor == null) {
-                //  debugger
+              
                 shadowColor['shadowColor'] = this.brightness(result.backgroundColor, 50);
             }
-            // debugger
+          
             Object.assign(result, normal, mouseOverStyle, {
                 size: size * mouseOverStyle.scale,
                 backgroundColor: mouseOverStyle.backgroundColor || this.brightness(result.backgroundColor, 0.1)
             }, shadowColor);
         }
         if (selectedStyle && this.selectItemContains(item)) {
-            debugger;
+           
             if (selectedStyle.shadowBlur != null && selectedStyle.shadowColor == null) {
                 shadowColor['shadowColor'] = this.brightness(selectedStyle.backgroundColor, 0.1);
             }
@@ -119,7 +119,7 @@ export class Parameter extends CanvasOverlay {
                 size: size * mouseOverStyle.scale
             }, shadowColor);
         }
-        //  debugger
+      
         if (this.labelStyle.show) {
             result = deepmerge.all([{
                 label: this.labelStyle
@@ -132,15 +132,14 @@ export class Parameter extends CanvasOverlay {
      * 亮度效果
      */
     brightness(rgba, delta) {
-        // debugger
+       
         let color = new Color(rgba);
         color.r += delta;
         color.g += delta;
         color.b += delta;
         return color.getStyle();
-
-
     }
+    /*eslint-disable */
     /**
      * 选中的数据集里面是否包含
      * @param {*} item 
@@ -148,6 +147,7 @@ export class Parameter extends CanvasOverlay {
     selectItemContains(item) {
         return this.findIndexSelectItem(item) > -1;
     }
+    /*eslint-enable */
     /**
      * 查询选中列表的索引
      * @param {*} item 
@@ -183,7 +183,7 @@ export class Parameter extends CanvasOverlay {
     compileSplitList(data) {
         let colors = this.style.colors;
         if (colors.length < 0) return;
-        //  debugger
+      
         data = data.sort((a, b) => {
             return parseFloat(a.count) - parseFloat(b.count);
         });
@@ -192,16 +192,16 @@ export class Parameter extends CanvasOverlay {
         let split = [];
         let star = 0,
             end = 0;
-        //debugger
+       
         for (let i = 0; i < data.length; i++) {
 
             if (i > splitCount * (colorIndex + 1)) {
                 if (split.length == 0) {
                     star = data[0].count;
                 }
-                // debugger
+               
                 end = data[i].count;
-                // debugger
+                 
                 split.push({
                     start: star,
                     end: end,
@@ -260,11 +260,11 @@ export class Parameter extends CanvasOverlay {
      * @param {*} exp  表达式
      */
     setSelectd(exp, scale) {
-        // debugger
+       
         if (this.points.length > 0) {
             let filterFun = new Function('item', 'with(item){ return ' + exp + ' }');
             let temp = this.points.filter(filterFun);
-            //  debugger
+            
             if (temp.length > 0) {
                 this.setCenterAndZoom(temp[0].geo, exp, scale); //default first
             }
@@ -284,7 +284,7 @@ export class Parameter extends CanvasOverlay {
      * 设置悬浮信息
      */
     setTooltip(event) {
-        // debugger
+      
         if (this.tooltipDom == null) {
             this.tooltipDom = document.createElement('div');
             this.tooltipDom.classList.add('tooltip');
@@ -303,7 +303,7 @@ export class Parameter extends CanvasOverlay {
                 if (!this.tooltipTemplate) { //编译
                     this.compileTemplate(formatter);
                 }
-                // debugger
+                
                 this.tooltipDom.innerHTML = this.tooltipTemplate(overItem);
             }
             this.tooltipDom.style.left = event.clientX + 'px';
@@ -331,7 +331,7 @@ export class Parameter extends CanvasOverlay {
      * 设置图例
      */
     setlegend(legend, splitList) {
-        //  debugger
+       
         if (legend == null || legend.show == false) {
             if (this.legendDom) {
                 this.legendDom.style.display = 'none';
@@ -353,7 +353,7 @@ export class Parameter extends CanvasOverlay {
         }
         let legendFunc = this.legend.formatter; //回调 设置复杂显示
         let me = this;
-        splitList.forEach(function (val, index, arr) {
+        splitList.forEach(function (val, index) {
             let text = null;
             if (legendData) {
                 text = isFunction(legendFunc) ? legendFunc(me.toFixed(val.start), me.toFixed(val.end)) : legendData[index];
@@ -373,6 +373,7 @@ export class Parameter extends CanvasOverlay {
     toFixed(num) {
         return parseFloat(num).toFixed(this.legend.toFixed);
     }
+    /*eslint-disable */
     /**
      * 判断触发源
      */
@@ -383,6 +384,7 @@ export class Parameter extends CanvasOverlay {
             index: -1
         };
     }
+    /*eslint-enable */
     /**
      * 绘画
      */
@@ -403,18 +405,16 @@ export class Parameter extends CanvasOverlay {
 
     }
     tMousemove(event) {
-        //debugger
+       
         let result = this.getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
         if (temp != this.overItem) { //防止过度重新绘画
-            console.log(temp);
             this.overItem = temp;
             if (temp) {
-                console.log('_dataRender',this.workerData);
                 this.swopData(result.index, result.item);
             }
             this._dataRender();
-            console.log('_dataRender');
+            
         }
         if (temp) {
             this.map.setDefaultCursor('pointer');
@@ -425,7 +425,7 @@ export class Parameter extends CanvasOverlay {
 
     }
     triggerClick() {
-        //  debugger
+        
         this.event.onMouseClick && this.event.onMouseClick(this.selectItem, {
             x: event.clientX,
             y: event.clientY
@@ -437,7 +437,7 @@ export class Parameter extends CanvasOverlay {
         if (result.index == -1) {
             return;
         }
-        // debugger
+        
         let item = result.item;
         if (this.multiSelect) {
             if (this.selectItemContains(item)) {

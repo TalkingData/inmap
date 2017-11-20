@@ -1,7 +1,7 @@
 /**
  * 默认inmap 默认
  */
-module.exports = {
+export default {
     center: [],
     id: null,
     skin: null, //Blueness WhiteLover

@@ -23,7 +23,7 @@ export class CanvasOverlay extends BaseClass {
 
     }
     initialize(map) {
-        // debugger
+     
         var me = this;
         this.map = map;
         this.container = document.createElement('canvas');
@@ -43,13 +43,12 @@ export class CanvasOverlay extends BaseClass {
     }
 
     tOnResize(event) {
-        //  debugger
+       
         this.setCanvasSize();
         this.tDraw(this, event);
     }
     tOnMoveend(event) {
-        // debugger
-        console.log(this.hashCode, event.type);
+      
         this.eventType = event.type;
         this.tDraw(this, event);
     }
@@ -57,18 +56,18 @@ export class CanvasOverlay extends BaseClass {
         this.clearCanvas();
     }
     tOnZoomend(e) {
-        // debugger
+       
         this.tDraw(this, e);
     }
     tOnMoving(e) {
         this.eventType = e.type;
     }
     tMouseleave() {
-        //debugger
+       
         //抽象方法 子类去实现
     }
     tMousemove() {
-        //debugger
+      
         //抽象方法 子类去实现
     }
     TInit() {
@@ -76,7 +75,7 @@ export class CanvasOverlay extends BaseClass {
         //抽象方法 子类去实现
     }
     draw() {
-        // debugger
+       
         if (this.first) {
             this.first = false;
             this.resize();
@@ -85,28 +84,24 @@ export class CanvasOverlay extends BaseClass {
         }
     }
     tMouseClick() {
-        // debugger
+       
         //抽象方法 子类去实现
 
     }
     tDraw(me, event) {
-        var me = this || me;
+    
         this.eventType = event.type;
         me.resize();
-        if (!me.keysss) {
-
-        }
+       
         me.keysss = true;
     }
 
     resize() {
-
         //  抽象方法 子类去实现
     }
 
     canvasResize() {
-        // debugger
-        var me = this;
+      
         var map = this.map;
         var container = this.container;
         var point = map.getCenter();
@@ -146,7 +141,7 @@ export class CanvasOverlay extends BaseClass {
      * 对象销毁
      */
     dispose() {
-        //debugger
+      
         this.map.removeEventListener('resize', this.tOnResize);
         this.map.removeEventListener('moveend', this.tOnMoveend);
         this.map.removeEventListener('zoomstart', this.tOnZoomstart);

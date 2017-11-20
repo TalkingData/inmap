@@ -21,7 +21,7 @@ export let HoneycombOverlay = {
             zoom = data.request.data.zoom;
 
         HoneycombOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
-        let gridsObj = HoneycombOverlay.honeycombGrid(points, map, nwMc, size, zoomUnit, mapSize, mapCenter);
+        let gridsObj = HoneycombOverlay.honeycombGrid(points, map, nwMc, size, zoomUnit, mapSize);
 
         return {
             data: gridsObj,
@@ -49,7 +49,7 @@ export let HoneycombOverlay = {
         }
         return data;
     },
-    honeycombGrid: function (data, map, nwMc, size, zoomUnit, mapSize, mapCenter) {
+    honeycombGrid: function (data, map, nwMc, size, zoomUnit, mapSize) {
 
         let max = 0;
         let min = 0;

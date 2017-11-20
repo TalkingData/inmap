@@ -1,5 +1,4 @@
 import {
-    pointsToPixelsWoker,
     pointToPixelWorker
 } from '../../geo/index';
 export let polymeOverlay = {
@@ -73,9 +72,6 @@ export let polymeOverlay = {
             };
         });
         let temp = polymeOverlay.merge(data, radius);
-        let result = [];
-        console.log(result);
-
         return {
             data: temp,
             client: webObj

@@ -26,7 +26,7 @@ function mult(a, k) {
     return a;
 }
 
-function add(a, p) {
+function and(a, p) {
     a.x += p.x;
     a.y += p.y;
     return a;
@@ -39,7 +39,7 @@ function distToSegmentSquared(p, v, w) {
     if (t < 0) return distSqr(v, p);
     if (t > 1) return distSqr(w, p);
     return distSqr(and(mult(sub(w, v), t), v), p);
-    // return p.distSqr(w.sub(v)._mult(t)._add(v), p);
+
 }
 // signed distance from point to polygon outline (negative if point is outside)
 function pointToPolygonDist(p, polygon) {

@@ -35,6 +35,7 @@
     "eslint": "^3.12.2",
     "eslint-plugin-html": "^1.7.0",
     "extract-text-webpack-plugin": "^2.0.0",
+    "babel-preset-stage-3":"^6.00.0",
     "file-loader": "^0.8.5",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "html-loader": "^0.3.0",

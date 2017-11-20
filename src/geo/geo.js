@@ -7,16 +7,14 @@ export var geo = {
         return this.projection.pointToPixel(point, zoom, center, size);
     },
 
-    pixelToPoint(piexl) {
-
-    }
+  
     /**
      * 经纬度变换至墨卡托坐标
      * @param Point 经纬度
      * @return Point 墨卡托
      */
-    ,
-    lngLatToMercator() {
+    
+    lngLatToMercator(point) {
         return this.projection.convertLL2MC(point);
     },
     projection: new MercatorProjection()

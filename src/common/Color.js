@@ -152,7 +152,7 @@ var ColorKeywords = {
     'yellowgreen': 0x9ACD32
 };
 
-function Color(r, g, b) {
+function Colors(r, g, b) {
 
     if (g === undefined && b === undefined) {
 
@@ -165,9 +165,9 @@ function Color(r, g, b) {
 
 }
 
-Color.prototype = {
+Colors.prototype = {
 
-    constructor: Color,
+    constructor: Colors,
 
     isColor: true,
 
@@ -226,7 +226,7 @@ Color.prototype = {
     },
 
     setHSL: function () {
-
+        /*eslint-disable */
         function hue2rgb(p, q, t) {
 
             if (t < 0) t += 1;
@@ -237,30 +237,20 @@ Color.prototype = {
             return p;
 
         }
+        /*eslint-enable */
 
     }(),
-
+    /*eslint-disable */
     setStyle: function (style) {
 
         function handleAlpha(string) {
-
             if (string === undefined) return;
-
-            if (parseFloat(string) < 1) {
-
-              
-
-            }
-
         }
 
 
-        var m;
+        let m = /^((?:rgb|hsl)a?)\(\s*([^\)]*)\)/.exec(style);
 
-        if (m = /^((?:rgb|hsl)a?)\(\s*([^\)]*)\)/.exec(style)) {
-
-            // rgb / hsl
-
+        if (m) {
             var color;
             var name = m[1];
             var components = m[2];
@@ -360,7 +350,7 @@ Color.prototype = {
             } else {
 
                 // unknown color
-          
+
 
             }
 
@@ -369,9 +359,8 @@ Color.prototype = {
         return this;
 
     },
-
+    /*eslint-enable */
     clone: function () {
-
         return new this.constructor(this.r, this.g, this.b);
 
     },
@@ -381,7 +370,6 @@ Color.prototype = {
         this.r = color.r;
         this.g = color.g;
         this.b = color.b;
-
         return this;
 
     },
@@ -627,4 +615,4 @@ Color.prototype = {
     }
 
 };
-export var Color = Color;
+export var Color = Colors;

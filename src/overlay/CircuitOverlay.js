@@ -5,13 +5,8 @@
 import {
     CanvasOverlay
 } from './base/CanvasOverlay';
-import {
-    pointToPixel
-} from '../geo/index';
-
-import {
-    Point
-} from './../geo/Point';
+ 
+ 
 export class CircuitOverlay extends CanvasOverlay {
     constructor(ops) {
         super();
@@ -51,7 +46,7 @@ export class CircuitOverlay extends CanvasOverlay {
             me.canvasResize();
             me.drawLine(pixels);
         });
-        // });
+       
     }
     coordinates(data) {
         var projection = this.map.getMapType().getProjection();
@@ -71,7 +66,7 @@ export class CircuitOverlay extends CanvasOverlay {
 
     }
     transferCoordinate(_coordinates, nwMc, zoomUnit) {
-        let map = this.map;
+        
         return _coordinates.map(function (item) {
             // debugger
             var x = (item[0] - nwMc.x) / zoomUnit;

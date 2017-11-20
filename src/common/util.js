@@ -97,36 +97,14 @@ export function encodeHTML(source) {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
 }
-export function deepCopy(data) {
-    const t = typeOf(data);
-    let o;
 
-    if (t === 'array') {
-        o = [];
-    } else if (t === 'object') {
-        o = {};
-    } else {
-        return data;
-    }
-
-    if (t === 'array') {
-        for (let i = 0; i < data.length; i++) {
-            o.push(deepCopy(data[i]));
-        }
-    } else if (t === 'object') {
-        for (let i in data) {
-            o[i] = deepCopy(data[i]);
-        }
-    }
-    return o;
-}
 export function isPolyContains(lng, lat, pointLat, pointLng) {
     var ret = false;
     var latMin = 90.0;
     var latMax = -90.0;
     var lngMin = 180.0;
     var lngMax = -180.0;
-    for (var i = 0; i < lat.length; i++) {
+    for (let i = 0; i < lat.length; i++) {
         if (lat[i] > latMax) latMax = lat[i];
         if (lat[i] < latMin) latMin = lat[i];
         if (lng[i] > lngMax) lngMax = lng[i];
@@ -134,7 +112,7 @@ export function isPolyContains(lng, lat, pointLat, pointLng) {
     }
     if (!(pointLat < latMin || pointLat > latMax || pointLng < lngMin || pointLng > lngMax)) {
 
-        for (var i = 0; i < lat.length; i++) {
+        for (let i = 0; i < lat.length; i++) {
             var j = (i + 1) % lat.length;
             if ((lat[i] < pointLat) != (lat[j] < pointLat) && (pointLng < (lng[j] - lng[i]) * (pointLat - lat[i]) / (lat[j] - lat[i]) + lng[i])) {
                 ret = !ret;

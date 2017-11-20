@@ -14,16 +14,15 @@ export class MapZoom {
         this.event(div);
     }
     event(div) {
-        // debugger
         let doms = div.querySelectorAll('a');
-        doms[0].addEventListener('click', (e) => {
+        doms[0].addEventListener('click', () => {
             let zoom = this.map.getZoom();
             if (zoom < this.zoom.max) {
                 this.map.zoomIn();
             }
 
         });
-        doms[1].addEventListener('click', (e) => {
+        doms[1].addEventListener('click', () => {
             let zoom = this.map.getZoom();
             if (zoom > this.zoom.min) {
                 this.map.zoomOut();

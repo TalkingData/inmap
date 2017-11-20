@@ -1,6 +1,5 @@
 import {
-    isArray,
-    isGeoLine
+    isArray
 } from './../../common/util';
 
 import {
@@ -25,8 +24,10 @@ export let BoundaryOverlay = {
                 }
                 points[j].pgeo = tmp;
                 let bestCell = polylabel([tmp]);
-                if(bestCell==null){
+                if (bestCell == null) {
+                    /*eslint-disable */
                     console.error(`${points[j].name}围栏数据有问题！`);
+                    /*eslint-enable */
                 }
 
                 points[j]['bestCell'] = bestCell;

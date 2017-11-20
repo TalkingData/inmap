@@ -19,10 +19,9 @@ export let GriddingOverlay = {
         let nwMc = data.request.data.nwMc,
             map = data.request.map,
             zoom = data.request.data.zoom;
-        //debugger
 
         GriddingOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
-        let gridsObj = GriddingOverlay.recGrids(points, map, nwMc, size, zoomUnit, mapSize, mapCenter);
+        let gridsObj = GriddingOverlay.recGrids(points, map, nwMc, size, zoomUnit, mapSize);
 
         return {
             data: gridsObj,
@@ -52,12 +51,9 @@ export let GriddingOverlay = {
         return data;
     },
 
-    recGrids: function (data, map, nwMc, size, zoomUnit, mapSize, mapCenter) {
+    recGrids: function (data, map, nwMc, size, zoomUnit, mapSize) {
         //isAvg 聚合的方式
-        debugger;
         let max = 0;
-        let min = 0;
-
         let grids = {};
 
         let gridStep = size / zoomUnit;

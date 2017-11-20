@@ -11,7 +11,9 @@
          this.worker = new Worker(workerUrl);
          this.worker.addEventListener('message', this.message);
          this.worker.onerror = function (e) {
-             console.log('worker.onerror', e);
+             /*eslint-disable */
+             console.error('worker.onerror', e);
+             /*eslint-enable */
          };
      } 
      message(e) {

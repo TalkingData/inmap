@@ -25,9 +25,7 @@ Function.prototype.inherits = function (parentClass, className) {
     op = C = null;
     return p;
 };
-let Instance = function (hashCode) {
-    return inmap_instances[hashCode];
-};
+
 
 
 
