@@ -9,8 +9,8 @@ import {
     BoundaryOverlay
 } from './transform/BoundaryOverlay';
 import {
-    Circuit
-} from './transform/Circuit';
+    CircuitOverlay
+} from './transform/CircuitOverlay';
 import {
     HoneycombOverlay
 } from './transform/HoneycombOverlay';
@@ -26,7 +26,7 @@ let callbackList = {
     'HeatTileOverlay': HeatTileOverlay,
     "GriddingOverlay": GriddingOverlay,
     "BoundaryOverlay": BoundaryOverlay,
-    "Circuit": Circuit,
+    "CircuitOverlay": CircuitOverlay,
     "HoneycombOverlay": HoneycombOverlay,
     'LabelHelper': LabelHelper,
     'polymeOverlay': polymeOverlay
