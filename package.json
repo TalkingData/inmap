@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "webpack --watch --config  webpak.inmap.js",
     "build": "webpack --config webpak.inmap.pro.js && node build-worker",
+    "lint": "eslint --fix --ext .js src",
+    "test": "npm run lint",
     "prepublish": "npm run build"
   },
   "repository": {
