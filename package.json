@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --watch --config  webpak.inmap.js",
-    "build": "webpack --config webpak.inmap.pro.js && node build-worker"
+    "build": "webpack --config webpak.inmap.pro.js && node build-worker",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -18,7 +19,7 @@
   "author": "TalkingData",
   "license": "Apache-2.0",
   "dependencies": {
-    "deepmerge": "^1.3.1"
+    "deepmerge": "^1.5.2"
   },
   "devDependencies": {
     "autoprefixer-loader": "^2.0.0",
