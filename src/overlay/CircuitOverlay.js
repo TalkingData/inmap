@@ -12,7 +12,7 @@ import {
 import {
     Point
 } from "./../geo/Point";
-export class Circuit extends CanvasOverlay {
+export class CircuitOverlay extends CanvasOverlay {
     constructor(ops) {
         super();
         this.points = ops.data;
@@ -43,7 +43,7 @@ export class Circuit extends CanvasOverlay {
             nwMc: nwMc,
             zoomUnit: zoomUnit
         };
-        this.postMessage('Circuit.calculatePixel', params, function (pixels) {
+        this.postMessage('CircuitOverlay.calculatePixel', params, function (pixels) {
             if (me.eventType == 'onmoving') {
                 return;
             };

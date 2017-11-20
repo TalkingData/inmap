@@ -9,7 +9,7 @@ import {
     Point
 } from "./../../geo/Point";
 
-export let Circuit = {
+export let CircuitOverlay = {
     transferCoordinate(_coordinates, nwMc, zoomUnit) {
         let map = this.map;
         return _coordinates.map(function (item) {
@@ -30,11 +30,11 @@ export let Circuit = {
             nwMc = data.request.data.nwMc,
             map = data.request.map;
 
-        // Circuit.transferCoordinate(points, nwMc, zoomUnit);
+        // CircuitOverlay.transferCoordinate(points, nwMc, zoomUnit);
         for (let j = 0; j < points.length; j++) {
             let item = points[j];
             // let coordinates = item._coordinates;
-            item['pixels'] = Circuit.transferCoordinate(item._coordinates, nwMc, zoomUnit);
+            item['pixels'] = CircuitOverlay.transferCoordinate(item._coordinates, nwMc, zoomUnit);
         }
 
         // debugger

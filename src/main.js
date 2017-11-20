@@ -13,8 +13,8 @@ import {
     HeatOverlay
 } from './overlay/HeatOverlay';
 import {
-    Circuit
-} from './overlay/Circuit';
+    CircuitOverlay
+} from './overlay/CircuitOverlay';
 
 import {
     HoneycombOverlay
@@ -37,7 +37,7 @@ export {
     GriddingOverlay,
     BoundaryOverlay,
     HeatOverlay,
-    Circuit,
+    CircuitOverlay,
     HoneycombOverlay,
     workerMrg,
     ImgOverlay
