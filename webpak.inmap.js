@@ -1,9 +1,9 @@
 /**
  * Created by lu on 2016/12/5.
  */
-var path = require('path');
-var fileName = 'inMap';
-var option = {
+const path = require('path');
+const fileName = 'inMap';
+const option = {
   entry: {
     inmap: './src/main.js',
     worker: './src/worker/index.js'
