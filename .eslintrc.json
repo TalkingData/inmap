@@ -7,6 +7,10 @@
         "ecmaVersion": 6,
         "sourceType": "module"
     },
+    "globals": {
+        "BMap": true,
+        "Point": true    
+    },
     "env": {
         "browser": true,
         "es6": true

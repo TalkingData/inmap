@@ -139,7 +139,7 @@ export class Parameter extends CanvasOverlay {
         color.b += delta;
         return color.getStyle();
     }
-    /*eslint-disable */
+   
     /**
      * 选中的数据集里面是否包含
      * @param {*} item 
@@ -147,7 +147,7 @@ export class Parameter extends CanvasOverlay {
     selectItemContains(item) {
         return this.findIndexSelectItem(item) > -1;
     }
-    /*eslint-enable */
+     /*eslint-disable */
     /**
      * 查询选中列表的索引
      * @param {*} item 
@@ -157,6 +157,7 @@ export class Parameter extends CanvasOverlay {
         //原因 点 线  面 的数据结构不同  判断依据也不相同
         return -1;
     }
+     /*eslint-enable */
     deleteSelectItem(item) {
         let index = this.findIndexSelectItem(item);
         index > -1 && this.selectItem.splice(index, 1);
