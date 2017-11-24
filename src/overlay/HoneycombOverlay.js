@@ -6,7 +6,6 @@ export class HoneycombOverlay extends Parameter {
     constructor(ops) {
         super(ops);
         this.delteOption();
-        this.compileColor = {};
         this._setOptionStyle(baseConfig, ops);
     }
 
@@ -63,8 +62,28 @@ export class HoneycombOverlay extends Parameter {
                 margin: me.margin
             };
             me.setWorkerData(obj);
+            me.createColorSplit(grids);
             me.drawRec(obj);
         });
+    }
+    createColorSplit(grids) {
+        let data = [];
+        for (let key in grids) {
+            let count = grids[key].len;
+           
+            if (count > 0) {
+                data.push({
+                    name: key,
+                    count: count
+                });
+            }
+
+        }
+
+        if (this.style.colors.length > 0) {
+            this.compileSplitList(data);
+        }
+
     }
     getColor(count) {
         let color = null;
@@ -118,13 +137,14 @@ export class HoneycombOverlay extends Parameter {
     drawRec({size, zoomUnit,  grids}) {
         this.workerData.grids = [];
         var gridsW = size / zoomUnit;
+        let style = this.style.normal;
         for (let i in grids) {
             let x = grids[i].x;
             let y = grids[i].y;
             let count = grids[i].len;
             if (count > 0) {
                 let color = this.getColor(count);
-                this.drawLine(x, y, gridsW - 1, color, this.ctx);
+                this.drawLine(x, y, gridsW - style.padding, color, this.ctx);
             }
 
 

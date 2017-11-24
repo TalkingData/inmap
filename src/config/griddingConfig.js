@@ -2,9 +2,6 @@ export default {
     tooltip: {
         show: true,
         position: 'top',
-        // formatter: function (params) {
-        //     return params.count;
-        // }
         formatter: '{count}'
     },
     label: {
@@ -28,7 +25,7 @@ export default {
         ],
         normal: {
             backgroundColor: 'rgba(200, 200, 200, 0.5)',
-            borderWidth: 3,
+            padding: 1,
             size: 50,
         },
         mouseOver: {

@@ -7,8 +7,7 @@ export class GriddingOverlay extends Parameter {
     constructor(ops) {
         super(ops);
         this.delteOption();
-        this.compileColor = {};
-        // debugger
+         
         this._setOptionStyle(baseConfig, ops);
     }
     delteOption() {
@@ -140,7 +139,6 @@ export class GriddingOverlay extends Parameter {
                 count: count
             });
             color = style.backgroundColor;
-            // color = this.compileColor[count];
         }
         return color;
     }
@@ -156,7 +154,7 @@ export class GriddingOverlay extends Parameter {
             let count = grids[i];
             let color = this.getColor(count);
             this.ctx.fillStyle = color;
-            this.ctx.fillRect(x, y, gridStep - style.borderWidth, gridStep - style.borderWidth);
+            this.ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
             if (count > 0) {
                 this.workerData.grids.push({
                     pixels: [x, y],
