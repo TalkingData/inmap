@@ -70,7 +70,7 @@ export class HoneycombOverlay extends Parameter {
         let data = [];
         for (let key in grids) {
             let count = grids[key].len;
-           
+
             if (count > 0) {
                 data.push({
                     name: key,
@@ -98,14 +98,14 @@ export class HoneycombOverlay extends Parameter {
         return color;
     }
     getTarget(x, y) {
-      
+
         let data = this.workerData;
         let size = data.size;
         let zoomUnit = data.zoomUnit;
-       
+
         let grids = data.grids || [];
         let gridStep = size / zoomUnit;
-       
+
         let style = this.style.normal;
         let width = gridStep - style.borderWidth;
         for (let i = 0; i < grids.length; i++) {
@@ -113,13 +113,13 @@ export class HoneycombOverlay extends Parameter {
 
             let x1 = parseFloat(item.pixels[0]);
             let y1 = parseFloat(item.pixels[1]);
-            
+
             this.ctx.beginPath();
             this.ctx.moveTo(x1, y1);
             this.ctx.lineTo(x1 + width, y1);
             this.ctx.lineTo(x1 + width, y1 + width);
             this.ctx.lineTo(x1, y1 + width);
-           
+
             this.ctx.closePath();
             if (this.ctx.isPointInPath(x, y)) {
                 return {
@@ -134,7 +134,11 @@ export class HoneycombOverlay extends Parameter {
             item: null
         };
     }
-    drawRec({size, zoomUnit,  grids}) {
+    drawRec({
+        size,
+        zoomUnit,
+        grids
+    }) {
         this.workerData.grids = [];
         var gridsW = size / zoomUnit;
         let style = this.style.normal;

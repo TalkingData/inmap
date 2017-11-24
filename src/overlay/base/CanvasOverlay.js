@@ -23,7 +23,7 @@ export class CanvasOverlay extends BaseClass {
 
     }
     initialize(map) {
-     
+
         var me = this;
         this.map = map;
         this.container = document.createElement('canvas');
@@ -43,12 +43,12 @@ export class CanvasOverlay extends BaseClass {
     }
 
     tOnResize(event) {
-       
+
         this.setCanvasSize();
         this.tDraw(this, event);
     }
     tOnMoveend(event) {
-      
+
         this.eventType = event.type;
         this.tDraw(this, event);
     }
@@ -56,18 +56,18 @@ export class CanvasOverlay extends BaseClass {
         this.clearCanvas();
     }
     tOnZoomend(e) {
-       
+        this.eventType = e.type;
         this.tDraw(this, e);
     }
     tOnMoving(e) {
         this.eventType = e.type;
     }
     tMouseleave() {
-       
+
         //抽象方法 子类去实现
     }
     tMousemove() {
-      
+
         //抽象方法 子类去实现
     }
     TInit() {
@@ -75,7 +75,7 @@ export class CanvasOverlay extends BaseClass {
         //抽象方法 子类去实现
     }
     draw() {
-       
+
         if (this.first) {
             this.first = false;
             this.resize();
@@ -84,15 +84,15 @@ export class CanvasOverlay extends BaseClass {
         }
     }
     tMouseClick() {
-       
+
         //抽象方法 子类去实现
 
     }
     tDraw(me, event) {
-    
+
         this.eventType = event.type;
         me.resize();
-       
+
         me.keysss = true;
     }
 
@@ -101,7 +101,7 @@ export class CanvasOverlay extends BaseClass {
     }
 
     canvasResize() {
-      
+
         var map = this.map;
         var container = this.container;
         var point = map.getCenter();
@@ -141,7 +141,7 @@ export class CanvasOverlay extends BaseClass {
      * 对象销毁
      */
     dispose() {
-      
+
         this.map.removeEventListener('resize', this.tOnResize);
         this.map.removeEventListener('moveend', this.tOnMoveend);
         this.map.removeEventListener('zoomstart', this.tOnZoomstart);

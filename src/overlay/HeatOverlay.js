@@ -65,10 +65,14 @@ export class HeatOverlay extends Parameter {
     }
     _dataRender() {
         // debugger
+        let container = this.container;
         if (this.maxValue == 0) {
             this.getMax();
         }
-
+        if(container.width<=0){ //map 释放 会触发重绘
+            return;
+        }
+     
         let normal = this.style.normal;
         let ctx = this.ctx;
         for (let i = 0, len = this.workerData.length; i < len; i++) {
@@ -78,7 +82,7 @@ export class HeatOverlay extends Parameter {
         }
 
         let palette = this.getColorPaint();
-        let container = this.container;
+        
         let img = ctx.getImageData(0, 0, container.width, container.height);
         let imgData = img.data;
 
