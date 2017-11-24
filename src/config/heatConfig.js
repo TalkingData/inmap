@@ -1,4 +1,4 @@
-export default  {
+export default {
     tooltip: {
         show: false,
     },
@@ -16,7 +16,8 @@ export default  {
             minScope: 0, // 最小区间,小于此区间的不显示
             maxScope: 1, // 最大区间,大于此区间的不显示
         },
-        colors:[]
+        colors: []
     },
-   
+    data: []
+
 };

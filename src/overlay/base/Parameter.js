@@ -24,12 +24,12 @@ export class Parameter extends CanvasOverlay {
     constructor(ops) {
         super();
         this._setOptionStyle(baseConfig, ops);
-        this.points = ops.data;
+
         this.multiSelect = ops.multiSelect;
         this.selectItem = []; //选中
         this.overItem = null; //悬浮
         this.workerData = []; //缓存woker 转换后的数据
-
+        this.points=[]; //数据
         this.tooltipDom = null; //悬浮弹层
         this.legendDom = null; //图例
         this.tooltipTemplate = null;
@@ -62,7 +62,7 @@ export class Parameter extends CanvasOverlay {
         this.labelStyle = opstion.label;
         this.event = opstion.event;
         this.style = opstion.style;
-
+        this.points = opstion.data;
         //设置皮肤
         if (opstion.skin && this.map) {
             let setStyle = opstion.skin == 'Blueness' ? Blueness : WhiteLover;
