@@ -53,20 +53,8 @@
             max: 22
         }
     });
-
+ 
     var overlay = new inMap.CircuitOverlay({
-        tooltip: {
-            show: false,
-            position: 'top',
-            // formatter: function (params) {
-            //     return params.count;
-            // }
-            formatter: "{name}~{count}"
-        },
-        legend: {
-            show: false,
-            title: "道路规划"
-        },
         style: {
             normal: {
                 borderColor: 'rgba(50, 50, 255, 0.8)',
@@ -74,7 +62,7 @@
             },
         },
         data: [],
-        event: {}
+        
     });
     map.add(overlay);
     overlay.setPoints(data);
