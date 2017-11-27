@@ -2,15 +2,14 @@ export default {
     tooltip: {
         show: true,
         position: 'top',
+        offsets: {
+            top: 0,
+            left: 0
+        },
         formatter: '{count}~<br/>{count}'
     },
-    label: {
-        show: false, // 是否显示
-    },
     legend: {
-        show: true,
-        title: '标题',
-        data: ['描述1', '描述2', '描述3', '描述4'],
+        show: false
     },
     style: {
         normal: {
@@ -29,7 +28,7 @@ export default {
         selected: {
             scale: 1
         },
-        colors:[],
+        colors: [],
         splitList: [],
     },
     data: [],

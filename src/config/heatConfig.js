@@ -1,10 +1,12 @@
 export default {
     tooltip: {
         show: false,
+        offsets: {
+            top: 0,
+            left: 0
+        },
     },
-    label: {
-        show: false, // 是否显示
-    },
+    
     legend: {
         show: false,
     },

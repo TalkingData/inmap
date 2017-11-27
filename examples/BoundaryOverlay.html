@@ -28,7 +28,6 @@
         }
     </style>
     <script>
-      
     </script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script type="text/javascript" src="http://huiyan.baidu.com/mapv/demo/js/dist/BaiduMap_cityCenter.js"></script>
@@ -54,7 +53,7 @@
 
 </html>
 <script>
-  inMap.workerMrg.create('http://172.30.116.26:8000/work/inmap/dist/worker.js');
+    inMap.workerMrg.create('http://172.30.116.26:8000/work/inmap/dist/worker.js');
     var inMapVue = new Vue({
         el: '#app',
         data: {
@@ -64,7 +63,7 @@
         watch: {
             model: function (newVal, oldVal) {
                 console.log(newVal);
-                overlay.setSelectd("name=='" + newVal + "'",true);
+                overlay.setSelectd("name=='" + newVal + "'", true);
             }
         },
         mounted: function () {
@@ -99,16 +98,17 @@
             show: true,
             // title: "板块去重设备数 "
         },
-        label: {
-            show: true, // 是否显示
-            font: "11px", // 设置字号
-            minZoom: 7, // 最小显示的级别
-            color: 'rgba(0, 0, 0, 1)'
-        },
+
         style: {
             normal: {
                 backgroundColor: 'rgba(0, 0, 0, 1)',
                 borderWidth: 3,
+                label: {
+                    show: true, // 是否显示
+                    font: "11px", // 设置字号
+                    minZoom: 7, // 最小显示的级别
+                    color: 'rgba(0, 0, 0, 1)'
+                },
                 // borderColor: "rgba(255,255,255,1)",
             },
             mouseOver: {
@@ -154,7 +154,7 @@
             ],
         },
         data: [],
-        multiSelect: false, //是否支持多选
+
         event: {
             onMouseClick: function (item) {
                 //能获取当前点的信息

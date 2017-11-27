@@ -34,7 +34,7 @@
 
 </html>
 <script>
-    inMap.workerMrg.create('http://172.30.116.26/:8000/work/inmap/dist/worker.js');
+    inMap.workerMrg.create('http://172.30.116.26:8000/work/inmap/dist/worker.js');
     var inmap = new inMap.Map({
         id: 'allmap',
         skin: "Blueness",
@@ -51,8 +51,11 @@
     var overlay = new inMap.DotOverlay({
         tooltip: {
             show: true,
-            position: 'top',
-            formatter: "{count}"
+            formatter: "{count}",
+            offsets:{
+                top:0,
+                left:10,
+            }
         },
         legend: {
             show: true,
@@ -101,9 +104,9 @@
         },
         data: data,
         event: {
-            onMouseClick: function (item, event) {
-                //能获取当前点的信息
-            }
+            // onMouseClick: function (item, event) {
+            //     //能获取当前点的信息
+            // }
         }
     });
     inmap.add(overlay);

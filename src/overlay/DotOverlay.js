@@ -13,7 +13,7 @@ import {
 export class DotOverlay extends Parameter {
     constructor(opts) {
         super(opts);
-        this.labelRender = new LabelRender(opts);
+        //this.labelRender = new LabelRender(opts);
         // debugger
         this.polyme = opts.type == 'polyme';
     }
@@ -29,7 +29,6 @@ export class DotOverlay extends Parameter {
             mergeCount: this.style.normal.mergeCount,
             size: this.style.normal.size
         } : this.points;
-
         this.postMessage(path, data, function (pixels) {
             if (me.eventType == 'onmoving') {
                 return;
@@ -90,7 +89,7 @@ export class DotOverlay extends Parameter {
         this.clearCanvas();
         this.canvasResize();
         this._loopDraw(this.ctx, this.workerData);
-        this._drawLabel(this.ctx, this.workerData);
+       // this._drawLabel(this.ctx, this.workerData);
     }
     _loopDraw(ctx, pixels) {
         for (var i = 0, len = pixels.length; i < len; i++) {

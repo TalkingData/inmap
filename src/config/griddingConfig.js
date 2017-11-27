@@ -2,19 +2,15 @@ export default {
     tooltip: {
         show: true,
         position: 'top',
-        formatter: '{count}'
-    },
-    label: {
-        show: false, // 是否显示
-        font: '12px sans-serif',
-        shadowBlur: 0,
-        lineWidth: 1,
-        color: 'rgba(75,80,86,1)',
+        formatter: '{count}',
+        offsets: {
+            top: 0,
+            left: 0
+        },
     },
     legend: {
-        show: true, 
+        show: true,
         title: '图例'
-
     },
     style: {
         colors: [
@@ -27,6 +23,13 @@ export default {
             backgroundColor: 'rgba(200, 200, 200, 0.5)',
             padding: 1,
             size: 50,
+            label: {
+                show: false, // 是否显示
+                font: '12px sans-serif',
+                shadowBlur: 0,
+                lineWidth: 1,
+                color: 'rgba(75,80,86,1)',
+            },
         },
         mouseOver: {
             backgroundColor: 'rgba(200, 200, 200, 1)',
@@ -37,5 +40,6 @@ export default {
             borderColor: 'rgba(255,255,255,1)'
         },
 
-    },data:[]
+    },
+    data: []
 };

@@ -1,12 +1,12 @@
 import {
     Parameter
 } from './base/Parameter.js';
- 
+
 
 export class BoundaryOverlay extends Parameter {
     constructor(ops) {
         super(ops);
- 
+
     }
     resize() {
         this.drawMap();
@@ -94,7 +94,7 @@ export class BoundaryOverlay extends Parameter {
     findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-          
+
             index = this.selectItem.findIndex(function (val) {
                 return val && val.name == item.name;
             });
@@ -167,8 +167,7 @@ export class BoundaryOverlay extends Parameter {
         };
     }
     drawLine(data) {
-        // debugger
-        //console.log('drawLine')
+
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
         this.ctx.miterLimit = 4;
@@ -189,7 +188,7 @@ export class BoundaryOverlay extends Parameter {
             this.ctx.shadowBlur = style.shadowBlur || 10;
             this.ctx.shadowOffsetX = 0;
             this.ctx.shadowOffsetY = 0;
-            //debugger 'rgba(150,150,150,1)' 
+
             this.ctx.fillStyle = style.backgroundColor;
             this.ctx.fill();
             this.ctx.strokeStyle = style.borderColor;
@@ -200,19 +199,13 @@ export class BoundaryOverlay extends Parameter {
             let item = data[i];
             let geo = item.pgeo;
             let bestCell = item.bestCell;
-            // let bestCell = polylabel([geo]);
+            let label = this.setDrawStyle(item).label;
 
-            let label = this.labelStyle;
-            if (bestCell  && label.show) {
-                //    debugger
-                let style = this.setDrawStyle(item).label;
-                this.ctx.shadowBlur =0;
-                this.ctx.lineWidth = style.lineWidth;
-                this.ctx.font = style.font;
-                this.ctx.fillStyle = style.color;
-                if (label.selected && this.selectItemContains(item)) {
-                    this.ctx.fillStyle = label.selected.color;
-                }
+            if (bestCell && label.show) {
+                this.ctx.shadowBlur = 0;
+                this.ctx.lineWidth = label.lineWidth;
+                this.ctx.font = label.font;
+                this.ctx.fillStyle = label.color;
                 let width = this.ctx.measureText(item.name).width;
                 if (this.getMaxWidth(geo) > width) {
                     this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);

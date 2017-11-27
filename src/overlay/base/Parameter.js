@@ -23,13 +23,13 @@ import {
 export class Parameter extends CanvasOverlay {
     constructor(ops) {
         super();
+        this.points = []; //数据
         this._setOptionStyle(baseConfig, ops);
 
-        this.multiSelect = ops.multiSelect;
         this.selectItem = []; //选中
         this.overItem = null; //悬浮
         this.workerData = []; //缓存woker 转换后的数据
-        this.points=[]; //数据
+
         this.tooltipDom = null; //悬浮弹层
         this.legendDom = null; //图例
         this.tooltipTemplate = null;
@@ -59,7 +59,7 @@ export class Parameter extends CanvasOverlay {
         });
         this.tooltip = opstion.tooltip;
         this.legend = opstion.legend;
-        this.labelStyle = opstion.label;
+        // this.labelStyle = opstion.label;
         this.event = opstion.event;
         this.style = opstion.style;
         this.points = opstion.data;
@@ -88,19 +88,22 @@ export class Parameter extends CanvasOverlay {
             mouseOverStyle = this.style.mouseOver, //悬浮样式
             selectedStyle = this.style.selected; //选中样式
         let result = {};
-        Object.assign(result, normal);
+        result = deepmerge(result, normal);
+        // Object.assign(result, normal);
         //区间样式
-
+        // debugger
         let splitList = this.style.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];
             if (condition.end == null) {
                 if (item.count >= condition.start) {
-                    Object.assign(result, normal, condition);
+                    result = deepmerge(normal, condition);
+                    // Object.assign(result, normal, condition);
                     break;
                 }
             } else if (item.count >= condition.start && item.count < condition.end) {
-                Object.assign(result, normal, condition);
+                result = deepmerge(normal, condition);
+                //Object.assign(result, normal, condition);
                 break;
             }
         }
@@ -110,30 +113,25 @@ export class Parameter extends CanvasOverlay {
         if (mouseOverStyle && this.overItem == item) {
 
             if (mouseOverStyle.shadowBlur != null && mouseOverStyle.shadowColor == null) {
-
                 shadowColor['shadowColor'] = this.brightness(result.backgroundColor, 50);
             }
 
-            Object.assign(result, normal, mouseOverStyle, {
+            result = deepmerge.all([result, normal, mouseOverStyle, {
                 size: size * mouseOverStyle.scale,
                 backgroundColor: mouseOverStyle.backgroundColor || this.brightness(result.backgroundColor, 0.1)
-            }, shadowColor);
+            }, shadowColor]);
         }
         if (selectedStyle && this.selectItemContains(item)) {
 
             if (selectedStyle.shadowBlur != null && selectedStyle.shadowColor == null) {
                 shadowColor['shadowColor'] = this.brightness(selectedStyle.backgroundColor, 0.1);
             }
-            Object.assign(result, normal, selectedStyle, {
+
+            result = deepmerge.all([result, normal, selectedStyle, {
                 size: size * mouseOverStyle.scale
-            }, shadowColor);
+            }, shadowColor]);
         }
 
-        if (this.labelStyle.show) {
-            result = deepmerge.all([{
-                label: this.labelStyle
-            }, result]);
-        }
         return result;
 
     }
@@ -293,18 +291,23 @@ export class Parameter extends CanvasOverlay {
      * 设置悬浮信息
      */
     setTooltip(event) {
-
+        let {
+            show,
+            customClass,
+            offsets,
+            formatter
+        } = this.tooltip;
         if (this.tooltipDom == null) {
             this.tooltipDom = document.createElement('div');
-            this.tooltipDom.classList.add('tooltip');
+            this.tooltipDom.classList.add("tooltip");
+            this.tooltipDom.classList.add(customClass);
             this.map._inmapOption.toolDom.appendChild(this.tooltipDom);
         }
-        if (!this.tooltip.show) {
+        if (!show) {
             this.tooltipDom.style.display = 'none';
             return;
         }
         if (this.overItem) {
-            let formatter = this.tooltip.formatter;
             let overItem = this.overItem;
             if (isFunction(formatter)) {
                 this.tooltipDom.innerHTML = formatter(overItem);
@@ -315,8 +318,8 @@ export class Parameter extends CanvasOverlay {
 
                 this.tooltipDom.innerHTML = this.tooltipTemplate(overItem);
             }
-            this.tooltipDom.style.left = event.clientX + 'px';
-            this.tooltipDom.style.top = event.clientY + 'px';
+            this.tooltipDom.style.left = event.clientX + offsets.left + 'px';
+            this.tooltipDom.style.top = event.clientY + offsets.top + 'px';
             this.tooltipDom.style.display = 'block';
         } else {
             this.tooltipDom.style.display = 'none';
@@ -401,7 +404,7 @@ export class Parameter extends CanvasOverlay {
         //抽象方法需要子类去实现
     }
 
-    swopData(index, item) {
+    swopeData(index, item) {
         if (index > -1) {
             this.workerData[index] = this.workerData[this.workerData.length - 1];
             this.workerData[this.workerData.length - 1] = item;
@@ -420,7 +423,7 @@ export class Parameter extends CanvasOverlay {
         if (temp != this.overItem) { //防止过度重新绘画
             this.overItem = temp;
             if (temp) {
-                this.swopData(result.index, result.item);
+                this.swopeData(result.index, result.item);
             }
             this._dataRender();
 
@@ -433,22 +436,22 @@ export class Parameter extends CanvasOverlay {
         this.setTooltip(event);
 
     }
-    triggerClick() {
-
-        this.event.onMouseClick && this.event.onMouseClick(this.selectItem, {
-            x: event.clientX,
-            y: event.clientY
-        });
+    triggerClick(event) {
+        this.event.onMouseClick(this.selectItem, event);
     }
     tMouseClick(event) {
-
+        let {
+            onMouseClick,
+            multiSelect
+        } = this.event;
+        if (!onMouseClick) return;
         let result = this.getTarget(event.pixel.x, event.pixel.y);
         if (result.index == -1) {
             return;
         }
 
         let item = result.item;
-        if (this.multiSelect) {
+        if (multiSelect) {
             if (this.selectItemContains(item)) {
                 this.deleteSelectItem(item); //二次点击取消选中
             } else {
@@ -459,8 +462,8 @@ export class Parameter extends CanvasOverlay {
             this.selectItem = [result.item];
         }
 
-        this.swopData(result.index, item);
-        this.triggerClick();
+        this.swopeData(result.index, item);
+        this.triggerClick(event);
         this.cancerExp();
         this._dataRender();
 

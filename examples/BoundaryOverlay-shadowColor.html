@@ -29,7 +29,7 @@
 
         .geo-modal {}
     </style>
-  
+
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script type="text/javascript" src="http://huiyan.baidu.com/mapv/demo/js/dist/BaiduMap_cityCenter.js"></script>
     <script src="./lib/vue.js"></script>
@@ -52,7 +52,6 @@
 
 </body>
 <script>
-    // debugger
     var inMapVue = new Vue({
         el: '#app',
         methods: {
@@ -64,9 +63,9 @@
             }
         }
     })
-    
-    inMap.workerMrg.create('http://172.30.116.26:8000/work/inmap/dist/worker.js');
 
+    inMap.workerMrg.create('http://172.30.116.26:8000/work/inmap/dist/worker.js');
+    data.length = 2;
 
     var map = new inMap.Map({
         id: 'allmap',
@@ -82,8 +81,6 @@
         skin: "Blueness",
         tooltip: {
             show: true,
-            position: 'top',
-            //   formatter: "{name}~{count}",
             formatter: function (params) {
                 return `${params.name}-设备数量：${params.count}<br/>
                          ${params.name}-人口密度：${params.count}<br/>
@@ -95,18 +92,16 @@
             show: false,
             title: "板块去重设备数 "
         },
-        label: {
-            show: true, // 是否显示
-            font: "13px bold ",
-            color: "rgba(75,80,86,1)",
-            selected: {
-                color: "rgba(255,255,255,1)"
-            }
-        },
+
         style: {
             normal: {
                 borderWidth: 0.3,
-                borderColor: 'rgba(0, 0, 0, 0.2)'
+                borderColor: 'rgba(0, 0, 0, 0.2)',
+                label: {
+                    show: true, // 是否显示
+                    font: "13px bold ",
+                    color: "rgba(75,80,86,1)",
+                },
             },
             mouseOver: {
                 shadowColor: 'rgba(0, 0, 0, 1)',
@@ -115,7 +110,10 @@
             },
             selected: {
                 backgroundColor: 'rgba(184,0,0,1)',
-                borderColor: "rgba(255,255,255,1)"
+                borderColor: "rgba(255,255,255,1)",
+                label: {
+                    color: "rgba(255,255,255,1)"
+                }
             },
             colors: [
                 "rgba(156,200,249,0.7)", "rgba(93,158,247,0.7)",
@@ -125,7 +123,7 @@
             ]
         },
         data: [],
-        multiSelect: false, //是否支持多选
+
         event: {
             onMouseClick: function (item) {
                 console.log(item);
@@ -147,18 +145,19 @@
             show: true,
             title: "板块去重设备数 "
         },
-        label: {
-            show: true, // 是否显示
-            font: "13px bold ",
-            color: "rgba(75,80,86,1)",
-            selected: {
-                color: "rgba(255,255,255,1)"
-            }
-        },
+
         style: {
             normal: {
                 borderWidth: 0.3,
-                borderColor: 'rgba(0, 0, 0, 0.2)'
+                borderColor: 'rgba(0, 0, 0, 0.2)',
+                label: {
+                    show: true, // 是否显示
+                    font: "13px bold ",
+                    color: "rgba(75,80,86,1)",
+                    selected: {
+                        color: "rgba(255,255,255,1)"
+                    }
+                },
             },
             mouseOver: {
                 shadowColor: 'rgba(0, 0, 0, 1)',
@@ -181,7 +180,7 @@
 
         },
         data: [],
-        multiSelect: false, //是否支持多选
+
         event: {
             onMouseClick: function (item) {
                 console.log(item);
@@ -192,19 +191,6 @@
     var overlay = new inMap.BoundaryOverlay(skin1);
     map.add(overlay);
     overlay.setPoints(data);
-    // // debugger
-    // let point = map.map.getCenter();
-    // for (let i = 0; i < data.length; i++) {
-    //     if (inMap.utils.isPolyContainsPt(point.lng, point.lat, data[i].geo)) {
-
-    //     };
-    // }
-    // debugger
-    // overlay.setSelectd("name=='石岩'", true)
-    // setTimeout(function (map,ov) {
-    //     // debugger
-    //     map.remove(ov);
-    // }, 2000, map,overlay)
 </script>
 
 </html>
