@@ -49,10 +49,11 @@
      },
      data: [],
      event: {
-
          multiSelect: true, //是否支持多选
+         /*eslint-disable */
          onMouseClick: function (item, event) {
 
          }
+         /*eslint-enable */
      }
  };

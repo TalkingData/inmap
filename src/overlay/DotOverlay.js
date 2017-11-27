@@ -5,23 +5,18 @@
 import {
     Parameter
 } from './base/Parameter';
-
-import {
-    LabelRender
-} from './helper/LabelRender.js';
-
 export class DotOverlay extends Parameter {
     constructor(opts) {
         super(opts);
         //this.labelRender = new LabelRender(opts);
-       
+
         this.polyme = opts.type == 'polyme';
     }
     resize() {
         this.drawMap();
     }
     drawMap() {
-       
+
         let me = this;
         let path = me.polyme ? 'polymeOverlay.mergePoint' : 'HeatOverlay.pointsToPixels';
         let data = me.polyme ? {
@@ -29,12 +24,12 @@ export class DotOverlay extends Parameter {
             mergeCount: this.style.normal.mergeCount,
             size: this.style.normal.size
         } : this.points;
-        
+
         this.postMessage(path, data, function (pixels) {
             if (me.eventType == 'onmoving') {
                 return;
             }
-          
+
             // me.workerData = pixels;
             me.setWorkerData(pixels);
             me._dataRender();
@@ -78,7 +73,7 @@ export class DotOverlay extends Parameter {
     findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-           
+
             index = this.selectItem.findIndex(function (val) {
                 return val && val.lat == item.lat && val.lng == item.lng;
             });
@@ -90,13 +85,13 @@ export class DotOverlay extends Parameter {
         this.clearCanvas();
         this.canvasResize();
         this._loopDraw(this.ctx, this.workerData);
-       // this._drawLabel(this.ctx, this.workerData);
+        // this._drawLabel(this.ctx, this.workerData);
     }
     _loopDraw(ctx, pixels) {
         for (var i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.pixel;
-           
+
             let style = this.polyme ? this.style.normal : this.setDrawStyle(item);
             if (style.shadowBlur) {
                 ctx.shadowBlur = style.shadowBlur;
