@@ -32,7 +32,7 @@ export class HoneycombOverlay extends Parameter {
         let size = style.size * zoomUnit;
         let nwMcX = mcCenter.x - me.map.getSize().width / 2 * zoomUnit;
         let nwMc = new BMap.Pixel(nwMcX, mcCenter.y + me.map.getSize().height / 2 * zoomUnit);
-        // debugger
+       
         let params = {
             points: me.points,
             size: size,

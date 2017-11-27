@@ -53,7 +53,7 @@ export class CircuitOverlay extends CanvasOverlay {
         for (let i = 0; i < data.length; i++) {
             let item = data[i];
             item['_coordinates'] = item.geo.map(function (item) {
-                // debugger
+               
                 var pixel = projection.lngLatToPoint({
                     lng: item[0],
                     lat: item[1]
@@ -68,7 +68,7 @@ export class CircuitOverlay extends CanvasOverlay {
     transferCoordinate(_coordinates, nwMc, zoomUnit) {
         
         return _coordinates.map(function (item) {
-            // debugger
+           
             var x = (item[0] - nwMc.x) / zoomUnit;
             var y = (nwMc.y - item[1]) / zoomUnit;
             return [x, y];
@@ -83,7 +83,7 @@ export class CircuitOverlay extends CanvasOverlay {
 
         // let map = this.map;
         // return data.map(function (item) {
-        //     // debugger
+        //    
         //     var x = (item[0] - nwMc.x) / zoomUnit;
         //     var y = (nwMc.y - item[1]) / zoomUnit;
         //     return [x, y];
@@ -91,7 +91,7 @@ export class CircuitOverlay extends CanvasOverlay {
     }
 
     drawLine(data) {
-        //debugger
+        
         // console.log('drawLine')s
         let normal = this.style.normal;
         this.ctx.shadowBlur = 0;
@@ -107,10 +107,10 @@ export class CircuitOverlay extends CanvasOverlay {
 
         for (let i = 0; i < data.length - 1500; i++) {
             let item = data[i];
-            // debugger
+           
             let pixels = item.pixels;
 
-            // debugger
+           
             this.ctx.moveTo(pixels[0][0], pixels[0][1]);
             for (let j = 1; j < pixels.length; j++) {
                 this.ctx.lineTo(pixels[j][0], pixels[j][1]);

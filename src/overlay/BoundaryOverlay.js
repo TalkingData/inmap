@@ -27,7 +27,7 @@ export class BoundaryOverlay extends Parameter {
     setMapCenter(geo, exp) {
         let me = this;
         this.parserExp(exp);
-        // debugger
+       
         // this.map.panTo(this.getGeoCenter);
         if (me.workerData.length > 0) {
             me.selectItem = me.workerData.filter(me.filterFun);
@@ -40,18 +40,18 @@ export class BoundaryOverlay extends Parameter {
             arr.push(new BMap.Point(val[0], val[1]));
 
         });
-        // debugger
+       
         let view = this.map.getViewport(arr);
         let me = this;
 
         function zoomEnd() {
-            // debugger
+           
             me.map.removeEventListener('zoomend', zoomEnd);
             me.map.panTo(view.center);
         }
 
         function moveend() {
-            // debugger
+           
             me.map.removeEventListener('moveend', moveend);
             me.parserExp(exp);
             if (me.workerData.length > 0) {
@@ -59,7 +59,7 @@ export class BoundaryOverlay extends Parameter {
                 me._dataRender();
             }
         }
-        // debugger
+       
 
         let scale = view.zoom - 1;
         this.map.addEventListener('zoomend', zoomEnd);
@@ -104,27 +104,27 @@ export class BoundaryOverlay extends Parameter {
     }
     _dataRender() {
         // console.log("_dataRender")
-        //  debugger
+        
         this.clearCanvas();
         this.drawLine(this.workerData);
     }
     drawMap() {
         // console.log("drawMap")
         let me = this;
-        // debugger
+       
         this.postMessage('BoundaryOverlay.calculatePixel', this.points, function (pixels) {
             if (me.eventType == 'onmoving') {
                 return;
             }
-            // debugger
+           
             me.clearCanvas();
             me.canvasResize();
             me.overItem = null;
             // me.workerData = pixels;
             me.setWorkerData(pixels);
-            //  debugger
+            
             //me.setSelectd();
-            //debugger
+            
             me.drawLine(pixels);
         });
     }
@@ -134,7 +134,7 @@ export class BoundaryOverlay extends Parameter {
         }
         this.cancerSelectd();
         this.points = points;
-        // debugger
+       
         if (this.style.colors.length > 0) {
             this.compileSplitList(this.points);
         }
@@ -175,7 +175,7 @@ export class BoundaryOverlay extends Parameter {
             let item = data[i];
             let geo = item.pgeo;
             // points[j]['bestCell'] = polylabel([tmp]);
-            // debugger
+           
 
             this.ctx.beginPath();
             this.ctx.moveTo(geo[0][0], geo[0][1]);

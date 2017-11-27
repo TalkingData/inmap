@@ -51,7 +51,7 @@ export class ImgOverlay extends Parameter {
             if (!img) break;
             if (style.width && style.height) {
                 let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height, 1);
-                // debugger
+               
                 if (this._isMouseOver(x, y, xy.x, xy.y, style.width * style.scale, style.height * style.scale)) {
                     return {
                         index: i,
@@ -82,7 +82,7 @@ export class ImgOverlay extends Parameter {
     findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-            // debugger
+           
             index = this.selectItem.findIndex(function (val) {
                 return val && val.lat == item.lat && val.lng == item.lng;
             });
@@ -97,14 +97,14 @@ export class ImgOverlay extends Parameter {
     }
     loadImg(img, fun) {
         let me = this;
-        // debugger
+       
         if (isString(img)) {
             let image = me.cacheImg[img];
             if (!image) {
                 let image = new Image();
                 image.src = img;
                 image.onload = function () {
-                    // debugger
+                   
                     me.cacheImg[img] = image;
                     fun(image);
                 };
@@ -156,7 +156,7 @@ export class ImgOverlay extends Parameter {
         let result = {};
         Object.assign(result, normal);
         //区间样式
-        //  debugger
+        
         let splitList = this.style.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];

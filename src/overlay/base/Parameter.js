@@ -91,7 +91,7 @@ export class Parameter extends CanvasOverlay {
         result = deepmerge(result, normal);
         // Object.assign(result, normal);
         //区间样式
-        // debugger
+       
         let splitList = this.style.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];

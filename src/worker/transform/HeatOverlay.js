@@ -41,7 +41,7 @@ import {
   */
 export var HeatOverlay = {
     pointsToPixels: function (webObj) {
-        //debugger
+        
         webObj.request.data.forEach((val) => {
             val['pixel'] = pointToPixelWorker(val, webObj.request.map);
         });

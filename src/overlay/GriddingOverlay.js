@@ -36,7 +36,7 @@ export class GriddingOverlay extends Parameter {
             mapCenter: me.map.getCenter(),
             zoom: zoom
         };
-        //   debugger
+     
         this.postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj) {
             if (me.eventType == 'onmoving') {
                 return;

@@ -14,14 +14,14 @@ export class DotOverlay extends Parameter {
     constructor(opts) {
         super(opts);
         //this.labelRender = new LabelRender(opts);
-        // debugger
+       
         this.polyme = opts.type == 'polyme';
     }
     resize() {
         this.drawMap();
     }
     drawMap() {
-        // debugger
+       
         let me = this;
         let path = me.polyme ? 'polymeOverlay.mergePoint' : 'HeatOverlay.pointsToPixels';
         let data = me.polyme ? {
@@ -33,7 +33,7 @@ export class DotOverlay extends Parameter {
             if (me.eventType == 'onmoving') {
                 return;
             }
-            // debugger
+           
             // me.workerData = pixels;
             me.setWorkerData(pixels);
             me._dataRender();
@@ -77,7 +77,7 @@ export class DotOverlay extends Parameter {
     findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-            // debugger
+           
             index = this.selectItem.findIndex(function (val) {
                 return val && val.lat == item.lat && val.lng == item.lng;
             });
@@ -95,7 +95,7 @@ export class DotOverlay extends Parameter {
         for (var i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.pixel;
-            // debugger
+           
             let style = this.polyme ? this.style.normal : this.setDrawStyle(item);
             if (style.shadowBlur) {
                 ctx.shadowBlur = style.shadowBlur;

@@ -86,7 +86,7 @@ export function setDevicePixelRatio(context) {
     context.canvas.height = context.canvas.height * devicePixelRatio;
     context.canvas.style.width = context.canvas.width / devicePixelRatio + 'px';
     context.canvas.style.height = context.canvas.height / devicePixelRatio + 'px';
-    //debugger
+    
     context.scale(devicePixelRatio, devicePixelRatio);
 }
 export function encodeHTML(source) {

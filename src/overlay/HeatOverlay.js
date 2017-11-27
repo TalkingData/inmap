@@ -64,7 +64,7 @@ export class HeatOverlay extends Parameter {
         });
     }
     _dataRender() {
-        // debugger
+       
         let container = this.container;
         if (this.maxValue == 0) {
             this.getMax();

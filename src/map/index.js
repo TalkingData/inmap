@@ -14,14 +14,14 @@ import deepmerge from 'deepmerge';
 export class Map {
     constructor(ops) {
         this.map = null;
-        // debugger
+       
         this.option = deepmerge.all([inmapConfig, ops]);
         this.create();
     }
 
     create() {
         let id = this.option.id;
-        //debugger
+        
         let mapDom = isString(id) ? document.getElementById(id) : id;
         var bmap = new BMap.Map(mapDom, {
             enableMapClick: false
@@ -48,11 +48,11 @@ export class Map {
 
         bmap._inmapOption = _inmapOption;
         let center = this.option.center;
-        //  debugger
+        
         bmap.centerAndZoom(new BMap.Point(center[0], center[1]), this.option.zoom.value);
-        // debugger
+       
         if (this.option.zoom.show) {
-            // debugger
+           
             //添加地图级别工具条
             new MapZoom(bmap);
         }
