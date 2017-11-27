@@ -29,11 +29,12 @@ export class DotOverlay extends Parameter {
             mergeCount: this.style.normal.mergeCount,
             size: this.style.normal.size
         } : this.points;
+        
         this.postMessage(path, data, function (pixels) {
             if (me.eventType == 'onmoving') {
                 return;
             }
-           
+          
             // me.workerData = pixels;
             me.setWorkerData(pixels);
             me._dataRender();

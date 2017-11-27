@@ -91,7 +91,7 @@ export class Parameter extends CanvasOverlay {
         result = deepmerge(result, normal);
         // Object.assign(result, normal);
         //区间样式
-       
+
         let splitList = this.style.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];
@@ -417,7 +417,7 @@ export class Parameter extends CanvasOverlay {
 
     }
     tMousemove(event) {
-
+        if (this.eventType == 'onmoving') return;
         let result = this.getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
         if (temp != this.overItem) { //防止过度重新绘画
@@ -440,6 +440,7 @@ export class Parameter extends CanvasOverlay {
         this.event.onMouseClick(this.selectItem, event);
     }
     tMouseClick(event) {
+        if (this.eventType == 'onmoving') return;
         let {
             onMouseClick,
             multiSelect
