@@ -1,19 +1,37 @@
 /**
  * draw cireuit
  */
-
+import deepmerge from 'deepmerge';
 import {
     CanvasOverlay
 } from './base/CanvasOverlay';
- 
- 
+import baseConfig from './../config/circuitConfig';
+
 export class CircuitOverlay extends CanvasOverlay {
     constructor(ops) {
-        super();
-        this.points = ops.data;
-        this.style = ops.style;
-    }
+        super(ops);
+        this.points = [];
+        this.style = {};
+        this._setOptionStyle(baseConfig, ops);
 
+    }
+    _setOptionStyle(config, ops) {
+
+        let option = deepmerge.all([config, ops], {
+            arrayMerge: function (destinationArray, sourceArray) {
+
+                if (sourceArray.length > 0) {
+                    return sourceArray;
+                } else {
+                    return destinationArray;
+                }
+
+            }
+        });
+
+        this.points = option.data;
+        this.style = option.style;
+    }
     resize() {
         this.drawMap();
     }
@@ -38,6 +56,8 @@ export class CircuitOverlay extends CanvasOverlay {
             nwMc: nwMc,
             zoomUnit: zoomUnit
         };
+        // debugger
+
         this.postMessage('CircuitOverlay.calculatePixel', params, function (pixels) {
             if (me.eventType == 'onmoving') {
                 return;
@@ -46,14 +66,14 @@ export class CircuitOverlay extends CanvasOverlay {
             me.canvasResize();
             me.drawLine(pixels);
         });
-       
+
     }
     coordinates(data) {
         var projection = this.map.getMapType().getProjection();
         for (let i = 0; i < data.length; i++) {
             let item = data[i];
             item['_coordinates'] = item.geo.map(function (item) {
-               
+
                 var pixel = projection.lngLatToPoint({
                     lng: item[0],
                     lat: item[1]
@@ -66,9 +86,9 @@ export class CircuitOverlay extends CanvasOverlay {
 
     }
     transferCoordinate(_coordinates, nwMc, zoomUnit) {
-        
+
         return _coordinates.map(function (item) {
-           
+
             var x = (item[0] - nwMc.x) / zoomUnit;
             var y = (nwMc.y - item[1]) / zoomUnit;
             return [x, y];
@@ -80,19 +100,9 @@ export class CircuitOverlay extends CanvasOverlay {
         } else {
             return [];
         }
-
-        // let map = this.map;
-        // return data.map(function (item) {
-        //    
-        //     var x = (item[0] - nwMc.x) / zoomUnit;
-        //     var y = (nwMc.y - item[1]) / zoomUnit;
-        //     return [x, y];
-        // });
     }
 
     drawLine(data) {
-        
-        // console.log('drawLine')s
         let normal = this.style.normal;
         this.ctx.shadowBlur = 0;
         this.ctx.shadowOffsetX = 0;
@@ -107,10 +117,8 @@ export class CircuitOverlay extends CanvasOverlay {
 
         for (let i = 0; i < data.length - 1500; i++) {
             let item = data[i];
-           
-            let pixels = item.pixels;
 
-           
+            let pixels = item.pixels;
             this.ctx.moveTo(pixels[0][0], pixels[0][1]);
             for (let j = 1; j < pixels.length; j++) {
                 this.ctx.lineTo(pixels[j][0], pixels[j][1]);

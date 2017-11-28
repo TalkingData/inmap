@@ -45,7 +45,6 @@ let handler = {};
  * worker方法执行解析
  */
 let callback = function (data) {
-    //	console.log('TD.callback', data)
     var request = data.request;
     var classPath = request.classPath;
     var hashCode = request.hashCode;

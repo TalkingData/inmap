@@ -42,13 +42,14 @@ export class Parameter extends CanvasOverlay {
 
     _setOptionStyle(config, ops) {
         ops = ops || {};
-        let opstion = deepmerge.all([config,
+        let option = deepmerge.all([config,
             {
                 event: this.event || {}
             },
             ops
         ], {
             arrayMerge: function (destinationArray, sourceArray) {
+                
                 if (sourceArray.length > 0) {
                     return sourceArray;
                 } else {
@@ -57,15 +58,15 @@ export class Parameter extends CanvasOverlay {
 
             }
         });
-        this.tooltip = opstion.tooltip;
-        this.legend = opstion.legend;
-        // this.labelStyle = opstion.label;
-        this.event = opstion.event;
-        this.style = opstion.style;
-        this.points = opstion.data;
+        this.tooltip = option.tooltip;
+        this.legend = option.legend;
+        // this.labelStyle = option.label;
+        this.event = option.event;
+        this.style = option.style;
+        this.points = option.data;
         //设置皮肤
-        if (opstion.skin && this.map) {
-            let setStyle = opstion.skin == 'Blueness' ? Blueness : WhiteLover;
+        if (option.skin && this.map) {
+            let setStyle = option.skin == 'Blueness' ? Blueness : WhiteLover;
 
             this.map.setMapStyle({
                 styleJson: setStyle

@@ -27,8 +27,6 @@ export class BoundaryOverlay extends Parameter {
     setMapCenter(geo, exp) {
         let me = this;
         this.parserExp(exp);
-       
-        // this.map.panTo(this.getGeoCenter);
         if (me.workerData.length > 0) {
             me.selectItem = me.workerData.filter(me.filterFun);
             me._dataRender();
@@ -103,15 +101,12 @@ export class BoundaryOverlay extends Parameter {
         return index;
     }
     _dataRender() {
-        // console.log("_dataRender")
-        
         this.clearCanvas();
         this.drawLine(this.workerData);
     }
     drawMap() {
-        // console.log("drawMap")
-        let me = this;
        
+        let me = this;
         this.postMessage('BoundaryOverlay.calculatePixel', this.points, function (pixels) {
             if (me.eventType == 'onmoving') {
                 return;
@@ -120,10 +115,10 @@ export class BoundaryOverlay extends Parameter {
             me.clearCanvas();
             me.canvasResize();
             me.overItem = null;
-            // me.workerData = pixels;
+           
             me.setWorkerData(pixels);
             
-            //me.setSelectd();
+           
             
             me.drawLine(pixels);
         });
@@ -143,7 +138,7 @@ export class BoundaryOverlay extends Parameter {
     getTarget(x, y) {
 
         let data = this.workerData;
-        //   console.log('getTarget')
+        
         this.ctx.beginPath();
         for (let i = 0, len = data.length; i < len; i++) {
             let item = data[i];
@@ -174,9 +169,7 @@ export class BoundaryOverlay extends Parameter {
         for (let i = 0, len = data.length; i < len; i++) {
             let item = data[i];
             let geo = item.pgeo;
-            // points[j]['bestCell'] = polylabel([tmp]);
-           
-
+        
             this.ctx.beginPath();
             this.ctx.moveTo(geo[0][0], geo[0][1]);
             for (let j = 1; j < geo.length; j++) {
