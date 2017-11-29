@@ -49,7 +49,7 @@ export class Parameter extends CanvasOverlay {
             ops
         ], {
             arrayMerge: function (destinationArray, sourceArray) {
-                
+
                 if (sourceArray.length > 0) {
                     return sourceArray;
                 } else {
@@ -90,7 +90,6 @@ export class Parameter extends CanvasOverlay {
             selectedStyle = this.style.selected; //选中样式
         let result = {};
         result = deepmerge(result, normal);
-        // Object.assign(result, normal);
         //区间样式
 
         let splitList = this.style.splitList;
@@ -99,12 +98,11 @@ export class Parameter extends CanvasOverlay {
             if (condition.end == null) {
                 if (item.count >= condition.start) {
                     result = deepmerge(normal, condition);
-                    // Object.assign(result, normal, condition);
+
                     break;
                 }
             } else if (item.count >= condition.start && item.count < condition.end) {
                 result = deepmerge(normal, condition);
-                //Object.assign(result, normal, condition);
                 break;
             }
         }
@@ -234,6 +232,7 @@ export class Parameter extends CanvasOverlay {
         this.style.splitList = split;
         this.setlegend(this.legend, this.style.splitList);
     }
+
     setWorkerData(val) {
         this.workerData = val;
         if (this.filterFun) {
@@ -327,7 +326,51 @@ export class Parameter extends CanvasOverlay {
         }
 
     }
+    compileSplitList(data) {
+        let colors = this.style.colors;
+        if (colors.length < 0) return;
+        data = data.sort((a, b) => {
+            return parseFloat(a.count) - parseFloat(b.count);
+        });
+        let splitCount = data.length / colors.length;
+        let colorIndex = 0;
+        let split = [];
+        let star = 0,
+            end = 0;
 
+        for (let i = 0; i < data.length; i++) {
+
+            if (i > splitCount * (colorIndex + 1)) {
+                if (split.length == 0) {
+                    star = data[0].count;
+                }
+
+                end = data[i].count;
+
+                split.push({
+                    start: star,
+                    end: end,
+                    backgroundColor: colors[colorIndex],
+                    borderColor: this.style.normal.borderColor || this.getColorOpacity(colors[colorIndex])
+                });
+                colorIndex++;
+                star = data[i].count;
+            }
+        }
+        //去除最后判断区间，防止区间遗漏
+        if (split.length > 0) {
+            split.push({
+                start: star,
+                end: null,
+                backgroundColor: colors[colorIndex],
+                borderColor: this.style.normal.borderColor || this.getColorOpacity(colors[colorIndex])
+            });
+
+        }
+
+        this.style.splitList = split;
+        this.setlegend(this.legend, this.style.splitList);
+    }
     Tclear() {
         if (this.tooltipDom) {
             this.tooltipDom.parentNode.removeChild(this.tooltipDom);
@@ -375,7 +418,7 @@ export class Parameter extends CanvasOverlay {
             }
             str += `
             <li class='item'>
-                <span class='bg' style="background: ${val.backgroundColor};"></span>
+                <span class='bg' style="background: ${me.getColorOpacity(val.backgroundColor)};"></span>
                 <span>${text}</span>
             </li>`;
         });

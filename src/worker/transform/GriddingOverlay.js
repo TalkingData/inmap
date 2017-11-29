@@ -2,10 +2,10 @@ import {
     geo
 } from '../../geo/geo';
 import {
-    Pixel 
+    Pixel
 } from './../../geo/Pixel';
 import {
-    Point 
+    Point
 } from './../../geo/Point';
 export let GriddingOverlay = {
     toRecGrids: function (webObj) {
@@ -33,7 +33,6 @@ export let GriddingOverlay = {
 
         let zoomUnit = Math.pow(2, 18 - zoom);
         let mcCenter = geo.projection.lngLatToPoint(mapCenter);
-
         let nwMc = new Pixel(mcCenter.x - mapSize.width / 2 * zoomUnit, mcCenter.y + mapSize.height / 2 * zoomUnit); //左上角墨卡托坐标
         for (let j = 0; j < data.length; j++) {
             if (data[j].lng && data[j].lat && !data[j].x && !data[j].y) {
@@ -55,26 +54,52 @@ export let GriddingOverlay = {
         //isAvg 聚合的方式
         let max = 0;
         let grids = {};
-
         let gridStep = size / zoomUnit;
 
         let startXMc = parseInt(nwMc.x / size, 10) * size;
-
         let startX = (startXMc - nwMc.x) / zoomUnit;
+        let endX = mapSize.width;
+        let startYMc = parseInt(nwMc.y / size, 10) * size + size;
+        let startY = (nwMc.y - startYMc) / zoomUnit;
+        let endY = mapSize.height;
 
+        if (data.length > 0) {
+            let temp = data[0];
+            let minPointX = temp.px,
+                minPointY = temp.py,
+                maxPointX = temp.px,
+                maxPointY = temp.py;
+            for (let i = 0; i < data.length - 1; i++) {
+                let row = data[i];
+                if (minPointX > row.px) {
+                    minPointX = row.px;
+                }
+                if (minPointY > row.py) {
+                    minPointY = row.py;
+                }
+                if (maxPointX < row.px) {
+                    maxPointX = row.px;
+                }
+                if (maxPointY < row.py) {
+                    maxPointY = row.py;
+                }
+            }
+            startX = minPointX - 2;
+            startY = minPointY - 2;
+            endX = maxPointX + 2;
+            endY = maxPointY + 2;
+        }
         let stockXA = [];
         let stickXAIndex = 0;
-        while (startX + stickXAIndex * gridStep < mapSize.width) {
+        while (startX + stickXAIndex * gridStep < endX) {
             let value = startX + stickXAIndex * gridStep;
             stockXA.push(value.toFixed(2));
             stickXAIndex++;
         }
 
-        let startYMc = parseInt(nwMc.y / size, 10) * size + size;
-        let startY = (nwMc.y - startYMc) / zoomUnit;
         let stockYA = [];
         let stickYAIndex = 0;
-        while (startY + stickYAIndex * gridStep < mapSize.height) {
+        while (startY + stickYAIndex * gridStep < endY) {
             let value = startY + stickYAIndex * gridStep;
             stockYA.push(value.toFixed(2));
             stickYAIndex++;
@@ -122,7 +147,7 @@ export let GriddingOverlay = {
 
 
         }
-
+      
         return {
             grids: grids,
             max: max,

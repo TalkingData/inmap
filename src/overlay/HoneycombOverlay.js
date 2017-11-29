@@ -32,7 +32,7 @@ export class HoneycombOverlay extends Parameter {
         let size = style.size * zoomUnit;
         let nwMcX = mcCenter.x - me.map.getSize().width / 2 * zoomUnit;
         let nwMc = new BMap.Pixel(nwMcX, mcCenter.y + me.map.getSize().height / 2 * zoomUnit);
-       
+
         let params = {
             points: me.points,
             size: size,
@@ -84,6 +84,51 @@ export class HoneycombOverlay extends Parameter {
             this.compileSplitList(data);
         }
 
+    }
+    compileSplitList(data) {
+
+        let colors = this.style.colors;
+        if (colors.length < 0 || data.length <= 0) return;
+        data = data.sort((a, b) => {
+            return parseFloat(a.count) - parseFloat(b.count);
+        });
+        let mod = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144];
+
+
+        let colorMod = mod.slice(0, colors.length).reverse();
+        let sunMod = colorMod.reduce((sum, val) => {
+            return sum + val;
+        }, 0);
+        let split = [];
+        let star = 0,
+            end = 0,
+            sign = 0,
+            length = data.length;
+
+        for (let i = 0; i < colorMod.length; i++) {
+            if (split.length == 0) {
+                star = data[0].count;
+            } else {
+                star = split[i - 1].end;
+            }
+            if (i == colorMod.length - 1) {
+                end = null;
+            } else {
+                sign = parseInt((colorMod[i] / sunMod) * length) + sign;
+                end = data[sign].count;
+            }
+
+            split.push({
+                start: star,
+                end: end,
+                backgroundColor: colors[i],
+                borderColor: this.style.normal.borderColor || this.getColorOpacity(colors[i])
+            });
+
+        }
+
+        this.style.splitList = split;
+        this.setlegend(this.legend, this.style.splitList);
     }
     getColor(count) {
         let color = null;

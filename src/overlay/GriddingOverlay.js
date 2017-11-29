@@ -7,7 +7,7 @@ export class GriddingOverlay extends Parameter {
     constructor(ops) {
         super(ops);
         this.delteOption();
-         
+
         this._setOptionStyle(baseConfig, ops);
     }
     delteOption() {
@@ -36,7 +36,7 @@ export class GriddingOverlay extends Parameter {
             mapCenter: me.map.getCenter(),
             zoom: zoom
         };
-     
+
         this.postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj) {
             if (me.eventType == 'onmoving') {
                 return;
@@ -72,14 +72,14 @@ export class GriddingOverlay extends Parameter {
         this.drawMap();
     }
     getTarget(x, y) {
-       
+
         let data = this.workerData;
         let size = data.size;
         let zoomUnit = data.zoomUnit;
-        
+
         let grids = data.grids || [];
         let gridStep = size / zoomUnit;
-       
+
         let style = this.style.normal;
         let width = gridStep - style.borderWidth;
         for (let i = 0; i < grids.length; i++) {
@@ -87,13 +87,13 @@ export class GriddingOverlay extends Parameter {
 
             let x1 = parseFloat(item.pixels[0]);
             let y1 = parseFloat(item.pixels[1]);
-            
+
             this.ctx.beginPath();
             this.ctx.moveTo(x1, y1);
             this.ctx.lineTo(x1 + width, y1);
             this.ctx.lineTo(x1 + width, y1 + width);
             this.ctx.lineTo(x1, y1 + width);
-         
+
             this.ctx.closePath();
             if (this.ctx.isPointInPath(x, y)) {
                 return {
@@ -108,11 +108,57 @@ export class GriddingOverlay extends Parameter {
             item: null
         };
     }
+   
+    compileSplitList(data) {
+
+        let colors = this.style.colors;
+        if (colors.length < 0 || data.length <= 0) return;
+        data = data.sort((a, b) => {
+            return parseFloat(a.count) - parseFloat(b.count);
+        });
+        let mod = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144];
+
+
+        let colorMod = mod.slice(0, colors.length).reverse();
+        let sunMod = colorMod.reduce((sum, val) => {
+            return sum + val;
+        }, 0);
+        let split = [];
+        let star = 0,
+            end = 0,
+            sign = 0,
+            length = data.length;
+
+        for (let i = 0; i < colorMod.length; i++) {
+            if (split.length == 0) {
+                star = data[0].count;
+            } else {
+                star = split[i - 1].end;
+            }
+            if (i == colorMod.length - 1) {
+                end = null;
+            } else {
+                sign = parseInt((colorMod[i] / sunMod) * length) + sign;
+                end = data[sign].count;
+            }
+
+            split.push({
+                start: star,
+                end: end,
+                backgroundColor: colors[i],
+                borderColor: this.style.normal.borderColor || this.getColorOpacity(colors[i])
+            });
+
+        }
+
+        this.style.splitList = split;
+        this.setlegend(this.legend, this.style.splitList);
+    }
     createColorSplit(grids) {
         let data = [];
         for (let key in grids) {
             let count = grids[key];
-           
+
             if (count > 0) {
                 data.push({
                     name: key,
@@ -145,7 +191,7 @@ export class GriddingOverlay extends Parameter {
     drawRec(size, zoomUnit, max, min, grids) {
         this.workerData.grids = [];
         let gridStep = size / zoomUnit;
-       
+
         let style = this.style.normal;
         for (let i in grids) {
             let sp = i.split('_');

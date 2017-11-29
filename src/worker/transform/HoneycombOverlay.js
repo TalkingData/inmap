@@ -65,14 +65,38 @@ export let HoneycombOverlay = {
         let startYMc = parseInt(nwMc.y / sizeY + 1, 10) * sizeY;
         let startY = (nwMc.y - startYMc) / zoomUnit;
         startY = parseInt(startY, 10);
-
         let startXMc = parseInt(nwMc.x / size, 10) * size;
         let startX = (startXMc - nwMc.x) / zoomUnit;
         startX = parseInt(startX, 10);
 
         let endX = parseInt(mapSize.width + depthX, 10);
         let endY = parseInt(mapSize.height + depthY, 10);
-
+        if (data.length > 0) {
+            let temp = data[0];
+            let minPointX = temp.px,
+                minPointY = temp.py,
+                maxPointX = temp.px,
+                maxPointY = temp.py;
+            for (let i = 0; i < data.length - 1; i++) {
+                let row = data[i];
+                if (minPointX > row.px) {
+                    minPointX = row.px;
+                }
+                if (minPointY > row.py) {
+                    minPointY = row.py;
+                }
+                if (maxPointX < row.px) {
+                    maxPointX = row.px;
+                }
+                if (maxPointY < row.py) {
+                    maxPointY = row.py;
+                }
+            }
+            startX = parseInt(minPointX - 11,10);
+            startY = parseInt(minPointY - 11,10);
+            endX = parseInt(maxPointX + 11,10);
+            endY = parseInt(maxPointY + 11,10);
+        }
         let pointX = startX;
         let pointY = startY;
 
