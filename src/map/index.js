@@ -16,6 +16,7 @@ export class Map {
         this.map = null;
        
         this.option = deepmerge.all([inmapConfig, ops]);
+        
         this.create();
     }
 

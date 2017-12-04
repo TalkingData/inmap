@@ -2,12 +2,20 @@
  let workerContent = '[workerContentString]';
 
  class WorkerMrg {
-     constructor() {}
+     constructor() {
+         this.worker = null;
+
+     }
      create(workerPath) {
-         var workerUrl = workerContent.length == 21 ? URL.createObjectURL(new Blob(['importScripts(\'' + workerPath + '\');'])) :
-             URL.createObjectURL(new Blob([workerContent], {
+         let workerUrl;
+         if (workerContent.length == 21) {
+             workerUrl = workerPath.indexOf('http') > -1 ? URL.createObjectURL(new Blob(['importScripts(\'' + workerPath + '\');'])) : workerPath;
+         } else {
+             workerUrl = URL.createObjectURL(new Blob([workerContent], {
                  type: 'application/javascript'
              }));
+         }
+
          this.worker = new Worker(workerUrl);
          this.worker.addEventListener('message', this.message);
          this.worker.onerror = function (e) {
@@ -15,7 +23,7 @@
              console.error('worker.onerror', e);
              /*eslint-enable */
          };
-     } 
+     }
      message(e) {
          var data = e.data;
          var hashCode = data.request.hashCode;
@@ -33,6 +41,9 @@
       * @param {Function} callback 返回的回调
       */
      postMessage(data, callback) {
+         if (this.worker == null) {
+             this.create("../dist/worker.js");
+         }
          var hashCode = data.request.hashCode;
          var msgId = data.request.msgId;
          var classPath = data.request.classPath;
