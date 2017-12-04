@@ -30,7 +30,7 @@ import {
     workerMrg
 } from './common/workerMrg';
 
-export {
+const inMap = {
     utils,
     Map,
     DotOverlay,
@@ -42,3 +42,5 @@ export {
     workerMrg,
     ImgOverlay
 };
+
+export default inMap;
