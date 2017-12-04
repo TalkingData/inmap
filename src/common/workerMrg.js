@@ -1,17 +1,18 @@
  let instances = {};
- let workerContent = '[workerContentString]';
-
  class WorkerMrg {
      constructor() {
          this.worker = null;
-
+         this.workerContent = '[workerContentString]';
+         
      }
      create(workerPath) {
+        debugger
          let workerUrl;
-         if (workerContent.length == 21) {
+         if (this.workerContent.length == 21) {
              workerUrl = workerPath.indexOf('http') > -1 ? URL.createObjectURL(new Blob(['importScripts(\'' + workerPath + '\');'])) : workerPath;
          } else {
-             workerUrl = URL.createObjectURL(new Blob([workerContent], {
+             console.log("worker")
+             workerUrl = URL.createObjectURL(new Blob([this.workerContent], {
                  type: 'application/javascript'
              }));
          }

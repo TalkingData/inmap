@@ -42,5 +42,16 @@ const inMap = {
     workerMrg,
     ImgOverlay
 };
-
+export {
+    utils,
+    Map,
+    DotOverlay,
+    GriddingOverlay,
+    BoundaryOverlay,
+    HeatOverlay,
+    CircuitOverlay,
+    HoneycombOverlay,
+    workerMrg,
+    ImgOverlay
+};
 export default inMap;

@@ -2,7 +2,7 @@
  * Created by lu on 2016/12/5.
  */
 const path = require('path');
-const fileName = 'inmap';
+
 const option = {
   entry: {
     inmap: './src/main.js',
@@ -11,7 +11,7 @@ const option = {
   output: {
     path: path.join(__dirname, './dist'),
     libraryTarget: 'umd',
-    library: "inmap",
+    library: "inMap",
     umdNamedDefine: true,
     filename: "[name].js"
   },
@@ -27,8 +27,7 @@ const option = {
       },
     ]
   },
-  plugins: [
-  ]
+  plugins: []
 };
 
 module.exports = option;
