@@ -16,7 +16,7 @@ inMap is a big data visualization library based on Baidu map. It focuses on the 
 [http://inmap.talkingdata.com/](http://inmap.talkingdata.com/)
 
 ## Overview
-![](https://raw.githubusercontent.com/TalkingData/inmap/master/asset/overview.jpg)
+![](https://raw.githubusercontent.com/TalkingData/inmap/master/assets/overview.jpg)
 
 ## Install
 Using npm:
