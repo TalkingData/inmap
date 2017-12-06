@@ -35,7 +35,7 @@ Using a script tag for global use:
 <script>
 var inmap = new inMap.Map({
     id: 'allmap',  
-    skin: "Blueness",
+    skin: 'Blueness',
     center: [105.403119, 38.028658], // center of map
     zoom: {
         value: 5, // level of map
