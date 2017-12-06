@@ -6,12 +6,10 @@
          
      }
      create(workerPath) {
-        debugger
          let workerUrl;
          if (this.workerContent.length == 21) {
              workerUrl = workerPath.indexOf('http') > -1 ? URL.createObjectURL(new Blob(['importScripts(\'' + workerPath + '\');'])) : workerPath;
          } else {
-             console.log("worker")
              workerUrl = URL.createObjectURL(new Blob([this.workerContent], {
                  type: 'application/javascript'
              }));
@@ -43,7 +41,7 @@
       */
      postMessage(data, callback) {
          if (this.worker == null) {
-             this.create("../dist/worker.js");
+             this.create('../dist/worker.js');
          }
          var hashCode = data.request.hashCode;
          var msgId = data.request.msgId;

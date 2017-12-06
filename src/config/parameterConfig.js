@@ -5,7 +5,7 @@
  export default {
      tooltip: {
          show: false,
-         customClass: "black", //是否自定义样式
+         customClass: 'black', //是否自定义样式
          offsets: {
              top: 0, //上偏移
              left: 0 //左偏移

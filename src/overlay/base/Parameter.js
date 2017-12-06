@@ -187,52 +187,7 @@ export class Parameter extends CanvasOverlay {
         arr.length = 3;
         return arr.join(',') + ',1)';
     }
-    compileSplitList(data) {
-        let colors = this.style.colors;
-        if (colors.length < 0) return;
-        data = data.sort((a, b) => {
-            return parseFloat(a.count) - parseFloat(b.count);
-        });
-        let splitCount = data.length / colors.length;
-        let colorIndex = 0;
-        let split = [];
-        let star = 0,
-            end = 0;
-
-        for (let i = 0; i < data.length; i++) {
-
-            if (i > splitCount * (colorIndex + 1)) {
-                if (split.length == 0) {
-                    star = data[0].count;
-                }
-
-                end = data[i].count;
-
-                split.push({
-                    start: star,
-                    end: end,
-                    backgroundColor: colors[colorIndex],
-                    borderColor: this.style.normal.borderColor || this.getColorOpacity(colors[colorIndex])
-                });
-                colorIndex++;
-                star = data[i].count;
-            }
-        }
-        //去除最后判断区间，防止区间遗漏
-        if (split.length > 0) {
-            split.push({
-                start: star,
-                end: null,
-                backgroundColor: colors[colorIndex],
-                borderColor: this.style.normal.borderColor || this.getColorOpacity(colors[colorIndex])
-            });
-
-        }
-
-        this.style.splitList = split;
-        this.setlegend(this.legend, this.style.splitList);
-    }
-
+   
     setWorkerData(val) {
         this.workerData = val;
         if (this.filterFun) {
@@ -299,7 +254,7 @@ export class Parameter extends CanvasOverlay {
         } = this.tooltip;
         if (this.tooltipDom == null) {
             this.tooltipDom = document.createElement('div');
-            this.tooltipDom.classList.add("tooltip");
+            this.tooltipDom.classList.add('tooltip');
             this.tooltipDom.classList.add(customClass);
             this.map._inmapOption.toolDom.appendChild(this.tooltipDom);
         }
