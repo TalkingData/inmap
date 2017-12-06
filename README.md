@@ -61,6 +61,6 @@ var inmap = new inMap.Map({
 - [iView](https://github.com/iview/iview)
 
 ## License
-[MIT](https://github.com/TalkingData/inmap/blob/master/LICENSE)
+[Apache License 2.0](https://github.com/TalkingData/inmap/blob/master/LICENSE)
 
 Copyright (c) 2015-present, TalkingData
