@@ -1,4 +1,4 @@
-export class Pixel {
+export default class Pixel {
     constructor(x, y) {
         this.x = x || 0;
         this.y = y || 0;

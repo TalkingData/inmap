@@ -1,7 +1,7 @@
 import {
     pointsToPixelsWoker,
     pointToPixelWorker
-} from '../../geo/index';
+} from '../../lib/pointToPixel';
 
 /**
  * 数据集转换

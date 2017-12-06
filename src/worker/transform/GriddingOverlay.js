@@ -1,12 +1,8 @@
 import {
     geo
-} from '../../geo/geo';
-import {
-    Pixel
-} from './../../geo/Pixel';
-import {
-    Point
-} from './../../geo/Point';
+} from '../../lib/pointToPixel';
+import Pixel from './../../common/Pixel';
+import Point from './../../common/Point';
 export let GriddingOverlay = {
     toRecGrids: function (webObj) {
 
@@ -147,7 +143,7 @@ export let GriddingOverlay = {
 
 
         }
-      
+
         return {
             grids: grids,
             max: max,

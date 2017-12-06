@@ -2,12 +2,14 @@ import {
     isArray
 } from './../../common/util';
 
+
 import {
     pointToPixelWorker
-} from '../../geo/index';
+} from '../../lib/pointToPixel';
+
 import {
     Point
-} from './../../geo/Point';
+} from './../../common/Point';
 import polylabel from './../../common/polylabel';
 export let BoundaryOverlay = {
     calculatePixel: function (webObj) {
