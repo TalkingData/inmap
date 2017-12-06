@@ -1,6 +1,6 @@
 import {
     pointToPixelWorker
-} from '../../geo/index';
+} from '../../lib/pointToPixel';
 export let polymeOverlay = {
     mergeCount: 0,
     /*
