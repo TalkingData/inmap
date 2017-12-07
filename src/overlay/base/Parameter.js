@@ -187,7 +187,7 @@ export class Parameter extends CanvasOverlay {
         arr.length = 3;
         return arr.join(',') + ',1)';
     }
-   
+
     setWorkerData(val) {
         this.workerData = val;
         if (this.filterFun) {
@@ -284,6 +284,12 @@ export class Parameter extends CanvasOverlay {
     compileSplitList(data) {
         let colors = this.style.colors;
         if (colors.length < 0) return;
+        /*eslint-disable */
+        if (!Array.isArray(data)) {
+            console.error(' array is not defined <shouild be setPoints(Array)>');
+            return;
+        }
+        /*eslint-enable */
         data = data.sort((a, b) => {
             return parseFloat(a.count) - parseFloat(b.count);
         });

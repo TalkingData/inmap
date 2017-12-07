@@ -97,6 +97,12 @@ BaseClass.prototype.postMessage = function (workerClassPath, data, callback) {
     let center = map.getCenter();
     let size = map.getSize();
     let msgId = this.setMsgId();
+    /*eslint-disable */
+    if (!Array.isArray(data)) {
+        console.error(' array is not defined <shouild be setPoints(Array)>');
+        return;
+    }
+    /*eslint-enable */
     let request = {
         'type': 'web',
         'data': data,
