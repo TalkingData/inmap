@@ -1,6 +1,6 @@
 <p align="center">
     <a href="http://inmap.talkingdata.com">
-        <img width="200" src="https://raw.githubusercontent.com/TalkingData/inmap/master/assets/logo.svg">
+        <img width="200" src="http://file.iviewui.com/inmap-logo.svg">
     </a>
 </p>
 
