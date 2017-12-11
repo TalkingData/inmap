@@ -284,12 +284,14 @@ export class Parameter extends CanvasOverlay {
     compileSplitList(data) {
         let colors = this.style.colors;
         if (colors.length < 0) return;
-        /*eslint-disable */
-        if (!Array.isArray(data)) {
+
+        if (!Array.isArray(this.points)) {
+            /*eslint-disable */
             console.error(' array is not defined <shouild be setPoints(Array)>');
+            /*eslint-enable */
             return;
         }
-        /*eslint-enable */
+
         data = data.sort((a, b) => {
             return parseFloat(a.count) - parseFloat(b.count);
         });
