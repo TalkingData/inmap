@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="zh-CN">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta charset="utf-8">
+    <title></title>
     <style type="text/css">
         body,
         html {
@@ -39,9 +38,6 @@
         crossorigin="anonymous">
     <script src="../dist/inmap.js"></script>
 </head>
-</head>
-<title></title>
-</head>
 
 <body>
     <div id="allmap"></div>
@@ -64,9 +60,6 @@
         }
     })
 
-
-
-
     var map = new inMap.Map({
         id: 'allmap',
         center: ["114.16248337214269", "22.559515429553684"],
@@ -81,11 +74,14 @@
         skin: "Blueness",
         tooltip: {
             show: true,
+            offsets: {
+                top: 0, //上偏移
+                left: 0 //左偏移
+            },
             formatter: function (params) {
                 return `${params.name}-设备数量：${params.count}<br/>
                          ${params.name}-人口密度：${params.count}<br/>
                         `
-
             }
         },
         legend: {
@@ -122,7 +118,7 @@
                 "rgba(255,0,0,0.7)"
             ]
         },
-        data: [],
+
 
         event: {
             onMouseClick: function (item) {
@@ -173,14 +169,15 @@
                 borderColor: "rgba(255,255,255,1)"
             },
             colors: [
-                "rgba(156,200,249,0.7)", "rgba(93,158,247,0.7)",
-                "rgba(134,207,55,0.7)",
-                "rgba(252,198,10,0.7)", "rgba(255,144,0,0.7)", "rgba(255,72,0,0.7)",
-                "rgba(255,0,0,0.7)"
+                "rgba(156,200,249,0.4)",
+                "rgba(93,158,247,0.4)",
+                "rgba(134,207,55,0.4)",
+                "rgba(252,198,10,0.4)",
+                "rgba(255,144,0,0.4)"
             ],
 
         },
-        data: [],
+
 
         event: {
             onMouseClick: function (item) {

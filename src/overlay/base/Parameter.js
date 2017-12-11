@@ -60,10 +60,9 @@ export class Parameter extends CanvasOverlay {
         });
         this.tooltip = option.tooltip;
         this.legend = option.legend;
-        // this.labelStyle = option.label;
         this.event = option.event;
         this.style = option.style;
-        this.points = option.data;
+        this.points = option.data || this.points;
         //设置皮肤
         if (option.skin && this.map) {
             let setStyle = option.skin == 'Blueness' ? Blueness : WhiteLover;
@@ -72,6 +71,7 @@ export class Parameter extends CanvasOverlay {
                 styleJson: setStyle
             });
         }
+        this.compileSplitList(this.points);
     }
     setOptionStyle(ops) {
         this._setOptionStyle(ops);
@@ -350,7 +350,7 @@ export class Parameter extends CanvasOverlay {
      * 设置图例
      */
     setlegend(legend, splitList) {
-
+        if (!this.map) return;
         if (legend == null || legend.show == false) {
             if (this.legendDom) {
                 this.legendDom.style.display = 'none';

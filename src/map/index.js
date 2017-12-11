@@ -53,7 +53,6 @@ export class Map {
         bmap.centerAndZoom(new BMap.Point(center[0], center[1]), this.option.zoom.value);
        
         if (this.option.zoom.show) {
-           
             //添加地图级别工具条
             new MapZoom(bmap);
         }
