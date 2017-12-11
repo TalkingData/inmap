@@ -1,3 +1,9 @@
+<p align="center">
+    <a href="http://inmap.talkingdata.com">
+        <img width="200" src="http://file.iviewui.com/inmap-logo.svg">
+    </a>
+</p>
+
 # inMap
 [![](https://img.shields.io/travis/TalkingData/inmap.svg?style=flat-square)](https://travis-ci.org/TalkingData/inmap)
 [![iView](https://img.shields.io/npm/v/inmap.svg?style=flat-square)](https://www.npmjs.org/package/inmap)
