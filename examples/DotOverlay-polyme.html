@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>DotOverlay-polyme</title>
+    <title>DotOverlay-polyme 相交聚合</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
@@ -27,11 +27,9 @@
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="data/data.js"></script>
     <script src="../dist/inmap.js"></script>
-  
 </head>
 
 <body>
-
     <div id="allmap"></div>
 </body>
 
@@ -45,7 +43,7 @@
             value: 5,
             show: true,
             max: 22,
-            min: 1
+            min: 6
         },
     })
 
@@ -65,7 +63,6 @@
             title: "标题",
             data: ["描述1", "描述2", "描述3", "描述4"],
             formatter: function (start, end) {
-               
                 return start + "万~" + (end || "max") + "万";
             }
         },

@@ -29,8 +29,6 @@ export class DotOverlay extends Parameter {
             if (me.eventType == 'onmoving') {
                 return;
             }
-
-            // me.workerData = pixels;
             me.setWorkerData(pixels);
             me._dataRender();
         });
@@ -85,7 +83,6 @@ export class DotOverlay extends Parameter {
         this.clearCanvas();
         this.canvasResize();
         this._loopDraw(this.ctx, this.workerData);
-        // this._drawLabel(this.ctx, this.workerData);
     }
     _loopDraw(ctx, pixels) {
         for (var i = 0, len = pixels.length; i < len; i++) {
