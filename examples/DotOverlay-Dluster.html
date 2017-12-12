@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-
 <head>
+    <title>DotOverlay-Dluster</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
@@ -26,18 +26,15 @@
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="../dist/inmap.js"></script>
     <script src="data/data.js"></script>
-    <title></title>
+
 </head>
 
 <body>
-
     <div id="allmap"></div>
 </body>
 
 </html>
 <script>
-   
-       
     var map = new inMap.Map({
         id: 'allmap',
         center: [105.403119, 38.028658],
@@ -48,12 +45,12 @@
             min: 5
         },
     })
-    
-   
+
+
     var overlay = new inMap.DotOverlay({
         tooltip: {
             show: true,
-           
+
             // formatter: function (params) {
             //     return params.count;
             // }
@@ -66,7 +63,7 @@
             formatter: function (start, end) {
                 return start + "万~" + (end || "max") + "万";
             },
-             
+
         },
         style: {
             type: 'cluster',
@@ -125,5 +122,4 @@
         }
     });
     map.add(overlay);
-
 </script>

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
+    <title>BoundaryOverlay</title>
     <style type="text/css">
         body,
         html {
@@ -26,16 +27,12 @@
             padding: 5px 20px;
         }
     </style>
-    
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
-    <script type="text/javascript" src="http://huiyan.baidu.com/mapv/demo/js/dist/BaiduMap_cityCenter.js"></script>
     <script src="./data/shenzhen.js"></script>
     <script src="../dist/inmap.js"></script>
     <link rel="stylesheet" type="text/css" href="http://unpkg.com/iview/dist/styles/iview.css">
     <script type="text/javascript" src="http://vuejs.org/js/vue.min.js"></script>
     <script type="text/javascript" src="http://unpkg.com/iview/dist/iview.min.js"></script>
- 
-<title></title>
 </head>
 
 <body>
@@ -48,114 +45,114 @@
     <div id="allmap"></div>
 </body>
 <script>
-   var inMapVue = new Vue({
-       el: '#app',
-       data: {
-           boundarys: [],
-           model: ''
-       },
-       watch: {
-           model: function (newVal, oldVal) {
-               console.log(newVal);
-               overlay.setSelectd("name=='" + newVal + "'", true);
-           }
-       },
-       mounted: function () {
-           data.forEach(function (element) {
-               this.boundarys.push({
-                   value: element.name,
-                   label: element.name
-               })
-           }, this);
-       }
-   })
-   var inmap = new inMap.Map({
-       id: 'allmap',
-       skin:"Blueness",
-       center: ["114.16248337214269", "22.559515429553684"],
-       zoom: {
-           value: 11,
-           show: true,
-           max: 22
-       }
-   })
-   var overlay = new inMap.BoundaryOverlay({
-       tooltip: {
-           show: true,
-           // formatter: "{name}~{count}",
-           formatter: function (params) {
-               return params.count;
-           }
-       },
-       legend: {
-           show: true,
-           // title: "板块去重设备数 "
-       },
+    var inMapVue = new Vue({
+        el: '#app',
+        data: {
+            boundarys: [],
+            model: ''
+        },
+        watch: {
+            model: function (newVal, oldVal) {
+                console.log(newVal);
+                overlay.setSelectd("name=='" + newVal + "'", true);
+            }
+        },
+        mounted: function () {
+            data.forEach(function (element) {
+                this.boundarys.push({
+                    value: element.name,
+                    label: element.name
+                })
+            }, this);
+        }
+    })
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        skin: "Blueness",
+        center: ["114.16248337214269", "22.559515429553684"],
+        zoom: {
+            value: 11,
+            show: true,
+            max: 22
+        }
+    })
+    var overlay = new inMap.BoundaryOverlay({
+        tooltip: {
+            show: true,
+            // formatter: "{name}~{count}",
+            formatter: function (params) {
+                return params.count;
+            }
+        },
+        legend: {
+            show: true,
+            // title: "板块去重设备数 "
+        },
 
-       style: {
-           normal: {
-               backgroundColor: 'rgba(0, 0, 0, 1)',
-               borderWidth: 3,
-               label: {
-                   show: true, // 是否显示
-                   font: "11px", // 设置字号
-                   minZoom: 7, // 最小显示的级别
-                   color: 'rgba(0, 0, 0, 1)'
-               },
-               // borderColor: "rgba(255,255,255,1)",
-           },
-           mouseOver: {
-               backgroundColor: 'rgba(200, 200, 200, 1)',
-               borderColor: "rgba(10,225,70,1)",
-               label: {
-                   color: 'rgba(255,0,0,1)'
-               }
+        style: {
+            normal: {
+                backgroundColor: 'rgba(0, 0, 0, 1)',
+                borderWidth: 3,
+                label: {
+                    show: true, // 是否显示
+                    font: "11px", // 设置字号
+                    minZoom: 7, // 最小显示的级别
+                    color: 'rgba(0, 0, 0, 1)'
+                },
+                // borderColor: "rgba(255,255,255,1)",
+            },
+            mouseOver: {
+                backgroundColor: 'rgba(200, 200, 200, 1)',
+                borderColor: "rgba(10,225,70,1)",
+                label: {
+                    color: 'rgba(255,0,0,1)'
+                }
 
-           },
-           selected: {
-               backgroundColor: 'rgba(184,0,0,1)',
-               borderColor: "rgba(255,255,255,1)",
-               label: {
-                   color: 'rgba(255,255,255,1)'
-               }
-           },
-           colors: [
-               "rgba(156,200,249,0.6)", "rgba(93,158,247,0.6)",
-               "rgba(134,207,55,0.6)",
-               "rgba(252,198,10,0.6)", "rgba(255,144,0,0.6)", 
+            },
+            selected: {
+                backgroundColor: 'rgba(184,0,0,1)',
+                borderColor: "rgba(255,255,255,1)",
+                label: {
+                    color: 'rgba(255,255,255,1)'
+                }
+            },
+            colors: [
+                "rgba(156,200,249,0.6)", "rgba(93,158,247,0.6)",
+                "rgba(134,207,55,0.6)",
+                "rgba(252,198,10,0.6)", "rgba(255,144,0,0.6)",
                 "rgba(255,0,0,0.6)"
-           ],
-           splitList: [{ //设置区间颜色
-                   start: 0,
-                   end: 1,
-                   backgroundColor: 'rgba(200, 200, 50, 1)',
-               },
-               {
-                   start: 1,
-                   end: 2,
-                   backgroundColor: 'rgba(255,132,41,1)',
-               },
-               {
-                   start: 2,
-                   end: 3,
-                   backgroundColor: 'rgba(255,241,0,1)',
-               },
-               {
-                   start: 3,
-                   backgroundColor: 'rgba(148,238,136,1)',
-               }
-           ],
-       },
-       data: [],
+            ],
+            splitList: [{ //设置区间颜色
+                    start: 0,
+                    end: 1,
+                    backgroundColor: 'rgba(200, 200, 50, 1)',
+                },
+                {
+                    start: 1,
+                    end: 2,
+                    backgroundColor: 'rgba(255,132,41,1)',
+                },
+                {
+                    start: 2,
+                    end: 3,
+                    backgroundColor: 'rgba(255,241,0,1)',
+                },
+                {
+                    start: 3,
+                    backgroundColor: 'rgba(148,238,136,1)',
+                }
+            ],
+        },
+        data: [],
 
-       event: {
-           onMouseClick: function (item) {
-               //能获取当前点的信息
-           }
-       }
-   });
-   inmap.add(overlay);
-   overlay.setPoints(data);
-
+        event: {
+            onMouseClick: function (item) {
+                //能获取当前点的信息
+            }
+        }
+    });
+    inmap.add(overlay);
+    overlay.setPoints(data);
 </script>
+
 </html>
