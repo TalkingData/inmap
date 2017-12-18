@@ -23,7 +23,7 @@ export class LabelRender extends BaseClass {
     constructor(opts) {
         opts = deepmerge({}, baseConfig, opts);
         super(opts);
-        this.labelStyle = opts.label;
+        this.labelStyle = opts.style.normal.label;
         this.textRender = null;
         this.ctx = null;
         this.pixels = [];
@@ -38,7 +38,7 @@ export class LabelRender extends BaseClass {
      */
     setTextRender(type = 'normal') {
         let textRender = this.textRender,
-            labelStyle = this.labelStyle[type];
+            labelStyle = this.labelStyle;
 
         if (!textRender) {
             textRender = this.textRender = new TextRender(labelStyle);
@@ -78,7 +78,7 @@ export class LabelRender extends BaseClass {
     drawLabel(ctx, pixels) {
 
 
-        if (!this.textRender.isShow()) return;
+        //if (!this.textRender.isShow()) return;
 
         this.ctx = ctx;
         this.pixels = pixels;

@@ -3,12 +3,14 @@
  */
 
 import {
+    Label
+} from './helper/Label';
+import {
     Parameter
 } from './base/Parameter';
 export class DotOverlay extends Parameter {
     constructor(opts) {
         super(opts);
-        //this.labelRender = new LabelRender(opts);
 
         this.polyme = opts.type == 'polyme';
     }
@@ -83,6 +85,7 @@ export class DotOverlay extends Parameter {
         this.clearCanvas();
         this.canvasResize();
         this._loopDraw(this.ctx, this.workerData);
+        this._drawLabel(this.ctx, this.workerData);
     }
     _loopDraw(ctx, pixels) {
         for (var i = 0, len = pixels.length; i < len; i++) {
@@ -104,15 +107,45 @@ export class DotOverlay extends Parameter {
         }
     }
     _drawLabel(ctx, pixels) {
-        var labelRender = this.labelRender;
 
-        labelRender.drawLabel(ctx, pixels);
+        let labels = pixels.map((val) => {
+            return new Label(ctx, val);
+        });
+        //x排序从小到大
+        labels.sort((a, b) => {
+            return b.x - a.x;
+        });
+        do {
+            var meet = false; //本轮是否有相交
+            for (let i = 0; i < labels.length; i++) {
+                let temp = labels[i];
+                for (let j = 0; j < labels.length; j++) {
+                    if (i != j && temp.show &&labels[j].show && temp.isAnchorMeet(labels[j])) {
+                        temp.next();
+                        meet = true;
 
-        // pixels.forEach(function(item) {
-        //     let pixel = item.pixel;
+                    }
+                }
+            }
+        } while (meet);
 
-        //     // ctx.fillText(item.name, pixel.x, pixel.y)
-        // })
+        //排序 x 从小到大
+        //逐一遍历  判断是否相交 就移动label文字方位 当都不满足时隐藏当前label  
+        labels.forEach(function (item) {
+            if (item.show) {
+                let pixel = item.getCurrentRect();
+               
+                ctx.beginPath();
+                ctx.lineWidth = 1;
+                ctx.font = '13px Arial';
+                ctx.textBaseline = "top";
+                ctx.fillStyle = "#fff";
+                ctx.fillText(item.text, pixel.minX, pixel.minY);
+              
+                ctx.fill();
+            }
+
+        })
     }
     _drawCircle(ctx, x, y, radius, color, lineWidth, strokeStyle) {
         ctx.beginPath();

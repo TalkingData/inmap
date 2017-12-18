@@ -56,7 +56,6 @@ export class CircuitOverlay extends CanvasOverlay {
             nwMc: nwMc,
             zoomUnit: zoomUnit
         };
-        // debugger
 
         this.postMessage('CircuitOverlay.calculatePixel', params, function (pixels) {
             if (me.eventType == 'onmoving') {

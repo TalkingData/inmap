@@ -167,12 +167,10 @@ export class BoundaryOverlay extends Parameter {
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
         this.ctx.miterLimit = 4;
-        // debugger
+
         for (let i = 0, len = data.length; i < len; i++) {
             let item = data[i];
             let geo = item.pgeo;
-            // points[j]['bestCell'] = polylabel([tmp]);
-           
 
             this.ctx.beginPath();
             this.ctx.moveTo(geo[0][0], geo[0][1]);

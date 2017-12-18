@@ -86,7 +86,7 @@ export function setDevicePixelRatio(context) {
     context.canvas.height = context.canvas.height * devicePixelRatio;
     context.canvas.style.width = context.canvas.width / devicePixelRatio + 'px';
     context.canvas.style.height = context.canvas.height / devicePixelRatio + 'px';
-    
+
     context.scale(devicePixelRatio, devicePixelRatio);
 }
 export function encodeHTML(source) {
@@ -135,4 +135,10 @@ export function isPolyContainsPt(lng, lat, geos) {
         lngs.push(parseFloat(geos[j][0]));
     }
     return isPolyContains(lats, lngs, lng, lat);
+}
+
+export function forEach(arr, fn) {
+    for (let i = 0; i < arr.length; i++) {
+        if (fn(arr[i], i) === false) break;
+    }
 }
