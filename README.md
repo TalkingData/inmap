@@ -33,7 +33,7 @@ npm install inmap --save
 Using a script tag for global use:
 ```html
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
-<script type="text/javascript" src="inmap.min.js"></script>
+<script type="text/javascript" src="//unpkg.com/inmap/dist/inmap.min.js"></script>
 ```
 
 ## Usage
