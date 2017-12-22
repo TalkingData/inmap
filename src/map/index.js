@@ -14,20 +14,20 @@ import deepmerge from 'deepmerge';
 export class Map {
     constructor(ops) {
         this.map = null;
-       
+
         this.option = deepmerge.all([inmapConfig, ops]);
-        
+
         this.create();
     }
 
     create() {
         let id = this.option.id;
-        
+
         let mapDom = isString(id) ? document.getElementById(id) : id;
         var bmap = new BMap.Map(mapDom, {
             enableMapClick: false
         });
-        bmap.disableScrollWheelZoom(); // 启用滚轮放大缩小
+        bmap.enableScrollWheelZoom(); // 启用滚轮放大缩小
         bmap.disableDoubleClickZoom();
         bmap.enableKeyboard();
 
@@ -49,9 +49,10 @@ export class Map {
 
         bmap._inmapOption = _inmapOption;
         let center = this.option.center;
-        
+
         bmap.centerAndZoom(new BMap.Point(center[0], center[1]), this.option.zoom.value);
-       
+        bmap.setMinZoom(this.option.zoom.min);
+        bmap.setMaxZoom(this.option.zoom.max);
         if (this.option.zoom.show) {
             //添加地图级别工具条
             new MapZoom(bmap);
