@@ -17,7 +17,7 @@ export let PolymeOverlay = {
         }
     },
     /*
-     * 计算两个圆合并后的坐标和半径
+     * 计算两个圆合并后的坐标和半径 
      */
     getDots: function (d1, d2, r) {
         let a = d1.pixel,
