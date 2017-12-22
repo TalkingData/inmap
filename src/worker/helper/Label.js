@@ -26,16 +26,16 @@ export class Label {
     getCurrentRect() {
         let result = null;
         switch (this.aIndex.toString()) {
-            case "0":
+            case '0':
                 result = this._getRightAnchor();
                 break;
-            case "1":
+            case '1':
                 result = this._getBottomAnchor();
                 break;
-            case "2":
+            case '2':
                 result = this._getLeftAnchor();
                 break;
-            case "3":
+            case '3':
                 result = this._getTopAnchor();
                 break;
             default:

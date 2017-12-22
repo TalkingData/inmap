@@ -115,7 +115,7 @@ export class DotOverlay extends Parameter {
         let fontStyle = this.style.normal.label;
         let fontSize = parseInt(fontStyle.font);
         ctx.font = fontStyle.font;
-        ctx.textBaseline = "top";
+        ctx.textBaseline = 'top';
         ctx.fillStyle = fontStyle.color;
         let byteWidth = ctx.measureText('a').width;
 

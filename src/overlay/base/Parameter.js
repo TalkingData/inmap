@@ -393,11 +393,15 @@ export class Parameter extends CanvasOverlay {
                 //非颜色分类的暂时未找到很好的图例设计， 先隐藏
                 legend.show = false;
             }
-
         });
-        this.legendDom.style.display = splitList.length == 0 ? 'none' : 'block';
+        let show = false;
+        if (legend.show) {
+            show = splitList.length > 0;
+        } else {
+            show = false;
+        }
+        this.legendDom.style.display = show ? 'block' : 'none';
         this.legendDom.innerHTML = str;
-
     }
     toFixed(num) {
         return parseFloat(num).toFixed(this.legend.toFixed);
@@ -442,7 +446,7 @@ export class Parameter extends CanvasOverlay {
             if (temp) {
                 this.swopeData(result.index, result.item);
             }
-            this.eventType = "mousemove";
+            this.eventType = 'mousemove';
             this._dataRender();
 
         }
