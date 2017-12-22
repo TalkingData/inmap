@@ -58,6 +58,7 @@ export class Parameter extends CanvasOverlay {
 
             }
         });
+
         this.tooltip = option.tooltip;
         this.legend = option.legend;
         this.event = option.event;
@@ -283,7 +284,7 @@ export class Parameter extends CanvasOverlay {
     }
     compileSplitList(data) {
         let colors = this.style.colors;
-        if (colors.length < 0) return;
+        if (colors.length <= 0) return;
 
         if (!Array.isArray(this.points)) {
             /*eslint-disable */
@@ -373,17 +374,26 @@ export class Parameter extends CanvasOverlay {
         let legendFunc = this.legend.formatter; //回调 设置复杂显示
         let me = this;
         splitList.forEach(function (val, index) {
-            let text = null;
-            if (legendData) {
-                text = isFunction(legendFunc) ? legendFunc(me.toFixed(val.start), me.toFixed(val.end)) : legendData[index];
+            let text = null,
+                backgroundColor = val.backgroundColor;
+            if (legendFunc) {
+                text = legendFunc(me.toFixed(val.start), me.toFixed(val.end));
+            } else if (legendData) {
+                text = legendData[index];
             } else {
                 text = `${me.toFixed(val.start)} ~ ${ val.end==null ?'<span class=\'infinity\'>∞</span>':me.toFixed(val.end)}`;
             }
-            str += `
-            <li class='item'>
-                <span class='bg' style="background: ${me.getColorOpacity(val.backgroundColor)};"></span>
-                <span>${text}</span>
-            </li>`;
+            if (backgroundColor) {
+                str += `
+                <li class='item'>
+                    <span class='bg' style="background: ${me.getColorOpacity(backgroundColor)};"></span>
+                    <span>${text}</span>
+                </li>`;
+            } else {
+                //非颜色分类的暂时未找到很好的图例设计， 先隐藏
+                legend.show = false;
+            }
+
         });
         this.legendDom.style.display = splitList.length == 0 ? 'none' : 'block';
         this.legendDom.innerHTML = str;
@@ -432,6 +442,7 @@ export class Parameter extends CanvasOverlay {
             if (temp) {
                 this.swopeData(result.index, result.item);
             }
+            this.eventType = "mousemove";
             this._dataRender();
 
         }

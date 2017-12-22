@@ -1,7 +1,7 @@
 import {
     pointToPixelWorker
 } from '../../lib/pointToPixel';
-export let polymeOverlay = {
+export let PolymeOverlay = {
     mergeCount: 0,
     /*
      * 判断两个圆点是否相交
@@ -27,7 +27,7 @@ export let polymeOverlay = {
         let tempDot = {
             merges: (merges1 || [d1]).concat(merges2 || [d2]),
             pixel: {
-                radius: a.radius + b.radius - r + polymeOverlay.mergeCount,
+                radius: a.radius + b.radius - r + PolymeOverlay.mergeCount,
                 x: Math.ceil((a.x + b.x) / 2),
                 y: Math.ceil((a.y + b.y) / 2)
             }
@@ -43,8 +43,8 @@ export let polymeOverlay = {
             for (let i = 0; i < dots.length; i++) {
                 let temp = dots[i];
                 for (let j = 0; j < dots.length; j++) {
-                    if (i != j && polymeOverlay.isMeet(temp.pixel, dots[j].pixel)) {
-                        temp = polymeOverlay.getDots(temp, dots[j],defautR);
+                    if (i != j && PolymeOverlay.isMeet(temp.pixel, dots[j].pixel)) {
+                        temp = PolymeOverlay.getDots(temp, dots[j],defautR);
                         dots.splice(i, 1);
                         dots.splice(j - 1, 1);
                         meet = true;
@@ -60,7 +60,7 @@ export let polymeOverlay = {
         return merges;
     },
     mergePoint: function (webObj) {
-        polymeOverlay.mergeCount = webObj.request.data.mergeCount;
+        PolymeOverlay.mergeCount = webObj.request.data.mergeCount;
         let data = webObj.request.data.points;
         let radius = webObj.request.data.size;
         data.forEach((val) => {
@@ -71,7 +71,7 @@ export let polymeOverlay = {
                 radius: radius
             };
         });
-        let temp = polymeOverlay.merge(data, radius);
+        let temp = PolymeOverlay.merge(data, radius);
         return {
             data: temp,
             client: webObj

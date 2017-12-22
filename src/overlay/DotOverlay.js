@@ -4,14 +4,13 @@
 
 import {
     Label
-} from './helper/Label';
+} from './../worker/helper/Label';
 import {
     Parameter
 } from './base/Parameter';
 export class DotOverlay extends Parameter {
     constructor(opts) {
         super(opts);
-
         this.polyme = opts.type == 'polyme';
     }
     resize() {
@@ -20,13 +19,12 @@ export class DotOverlay extends Parameter {
     drawMap() {
 
         let me = this;
-        let path = me.polyme ? 'polymeOverlay.mergePoint' : 'HeatOverlay.pointsToPixels';
+        let path = me.polyme ? 'PolymeOverlay.mergePoint' : 'HeatOverlay.pointsToPixels';
         let data = me.polyme ? {
             points: this.points,
             mergeCount: this.style.normal.mergeCount,
             size: this.style.normal.size
         } : this.points;
-
         this.postMessage(path, data, function (pixels) {
             if (me.eventType == 'onmoving') {
                 return;
@@ -73,7 +71,6 @@ export class DotOverlay extends Parameter {
     findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-
             index = this.selectItem.findIndex(function (val) {
                 return val && val.lat == item.lat && val.lng == item.lng;
             });
@@ -85,13 +82,20 @@ export class DotOverlay extends Parameter {
         this.clearCanvas();
         this.canvasResize();
         this._loopDraw(this.ctx, this.workerData);
-        this._drawLabel(this.ctx, this.workerData);
+        if (this.style.normal.label.show) {
+            this._drawLabel(this.ctx, this.workerData);
+        }
+    }
+    swopeData(index, item) {
+        if (index > -1 && !this.style.normal.label.show) { //导致文字散
+            this.workerData[index] = this.workerData[this.workerData.length - 1];
+            this.workerData[this.workerData.length - 1] = item;
+        }
     }
     _loopDraw(ctx, pixels) {
         for (var i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.pixel;
-
             let style = this.polyme ? this.style.normal : this.setDrawStyle(item);
             if (style.shadowBlur) {
                 ctx.shadowBlur = style.shadowBlur;
@@ -103,13 +107,38 @@ export class DotOverlay extends Parameter {
                 ctx.globalCompositeOperation = style.globalCompositeOperation;
             }
             let size = this.polyme ? pixel.radius : style.size;
+            pixel['radius'] = size;
             this._drawCircle(ctx, pixel.x, pixel.y, size, style.backgroundColor, style.borderWidth, style.borderColor);
         }
     }
     _drawLabel(ctx, pixels) {
+        let fontStyle = this.style.normal.label;
+        let fontSize = parseInt(fontStyle.font);
+        ctx.font = fontStyle.font;
+        ctx.textBaseline = "top";
+        ctx.fillStyle = fontStyle.color;
+        let byteWidth = ctx.measureText('a').width;
+
+        // let param = {
+        //     pixels: pixels,
+        //     height: fontSize,
+        //     borderWidth: this.style.normal.borderWidth,
+        //     byteWidth: byteWidth
+        // };
+        // this.postMessage('LablEvading.merge', param, (labels) => {
+        //     if (this.eventType == 'onmoving') {
+        //         return;
+        //     }
+        //     labels.forEach(function (item) {
+        //         ctx.beginPath();
+        //         ctx.fillText(item.text, item.x, item.y);
+        //         ctx.fill();
+        //     });
+        // });
 
         let labels = pixels.map((val) => {
-            return new Label(ctx, val);
+            let radius = val.pixel.radius + this.style.normal.borderWidth;
+            return new Label(val.pixel.x, val.pixel.y, radius, fontSize, byteWidth, val.name);
         });
         //x排序从小到大
         labels.sort((a, b) => {
@@ -120,10 +149,10 @@ export class DotOverlay extends Parameter {
             for (let i = 0; i < labels.length; i++) {
                 let temp = labels[i];
                 for (let j = 0; j < labels.length; j++) {
-                    if (i != j && temp.show &&labels[j].show && temp.isAnchorMeet(labels[j])) {
+                    if (i != j && temp.show && temp.isAnchorMeet(labels[j])) {
                         temp.next();
                         meet = true;
-
+                        break;
                     }
                 }
             }
@@ -134,18 +163,11 @@ export class DotOverlay extends Parameter {
         labels.forEach(function (item) {
             if (item.show) {
                 let pixel = item.getCurrentRect();
-               
                 ctx.beginPath();
-                ctx.lineWidth = 1;
-                ctx.font = '13px Arial';
-                ctx.textBaseline = "top";
-                ctx.fillStyle = "#fff";
-                ctx.fillText(item.text, pixel.minX, pixel.minY);
-              
+                ctx.fillText(item.text, pixel.x, pixel.y);
                 ctx.fill();
             }
-
-        })
+        });
     }
     _drawCircle(ctx, x, y, radius, color, lineWidth, strokeStyle) {
         ctx.beginPath();

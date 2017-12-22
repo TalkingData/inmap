@@ -15,8 +15,11 @@ import {
     HoneycombOverlay
 } from './transform/HoneycombOverlay';
 import {
-    polymeOverlay
-} from './transform/polymeOverlay';
+    PolymeOverlay
+} from './transform/PolymeOverlay';
+import {
+    LablEvading
+} from './transform/LablEvading';
 let callbackList = {
     'HeatOverlay': HeatOverlay,
     'HeatTileOverlay': HeatTileOverlay,
@@ -24,7 +27,8 @@ let callbackList = {
     'BoundaryOverlay': BoundaryOverlay,
     'CircuitOverlay': CircuitOverlay,
     'HoneycombOverlay': HoneycombOverlay,
-    'polymeOverlay': polymeOverlay
+    'PolymeOverlay': PolymeOverlay,
+    'LablEvading':LablEvading
 };
 
 /**

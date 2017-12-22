@@ -24,8 +24,8 @@
              scale: 1,
              label: {
                  show: false,
-                 color: '#fff',
-                 fontSize: 12
+                 color: 'rgba(0,0,0,1)',
+                 font: '13px Arial'
              },
          },
          mouseOver: {
