@@ -102,6 +102,7 @@ export class CircuitOverlay extends CanvasOverlay {
     }
 
     drawLine(data) {
+        
         let normal = this.style.normal;
         this.ctx.shadowBlur = 0;
         this.ctx.shadowOffsetX = 0;
@@ -114,7 +115,7 @@ export class CircuitOverlay extends CanvasOverlay {
         this.ctx.lineWidth = normal.borderWidth;
         this.ctx.beginPath();
 
-        for (let i = 0; i < data.length - 1500; i++) {
+        for (let i = 0; i < data.length ; i++) {
             let item = data[i];
 
             let pixels = item.pixels;
