@@ -121,12 +121,11 @@ export class HeatOverlay extends Parameter {
         }
 
 
-        // img.data = imgData;
-
         ctx.putImageData(img, 0, 0, 0, 0, container.width, container.height);
     }
     drawPoint(x, y, radius, opacity) {
         let ctx = this.ctx;
+        ctx.globalAlpha = opacity;
         ctx.beginPath();
         let gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
         gradient.addColorStop(0, 'rgba(0,0,0,1)');
@@ -135,7 +134,6 @@ export class HeatOverlay extends Parameter {
         ctx.arc(x, y, radius, 0, Math.PI * 2, true);
         ctx.closePath();
         ctx.fill();
-        ctx.globalAlpha = opacity;
     }
 
     getColorPaint() {
