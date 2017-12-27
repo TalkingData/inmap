@@ -61,7 +61,7 @@ var inmap = new inMap.Map({
 |[ChowBu](https://github.com/ChowBu) |  ![](https://avatars3.githubusercontent.com/u/7564637?v=3&s=60)|
 |[cheekahao](https://github.com/cheekahao) |  ![](https://avatars3.githubusercontent.com/u/11977758?v=3&s=60)|
 |[chenli8](https://github.com/chenli8) |  ![](https://avatars3.githubusercontent.com/u/24763413?v=3&s=60)|
-
+exchange: QQ618308202
 ## Links
 - [TalkingData](https://github.com/TalkingData)
 - [iView](https://github.com/iview/iview)
