@@ -13,6 +13,7 @@ export class CircuitOverlay extends CanvasOverlay {
         this.points = [];
         this.style = {};
         this._setOptionStyle(baseConfig, ops);
+        this._isCoordinates = false;
 
     }
     _setOptionStyle(config, ops) {
@@ -56,7 +57,9 @@ export class CircuitOverlay extends CanvasOverlay {
             nwMc: nwMc,
             zoomUnit: zoomUnit
         };
-
+        if (!this._isCoordinates) {
+            this.coordinates(this.points);
+        }
         this.postMessage('CircuitOverlay.calculatePixel', params, function (pixels) {
             if (me.eventType == 'onmoving') {
                 return;
@@ -68,6 +71,7 @@ export class CircuitOverlay extends CanvasOverlay {
 
     }
     coordinates(data) {
+        this._isCoordinates = true;
         var projection = this.map.getMapType().getProjection();
         for (let i = 0; i < data.length; i++) {
             let item = data[i];
@@ -102,7 +106,7 @@ export class CircuitOverlay extends CanvasOverlay {
     }
 
     drawLine(data) {
-        
+
         let normal = this.style.normal;
         this.ctx.shadowBlur = 0;
         this.ctx.shadowOffsetX = 0;
@@ -115,7 +119,7 @@ export class CircuitOverlay extends CanvasOverlay {
         this.ctx.lineWidth = normal.borderWidth;
         this.ctx.beginPath();
 
-        for (let i = 0; i < data.length ; i++) {
+        for (let i = 0; i < data.length; i++) {
             let item = data[i];
 
             let pixels = item.pixels;
