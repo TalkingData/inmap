@@ -137,8 +137,20 @@ export function isPolyContainsPt(lng, lat, geos) {
     return isPolyContains(lats, lngs, lng, lat);
 }
 
-export function forEach(arr, fn) {
-    for (let i = 0; i < arr.length; i++) {
-        if (fn(arr[i], i) === false) break;
+/**
+ * 判断是否是移动端
+ */
+export function detectmob() {
+    if (navigator.userAgent.match(/Android/i) ||
+        navigator.userAgent.match(/webOS/i) ||
+        navigator.userAgent.match(/iPhone/i) ||
+        navigator.userAgent.match(/iPad/i) ||
+        navigator.userAgent.match(/iPod/i) ||
+        navigator.userAgent.match(/BlackBerry/i) ||
+        navigator.userAgent.match(/Windows Phone/i)
+    ) {
+        return true;
+    } else {
+        return false;
     }
 }

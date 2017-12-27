@@ -1,6 +1,9 @@
 import deepmerge from 'deepmerge';
 import baseConfig from './../../config/parameterConfig';
 import {
+    detectmob
+} from './../../common/util';
+import {
     WhiteLover,
     Blueness
 } from './../../config/mapStyle';
@@ -13,7 +16,6 @@ import {
 import {
     isFunction,
     isString,
-
 } from './../../common/util';
 
 
@@ -274,8 +276,8 @@ export class Parameter extends CanvasOverlay {
 
                 this.tooltipDom.innerHTML = this.tooltipTemplate(overItem);
             }
-            this.tooltipDom.style.left = event.clientX + offsets.left + 'px';
-            this.tooltipDom.style.top = event.clientY + offsets.top + 'px';
+            this.tooltipDom.style.left = event.jb.x + offsets.left + 'px';
+            this.tooltipDom.style.top = event.jb.y + offsets.top + 'px';
             this.tooltipDom.style.display = 'block';
         } else {
             this.tooltipDom.style.display = 'none';
@@ -455,6 +457,7 @@ export class Parameter extends CanvasOverlay {
         } else {
             this.map.setDefaultCursor('default');
         }
+
         this.setTooltip(event);
 
     }
@@ -489,6 +492,11 @@ export class Parameter extends CanvasOverlay {
         this.triggerClick(event);
         this.cancerExp();
         this._dataRender();
+        if (detectmob()) {
+            this.overItem = item;
+            this.setTooltip(event);
+        }
+
 
     }
 }
