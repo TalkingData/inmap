@@ -273,9 +273,9 @@ export class Parameter extends CanvasOverlay {
                 }
                 this.tooltipDom.innerHTML = this.tooltipTemplate(overItem);
             }
-            
-            this.tooltipDom.style.left = event.offsetX + 'px';
-            this.tooltipDom.style.top = event.offsetY + 'px';
+
+            this.tooltipDom.style.left = event.offsetX + offsets.left + 'px';
+            this.tooltipDom.style.top = event.offsetY + offsets.top + 'px';
             this.tooltipDom.style.display = 'block';
         } else {
             this.tooltipDom.style.display = 'none';
