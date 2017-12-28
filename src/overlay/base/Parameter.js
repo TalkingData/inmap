@@ -234,8 +234,6 @@ export class Parameter extends CanvasOverlay {
                 this.setCenterAndZoom(temp[0].geo, exp, scale); //default first
             }
         }
-
-
     }
     /**
      * 取消选中
@@ -273,11 +271,11 @@ export class Parameter extends CanvasOverlay {
                 if (!this.tooltipTemplate) { //编译
                     this.compileTemplate(formatter);
                 }
-
                 this.tooltipDom.innerHTML = this.tooltipTemplate(overItem);
             }
-            this.tooltipDom.style.left = event.jb.x + offsets.left + 'px';
-            this.tooltipDom.style.top = event.jb.y + offsets.top + 'px';
+            
+            this.tooltipDom.style.left = event.offsetX + 'px';
+            this.tooltipDom.style.top = event.offsetY + 'px';
             this.tooltipDom.style.display = 'block';
         } else {
             this.tooltipDom.style.display = 'none';
