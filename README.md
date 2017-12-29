@@ -6,7 +6,9 @@
 
 # inMap
 [![](https://img.shields.io/travis/TalkingData/inmap.svg?style=flat-square)](https://travis-ci.org/TalkingData/inmap)
-[![iView](https://img.shields.io/npm/v/inmap.svg?style=flat-square)](https://www.npmjs.org/package/inmap)
+[![inMap](https://img.shields.io/npm/v/inmap.svg?style=flat-square)](https://www.npmjs.org/package/inmap)
+[![NPM downloads](http://img.shields.io/npm/dm/inmap.svg?style=flat-square)](https://npmjs.org/package/inmap)
+[![NPM downloads](https://img.shields.io/npm/dt/inmap.svg?style=flat-square)](https://npmjs.org/package/inmap)
 
 ## Introduce
 inMap is a big data visualization library based on Baidu map. It focuses on the scatter, heat map, grid and aggregation algorithm. Make it easy to use.
