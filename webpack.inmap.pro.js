@@ -2,7 +2,7 @@
  * Created by lu on 2016/12/5.
  */
 const merge = require('webpack-merge');
-const config = require('./webpack.inmap');
+const config = require('./webpak.inmap');
 const webpack = require('webpack');
 const path = require('path');
 
