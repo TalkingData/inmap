@@ -21,6 +21,7 @@
          normal: {
              borderWidth: 0.1,
              backgroundColor: 'rgba(200, 200, 200, 0.5)',
+             borderColor: "rgba(0,0,0,1)",
              scale: 1,
              label: {
                  show: false,
