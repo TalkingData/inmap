@@ -5,7 +5,7 @@
  export default {
      tooltip: {
          show: false,
-         customClass: 'black', //是否自定义样式
+         customClass: 'inmap-tooltip-black', //是否自定义样式
          offsets: {
              top: 0, //上偏移
              left: 0 //左偏移
@@ -21,7 +21,7 @@
          normal: {
              borderWidth: 0.1,
              backgroundColor: 'rgba(200, 200, 200, 0.5)',
-             borderColor: "rgba(0,0,0,1)",
+            // borderColor: "rgba(0,0,0,1)",
              scale: 1,
              label: {
                  show: false,

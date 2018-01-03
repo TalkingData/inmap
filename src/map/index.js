@@ -66,7 +66,7 @@ export class Map {
     crtateContainer(mapDom) {
         let parent = mapDom;
         let div = document.createElement('div');
-        div.classList.add('td-map-container');
+        div.classList.add('inmap-container');
         parent.appendChild(div);
         return div;
 

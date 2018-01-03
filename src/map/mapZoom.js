@@ -8,7 +8,7 @@ export class MapZoom {
 
     createDom() {
         let div = document.createElement('div');
-        div.classList.add('scale-group');
+        div.classList.add('inmap-scale-group');
         div.innerHTML = '<a>+</a > <a>-</a >';
         this.dom.appendChild(div);
         this.event(div);

@@ -171,25 +171,25 @@ export class BoundaryOverlay extends Parameter {
         for (let i = 0, len = data.length; i < len; i++) {
             let item = data[i];
             let geo = item.pgeo;
-
+            let style = this.setDrawStyle(item);
             this.ctx.beginPath();
+            this.ctx.shadowColor = style.shadowColor || 'transparent';
+            this.ctx.shadowBlur = style.shadowBlur || 10;
+            this.ctx.shadowOffsetX = 0;
+            this.ctx.shadowOffsetY = 0;
+            this.ctx.fillStyle = style.backgroundColor;
             this.ctx.moveTo(geo[0][0], geo[0][1]);
             for (let j = 1; j < geo.length; j++) {
                 this.ctx.lineTo(geo[j][0], geo[j][1]);
             }
             this.ctx.closePath();
-            let style = this.setDrawStyle(item);
-            this.ctx.shadowColor = style.shadowColor || 'transparent';
-            this.ctx.shadowBlur = style.shadowBlur || 10;
-            this.ctx.shadowOffsetX = 0;
-            this.ctx.shadowOffsetY = 0;
-
-            this.ctx.fillStyle = style.backgroundColor;
             this.ctx.fill();
             this.ctx.strokeStyle = style.borderColor;
             this.ctx.lineWidth = style.borderWidth;
             this.ctx.stroke();
+           
         }
+    
         for (let i = 0, len = data.length; i < len; i++) {
             let item = data[i];
             let geo = item.pgeo;

@@ -255,7 +255,7 @@ export class Parameter extends CanvasOverlay {
         } = this.tooltip;
         if (this.tooltipDom == null) {
             this.tooltipDom = document.createElement('div');
-            this.tooltipDom.classList.add('tooltip');
+            this.tooltipDom.classList.add('inmap-tooltip');
             this.tooltipDom.classList.add(customClass);
             this.map._inmapOption.toolDom.appendChild(this.tooltipDom);
         }
@@ -361,18 +361,19 @@ export class Parameter extends CanvasOverlay {
 
         let legendData = legend.data;
         if (this.legendDom == null) {
-            let ul = document.createElement('ul');
-            ul.classList.add('legend');
-            this.map._inmapOption.toolDom.appendChild(ul);
-            this.legendDom = ul;
+            let div = document.createElement('div');
+            div.classList.add('inmap-legend');
+            this.map._inmapOption.toolDom.appendChild(div);
+            this.legendDom = div;
         }
 
         let str = '';
         if (legend.title) {
-            str = `<li class='title'>${legend.title}</li>`;
+            str = `<div class="inmap-legend-title">${legend.title} </div>`;
         }
         let legendFunc = this.legend.formatter; //回调 设置复杂显示
         let me = this;
+        str += '<table cellpadding="0" cellspacing="0">';
         splitList.forEach(function (val, index) {
             let text = null,
                 backgroundColor = val.backgroundColor;
@@ -381,19 +382,23 @@ export class Parameter extends CanvasOverlay {
             } else if (legendData) {
                 text = legendData[index];
             } else {
-                text = `${me.toFixed(val.start)} ~ ${ val.end==null ?'<span class=\'infinity\'>∞</span>':me.toFixed(val.end)}`;
+                text = `${me.toFixed(val.start)} ~ ${ val.end==null ?'<span class="inmap-infinity"></span>':me.toFixed(val.end)}`;
             }
             if (backgroundColor) {
                 str += `
-                <li class='item'>
-                    <span class='bg' style="background: ${me.getColorOpacity(backgroundColor)};"></span>
-                    <span>${text}</span>
-                </li>`;
+                <tr>
+                    <td style="background:${backgroundColor}; width:17px;"></td>
+                    <td class="inmap-legend-text">
+                       ${text}
+                    </td>
+                </tr>
+                `;
             } else {
                 //非颜色分类的暂时未找到很好的图例设计， 先隐藏
                 legend.show = false;
             }
         });
+        str += '</table>';
         let show = false;
         if (legend.show) {
             show = splitList.length > 0;
