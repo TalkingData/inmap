@@ -17,17 +17,17 @@ export default {
             icon: null,
             width: 0,
             height: 0,
-            scale: 1,
+            
             offsets: {
                 top: 0,
                 left: 0
             }
         },
         mouseOver: {
-            scale: 1,
+            
         },
         selected: {
-            scale: 1
+            
         },
         colors: [],
         splitList: [],

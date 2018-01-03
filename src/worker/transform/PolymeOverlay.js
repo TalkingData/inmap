@@ -24,10 +24,11 @@ export let PolymeOverlay = {
             b = d2.pixel;
         let merges1 = d1.merges,
             merges2 = d2.merges;
+        let merges = (merges1 || [d1]).concat(merges2 || [d2]);
         let tempDot = {
-            merges: (merges1 || [d1]).concat(merges2 || [d2]),
+            merges,
             pixel: {
-                radius: a.radius + b.radius - r + PolymeOverlay.mergeCount,
+                radius: r + PolymeOverlay.mergeCount * merges.length,
                 x: Math.ceil((a.x + b.x) / 2),
                 y: Math.ceil((a.y + b.y) / 2)
             }
@@ -44,7 +45,7 @@ export let PolymeOverlay = {
                 let temp = dots[i];
                 for (let j = 0; j < dots.length; j++) {
                     if (i != j && PolymeOverlay.isMeet(temp.pixel, dots[j].pixel)) {
-                        temp = PolymeOverlay.getDots(temp, dots[j],defautR);
+                        temp = PolymeOverlay.getDots(temp, dots[j], defautR);
                         dots.splice(i, 1);
                         dots.splice(j - 1, 1);
                         meet = true;

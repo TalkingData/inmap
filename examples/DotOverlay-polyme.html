@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>DotOverlay-polyme 相交聚合</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -35,7 +36,6 @@
 
 </html>
 <script>
-    
     var map = new inMap.Map({
         id: 'allmap',
         center: [105.403119, 38.028658],
@@ -47,7 +47,7 @@
         },
     })
 
-   
+
     var overlay = new inMap.DotOverlay({
         type: 'polyme',
         tooltip: {
@@ -71,20 +71,19 @@
                 backgroundColor: 'rgba(200, 200, 50, 1)',
                 borderWidth: 1,
                 borderColor: "rgba(255,255,255,1)",
-                size: 10,
-                mergeCount: 1,
+                size: 4,
+                mergeCount: 2,
             },
             mouseOver: {
                 backgroundColor: 'rgba(200, 200, 200, 1)',
                 borderColor: "rgba(255,255,255,1)",
                 borderWidth: 4,
-                scale: 1,
             },
             selected: {
                 backgroundColor: 'rgba(184,0,0,1)',
                 borderColor: "rgba(255,255,255,1)"
             },
-            splitList: [],
+            
         },
         data: data,
         event: {
@@ -95,13 +94,4 @@
         }
     });
     map.add(overlay);
-
-    // var point = new BMap.Point(118.796834, 32.086727),
-    //     marker =  new BMap.Marker(point);
-
-    //     map.map.addOverlay(marker);
-
-    //     marker.addEventListener("click", function(e){
-    //         console.log(e)
-    //     });
 </script>

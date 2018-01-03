@@ -51,8 +51,8 @@ export class ImgOverlay extends Parameter {
             if (!img) break;
             if (style.width && style.height) {
                 let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height, 1);
-               
-                if (this._isMouseOver(x, y, xy.x, xy.y, style.width * style.scale, style.height * style.scale)) {
+
+                if (this._isMouseOver(x, y, xy.x, xy.y, style.width, style.height)) {
                     return {
                         index: i,
                         item: item
@@ -60,7 +60,7 @@ export class ImgOverlay extends Parameter {
                 }
             } else {
 
-                let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height, style.scale);
+                let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height);
                 if (this._isMouseOver(x, y, xy.x, xy.y, img.width, img.height)) {
 
                     return {
@@ -82,7 +82,7 @@ export class ImgOverlay extends Parameter {
     findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-           
+
             index = this.selectItem.findIndex(function (val) {
                 return val && val.lat == item.lat && val.lng == item.lng;
             });
@@ -97,14 +97,14 @@ export class ImgOverlay extends Parameter {
     }
     loadImg(img, fun) {
         let me = this;
-       
+
         if (isString(img)) {
             let image = me.cacheImg[img];
             if (!image) {
                 let image = new Image();
                 image.src = img;
                 image.onload = function () {
-                   
+
                     me.cacheImg[img] = image;
                     fun(image);
                 };
@@ -124,11 +124,11 @@ export class ImgOverlay extends Parameter {
         }
 
     }
-    _getDrawXY(pixel, offsetL, offsetT, width, height, scale) {
+    _getDrawXY(pixel, offsetL, offsetT, width, height) {
         let x = 0,
             y = 0;
-        let scaleW = width * scale;
-        let scaleH = height * scale;
+        let scaleW = width;
+        let scaleH = height;
         let offsetLeft = parseFloat(offsetL);
         let offsetTop = parseFloat(offsetT);
 
@@ -152,11 +152,11 @@ export class ImgOverlay extends Parameter {
      * @param {*} item 
      */
     setDrawStyle(item) {
-        let normal = this.style.normal;//正常样式
+        let normal = this.style.normal; //正常样式
         let result = {};
         Object.assign(result, normal);
         //区间样式
-        
+
         let splitList = this.style.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];
@@ -170,7 +170,7 @@ export class ImgOverlay extends Parameter {
                 break;
             }
         }
-        
+
 
         return result;
 
@@ -182,8 +182,8 @@ export class ImgOverlay extends Parameter {
             let style = this.setDrawStyle(item);
             this.loadImg(style.icon, (img) => {
                 if (style.width && style.height) {
-                    let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height, style.scale);
-                    this._drawImage(this.ctx, img, xy.x, xy.y, style.width * style.scale, style.height * style.scale);
+                    let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height);
+                    this._drawImage(this.ctx, img, xy.x, xy.y, style.width, style.height);
 
                 } else {
                     let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, img.width, img.height, 1);

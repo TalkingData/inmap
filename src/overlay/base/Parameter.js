@@ -94,22 +94,23 @@ export class Parameter extends CanvasOverlay {
         let result = {};
         result = deepmerge(result, normal);
         //区间样式
-
         let splitList = this.style.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];
             if (condition.end == null) {
                 if (item.count >= condition.start) {
-                    result = deepmerge(normal, condition);
-
+                    result = deepmerge.all([normal, condition]);
                     break;
                 }
             } else if (item.count >= condition.start && item.count < condition.end) {
-                result = deepmerge(normal, condition);
+                result = deepmerge.all([normal, condition]);
                 break;
             }
+            if (!result.borderColor) {
+                result['borderColor'] = this.getColorOpacity(result.backgroundColor);
+            }
         }
-        let size = result.size;
+
         let shadowColor = {};
 
         if (mouseOverStyle && this.overItem == item) {
@@ -119,7 +120,7 @@ export class Parameter extends CanvasOverlay {
             }
 
             result = deepmerge.all([result, normal, mouseOverStyle, {
-                size: size * mouseOverStyle.scale,
+
                 backgroundColor: mouseOverStyle.backgroundColor || this.brightness(result.backgroundColor, 0.1)
             }, shadowColor]);
         }
@@ -129,9 +130,7 @@ export class Parameter extends CanvasOverlay {
                 shadowColor['shadowColor'] = this.brightness(selectedStyle.backgroundColor, 0.1);
             }
 
-            result = deepmerge.all([result, normal, selectedStyle, {
-                size: size * mouseOverStyle.scale
-            }, shadowColor]);
+            result = deepmerge.all([result, normal, selectedStyle, shadowColor]);
         }
 
         return result;
@@ -224,14 +223,14 @@ export class Parameter extends CanvasOverlay {
      * 设置选中
      * @param {*} exp  表达式
      */
-    setSelectd(exp, scale) {
+    setSelectd(exp) {
 
         if (this.points.length > 0) {
             let filterFun = new Function('item', 'with(item){ return ' + exp + ' }');
             let temp = this.points.filter(filterFun);
 
             if (temp.length > 0) {
-                this.setCenterAndZoom(temp[0].geo, exp, scale); //default first
+                this.setCenterAndZoom(temp[0].geo, exp); //default first
             }
         }
     }
@@ -470,10 +469,8 @@ export class Parameter extends CanvasOverlay {
     tMouseClick(event) {
         if (this.eventType == 'onmoving') return;
         let {
-            onMouseClick,
             multiSelect
         } = this.event;
-        if (!onMouseClick) return;
         let result = this.getTarget(event.pixel.x, event.pixel.y);
         if (result.index == -1) {
             return;

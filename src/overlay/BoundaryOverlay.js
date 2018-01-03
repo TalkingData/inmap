@@ -39,18 +39,18 @@ export class BoundaryOverlay extends Parameter {
             arr.push(new BMap.Point(val[0], val[1]));
 
         });
-       
+
         let view = this.map.getViewport(arr);
         let me = this;
 
         function zoomEnd() {
-           
+
             me.map.removeEventListener('zoomend', zoomEnd);
             me.map.panTo(view.center);
         }
 
         function moveend() {
-           
+
             me.map.removeEventListener('moveend', moveend);
             me.parserExp(exp);
             if (me.workerData.length > 0) {
@@ -58,7 +58,7 @@ export class BoundaryOverlay extends Parameter {
                 me._dataRender();
             }
         }
-       
+
 
         let scale = view.zoom - 1;
         this.map.addEventListener('zoomend', zoomEnd);
@@ -106,21 +106,21 @@ export class BoundaryOverlay extends Parameter {
         this.drawLine(this.workerData);
     }
     drawMap() {
-       
+
         let me = this;
         this.postMessage('BoundaryOverlay.calculatePixel', this.points, function (pixels) {
             if (me.eventType == 'onmoving') {
                 return;
             }
-           
+
             me.clearCanvas();
             me.canvasResize();
             me.overItem = null;
-           
+
             me.setWorkerData(pixels);
-            
-           
-            
+
+
+
             me.drawLine(pixels);
         });
     }
@@ -130,7 +130,7 @@ export class BoundaryOverlay extends Parameter {
         }
         this.cancerSelectd();
         this.points = points;
-       
+
         if (this.style.colors.length > 0) {
             this.compileSplitList(this.points);
         }
@@ -139,7 +139,7 @@ export class BoundaryOverlay extends Parameter {
     getTarget(x, y) {
 
         let data = this.workerData;
-        
+
         this.ctx.beginPath();
         for (let i = 0, len = data.length; i < len; i++) {
             let item = data[i];
@@ -184,12 +184,13 @@ export class BoundaryOverlay extends Parameter {
             }
             this.ctx.closePath();
             this.ctx.fill();
+
             this.ctx.strokeStyle = style.borderColor;
             this.ctx.lineWidth = style.borderWidth;
             this.ctx.stroke();
-           
+
         }
-    
+
         for (let i = 0, len = data.length; i < len; i++) {
             let item = data[i];
             let geo = item.pgeo;

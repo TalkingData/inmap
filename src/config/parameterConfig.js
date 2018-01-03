@@ -21,27 +21,15 @@
          normal: {
              borderWidth: 0.1,
              backgroundColor: 'rgba(200, 200, 200, 0.5)',
-            // borderColor: "rgba(0,0,0,1)",
-             scale: 1,
+             // borderColor: "rgba(0,0,0,1)",
+
              label: {
                  show: false,
                  color: 'rgba(0,0,0,1)',
                  font: '13px Arial'
              },
          },
-         mouseOver: {
-             scale: 1,
-             label: {
 
-             }
-         },
-         selected: {
-             scale: 1,
-             label: {
-
-             }
-
-         },
          colors: [
 
          ],
@@ -51,10 +39,6 @@
      data: [],
      event: {
          multiSelect: false, //是否支持多选
-         /*eslint-disable */
-         onMouseClick: function (item, event) {
-
-         }
-         /*eslint-enable */
+         onMouseClick(){}
      }
  };

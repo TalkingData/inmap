@@ -98,8 +98,7 @@
                     font: "11px", // 设置字号
                     minZoom: 7, // 最小显示的级别
                     color: 'rgba(0, 0, 0, 1)'
-                },
-                // borderColor: "rgba(255,255,255,1)",
+                }
             },
             mouseOver: {
                 backgroundColor: 'rgba(200, 200, 200, 1)',
@@ -116,37 +115,36 @@
                     color: 'rgba(255,255,255,1)'
                 }
             },
-            colors: [
-                "rgba(156,200,249,0.6)", "rgba(93,158,247,0.6)",
-                "rgba(134,207,55,0.6)",
-                "rgba(252,198,10,0.6)", "rgba(255,144,0,0.6)",
-                "rgba(255,0,0,0.6)"
-            ],
             splitList: [{ //设置区间颜色
                     start: 0,
                     end: 1,
-                    backgroundColor: 'rgba(200, 200, 50, 1)',
+                    backgroundColor: 'rgba(0,133,235,0.40)',
+                    borderColor: "rgba(0,133,235,1)",
+
                 },
                 {
                     start: 1,
                     end: 2,
-                    backgroundColor: 'rgba(255,132,41,1)',
+                    backgroundColor: 'rgba(0,184,255,0.40)',
+                    borderColor: 'rgba(0,184,255,1)'
                 },
                 {
                     start: 2,
                     end: 3,
-                    backgroundColor: 'rgba(255,241,0,1)',
+                    backgroundColor: 'rgba(72,246,217,0.40)',
+                    borderColor: "rgba(72,246,217,1)"
                 },
                 {
                     start: 3,
-                    backgroundColor: 'rgba(148,238,136,1)',
+                    backgroundColor: 'rgba(252,196,95,0.40)',
+                    borderColor: 'rgba(252,196,95,1)'
                 }
             ],
         },
         data: [],
-
         event: {
             onMouseClick: function (item) {
+                console.log(item);
                 //能获取当前点的信息
             }
         }
