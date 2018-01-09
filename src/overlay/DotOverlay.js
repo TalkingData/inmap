@@ -53,7 +53,7 @@ export class DotOverlay extends Parameter {
             let style = this.setDrawStyle(item);
             ctx.beginPath();
             ctx.arc(pixel.x, pixel.y, style.size, 0, 2 * Math.PI, true);
-            ctx.lineWidth = style.lineWidth;
+            ctx.lineWidth = style.borderWidth;
             if (ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
                 return {
                     index: i,
@@ -87,7 +87,7 @@ export class DotOverlay extends Parameter {
         }
     }
     swopeData(index, item) {
-        if (index > -1 && !this.style.normal.label.show) { //导致文字散
+        if (index > -1 && !this.style.normal.label.show) { //导致文字闪
             this.workerData[index] = this.workerData[this.workerData.length - 1];
             this.workerData[this.workerData.length - 1] = item;
         }

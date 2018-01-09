@@ -119,7 +119,7 @@ export class Parameter extends CanvasOverlay {
                 shadowColor['shadowColor'] = this.brightness(result.backgroundColor, 50);
             }
 
-            result = deepmerge.all([result, normal, mouseOverStyle, {
+            result = deepmerge.all([result, mouseOverStyle, {
 
                 backgroundColor: mouseOverStyle.backgroundColor || this.brightness(result.backgroundColor, 0.1)
             }, shadowColor]);
@@ -130,7 +130,7 @@ export class Parameter extends CanvasOverlay {
                 shadowColor['shadowColor'] = this.brightness(selectedStyle.backgroundColor, 0.1);
             }
 
-            result = deepmerge.all([result, normal, selectedStyle, shadowColor]);
+            result = deepmerge.all([result, selectedStyle, shadowColor]);
         }
 
         return result;
