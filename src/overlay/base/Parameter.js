@@ -408,7 +408,7 @@ export class Parameter extends CanvasOverlay {
         this.legendDom.innerHTML = str;
     }
     toFixed(num) {
-        return parseFloat(num).toFixed(this.legend.toFixed);
+        return isNaN(num) ? num : parseFloat(num).toFixed(this.legend.toFixed);
     }
     /*eslint-disable */
     /**
