@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>MoveLineOverlay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="../dist/inmap.js"></script>
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        skin: "Blueness",
+        center: [112.03956, 26.063677],
+        zoom: {
+            value: 6,
+            show: true,
+            max: 18,
+            min: 5
+        },
+    })
+
+    var data = [{
+            from: {
+                city: '广州',
+                lnglat: [113.270793, 23.135308]
+            },
+            to: {
+                city: '衡山',
+                lnglat: [112.612787, 27.317599]
+            },
+
+        }, {
+            from: {
+                city: '广州',
+                lnglat: [113.270793, 23.135308]
+            },
+            to: {
+                city: '北京',
+                lnglat: [116.413554, 39.911013]
+            }
+        }, {
+            from: {
+                city: '广州',
+                lnglat: [113.270793, 23.135308]
+            },
+            to: {
+                city: '三亚',
+                lnglat: [109.518646, 18.258217]
+            }
+        }, {
+            from: {
+                city: '广州',
+                lnglat: [113.270793, 23.135308]
+            },
+            to: {
+                city: '上海',
+                lnglat: [121.480237, 31.236305]
+            }
+        }, {
+            from: {
+                city: '广州',
+                lnglat: [113.270793, 23.135308]
+            },
+            to: {
+                city: '韶关',
+                lnglat: [113.603757, 24.816174]
+            }
+        }
+
+    ];
+
+
+    var overlay = new inMap.MoveLineOverlay({
+        style: {
+            normal: {
+                markerRadius: 3,
+                //marker点颜色,为空或null则默认取线条颜色
+                markerColor: null,
+                //线条类型 solid、dashed、dotted
+                lineType: 'solid',
+                //线条宽度
+                lineWidth: 1,
+                //线条颜色
+                colors: ['#F9815C', '#F8AB60', '#EDCC72', '#E2F194', '#94E08A', '#4ECDA5'],
+                //移动点半径
+                moveRadius: 2,
+                //移动点颜色
+                fillColor: '#fff',
+                //移动点阴影颜色
+                shadowColor: '#fff',
+                //移动点阴影大小
+                shadowBlur: 10,
+            }
+        },
+        data: data,
+    });
+    inmap.add(overlay);
+</script>

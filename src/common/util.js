@@ -154,3 +154,4 @@ export function detectmob() {
         return false;
     }
 }
+

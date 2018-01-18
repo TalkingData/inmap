@@ -5,7 +5,7 @@ import {
 let zIndex = 1;
 
 export class CanvasOverlay extends BaseClass {
-    constructor() {
+    constructor(opts) {
         super();
         this.ctx = null; //canvas对象
         this.eventType = 'moveend';
@@ -20,7 +20,8 @@ export class CanvasOverlay extends BaseClass {
         this.tMouseClick = this.tMouseClick.bind(this);
         this.devicePixelRatio = window.devicePixelRatio;
         this.first = true; //只触发一次
-
+        this.repaintEnd = opts && opts.repaintEnd; //重绘回调
+        this.animationFlag = true;
     }
     initialize(map) {
 
@@ -33,9 +34,9 @@ export class CanvasOverlay extends BaseClass {
         this.setCanvasSize();
         map.addEventListener('resize', me.tOnResize);
         map.addEventListener('moveend', me.tOnMoveend);
+        map.addEventListener('moving', me.tOnMoving);
         map.addEventListener('zoomstart', me.tOnZoomstart);
         map.addEventListener('zoomend', me.tOnZoomend);
-        map.addEventListener('moving', me.tOnMoving);
         map.addEventListener('mousemove', me.tMousemove);
         this.container.addEventListener('mouseleave', me.tMouseleave);
         map.addEventListener('click', me.tMouseClick);
@@ -48,18 +49,21 @@ export class CanvasOverlay extends BaseClass {
         this.tDraw(this, event);
     }
     tOnMoveend(event) {
-
+        this.animationFlag = true;
         this.eventType = event.type;
         this.tDraw(this, event);
     }
     tOnZoomstart() {
+        this.animationFlag = false;
         this.clearCanvas();
     }
     tOnZoomend(e) {
+        this.animationFlag = true
         this.eventType = e.type;
         this.tDraw(this, e);
     }
     tOnMoving(e) {
+        this.animationFlag = false;
         this.eventType = e.type;
     }
     tMouseleave() {
@@ -82,6 +86,7 @@ export class CanvasOverlay extends BaseClass {
             this.TInit();
 
         }
+
     }
     tMouseClick() {
 
@@ -92,7 +97,7 @@ export class CanvasOverlay extends BaseClass {
 
         this.eventType = event.type;
         me.resize();
-
+        this.repaintEnd && this.repaintEnd(this); //重绘回调
         me.keysss = true;
     }
 

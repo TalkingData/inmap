@@ -22,6 +22,9 @@ import {
 import {
     ImgOverlay
 } from './overlay/ImgOverlay';
+import{
+    MoveLineOverlay
+} from './overlay/MoveLineOverlay'
 import {
     Map
 } from './map/index';
@@ -40,7 +43,8 @@ const inMap = {
     CircuitOverlay,
     HoneycombOverlay,
     workerMrg,
-    ImgOverlay
+    ImgOverlay,
+    MoveLineOverlay
 };
 export {
     utils,
@@ -52,6 +56,7 @@ export {
     CircuitOverlay,
     HoneycombOverlay,
     workerMrg,
-    ImgOverlay
+    ImgOverlay,
+    MoveLineOverlay
 };
 export default inMap;
