@@ -13,8 +13,6 @@ export class HeatOverlay extends Parameter {
             0.85: 'yellow',
             1.0: 'rgb(255,0,0)'
         };
-        this.minValue = 0; // 最小权重
-        this.maxValue = 0; // 最大权重
         this._setOptionStyle(baseConfig, ops);
     }
     resize() {
@@ -42,10 +40,11 @@ export class HeatOverlay extends Parameter {
         this.drawMap();
     }
     getMax() {
-        this.maxValue = 0;
+        let normal = this.style.normal;
+        normal.maxValue = 0;
         for (let i = 0, len = this.points.length; i < len; i++) {
-            if (this.points[i].count > this.maxValue) {
-                this.maxValue = this.points[i].count;
+            if (this.points[i].count > normal.maxValue) {
+                normal.maxValue = this.points[i].count;
             }
         }
     }
@@ -64,20 +63,20 @@ export class HeatOverlay extends Parameter {
         });
     }
     _dataRender() {
-       
+        let normal = this.style.normal;
         let container = this.container;
-        if (this.maxValue == 0) {
+        if (normal.maxValue == 0) {
             this.getMax();
         }
-        if (container.width <= 0) { //map 释放 会触发重绘
+        if (container.width <= 0) {
             return;
         }
 
-        let normal = this.style.normal;
         let ctx = this.ctx;
         for (let i = 0, len = this.workerData.length; i < len; i++) {
             let item = this.workerData[i];
-            let opacity = (item.count - this.minValue) / (this.maxValue - this.minValue);
+            let opacity = (item.count - normal.minValue) / (normal.maxValue - normal.minValue);
+            opacity = opacity > 1 ? 1 : opacity;
             this.drawPoint(item.pixel.x, item.pixel.y, normal.radius, opacity);
         }
 

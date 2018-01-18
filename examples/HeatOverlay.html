@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>HeatOverlay</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -23,12 +24,12 @@
             font-size: 14px;
         }
     </style>
-    
+
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script type="text/javascript" src="http://huiyan.baidu.com/mapv/demo/js/dist/BaiduMap_cityCenter.js"></script>
     <script src="./data/data.js"></script>
     <script src="../dist/inmap.js"></script>
-  
+
 </head>
 
 <body>
@@ -49,16 +50,16 @@
         },
     });
     var overlay = new inMap.HeatOverlay({
-        // style: {
-        //     normal: {
-        //         radius: 15, // 半径
-        //         minOpacity: 0, // 最小透明度
-        //         maxOpacity: 0.8, // 最大透明度
-        //         minScope: 0, // 最小区间,小于此区间的不显示
-        //         maxScope: 1, // 最大区间,大于此区间的不显示
-        //     }
-            
-        // },
+        style: {
+            normal: {
+                radius: 15, // 半径
+                minOpacity: 0, // 最小透明度
+                maxOpacity: 1, // 最大透明度
+                maxValue: 0.1,
+                minScope: 0, // 最小区间,小于此区间的不显示
+                maxScope: 1, // 最大区间,大于此区间的不显示
+            }
+        },
         data: data
     });
     inmap.add(overlay)
