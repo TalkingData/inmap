@@ -1,8 +1,13 @@
 import {
-    Parameter
-} from './base/Parameter';
+    CanvasOverlay
+} from './base/CanvasOverlay';
+import deepmerge from 'deepmerge';
+import {
+    WhiteLover,
+    Blueness
+} from './../config/mapStyle';
 import baseConfig from './../config/heatConfig';
-export class HeatOverlay extends Parameter {
+export class HeatOverlay extends CanvasOverlay {
     constructor(ops) {
         super(ops);
         this.delteOption();
@@ -14,6 +19,31 @@ export class HeatOverlay extends Parameter {
             1.0: 'rgb(255,0,0)'
         };
         this._setOptionStyle(baseConfig, ops);
+    }
+    _setOptionStyle(config, ops) {
+        ops = ops || {};
+        let option = deepmerge.all([config, ops], {
+            arrayMerge: function (destinationArray, sourceArray) {
+
+                if (sourceArray.length > 0) {
+                    return sourceArray;
+                } else {
+                    return destinationArray;
+                }
+
+            }
+        });
+        this.style = option.style;
+        this.points = option.data || this.points;
+        //设置皮肤
+        if (option.skin && this.map) {
+            let setStyle = option.skin == 'Blueness' ? Blueness : WhiteLover;
+
+            this.map.setMapStyle({
+                styleJson: setStyle
+            });
+        }
+
     }
     resize() {
         this.drawMap();
@@ -28,9 +58,6 @@ export class HeatOverlay extends Parameter {
         this.legend = {
             show: false
         };
-        this.style['mouseOver'] = null;
-        this.style['selected'] = null;
-        this.style['splitList'] = null;
     }
     setPoints(points) {
         if (!points) {
@@ -57,7 +84,7 @@ export class HeatOverlay extends Parameter {
             }
             me.clearCanvas();
             me.canvasResize();
-            me.setWorkerData(pixels);
+            me.workerData = pixels;
             me._dataRender();
 
         });
