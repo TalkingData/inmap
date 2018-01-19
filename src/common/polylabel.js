@@ -1,4 +1,4 @@
-import Queue from './tinyqueue';
+import Queue from './../lib/tinyqueue';
 
 function Cell(x, y, h, polygon) {
     this.x = x; // 中心点x
