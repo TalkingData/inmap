@@ -58,7 +58,7 @@ export class CanvasOverlay extends BaseClass {
         this.clearCanvas();
     }
     tOnZoomend(e) {
-        this.animationFlag = true
+        this.animationFlag = true;
         this.eventType = e.type;
         this.tDraw(this, e);
     }

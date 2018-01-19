@@ -24,7 +24,7 @@ import {
 } from './overlay/ImgOverlay';
 import{
     MoveLineOverlay
-} from './overlay/MoveLineOverlay'
+} from './overlay/MoveLineOverlay';
 import {
     Map
 } from './map/index';
