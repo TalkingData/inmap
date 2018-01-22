@@ -1,10 +1,9 @@
 import {
     CanvasOverlay
 } from './base/CanvasOverlay.js';
-import {
-    config
-} from './../config/moveLineConfig';
+import config from './../config/moveLineConfig';
 import BaseClass from './base/BaseClass';
+import deepmerge from 'deepmerge';
 
 class Marker {
     constructor(opts) {
@@ -192,13 +191,24 @@ class MarkLine {
 export class MoveLineOverlay extends BaseClass {
     constructor(opts) {
         super();
-        this.options = {};
         this.markLines = [];
         this.map = null;
         this.data = opts.data || [];
         this.baseLayer = null;
         this.animationLayer = null;
-        Object.assign(this.options, config, opts.style.normal);
+
+        this.options = deepmerge.all([
+            config, opts.style.normal
+        ], {
+            arrayMerge: function (destinationArray, sourceArray) {
+                if (sourceArray.length > 0) {
+                    return sourceArray;
+                } else {
+                    return destinationArray;
+                }
+
+            }
+        });
     }
 
     initialize(map) {
@@ -234,13 +244,23 @@ export class MoveLineOverlay extends BaseClass {
 
             for (let i = 0; i < markLines.length; i++) {
                 let markLine = markLines[i];
-                markLine.drawMoveCircle(animationCtx, options, map); 
+                markLine.drawMoveCircle(animationCtx, options, map);
             }
 
         }
+        let now;
+        let then = Date.now();
+        let interval = 1000 / options.fps;
+        let delta;
         (function drawFrame() {
             requestAnimationFrame(drawFrame);
-            render();
+            now = Date.now();
+            delta = now - then;
+            if (delta > interval) {
+                then = now - (delta % interval);
+                render();
+            }
+
         }());
     }
     drawBaseLayer() {

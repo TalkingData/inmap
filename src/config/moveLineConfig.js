@@ -21,4 +21,5 @@
      shadowColor: '#fff',
      //移动点阴影大小
      shadowBlur: 5,
+     fps: 30, //帧数
  };
