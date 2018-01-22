@@ -1,7 +1,9 @@
 /**
  * draw cireuit
  */
-import deepmerge from 'deepmerge';
+import {
+    merge
+} from "./../common/util"
 import {
     CanvasOverlay
 } from './base/CanvasOverlay';
@@ -18,17 +20,7 @@ export class CircuitOverlay extends CanvasOverlay {
     }
     _setOptionStyle(config, ops) {
 
-        let option = deepmerge.all([config, ops], {
-            arrayMerge: function (destinationArray, sourceArray) {
-
-                if (sourceArray.length > 0) {
-                    return sourceArray;
-                } else {
-                    return destinationArray;
-                }
-
-            }
-        });
+        let option = merge(config, ops);
 
         this.points = option.data;
         this.style = option.style;

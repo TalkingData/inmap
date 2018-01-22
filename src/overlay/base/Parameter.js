@@ -1,7 +1,7 @@
-import deepmerge from 'deepmerge';
 import baseConfig from './../../config/parameterConfig';
 import {
-    detectmob
+    detectmob,
+    merge
 } from './../../common/util';
 import {
     WhiteLover,
@@ -44,22 +44,9 @@ export class Parameter extends CanvasOverlay {
 
     _setOptionStyle(config, ops) {
         ops = ops || {};
-        let option = deepmerge.all([config,
-            {
-                event: this.event || {}
-            },
-            ops
-        ], {
-            arrayMerge: function (destinationArray, sourceArray) {
-
-                if (sourceArray.length > 0) {
-                    return sourceArray;
-                } else {
-                    return destinationArray;
-                }
-
-            }
-        });
+        let option = merge(config, {
+            event: this.event || {}
+        }, ops);
 
         this.tooltip = option.tooltip;
         this.legend = option.legend;
@@ -92,18 +79,18 @@ export class Parameter extends CanvasOverlay {
             mouseOverStyle = this.style.mouseOver, //悬浮样式
             selectedStyle = this.style.selected; //选中样式
         let result = {};
-        result = deepmerge(result, normal);
+        result = merge(result, normal);
         //区间样式
         let splitList = this.style.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];
             if (condition.end == null) {
                 if (item.count >= condition.start) {
-                    result = deepmerge.all([normal, condition]);
+                    result = merge(normal, condition);
                     break;
                 }
             } else if (item.count >= condition.start && item.count < condition.end) {
-                result = deepmerge.all([normal, condition]);
+                result = merge(normal, condition);
                 break;
             }
             if (!result.borderColor) {
@@ -119,10 +106,10 @@ export class Parameter extends CanvasOverlay {
                 shadowColor['shadowColor'] = this.brightness(result.backgroundColor, 50);
             }
 
-            result = deepmerge.all([result, mouseOverStyle, {
+            result = merge(result, mouseOverStyle, {
 
                 backgroundColor: mouseOverStyle.backgroundColor || this.brightness(result.backgroundColor, 0.1)
-            }, shadowColor]);
+            }, shadowColor);
         }
         if (selectedStyle && this.selectItemContains(item)) {
 
@@ -130,7 +117,7 @@ export class Parameter extends CanvasOverlay {
                 shadowColor['shadowColor'] = this.brightness(selectedStyle.backgroundColor, 0.1);
             }
 
-            result = deepmerge.all([result, selectedStyle, shadowColor]);
+            result = merge(result, selectedStyle, shadowColor);
         }
 
         return result;

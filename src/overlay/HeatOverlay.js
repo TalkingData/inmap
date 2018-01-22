@@ -1,7 +1,10 @@
 import {
     CanvasOverlay
 } from './base/CanvasOverlay';
-import deepmerge from 'deepmerge';
+import {
+    merge
+} from './../common/util';
+
 import {
     WhiteLover,
     Blueness
@@ -22,17 +25,8 @@ export class HeatOverlay extends CanvasOverlay {
     }
     _setOptionStyle(config, ops) {
         ops = ops || {};
-        let option = deepmerge.all([config, ops], {
-            arrayMerge: function (destinationArray, sourceArray) {
+        let option = merge(config, ops);
 
-                if (sourceArray.length > 0) {
-                    return sourceArray;
-                } else {
-                    return destinationArray;
-                }
-
-            }
-        });
         this.style = option.style;
         this.points = option.data || this.points;
         //设置皮肤

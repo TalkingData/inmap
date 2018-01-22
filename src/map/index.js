@@ -1,5 +1,6 @@
 import {
-    isString
+    isString,
+    merge
 } from './../common/util';
 import {
     WhiteLover,
@@ -10,12 +11,12 @@ import {
 } from './mapZoom';
 import inmapConfig from './../config/inmapConfig';
 import './map.less';
-import deepmerge from 'deepmerge';
+
 export class Map {
     constructor(ops) {
         this.map = null;
 
-        this.option = deepmerge.all([inmapConfig, ops]);
+        this.option = merge(inmapConfig, ops);
 
         this.create();
     }

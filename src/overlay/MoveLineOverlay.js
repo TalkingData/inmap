@@ -1,9 +1,12 @@
 import {
     CanvasOverlay
 } from './base/CanvasOverlay.js';
+import {
+    merge
+} from './../common/util'
 import config from './../config/moveLineConfig';
 import BaseClass from './base/BaseClass';
-import deepmerge from 'deepmerge';
+
 
 class Marker {
     constructor(opts) {
@@ -196,19 +199,8 @@ export class MoveLineOverlay extends BaseClass {
         this.data = opts.data || [];
         this.baseLayer = null;
         this.animationLayer = null;
+        this.options = merge(config, opts.style.normal);
 
-        this.options = deepmerge.all([
-            config, opts.style.normal
-        ], {
-            arrayMerge: function (destinationArray, sourceArray) {
-                if (sourceArray.length > 0) {
-                    return sourceArray;
-                } else {
-                    return destinationArray;
-                }
-
-            }
-        });
     }
 
     initialize(map) {
