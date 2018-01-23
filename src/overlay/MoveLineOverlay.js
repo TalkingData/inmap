@@ -300,7 +300,14 @@ export class MoveLineOverlay extends BaseClass {
             }));
         });
     }
-
+    setPoints(points) {
+        if (!points) {
+            return;
+        }
+        this.data = points;
+        this.markLines.length = 0;
+        this.draw();
+    }
     draw() {
         this.baseLayer.canvasResize();
         this.animationLayer.canvasResize();
