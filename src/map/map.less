@@ -1,9 +1,17 @@
+.inmap *,
+.inmap *:before,
+.inmap *:after {}
+
 .inmap {
     &-container,
     {
-        display: -webkit-box;
         opacity: 1;
         font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+    }
+    &-container,
+    &-container *:after,
+    &-container *:before {
+        display: -webkit-box;
     }
     &-scale-group {
         position: absolute;
@@ -104,6 +112,7 @@
     &-legend &-infinity:before,
     &-legend &-infinity:after {
         content: "";
+        box-sizing: border-box;
         width: 6px;
         height: 6px;
         position: absolute;
