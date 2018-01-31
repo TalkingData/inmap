@@ -21,8 +21,7 @@
          normal: {
              borderWidth: 0.1,
              backgroundColor: 'rgba(200, 200, 200, 0.5)',
-             // borderColor: "rgba(0,0,0,1)",
-
+             mergeCount: 1.5,
              label: {
                  show: false,
                  color: 'rgba(0,0,0,1)',

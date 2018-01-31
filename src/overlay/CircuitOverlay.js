@@ -3,7 +3,7 @@
  */
 import {
     merge
-} from "./../common/util"
+} from './../common/util';
 import {
     CanvasOverlay
 } from './base/CanvasOverlay';

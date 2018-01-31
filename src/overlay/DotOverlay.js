@@ -51,7 +51,7 @@ export class DotOverlay extends Parameter {
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.pixel;
-            let style = this.setDrawStyle(item);
+            let style = this.polyme ? this.style.normal : this.setDrawStyle(item);
             ctx.beginPath();
             ctx.arc(pixel.x, pixel.y, style.size, 0, 2 * Math.PI, true);
             ctx.lineWidth = style.borderWidth;

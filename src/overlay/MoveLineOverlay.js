@@ -3,7 +3,7 @@ import {
 } from './base/CanvasOverlay.js';
 import {
     merge
-} from './../common/util'
+} from './../common/util';
 import config from './../config/moveLineConfig';
 import BaseClass from './base/BaseClass';
 
