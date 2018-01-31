@@ -44,6 +44,7 @@ export class DotOverlay extends Parameter {
         }
         this.drawMap();
     }
+    
     getTarget(x, y) {
         let pixels = this.workerData,
             ctx = this.ctx;

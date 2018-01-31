@@ -97,7 +97,7 @@ export class Parameter extends CanvasOverlay {
                 result['borderColor'] = this.getColorOpacity(result.backgroundColor);
             }
         }
-
+        result = merge(result, item.style || {});
         let shadowColor = {};
 
         if (mouseOverStyle && this.overItem == item) {
