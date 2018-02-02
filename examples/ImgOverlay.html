@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>ImgOverlay</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -27,7 +28,7 @@
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="../dist/inmap.js"></script>
     <script src="data/data.js"></script>
-  
+
 </head>
 
 <body>
@@ -36,8 +37,6 @@
 
 </html>
 <script>
-   
-
     data.length = 5;
     var map = new inMap.Map({
         id: 'allmap',
@@ -50,9 +49,9 @@
         },
     })
 
-   
+
     var img = "./img/bso.svg";
-     var img2="./img/mark (2).png";
+    var img2 = "./img/mark (2).png";
     // var img3="./img/market.png";
     var overlay = new inMap.ImgOverlay({
         tooltip: {
@@ -66,9 +65,9 @@
         legend: {
             show: true,
             title: "标题",
-           // data: ["描述1", "描述2", "描述3", "描述4"],
-            formatter: function (start, end) {
-               
+            // data: ["描述1", "描述2", "描述3", "描述4"],
+            formatter: function (start, end, index) {
+
                 return start + "万~" + (end || "max") + "万";
             },
 

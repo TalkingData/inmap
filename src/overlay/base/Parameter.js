@@ -364,7 +364,7 @@ export class Parameter extends CanvasOverlay {
             let text = null,
                 backgroundColor = val.backgroundColor;
             if (legendFunc) {
-                text = legendFunc(me.toFixed(val.start), me.toFixed(val.end));
+                text = legendFunc(me.toFixed(val.start), me.toFixed(val.end), index);
             } else if (legendData) {
                 text = legendData[index];
             } else {

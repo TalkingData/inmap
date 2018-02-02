@@ -63,7 +63,7 @@
             show: true,
             title: "标题",
             data: ["描述1", "描述2", "描述3", "描述4"],
-            formatter: function (start, end) {
+            formatter: function (start, end, index) {
                 return start + "万~" + (end || "max") + "万";
             }
         },
@@ -84,7 +84,7 @@
                 backgroundColor: 'rgba(184,0,0,1)',
                 borderColor: "rgba(255,255,255,1)"
             },
-            
+
         },
         data: data,
         event: {
