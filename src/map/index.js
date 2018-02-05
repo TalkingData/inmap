@@ -5,7 +5,7 @@ import {
 import {
     WhiteLover,
     Blueness
-} from './../config/mapStyle';
+} from './../config/MapStyle';
 import {
     MapZoom
 } from './mapZoom';
