@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>HoneycombOverlay</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -23,7 +24,7 @@
             font-size: 14px;
         }
     </style>
-   
+
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="../dist/inmap.js"></script>
     <script src="data/data.js"></script>
@@ -35,8 +36,6 @@
 
 </html>
 <script>
-     
-   
     var map = new inMap.Map({
         id: document.getElementById('allmap'),
         center: [105.403119, 38.028658],
@@ -47,7 +46,7 @@
             min: 5
         },
     })
- 
+
     var overlay = new inMap.HoneycombOverlay({
         tooltip: {
             show: true,
@@ -86,5 +85,4 @@
         data: data
     });
     map.add(overlay)
-  
 </script>

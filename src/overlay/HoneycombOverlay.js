@@ -1,12 +1,11 @@
 import {
     Parameter
 } from './base/Parameter.js';
-import baseConfig from './../config/griddingConfig.js';
+import HoneycombConfig from './../config/HoneycombConfig.js';
 export class HoneycombOverlay extends Parameter {
     constructor(ops) {
-        super(ops);
+        super(HoneycombConfig, ops);
         this.delteOption();
-        this._setOptionStyle(baseConfig, ops);
     }
 
     delteOption() {

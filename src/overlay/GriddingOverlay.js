@@ -1,14 +1,14 @@
 import {
     Parameter
 } from './base/Parameter.js';
-import baseConfig from './../config/griddingConfig.js';
+import GriddingConfig from './../config/GriddingConfig.js';
 
 export class GriddingOverlay extends Parameter {
     constructor(ops) {
-        super(ops);
+        super(GriddingConfig, ops);
         this.delteOption();
 
-        this._setOptionStyle(baseConfig, ops);
+       
     }
     delteOption() {
         this.style['selected'] = null;
@@ -108,7 +108,7 @@ export class GriddingOverlay extends Parameter {
             item: null
         };
     }
-   
+
     compileSplitList(data) {
 
         let colors = this.style.colors;

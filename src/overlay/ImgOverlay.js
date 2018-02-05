@@ -1,7 +1,7 @@
 import {
     Parameter
 } from './base/Parameter';
-import baseConfig from './../config/imgConfig';
+import ImgConfig from './../config/ImgConfig';
 import {
     isString
 } from './../common/util';
@@ -10,8 +10,7 @@ import {
  */
 export class ImgOverlay extends Parameter {
     constructor(opts) {
-        super(opts);
-        this._setOptionStyle(baseConfig, opts);
+        super(ImgConfig,opts);
         this.cacheImg = {}; //缓存图片对象
     }
     resize() {

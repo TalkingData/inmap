@@ -4,7 +4,7 @@ import {
 import {
     merge
 } from './../common/util';
-import config from './../config/moveLineConfig';
+import config from './../config/MoveLineConfig';
 import BaseClass from './base/BaseClass';
 
 

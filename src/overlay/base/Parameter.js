@@ -1,4 +1,4 @@
-import baseConfig from './../../config/parameterConfig';
+
 import {
     detectmob,
     merge
@@ -6,7 +6,7 @@ import {
 import {
     WhiteLover,
     Blueness
-} from './../../config/mapStyle';
+} from './../../config/MapStyle';
 import {
     CanvasOverlay
 } from './CanvasOverlay';
@@ -23,7 +23,7 @@ import {
  * 接头定义 参数解析类
  */
 export class Parameter extends CanvasOverlay {
-    constructor(ops) {
+    constructor(baseConfig,ops) {
         super();
         this.points = []; //数据
         this._setOptionStyle(baseConfig, ops);
@@ -44,9 +44,7 @@ export class Parameter extends CanvasOverlay {
 
     _setOptionStyle(config, ops) {
         ops = ops || {};
-        let option = merge(config, {
-            event: this.event || {}
-        }, ops);
+        let option = merge(config, ops);
 
         this.tooltip = option.tooltip;
         this.legend = option.legend;

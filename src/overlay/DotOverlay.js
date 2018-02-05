@@ -8,9 +8,10 @@ import {
 import {
     Parameter
 } from './base/Parameter';
+import DotConfig from './../config/DotConfig';
 export class DotOverlay extends Parameter {
     constructor(opts) {
-        super(opts);
+        super(DotConfig, opts);
         this.polyme = opts.type == 'polyme';
     }
     resize() {
@@ -44,7 +45,7 @@ export class DotOverlay extends Parameter {
         }
         this.drawMap();
     }
-    
+
     getTarget(x, y) {
         let pixels = this.workerData,
             ctx = this.ctx;

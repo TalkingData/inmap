@@ -1,20 +1,21 @@
 /**
  * draw cireuit
  */
+
 import {
     merge
 } from './../common/util';
 import {
     CanvasOverlay
 } from './base/CanvasOverlay';
-import baseConfig from './../config/circuitConfig';
+import CircuitConfig from './../config/CircuitConfig';
 
 export class CircuitOverlay extends CanvasOverlay {
     constructor(ops) {
         super(ops);
         this.points = [];
         this.style = {};
-        this._setOptionStyle(baseConfig, ops);
+        this._setOptionStyle(CircuitConfig, ops);
         this._isCoordinates = false;
 
     }
@@ -34,6 +35,7 @@ export class CircuitOverlay extends CanvasOverlay {
             return;
         }
         this.points = points;
+
         this.coordinates(this.points);
         this.drawMap();
     }

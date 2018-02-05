@@ -1,12 +1,12 @@
 import {
     Parameter
 } from './base/Parameter.js';
+import BoundaryConfig from './../config/BoundaryConfig';
 
 
 export class BoundaryOverlay extends Parameter {
     constructor(ops) {
-        super(ops);
-
+        super(BoundaryConfig, ops);
     }
     resize() {
         this.drawMap();
