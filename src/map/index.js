@@ -9,7 +9,7 @@ import {
 import {
     MapZoom
 } from './mapZoom';
-import inmapConfig from './../config/inmapConfig';
+import inmapConfig from './../config/InmapConfig';
 import './map.less';
 
 export class Map {

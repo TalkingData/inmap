@@ -5,10 +5,9 @@ import GriddingConfig from './../config/GriddingConfig.js';
 
 export class GriddingOverlay extends Parameter {
     constructor(ops) {
+
         super(GriddingConfig, ops);
         this.delteOption();
-
-       
     }
     delteOption() {
         this.style['selected'] = null;
@@ -18,18 +17,22 @@ export class GriddingOverlay extends Parameter {
     }
     drawMap() {
         let me = this;
-        let style = this.style.normal;
+        let {
+            normal,
+            type
+        } = this.style;
         let zoom = me.map.getZoom();
         let zoomUnit = Math.pow(2, 18 - zoom);
         let mercatorProjection = me.map.getMapType().getProjection();
         let mcCenter = mercatorProjection.lngLatToPoint(me.map.getCenter());
-        let size = style.size * zoomUnit;
+        let size = normal.size * zoomUnit;
         let nwMcX = mcCenter.x - me.map.getSize().width / 2 * zoomUnit;
         let nwMc = new BMap.Pixel(nwMcX, mcCenter.y + me.map.getSize().height / 2 * zoomUnit);
 
         let params = {
             points: me.points,
             size: size,
+            type: type,
             nwMc: nwMc,
             zoomUnit: zoomUnit,
             mapSize: me.map.getSize(),
@@ -42,8 +45,7 @@ export class GriddingOverlay extends Parameter {
                 return;
             }
             let grids = gridsObj.grids;
-            let max = gridsObj.max;
-            let min = gridsObj.min;
+
             //清除
             me.clearCanvas();
             me.canvasResize();
@@ -51,12 +53,10 @@ export class GriddingOverlay extends Parameter {
             me.setWorkerData({
                 size: size,
                 zoomUnit: zoomUnit,
-                max: max,
-                min: min,
                 grids: []
             });
             me.createColorSplit(grids);
-            me.drawRec(size, zoomUnit, max, min, grids);
+            me.drawRec(size, zoomUnit, grids);
 
         });
     }
@@ -188,7 +188,7 @@ export class GriddingOverlay extends Parameter {
         }
         return color;
     }
-    drawRec(size, zoomUnit, max, min, grids) {
+    drawRec(size, zoomUnit, grids) {
         this.workerData.grids = [];
         let gridStep = size / zoomUnit;
 

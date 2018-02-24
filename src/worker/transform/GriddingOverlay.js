@@ -4,20 +4,20 @@ import {
 import Pixel from './../../common/Pixel';
 import Point from './../../common/Point';
 export let GriddingOverlay = {
-    toRecGrids: function (webObj) {
-
-        let data = webObj,
-            points = data.request.data.points,
-            zoomUnit = data.request.data.zoomUnit,
-            size = data.request.data.size,
-            mapSize = data.request.data.mapSize,
-            mapCenter = data.request.data.mapCenter;
-        let nwMc = data.request.data.nwMc,
-            map = data.request.map,
-            zoom = data.request.data.zoom;
-
+    toRecGrids(webObj) {
+        let {
+            points,
+            zoomUnit,
+            size,
+            mapSize,
+            mapCenter,
+            nwMc,
+            map,
+            zoom,
+            type
+        } = webObj.request.data;
         GriddingOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
-        let gridsObj = GriddingOverlay.recGrids(points, map, nwMc, size, zoomUnit, mapSize);
+        let gridsObj = GriddingOverlay.recGrids(points, map, nwMc, size, zoomUnit, mapSize, type);
 
         return {
             data: gridsObj,
@@ -25,7 +25,7 @@ export let GriddingOverlay = {
 
         };
     },
-    _calculatePixel: function (map, data, mapSize, mapCenter, zoom) {
+    _calculatePixel(map, data, mapSize, mapCenter, zoom) {
 
         let zoomUnit = Math.pow(2, 18 - zoom);
         let mcCenter = geo.projection.lngLatToPoint(mapCenter);
@@ -46,9 +46,8 @@ export let GriddingOverlay = {
         return data;
     },
 
-    recGrids: function (data, map, nwMc, size, zoomUnit, mapSize) {
-        //isAvg 聚合的方式
-        let max = 0;
+    recGrids(data, map, nwMc, size, zoomUnit, mapSize, type) {
+     
         let grids = {};
         let gridStep = size / zoomUnit;
 
@@ -126,6 +125,17 @@ export let GriddingOverlay = {
                 }
             }
         }
+
+        if (type === 'svg') {
+            grids = GriddingOverlay.valueToAvg(grids);
+        } else {
+            grids = GriddingOverlay.valueToSum(grids);
+        }
+        return {
+            grids: grids
+        };
+    },
+    valueToAvg(grids) {
         for (let o in grids) {
             let arr = grids[o],
                 all = 0;
@@ -134,20 +144,26 @@ export let GriddingOverlay = {
                     all += arr[i];
                 }
                 grids[o] = all / arr.length;
-                if (grids[o] > max) {
-                    max = grids[o];
-                }
+
             } else {
                 grids[o] = 0;
             }
-
-
         }
-
-        return {
-            grids: grids,
-            max: max,
-            min: 0
-        };
+        return grids;
+    },
+    valueToSum(grids) {
+        for (let o in grids) {
+            let arr = grids[o],
+                all = 0;
+            if (arr.length > 0) {
+                for (let i = 0; i < arr.length; i++) {
+                    all += arr[i];
+                }
+                grids[o] = all;
+            } else {
+                grids[o] = 0;
+            }
+        }
+        return grids;
     }
 };
