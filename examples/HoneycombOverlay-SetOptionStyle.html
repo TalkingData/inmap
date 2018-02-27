@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HoneycombOverlay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="../dist/inmap.js"></script>
+    <script src="data/data.js"></script>
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    var map = new inMap.Map({
+        id: document.getElementById('allmap'),
+        center: [105.403119, 38.028658],
+        zoom: {
+            value: 5,
+            show: true,
+            max: 18,
+            min: 5
+        },
+    })
+
+    var overlay = new inMap.HoneycombOverlay({
+        tooltip: {
+            show: true,
+            position: 'top',
+            // formatter: function (params) {
+            //     return params.count;
+            // }
+            formatter: "{count}"
+        },
+        legend: {
+            show: true,
+            title: "图例"
+
+        },
+        style: {
+            colors: [
+                "rgba(156,200,249,0.7)", "rgba(93,158,247,0.7)",
+                "rgba(134,207,55,0.7)",
+                "rgba(252,198,10,0.7)", "rgba(255,144,0,0.7)", "rgba(255,72,0,0.7)",
+                "rgba(255,0,0,0.7)"
+            ],
+            normal: {
+                backgroundColor: 'rgba(200, 200, 200, 0.5)',
+                padding: 3,
+                size: 50,
+            },
+            mouseOver: {
+                backgroundColor: 'rgba(200, 200, 200, 1)',
+            },
+            selected: {
+                backgroundColor: 'rgba(184,0,0,1)',
+                borderColor: "rgba(255,255,255,1)"
+            },
+
+        },
+        data: data
+    });
+    map.add(overlay)
+    setTimeout(() => {
+        overlay.setOptionStyle({
+            style: {
+            colors: [
+                
+            ],
+            normal: {
+                backgroundColor: 'rgba(200, 200, 200, 0.5)',
+                padding: 3,
+                size: 50,
+            },
+            mouseOver: {
+                backgroundColor: 'rgba(200, 200, 200, 1)',
+            },
+            selected: {
+                backgroundColor: 'rgba(184,0,0,1)',
+                borderColor: "rgba(255,255,255,1)"
+            },
+
+        },
+        })
+    }, 2000);
+</script>

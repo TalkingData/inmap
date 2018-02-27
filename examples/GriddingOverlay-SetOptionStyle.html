@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="../dist/inmap.js"></script>
+    <script src="./data/heatData.js"></script>
+
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    var map = new inMap.Map({
+        id: document.getElementById('allmap'),
+        skin: "Blueness",
+        center: [117.294036, 39.43691],
+        zoom: {
+            value: 10,
+            show: true,
+            max: 11,
+            min: 8
+        }
+    })
+
+    var overlay = new inMap.GriddingOverlay({
+        style: {
+            type: "sum",
+            normal: {
+                size: 10,
+                padding: 1
+            },
+            colors: [
+                "rgba(31,98,1,1)",
+                "rgba(95,154,4,1)",
+                "rgba(139,227,7,1)",
+                "rgba(218,134,9,1)",
+                "rgba(220,54,6,1)",
+                "rgba(218,2,8,1)",
+                "rgba(148,1,2,1)",
+                "rgba(92,1,0,1)"
+            ]
+        },
+        data: data
+    });
+    map.add(overlay)
+
+    setTimeout(() => {
+        overlay.setOptionStyle({
+            skin: [{
+                    "featureType": "land",
+                    "elementType": "geometry",
+                    "stylers": {
+                        "color": "#e7f7fc"
+                    }
+                },
+                {
+                    "featureType": "water",
+                    "elementType": "all",
+                    "stylers": {
+                        "color": "#96b5d6"
+                    }
+                },
+                {
+                    "featureType": "green",
+                    "elementType": "all",
+                    "stylers": {
+                        "color": "#b0d3dd"
+                    }
+                },
+                {
+                    "featureType": "highway",
+                    "elementType": "geometry.fill",
+                    "stylers": {
+                        "color": "#a6cfcf"
+                    }
+                },
+                {
+                    "featureType": "highway",
+                    "elementType": "geometry.stroke",
+                    "stylers": {
+                        "color": "#7dabb3"
+                    }
+                },
+                {
+                    "featureType": "arterial",
+                    "elementType": "geometry.fill",
+                    "stylers": {
+                        "color": "#e7f7fc"
+                    }
+                },
+                {
+                    "featureType": "arterial",
+                    "elementType": "geometry.stroke",
+                    "stylers": {
+                        "color": "#b0d5d4"
+                    }
+                },
+                {
+                    "featureType": "local",
+                    "elementType": "labels.text.fill",
+                    "stylers": {
+                        "color": "#7a959a"
+                    }
+                },
+                {
+                    "featureType": "local",
+                    "elementType": "labels.text.stroke",
+                    "stylers": {
+                        "color": "#d6e4e5"
+                    }
+                },
+                {
+                    "featureType": "arterial",
+                    "elementType": "labels.text.fill",
+                    "stylers": {
+                        "color": "#374a46"
+                    }
+                },
+                {
+                    "featureType": "highway",
+                    "elementType": "labels.text.fill",
+                    "stylers": {
+                        "color": "#374a46"
+                    }
+                },
+                {
+                    "featureType": "highway",
+                    "elementType": "labels.text.stroke",
+                    "stylers": {
+                        "color": "#e9eeed"
+                    }
+                }
+            ],
+            style: {
+                type: "sum",
+                normal: {
+                    size: 10,
+                    padding: 1
+                },
+                colors: [
+                    "rgba(156,200,249,0.7)", "rgba(93,158,247,0.7)",
+                    "rgba(134,207,55,0.7)",
+                    "rgba(252,198,10,0.7)", "rgba(255,144,0,0.7)", "rgba(255,72,0,0.7)",
+                    "rgba(255,0,0,0.7)"
+                ]
+            },
+            data: data
+        })
+    }, 2000);
+</script>

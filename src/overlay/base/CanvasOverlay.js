@@ -1,7 +1,13 @@
 import BaseClass from './BaseClass';
 import {
-    setDevicePixelRatio
+    setDevicePixelRatio,
+    isString,
+    isObject
 } from './../../common/util';
+import {
+    WhiteLover,
+    Blueness
+} from './../../config/MapStyle';
 let zIndex = 1;
 
 export class CanvasOverlay extends BaseClass {
@@ -42,7 +48,17 @@ export class CanvasOverlay extends BaseClass {
         map.addEventListener('click', me.tMouseClick);
         return this.container;
     }
-
+    tMapStyle(skin) {
+        let styleJson = null;
+        if (isString(skin)) {
+            styleJson = skin == 'Blueness' ? Blueness : WhiteLover;
+        } else if (isObject(skin)) {
+            styleJson = skin;
+        }
+        skin && this.map && this.map.setMapStyle({
+            styleJson: styleJson
+        });
+    }
     tOnResize(event) {
 
         this.setCanvasSize();

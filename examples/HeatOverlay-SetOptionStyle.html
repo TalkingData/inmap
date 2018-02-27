@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HeatOverlay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="./data/data.js"></script>
+    <script src="../dist/inmap.js"></script>
+
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        center: ["105.403119", "38.028658"],
+        skin: "Blueness",
+        zoom: {
+            value: 5,
+            show: true,
+            max: 18,
+            min: 5
+        },
+    });
+    var overlay = new inMap.HeatOverlay({
+        style: {
+            gradient: {
+                0.25: 'rgb(0,0,255)',
+                0.55: 'rgb(0,255,0)',
+                0.85: 'rgb(255,255,0)',
+                1.0: 'rgb(255,0,0)'
+            },
+            normal: {
+                radius: 15, // 半径
+            }
+        },
+        data: data
+    });
+    inmap.add(overlay);
+
+    setTimeout(() => {
+        overlay.setOptionStyle({
+            style: {
+                gradient: {
+                    0.25: 'rgb(0,0,255)',
+                    1: 'rgb(0,255,0)',
+                },
+                normal: {
+                    radius: 15, // 半径
+                }
+            },
+            data: data
+        });
+    }, 2000);
+</script>

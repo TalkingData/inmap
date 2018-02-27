@@ -2,17 +2,23 @@ import {
     CanvasOverlay
 } from './base/CanvasOverlay.js';
 import {
-    merge
+    merge,
+    isString,
+    isObject
 } from './../common/util';
+import {
+    WhiteLover,
+    Blueness
+} from './../config/MapStyle';
 import config from './../config/MoveLineConfig';
 import BaseClass from './base/BaseClass';
 
 
 class Marker {
     constructor(opts) {
-        this.options = {
+        this.style = {
             markerColor: opts.markerColor || opts.color,
-            markerRadius: 2,
+            markerRadius: opts.markerRadius,
             fontColor: opts.color
         };
         this.text = opts.name;
@@ -27,11 +33,11 @@ class Marker {
             markerColor,
             markerRadius,
             fontColor
-        } = this.options;
+        } = this.style;
 
         ctx.save();
         ctx.beginPath();
-        ctx.fillStyle = markerColor || this.color;
+        ctx.fillStyle = markerColor;
         ctx.arc(x, y, markerRadius, 0, Math.PI * 2, true);
         ctx.closePath();
         ctx.fill();
@@ -39,7 +45,7 @@ class Marker {
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.font = '12px Microsoft YaHei';
-        ctx.fillStyle = fontColor;
+        ctx.fillStyle = fontColor || markerColor;
         ctx.fillText(this.text, x, y - 10);
         ctx.restore();
     }
@@ -149,20 +155,20 @@ class MarkLine {
         this.to.draw(context, map);
     }
 
-    drawLinePath(context, options, map) {
+    drawLinePath(context, style, map) {
         let pointList = this.path = this.getPointList(map.pointToPixel(this.from.point), map.pointToPixel(this.to.point));
         let len = pointList.length;
         context.save();
         context.beginPath();
-        context.lineWidth = options.lineWidth;
-        context.strokeStyle = options.colors[this.id];
+        context.lineWidth = style.lineWidth;
+        context.strokeStyle = style.colors[this.id];
 
-        if (!options.lineType || options.lineType == 'solid') {
+        if (!style.lineType || style.lineType == 'solid') {
             context.moveTo(pointList[0][0], pointList[0][1]);
             for (let i = 0; i < len; i++) {
                 context.lineTo(pointList[i][0], pointList[i][1]);
             }
-        } else if (options.lineType == 'dashed' || options.lineType == 'dotted') {
+        } else if (style.lineType == 'dashed' || style.lineType == 'dotted') {
             for (let i = 1; i < len; i += 2) {
                 context.moveTo(pointList[i - 1][0], pointList[i - 1][1]);
                 context.lineTo(pointList[i][0], pointList[i][1]);
@@ -173,14 +179,14 @@ class MarkLine {
         this.step = 0; //缩放地图时重新绘制动画
     }
 
-    drawMoveCircle(context, options, map) {
+    drawMoveCircle(context, style, map) {
         let pointList = this.path || this.getPointList(map.pointToPixel(this.from.point), map.pointToPixel(this.to.point));
         context.save();
-        context.fillStyle = options.fillColor;
-        context.shadowColor = options.shadowColor;
-        context.shadowBlur = options.shadowBlur;
+        context.fillStyle = style.fillColor;
+        context.shadowColor = style.shadowColor;
+        context.shadowBlur = style.shadowBlur;
         context.beginPath();
-        context.arc(pointList[this.step][0], pointList[this.step][1], options.moveRadius, 0, Math.PI * 2, true);
+        context.arc(pointList[this.step][0], pointList[this.step][1], style.moveRadius, 0, Math.PI * 2, true);
         context.fill();
         context.closePath();
         context.restore();
@@ -196,13 +202,35 @@ export class MoveLineOverlay extends BaseClass {
         super();
         this.markLines = [];
         this.map = null;
+        this.style = null;
         this.data = opts.data || [];
         this.baseLayer = null;
         this.animationLayer = null;
-        this.options = merge(config, opts.style.normal);
+        this.setOptionStyle(opts);
+    }
+    setOptionStyle(ops) {
+        var option = merge(config, ops);
+        this.style = option.style.normal;
+        this.data = ops.data ? option.data : this.data;
+        this.tMapStyle(this.style.skin);
+        if (this.baseLayer) {
+            this.markLines.length = 0;
+            this.draw();
+        }
 
     }
+    tMapStyle(skin) {
 
+        let styleJson = null;
+        if (isString(skin)) {
+            styleJson = skin == 'Blueness' ? Blueness : WhiteLover;
+        } else if (isObject(skin)) {
+            styleJson = skin;
+        }
+        skin && this.map && this.map.setMapStyle({
+            styleJson: styleJson
+        });
+    }
     initialize(map) {
         this.map = map;
         this.baseLayer = new CanvasOverlay({
@@ -214,10 +242,13 @@ export class MoveLineOverlay extends BaseClass {
         let {
             markLines,
             animationLayer,
-            options
+            style
         } = this;
+        let me = this;
 
         function render() {
+            let ops = me.style;
+
             let animationCtx = animationLayer.ctx;
             if (!animationCtx) {
                 return;
@@ -236,13 +267,13 @@ export class MoveLineOverlay extends BaseClass {
 
             for (let i = 0; i < markLines.length; i++) {
                 let markLine = markLines[i];
-                markLine.drawMoveCircle(animationCtx, options, map);
+                markLine.drawMoveCircle(animationCtx, ops, map);
             }
 
         }
         let now;
         let then = Date.now();
-        let interval = 1000 / options.fps;
+        let interval = 1000 / style.fps;
         let delta;
         (function drawFrame() {
             requestAnimationFrame(drawFrame);
@@ -264,38 +295,41 @@ export class MoveLineOverlay extends BaseClass {
             this.addMarkLine();
         }
         let {
-            options,
+            style,
             map
         } = this;
         this.baseLayer.clearCanvas();
         this.markLines.forEach(function (line) {
             line.drawMarker(baseCtx, map);
-            line.drawLinePath(baseCtx, options, map);
+            line.drawLinePath(baseCtx, style, map);
         });
         //文字避让
 
     }
     addMarkLine() {
         let {
-            options,
+            style,
             markLines,
             data,
         } = this;
         markLines.length = 0;
+
         data.forEach(function (line, i) {
             markLines.push(new MarkLine({
                 id: i,
                 from: new Marker({
                     name: line.from.city,
-                    markerRadius: options.markerRadius,
+                    markerColor: style.markerColor,
+                    markerRadius: style.markerRadius,
                     point: new BMap.Point(line.from.lnglat[0], line.from.lnglat[1]),
-                    color: options.colors[i]
+                    color: style.markerColor || style.colors[i]
                 }),
                 to: new Marker({
                     name: line.to.city,
-                    markerRadius: options.markerRadius,
+                    markerColor: style.markerColor,
+                    markerRadius: style.markerRadius,
                     point: new BMap.Point(line.to.lnglat[0], line.to.lnglat[1]),
-                    color: options.colors[i]
+                    color: style.markerColor || style.colors[i]
                 })
             }));
         });

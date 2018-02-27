@@ -5,25 +5,13 @@ import {
     merge
 } from './../common/util';
 
-import {
-    WhiteLover,
-    Blueness
-} from './../config/MapStyle';
-
 import HeatConfig from './../config/HeatConfig';
 export class HeatOverlay extends CanvasOverlay {
     constructor(ops) {
         super(ops);
-        this.gradient = {
-            0.25: 'rgb(0,0,255)',
-            0.55: 'rgb(0,255,0)',
-            0.85: 'yellow',
-            1.0: 'rgb(255,0,0)'
-        };
         this.points = [];
         this._setOptionStyle(HeatConfig, ops);
         this.delteOption();
-
     }
     resize() {
         this.drawMap();
@@ -31,17 +19,16 @@ export class HeatOverlay extends CanvasOverlay {
     _setOptionStyle(config, ops) {
         ops = ops || {};
         let option = merge(config, ops);
-
         this.style = option.style;
-        this.points = option.data || this.points;
-        //设置皮肤
-        if (option.skin && this.map) {
-            let setStyle = option.skin == 'Blueness' ? Blueness : WhiteLover;
-            this.map.setMapStyle({
-                styleJson: setStyle
-            });
-        }
+        this.gradient = option.style.gradient;
+        this.points = ops.data ? option.data : this.points;
+        this.tMapStyle(option.skin);
 
+    }
+    setOptionStyle(ops) {
+        this._setOptionStyle(HeatConfig, ops);
+        this.delteOption();
+        this.drawMap();
     }
     /**
      * 屏蔽参数

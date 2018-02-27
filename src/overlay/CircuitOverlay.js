@@ -20,16 +20,19 @@ export class CircuitOverlay extends CanvasOverlay {
 
     }
     _setOptionStyle(config, ops) {
-
         let option = merge(config, ops);
-
-        this.points = option.data;
+        this.points = ops.data ? option.data : this.points;
         this.style = option.style;
+        this.tMapStyle(option.skin);
     }
     resize() {
         this.drawMap();
     }
-
+    setOptionStyle(ops) {
+        this._setOptionStyle(CircuitConfig, ops);
+        this.coordinates(this.points);
+        this.drawMap();
+    }
     setPoints(points) {
         if (!points) {
             return;

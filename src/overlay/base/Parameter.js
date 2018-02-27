@@ -1,12 +1,7 @@
-
 import {
     detectmob,
     merge
 } from './../../common/util';
-import {
-    WhiteLover,
-    Blueness
-} from './../../config/MapStyle';
 import {
     CanvasOverlay
 } from './CanvasOverlay';
@@ -23,9 +18,10 @@ import {
  * 接头定义 参数解析类
  */
 export class Parameter extends CanvasOverlay {
-    constructor(baseConfig,ops) {
+    constructor(baseConfig, ops) {
         super();
         this.points = []; //数据
+        this.baseConfig = baseConfig;
         this._setOptionStyle(baseConfig, ops);
 
         this.selectItem = []; //选中
@@ -50,19 +46,12 @@ export class Parameter extends CanvasOverlay {
         this.legend = option.legend;
         this.event = option.event;
         this.style = option.style;
-        this.points = option.data || this.points;
-        //设置皮肤
-        if (option.skin && this.map) {
-            let setStyle = option.skin == 'Blueness' ? Blueness : WhiteLover;
-
-            this.map.setMapStyle({
-                styleJson: setStyle
-            });
-        }
+        this.points = ops.data ? option.data : this.points;
+        this.tMapStyle(option.skin);
         this.compileSplitList(this.points);
     }
     setOptionStyle(ops) {
-        this._setOptionStyle(ops);
+        this._setOptionStyle(this.baseConfig, ops);
         this.TInit();
         this._dataRender();
 

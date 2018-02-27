@@ -12,6 +12,9 @@ export class GriddingOverlay extends Parameter {
     delteOption() {
         this.style['selected'] = null;
     }
+    _dataRender(){
+        this.drawMap();
+    }
     resize() {
         this.drawMap();
     }

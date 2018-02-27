@@ -6,11 +6,16 @@ export default {
             left: 0
         },
     },
-
     legend: {
         show: false,
     },
     style: {
+        gradient: {
+            0.25: 'rgb(0,0,255)',
+            0.55: 'rgb(0,255,0)',
+            0.85: 'rgb(255,255,0)',
+            1.0: 'rgb(255,0,0)'
+        },
         normal: {
             radius: 15, // 半径
             minOpacity: 0, // 最小透明度

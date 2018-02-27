@@ -52,7 +52,7 @@
 
     var img = "./img/bso.svg";
     var img2 = "./img/mark (2).png";
-    // var img3="./img/market.png";
+   
     var overlay = new inMap.ImgOverlay({
         tooltip: {
             show: true,
@@ -60,14 +60,12 @@
             // formatter: function (params) {
             //     return params.count;
             // }
-            formatter: "{count}~<br/>{count}"
+            formatter: "{count}"
         },
         legend: {
             show: true,
             title: "标题",
-            // data: ["描述1", "描述2", "描述3", "描述4"],
             formatter: function (start, end, index) {
-
                 return start + "万~" + (end || "max") + "万";
             },
 

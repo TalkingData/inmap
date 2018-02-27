@@ -16,6 +16,7 @@ export class ImgOverlay extends Parameter {
     resize() {
         this.drawMap();
     }
+    
     drawMap() {
         let me = this;
         this.postMessage('HeatOverlay.pointsToPixels', this.points, function (pixels) {
