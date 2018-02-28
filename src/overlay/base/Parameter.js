@@ -313,7 +313,7 @@ export class Parameter extends CanvasOverlay {
             this.tooltipDom.parentNode.removeChild(this.tooltipDom);
             this.tooltipDom = null;
         }
-        if (this.legendDom) {
+        if (this.legendDom && this.legendDom.parentNode) {
             this.legendDom.parentNode.removeChild(this.legendDom);
             this.legendDom = null;
         }
@@ -324,6 +324,7 @@ export class Parameter extends CanvasOverlay {
      * 设置图例
      */
     setlegend(legend, splitList) {
+
         if (!this.map) return;
         if (legend == null || legend.show == false) {
             if (this.legendDom) {
@@ -331,13 +332,15 @@ export class Parameter extends CanvasOverlay {
             }
             return;
         }
-
         let legendData = legend.data;
-        if (this.legendDom == null) {
+        let legendDom = this.map._inmapOption.toolDom.querySelector('.inmap-legend');
+        if (!legendDom) {
             let div = document.createElement('div');
             div.classList.add('inmap-legend');
             this.map._inmapOption.toolDom.appendChild(div);
             this.legendDom = div;
+        } else {
+            this.legendDom = legendDom;
         }
 
         let str = '';

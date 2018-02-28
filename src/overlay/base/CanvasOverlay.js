@@ -30,7 +30,6 @@ export class CanvasOverlay extends BaseClass {
         this.animationFlag = true;
     }
     initialize(map) {
-
         var me = this;
         this.map = map;
         this.container = document.createElement('canvas');

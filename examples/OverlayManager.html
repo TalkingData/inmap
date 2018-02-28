@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>switchSkin</title>
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        #app {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            width: 100%;
+            background-color: #fff;
+            z-index: 99999;
+            padding: 5px 20px;
+        }
+
+        .geo-modal {}
+    </style>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="./lib/vue.js"></script>
+    <script src="data/data.js"></script>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <script src="../dist/inmap.js"></script>
+</head>
+
+<body>
+    <div id="allmap"></div>
+    <div style="position:absolute;top:0; width:100%;z-index:9999" id='app'>
+        <button type="button" class="btn btn-default" @click='addDot'> 添加散点图层</button>
+        <button type="button" class="btn btn-primary" @click='addHeat'>添加热力图层 </button>
+        <button type="button" class="btn btn-primary" @click='delDot'>删除散点图层 </button>
+        <button type="button" class="btn btn-primary" @click='delHeat'>删除热力图层 </button>
+    </div>
+
+</body>
+<script>
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        skin: "Blueness",
+        center: [105.403119, 38.028658],
+        zoom: {
+            value: 5,
+            show: true,
+            max: 18,
+            min: 5
+        },
+    })
+
+    var overlay1 = new inMap.DotOverlay({
+        tooltip: {
+            show: true,
+            formatter: "{count}",
+            offsets: {
+                top: 0,
+                left: 10,
+            }
+        },
+        legend: {
+            show: true,
+            title: "标题",
+            data: ["描述1", "描述2", "描述3", "描述4"],
+            formatter: function (start, end, index) {
+                return start + "万~" + (end || "max") + "万";
+            }
+        },
+        style: {
+            type: 'cluster',
+            normal: {
+                backgroundColor: 'rgba(200, 200, 50, 1)',
+                borderWidth: 1,
+                borderColor: "rgba(255,255,255,1)",
+                size: 10,
+            },
+            mouseOver: {
+                backgroundColor: 'rgba(200, 200, 200, 1)',
+                borderColor: "rgba(255,255,255,1)",
+                borderWidth: 4,
+                scale: 1,
+            },
+            colors: [
+                "rgba(156,200,249,0.7)", "rgba(93,158,247,0.7)",
+                "rgba(134,207,55,0.7)",
+                "rgba(252,198,10,0.7)", "rgba(255,144,0,0.7)", "rgba(255,72,0,0.7)",
+                "rgba(255,0,0,0.7)"
+            ],
+            selected: {
+                backgroundColor: 'rgba(184,0,0,1)',
+                borderColor: "rgba(255,255,255,1)"
+            },
+            splitList: [{ //设置区间颜色
+                    start: 0,
+                    end: 2,
+                    size: 3,
+                    backgroundColor: 'rgba(200, 200, 50, 1)',
+                },
+                {
+                    start: 2,
+                    end: 5,
+                    size: 6,
+                    backgroundColor: 'rgba(200, 200, 50, 1)',
+                },
+                {
+                    start: 5,
+                    end: 7,
+                    size: 9,
+                    backgroundColor: 'rgba(200, 200, 50, 1)',
+                },
+                {
+                    start: 7,
+                    size: 12,
+                    backgroundColor: 'rgba(200, 200, 50, 1)',
+                }
+            ],
+        },
+        data: data,
+        event: {
+            // onMouseClick: function (item, event) {
+            //     //能获取当前点的信息
+            // }
+        }
+    });
+    var overlay2 = new inMap.HeatOverlay({
+        style: {
+            normal: {
+                radius: 15, // 半径
+            }
+        },
+        data: data
+    });
+
+    var inMapVue = new Vue({
+        el: '#app',
+        methods: {
+            addDot: function () {
+                inmap.add(overlay1);
+            },
+            addHeat: function () {
+                inmap.add(overlay2);
+            },
+            delDot: function () {
+                inmap.remove(overlay1);
+            },
+            delHeat: function () {
+                inmap.remove(overlay2);
+            }
+
+
+        }
+    })
+</script>
+
+</html>

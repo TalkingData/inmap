@@ -76,7 +76,10 @@ export class Map {
         this.map.addOverlay(overlay);
     }
     remove(overlay) {
-        overlay.dispose();
+        if (overlay.map) {
+            overlay.dispose();
+        }
+        
     }
 
 }
