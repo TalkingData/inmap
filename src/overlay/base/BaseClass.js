@@ -82,7 +82,9 @@ BaseClass.prototype.decontrol = function () {
     inmap_instances[this.hashCode] = null;
 };
 
-let baidu = BMap || {};
+let baidu = window.BMap || {
+    Overlay: {}
+};
 BaseClass.inherits(baidu.Overlay, 'BaseClass');
 
 

@@ -2,8 +2,8 @@
 export let CircuitOverlay = {
     transferCoordinate(_coordinates, nwMc, zoomUnit) {
         return _coordinates.map(function (item) {
-            var x = (item[0] - nwMc.x) / zoomUnit;
-            var y = (nwMc.y - item[1]) / zoomUnit;
+            let x = (item[0] - nwMc.x) / zoomUnit;
+            let y = (nwMc.y - item[1]) / zoomUnit;
             return [x, y];
         });
     },

@@ -24,10 +24,10 @@
          };
      }
      message(e) {
-         var data = e.data;
-         var hashCode = data.request.hashCode;
-         var msgId = data.request.msgId;
-         var classPath = data.request.classPath;
+         let data = e.data;
+         let hashCode = data.request.hashCode;
+         let msgId = data.request.msgId;
+         let classPath = data.request.classPath;
          if (instances[classPath + '_' + hashCode] && instances[classPath + '_' + hashCode] == hashCode + '_' + msgId) {
              instances[hashCode + '_' + msgId](data.response.data);
          } else {
@@ -43,9 +43,9 @@
          if (this.worker == null) {
              this.create('../dist/worker.js');
          }
-         var hashCode = data.request.hashCode;
-         var msgId = data.request.msgId;
-         var classPath = data.request.classPath;
+         let hashCode = data.request.hashCode;
+         let msgId = data.request.msgId;
+         let classPath = data.request.classPath;
          instances[hashCode + '_' + msgId] = callback;
          //worker队列唯一性判断，
          instances[classPath + '_' + hashCode] = hashCode + '_' + msgId;
@@ -53,4 +53,4 @@
      }
  }
 
- export var workerMrg = new WorkerMrg();
+ export const workerMrg = new WorkerMrg();

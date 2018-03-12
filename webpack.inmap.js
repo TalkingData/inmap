@@ -27,6 +27,9 @@ const option = {
       },
     ]
   },
+  externals: {
+    BMap: {}
+},
   plugins: []
 };
 

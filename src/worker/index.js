@@ -38,7 +38,7 @@ let callbackList = {
 /*eslint-disable */
 onmessage = function onmessage(e) {
     let data = e.data;
-    callback(data);
+    callbackFun(data);
 }
 /*eslint-enable */
 /**
@@ -48,12 +48,12 @@ let handler = {};
 /**
  * worker方法执行解析
  */
-let callback = function (data) {
-    var request = data.request;
-    var classPath = request.classPath;
-    var hashCode = request.hashCode;
-    var msgId = request.msgId;
-    var p = classPath.split('.'),
+let callbackFun = function (data) {
+    let request = data.request;
+    let classPath = request.classPath;
+    let hashCode = request.hashCode;
+    let msgId = request.msgId;
+    let p = classPath.split('.'),
         index = 0,
         callback = callbackList;
     while (p[index]) {
@@ -63,7 +63,7 @@ let callback = function (data) {
             //唯一生效队列控制
             handler[classPath] = hashCode + '_' + msgId;
             //查找到执行方法，并执行方法
-            var obj = callback(data);
+            let obj = callback(data);
             TDpost(obj.data, obj.client);
             return;
         }
@@ -82,13 +82,13 @@ let callback = function (data) {
  * push到web消息
  * @param {Object} data
  */
-export var TDpost = function (data, client) {
-    var opts = client;
-    var request = client.request;
-    var classPath = request.classPath;
-    var hashCode = request.hashCode;
-    var msgId = request.msgId;
-    var handler = callbackList[classPath];
+export let TDpost = function (data, client) {
+    let opts = client;
+    let request = client.request;
+    let classPath = request.classPath;
+    let hashCode = request.hashCode;
+    let msgId = request.msgId;
+    let handler = callbackList[classPath];
     //唯一生效队列判断
     if (handler && (handler != hashCode + '_' + msgId)) {
         return;
@@ -99,4 +99,4 @@ export var TDpost = function (data, client) {
     };
     postMessage(opts);
 };
-export var boundaryOverlay = BoundaryOverlay;
+export const boundaryOverlay = BoundaryOverlay;

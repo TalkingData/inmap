@@ -14,11 +14,22 @@ export class DotOverlay extends Parameter {
         super(DotConfig, opts);
         this.polyme = opts.type == 'polyme';
     }
+    TInit() {
+        if (this.style.colors.length > 0) {
+            this.compileSplitList(this.points);
+        } else {
+            this.setlegend(this.legend, this.style.splitList);
+        }
+    }
+    setOptionStyle(ops) {
+        this._setStyle(this.baseConfig, ops);
+        this.TInit();
+        this.refresh();
+    }
     resize() {
         this.drawMap();
     }
     drawMap() {
-
         let me = this;
         let path = me.polyme ? 'PolymeOverlay.mergePoint' : 'HeatOverlay.pointsToPixels';
         let data = me.polyme ? {
@@ -31,7 +42,7 @@ export class DotOverlay extends Parameter {
                 return;
             }
             me.setWorkerData(pixels);
-            me._dataRender();
+            me.refresh();
         });
     }
     setPoints(points) {
@@ -44,6 +55,61 @@ export class DotOverlay extends Parameter {
             this.compileSplitList(this.points);
         }
         this.drawMap();
+    }
+    /**
+     * 颜色等分策略
+     * @param {} data 
+     */
+    compileSplitList(data) {
+        let colors = this.style.colors;
+        if (colors.length <= 0) return;
+
+        if (!Array.isArray(this.points)) {
+            /*eslint-disable */
+            console.error(' array is not defined <shouild be setPoints(Array)>');
+            /*eslint-enable */
+            return;
+        }
+
+        data = data.sort((a, b) => {
+            return parseFloat(a.count) - parseFloat(b.count);
+        });
+        let splitCount = data.length / colors.length;
+        let colorIndex = 0;
+        let split = [];
+        let star = 0,
+            end = 0;
+
+        for (let i = 0; i < data.length; i++) {
+
+            if (i > splitCount * (colorIndex + 1)) {
+                if (split.length == 0) {
+                    star = data[0].count;
+                }
+
+                end = data[i].count;
+
+                split.push({
+                    start: star,
+                    end: end,
+                    backgroundColor: colors[colorIndex],
+                });
+                colorIndex++;
+                star = data[i].count;
+            }
+        }
+        //去除最后判断区间，防止区间遗漏
+        if (split.length > 0) {
+            split.push({
+                start: star,
+                end: null,
+                backgroundColor: colors[colorIndex],
+            });
+
+        }
+
+        this.style.splitList = split;
+        this.setlegend(this.legend, this.style.splitList);
     }
 
     getTarget(x, y) {
@@ -80,7 +146,7 @@ export class DotOverlay extends Parameter {
 
         return index;
     }
-    _dataRender() {
+    refresh() {
         this.clearCanvas();
         this.canvasResize();
         this._loopDraw(this.ctx, this.workerData);
@@ -88,14 +154,14 @@ export class DotOverlay extends Parameter {
             this._drawLabel(this.ctx, this.workerData);
         }
     }
-    swopeData(index, item) {
+    swopData(index, item) {
         if (index > -1 && !this.style.normal.label.show) { //导致文字闪
             this.workerData[index] = this.workerData[this.workerData.length - 1];
             this.workerData[this.workerData.length - 1] = item;
         }
     }
     _loopDraw(ctx, pixels) {
-        for (var i = 0, len = pixels.length; i < len; i++) {
+        for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.pixel;
             let style = this.polyme ? this.style.normal : this.setDrawStyle(item);
@@ -146,8 +212,9 @@ export class DotOverlay extends Parameter {
         labels.sort((a, b) => {
             return b.x - a.x;
         });
+        let meet;
         do {
-            var meet = false; //本轮是否有相交
+            meet = false; //本轮是否有相交
             for (let i = 0; i < labels.length; i++) {
                 let temp = labels[i];
                 for (let j = 0; j < labels.length; j++) {

@@ -55,14 +55,14 @@ export function getBlen(str) {
     return str.replace(/[^\x00-\xff]/g, '01').length;
 }
 
-export var extend = function (target, source) {
+export const extend = function (target, source) {
 
     if (target && source && typeof (source) == 'object') {
-        for (var p in source) {
+        for (let p in source) {
             target[p] = source[p];
         }
 
-        var prototype_fields = [
+        let prototype_fields = [
             'constructor',
             'hasOwnProperty',
             'isPrototypeOf',
@@ -72,7 +72,7 @@ export var extend = function (target, source) {
             'valueOf'
         ];
 
-        for (var j = 0, key; j < prototype_fields.length; j++) {
+        for (let j = 0, key; j < prototype_fields.length; j++) {
             key = prototype_fields[j];
             if (Object.prototype.constructor.call(source, key)) {
                 target[key] = source[key];
@@ -82,7 +82,7 @@ export var extend = function (target, source) {
     return target;
 };
 export function setDevicePixelRatio(context) {
-    var devicePixelRatio = window.devicePixelRatio;
+    let devicePixelRatio = window.devicePixelRatio;
     context.canvas.width = context.canvas.width * devicePixelRatio;
     context.canvas.height = context.canvas.height * devicePixelRatio;
     context.canvas.style.width = context.canvas.width / devicePixelRatio + 'px';
@@ -100,11 +100,11 @@ export function encodeHTML(source) {
 }
 
 export function isPolyContains(lng, lat, pointLat, pointLng) {
-    var ret = false;
-    var latMin = 90.0;
-    var latMax = -90.0;
-    var lngMin = 180.0;
-    var lngMax = -180.0;
+    let ret = false;
+    let latMin = 90.0;
+    let latMax = -90.0;
+    let lngMin = 180.0;
+    let lngMax = -180.0;
     for (let i = 0; i < lat.length; i++) {
         if (lat[i] > latMax) latMax = lat[i];
         if (lat[i] < latMin) latMin = lat[i];
@@ -114,7 +114,7 @@ export function isPolyContains(lng, lat, pointLat, pointLng) {
     if (!(pointLat < latMin || pointLat > latMax || pointLng < lngMin || pointLng > lngMax)) {
 
         for (let i = 0; i < lat.length; i++) {
-            var j = (i + 1) % lat.length;
+            let j = (i + 1) % lat.length;
             if ((lat[i] < pointLat) != (lat[j] < pointLat) && (pointLng < (lng[j] - lng[i]) * (pointLat - lat[i]) / (lat[j] - lat[i]) + lng[i])) {
                 ret = !ret;
             }
@@ -129,9 +129,9 @@ export function isPolyContains(lng, lat, pointLat, pointLng) {
  * @param {*} geos  围栏数据
  */
 export function isPolyContainsPt(lng, lat, geos) {
-    var lats = [];
-    var lngs = [];
-    for (var j = 0, len = geos.length; j < len; j++) {
+    let lats = [];
+    let lngs = [];
+    for (let j = 0, len = geos.length; j < len; j++) {
         lats.push(parseFloat(geos[j][1]));
         lngs.push(parseFloat(geos[j][0]));
     }

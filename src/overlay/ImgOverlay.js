@@ -16,7 +16,9 @@ export class ImgOverlay extends Parameter {
     resize() {
         this.drawMap();
     }
-    
+    TInit() {
+        
+    }
     drawMap() {
         let me = this;
         this.postMessage('HeatOverlay.pointsToPixels', this.points, function (pixels) {
@@ -24,7 +26,7 @@ export class ImgOverlay extends Parameter {
                 return;
             }
             me.setWorkerData(pixels);
-            me._dataRender();
+            me.refresh();
         });
     }
     setPoints(points) {
@@ -90,7 +92,7 @@ export class ImgOverlay extends Parameter {
 
         return index;
     }
-    _dataRender() {
+    refresh() {
         this.clearCanvas();
         this.canvasResize();
         this._loopDraw(this.ctx, this.workerData);
@@ -176,7 +178,7 @@ export class ImgOverlay extends Parameter {
 
     }
     _loopDraw(ctx, pixels) {
-        for (var i = 0, len = pixels.length; i < len; i++) {
+        for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.pixel;
             let style = this.setDrawStyle(item);

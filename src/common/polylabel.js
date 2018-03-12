@@ -9,7 +9,7 @@ function Cell(x, y, h, polygon) {
 }
 
 function distSqr(p, a) {
-    var dx = p.x - a.x,
+    let dx = p.x - a.x,
         dy = p.y - a.y;
     return dx * dx + dy * dy;
 }
@@ -64,18 +64,18 @@ function pointToPolygonDist(p, polygon) {
 }
 
 function getCentroid(polygon) {
-    var totalArea = 0;
-    var totalX = 0;
-    var totalY = 0;
-    var points = polygon[0];
-    for (var i = 0; i < points.length - 1; ++i) {
+    let totalArea = 0;
+    let totalX = 0;
+    let totalY = 0;
+    let points = polygon[0];
+    for (let i = 0; i < points.length - 1; ++i) {
         // a、b以及原点构成一个三角形
        
-        var a = points[i + 1];
-        var b = points[i];
-        var area = 0.5 * (a[0] * b[1] - b[0] * a[1]); // 计算面积
-        var x = (a[0] + b[0]) / 3; // 计算x方向质心
-        var y = (a[1] + b[1]) / 3; // 计算y方向质心
+        let a = points[i + 1];
+        let b = points[i];
+        let area = 0.5 * (a[0] * b[1] - b[0] * a[1]); // 计算面积
+        let x = (a[0] + b[0]) / 3; // 计算x方向质心
+        let y = (a[1] + b[1]) / 3; // 计算y方向质心
         totalArea += area;
         totalX += area * x;
         totalY += area * y;
@@ -86,9 +86,9 @@ function getCentroid(polygon) {
 
 export default function polylabel(polygon) {
     // 计算bbox，为切分网格做准备
-    var minX, minY, maxX, maxY;
-    for (var i = 0; i < polygon[0].length; i++) {
-        var p = polygon[0][i];
+    let minX, minY, maxX, maxY;
+    for (let i = 0; i < polygon[0].length; i++) {
+        let p = polygon[0][i];
         if (!i || p[0] < minX) minX = p[0];
         if (!i || p[1] < minY) minY = p[1];
         if (!i || p[0] > maxX) maxX = p[0];
@@ -98,24 +98,24 @@ export default function polylabel(polygon) {
         return null;
     }
     // 计算长和宽，初始格网大小和高度
-    var width = maxX - minX;
-    var height = maxY - minY;
-    var cellSize = Math.min(width, height);
-    var h = cellSize / 2;
+    let width = maxX - minX;
+    let height = maxY - minY;
+    let cellSize = Math.min(width, height);
+    let h = cellSize / 2;
     // 初始化一个存储Cell的优先级队列，按距离从大到小排列
-    var cellQueue = new Queue(null, function (a, b) {
+    let cellQueue = new Queue(null, function (a, b) {
         return b.max - a.max;
     });
     // 将多边形切分
-    for (var x = minX; x < maxX; x += cellSize) {
-        for (var y = minY; y < maxY; y += cellSize) {
+    for (let x = minX; x < maxX; x += cellSize) {
+        for (let y = minY; y < maxY; y += cellSize) {
             cellQueue.push(new Cell(x + h, y + h, h, polygon));
         }
     }
     // 取对首为最优格网
-    var bestCell = getCentroid(polygon);
+    let bestCell = getCentroid(polygon);
     while (cellQueue.length) {
-        var cell = cellQueue.pop();
+        let cell = cellQueue.pop();
         if (cell.d > bestCell.d) bestCell = cell;
         // 最大距离小于最优格网的距离，直接淘汰
         if (cell.max <= bestCell.d) continue;

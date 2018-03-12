@@ -5,13 +5,21 @@ import HoneycombConfig from './../config/HoneycombConfig.js';
 export class HoneycombOverlay extends Parameter {
     constructor(ops) {
         super(HoneycombConfig, ops);
+    }
+    TInit() {
         this.delteOption();
+        this.compileSplitList(this.points);
     }
 
+    setOptionStyle(ops) {
+        this._setStyle(this.baseConfig, ops);
+        this.TInit();
+        this.refresh();
+    }
     delteOption() {
         this.style['selected'] = null;
     }
-    _dataRender() {
+    refresh() {
         this.drawMap();
     }
     resize() {
@@ -123,8 +131,8 @@ export class HoneycombOverlay extends Parameter {
             split.push({
                 start: star,
                 end: end,
-                backgroundColor: colors[i],
-                borderColor: this.style.normal.borderColor || this.getColorOpacity(colors[i])
+                backgroundColor: colors[i]
+
             });
 
         }
@@ -187,7 +195,7 @@ export class HoneycombOverlay extends Parameter {
         grids
     }) {
         this.workerData.grids = [];
-        var gridsW = size / zoomUnit;
+        let gridsW = size / zoomUnit;
         let style = this.style.normal;
         for (let i in grids) {
             let x = grids[i].x;

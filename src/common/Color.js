@@ -2,7 +2,7 @@
  * Daniel zhen.wang
  * wangzhen422@gmal.com
  */
-var ColorKeywords = {
+let ColorKeywords = {
     'aliceblue': 0xF0F8FF,
     'antiquewhite': 0xFAEBD7,
     'aqua': 0x00FFFF,
@@ -251,9 +251,9 @@ Colors.prototype = {
         let m = /^((?:rgb|hsl)a?)\(\s*([^\)]*)\)/.exec(style);
 
         if (m) {
-            var color;
-            var name = m[1];
-            var components = m[2];
+            let color;
+            let name = m[1];
+            let components = m[2];
 
             switch (name) {
 
@@ -294,9 +294,9 @@ Colors.prototype = {
                     if (color = /^([0-9]*\.?[0-9]+)\s*,\s*(\d+)\%\s*,\s*(\d+)\%\s*(,\s*([0-9]*\.?[0-9]+)\s*)?$/.exec(components)) {
 
                         // hsl(120,50%,50%) hsla(120,50%,50%,0.5)
-                        var h = parseFloat(color[1]) / 360;
-                        var s = parseInt(color[2], 10) / 100;
-                        var l = parseInt(color[3], 10) / 100;
+                        let h = parseFloat(color[1]) / 360;
+                        let s = parseInt(color[2], 10) / 100;
+                        let l = parseInt(color[3], 10) / 100;
 
                         handleAlpha(color[5]);
 
@@ -312,8 +312,8 @@ Colors.prototype = {
 
             // hex color
 
-            var hex = m[1];
-            var size = hex.length;
+            let hex = m[1];
+            let size = hex.length;
 
             if (size === 3) {
 
@@ -340,7 +340,7 @@ Colors.prototype = {
         if (style && style.length > 0) {
 
             // color keywords
-            var hex = ColorKeywords[style];
+            let hex = ColorKeywords[style];
 
             if (hex !== undefined) {
 
@@ -390,7 +390,7 @@ Colors.prototype = {
 
         if (gammaFactor === undefined) gammaFactor = 2.0;
 
-        var safeInverse = (gammaFactor > 0) ? (1.0 / gammaFactor) : 1.0;
+        let safeInverse = (gammaFactor > 0) ? (1.0 / gammaFactor) : 1.0;
 
         this.r = Math.pow(color.r, safeInverse);
         this.g = Math.pow(color.g, safeInverse);
@@ -402,7 +402,7 @@ Colors.prototype = {
 
     convertGammaToLinear: function () {
 
-        var r = this.r,
+        let r = this.r,
             g = this.g,
             b = this.b;
 
@@ -440,21 +440,21 @@ Colors.prototype = {
 
         // h,s,l ranges are in 0.0 - 1.0
 
-        var hsl = optionalTarget || {
+        let hsl = optionalTarget || {
             h: 0,
             s: 0,
             l: 0
         };
 
-        var r = this.r,
+        let r = this.r,
             g = this.g,
             b = this.b;
 
-        var max = Math.max(r, g, b);
-        var min = Math.min(r, g, b);
+        let max = Math.max(r, g, b);
+        let min = Math.min(r, g, b);
 
-        var hue, saturation;
-        var lightness = (min + max) / 2.0;
+        let hue, saturation;
+        let lightness = (min + max) / 2.0;
 
         if (min === max) {
 
@@ -463,7 +463,7 @@ Colors.prototype = {
 
         } else {
 
-            var delta = max - min;
+            let delta = max - min;
 
             saturation = lightness <= 0.5 ? delta / (max + min) : delta / (2 - max - min);
 
@@ -494,14 +494,16 @@ Colors.prototype = {
     },
 
     getStyle: function () {
-
         return 'rgb(' + ((this.r * 255) | 0) + ',' + ((this.g * 255) | 0) + ',' + ((this.b * 255) | 0) + ')';
 
+    },
+    getRgbaStyle() {
+        return 'rgba(' + ((this.r * 255) | 0) + ',' + ((this.g * 255) | 0) + ',' + ((this.b * 255) | 0) + ',1)';
     },
 
     offsetHSL: function (h, s, l) {
 
-        var hsl = this.getHSL();
+        let hsl = this.getHSL();
 
         hsl.h += h;
         hsl.s += s;
@@ -615,4 +617,4 @@ Colors.prototype = {
     }
 
 };
-export var Color = Colors;
+export const Color = Colors;

@@ -25,7 +25,7 @@ export class Map {
         let id = this.option.id;
 
         let mapDom = isString(id) ? document.getElementById(id) : id;
-        var bmap = new BMap.Map(mapDom, {
+        let bmap = new BMap.Map(mapDom, {
             enableMapClick: false
         });
         bmap.enableScrollWheelZoom(); // 启用滚轮放大缩小

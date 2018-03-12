@@ -55,9 +55,9 @@ export class Label {
 
     }
     _getTrueLength(str) { //获取字符串的真实长度（字节长度）
-        var len = str.length,
+        let len = str.length,
             truelen = 0;
-        for (var x = 0; x < len; x++) {
+        for (let x = 0; x < len; x++) {
             if (str.charCodeAt(x) > 128) {
                 truelen += 2;
             } else {

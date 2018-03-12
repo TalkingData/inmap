@@ -10,13 +10,13 @@ export class HeatOverlay extends CanvasOverlay {
     constructor(ops) {
         super(ops);
         this.points = [];
-        this._setOptionStyle(HeatConfig, ops);
+        this._setStyle(HeatConfig, ops);
         this.delteOption();
     }
     resize() {
         this.drawMap();
     }
-    _setOptionStyle(config, ops) {
+    _setStyle(config, ops) {
         ops = ops || {};
         let option = merge(config, ops);
         this.style = option.style;
@@ -26,7 +26,7 @@ export class HeatOverlay extends CanvasOverlay {
 
     }
     setOptionStyle(ops) {
-        this._setOptionStyle(HeatConfig, ops);
+        this._setStyle(HeatConfig, ops);
         this.delteOption();
         this.drawMap();
     }
@@ -67,11 +67,11 @@ export class HeatOverlay extends CanvasOverlay {
             me.clearCanvas();
             me.canvasResize();
             me.workerData = pixels;
-            me._dataRender();
+            me.refresh();
 
         });
     }
-    _dataRender() {
+    refresh() {
         let normal = this.style.normal;
         let container = this.container;
         if (normal.maxValue == 0) {

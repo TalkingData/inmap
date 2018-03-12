@@ -5,14 +5,21 @@ import GriddingConfig from './../config/GriddingConfig.js';
 
 export class GriddingOverlay extends Parameter {
     constructor(ops) {
-
         super(GriddingConfig, ops);
         this.delteOption();
+    }
+    TInit() {
+        this.compileSplitList(this.points);
+    }
+    setOptionStyle(ops) {
+        this._setStyle(this.baseConfig, ops);
+        this.TInit();
+        this.refresh();
     }
     delteOption() {
         this.style['selected'] = null;
     }
-    _dataRender(){
+    refresh() {
         this.drawMap();
     }
     resize() {
@@ -63,9 +70,7 @@ export class GriddingOverlay extends Parameter {
 
         });
     }
-    TInit() {
-        //覆盖方法
-    }
+
     setPoints(points) {
         if (!points) {
             return;
@@ -149,7 +154,7 @@ export class GriddingOverlay extends Parameter {
                 start: star,
                 end: end,
                 backgroundColor: colors[i],
-                borderColor: this.style.normal.borderColor || this.getColorOpacity(colors[i])
+
             });
 
         }

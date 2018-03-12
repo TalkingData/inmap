@@ -1,4 +1,4 @@
- export var WhiteLover = [{
+ export const WhiteLover = [{
      'featureType': 'water',
      'elementType': 'all',
      'stylers': {
@@ -155,7 +155,7 @@
      }
  }
  ];
- export var Blueness = [{
+ export const Blueness = [{
      'featureType': 'water',
      'elementType': 'all',
      'stylers': {

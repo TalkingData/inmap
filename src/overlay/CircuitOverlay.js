@@ -15,11 +15,11 @@ export class CircuitOverlay extends CanvasOverlay {
         super(ops);
         this.points = [];
         this.style = {};
-        this._setOptionStyle(CircuitConfig, ops);
+        this._setStyle(CircuitConfig, ops);
         this._isCoordinates = false;
 
     }
-    _setOptionStyle(config, ops) {
+    _setStyle(config, ops) {
         let option = merge(config, ops);
         this.points = ops.data ? option.data : this.points;
         this.style = option.style;
@@ -29,7 +29,7 @@ export class CircuitOverlay extends CanvasOverlay {
         this.drawMap();
     }
     setOptionStyle(ops) {
-        this._setOptionStyle(CircuitConfig, ops);
+        this._setStyle(CircuitConfig, ops);
         this.coordinates(this.points);
         this.drawMap();
     }
@@ -47,7 +47,7 @@ export class CircuitOverlay extends CanvasOverlay {
         let me = this;
         let zoomUnit = Math.pow(2, 18 - this.map.getZoom());
         let projection = this.map.getMapType().getProjection();
-        var mcCenter = projection.lngLatToPoint(this.map.getCenter());
+        let mcCenter = projection.lngLatToPoint(this.map.getCenter());
         let nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit); //左上角墨卡托坐标
         let params = {
             points: me.points,
@@ -69,12 +69,12 @@ export class CircuitOverlay extends CanvasOverlay {
     }
     coordinates(data) {
         this._isCoordinates = true;
-        var projection = this.map.getMapType().getProjection();
+        let projection = this.map.getMapType().getProjection();
         for (let i = 0; i < data.length; i++) {
             let item = data[i];
             item['_coordinates'] = item.geo.map(function (item) {
 
-                var pixel = projection.lngLatToPoint({
+                let pixel = projection.lngLatToPoint({
                     lng: item[0],
                     lat: item[1]
                 });
@@ -89,8 +89,8 @@ export class CircuitOverlay extends CanvasOverlay {
 
         return _coordinates.map(function (item) {
 
-            var x = (item[0] - nwMc.x) / zoomUnit;
-            var y = (nwMc.y - item[1]) / zoomUnit;
+            let x = (item[0] - nwMc.x) / zoomUnit;
+            let y = (nwMc.y - item[1]) / zoomUnit;
             return [x, y];
         });
     }

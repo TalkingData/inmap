@@ -19,8 +19,9 @@ export let LablEvading = {
         labels.sort((a, b) => {
             return b.x - a.x;
         });
+        let meet;
         do {
-            var meet = false; //本轮是否有相交
+            meet = false; //本轮是否有相交
             for (let i = 0; i < labels.length; i++) {
                 let temp = labels[i];
                 for (let j = 0; j < labels.length; j++) {

@@ -209,7 +209,7 @@ export class MoveLineOverlay extends BaseClass {
         this.setOptionStyle(opts);
     }
     setOptionStyle(ops) {
-        var option = merge(config, ops);
+        let option = merge(config, ops);
         this.style = option.style.normal;
         this.data = ops.data ? option.data : this.data;
         this.tMapStyle(this.style.skin);

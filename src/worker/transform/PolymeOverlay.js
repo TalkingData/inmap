@@ -37,9 +37,10 @@ export let PolymeOverlay = {
         return tempDot;
     },
     merge: function (dots, defautR) {
+        let merges, meet;
 
         do {
-            var merges = [],
+            merges = [],
                 meet = false; //本轮是否有合并
             for (let i = 0; i < dots.length; i++) {
                 let temp = dots[i];

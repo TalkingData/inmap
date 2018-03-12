@@ -30,7 +30,7 @@ export class CanvasOverlay extends BaseClass {
         this.animationFlag = true;
     }
     initialize(map) {
-        var me = this;
+        let me = this;
         this.map = map;
         this.container = document.createElement('canvas');
         this.ctx = this.container.getContext('2d');
@@ -122,22 +122,22 @@ export class CanvasOverlay extends BaseClass {
 
     canvasResize() {
 
-        var map = this.map;
-        var container = this.container;
-        var point = map.getCenter();
-        var size = map.getSize();
-        var pixel = map.pointToOverlayPixel(point);
+        let map = this.map;
+        let container = this.container;
+        let point = map.getCenter();
+        let size = map.getSize();
+        let pixel = map.pointToOverlayPixel(point);
         container.style.left = (pixel.x - size.width / 2) + 'px';
         container.style.top = (pixel.y - size.height / 2) + 'px';
     }
 
     clearCanvas() {
-        var size = this.map.getSize();
+        let size = this.map.getSize();
         this.getContext().clearRect(0, 0, size.width, size.height); //调整画布
     }
 
     setCanvasSize() {
-        var size = this.map.getSize();
+        let size = this.map.getSize();
         this.container.width = size.width;
         this.container.height = size.height;
         setDevicePixelRatio(this.ctx);
