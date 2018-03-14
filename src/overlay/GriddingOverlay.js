@@ -1,6 +1,9 @@
 import {
     Parameter
 } from './base/Parameter.js';
+import {
+    isArray
+} from './../common/util';
 import GriddingConfig from './../config/GriddingConfig.js';
 
 export class GriddingOverlay extends Parameter {
@@ -72,8 +75,9 @@ export class GriddingOverlay extends Parameter {
     }
 
     setPoints(points) {
-        if (!points) {
-            return;
+
+        if (!isArray(points)) {
+            throw new TypeError('data must be a Array');
         }
         this.points = points;
 

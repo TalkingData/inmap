@@ -2,7 +2,8 @@ import {
     CanvasOverlay
 } from './base/CanvasOverlay';
 import {
-    merge
+    merge,
+    isArray
 } from './../common/util';
 
 import HeatConfig from './../config/HeatConfig';
@@ -42,8 +43,8 @@ export class HeatOverlay extends CanvasOverlay {
         };
     }
     setPoints(points) {
-        if (!points) {
-            return;
+        if (!isArray(points)) {
+            throw new TypeError('data must be a Array');
         }
         this.points = points;
         this.drawMap();

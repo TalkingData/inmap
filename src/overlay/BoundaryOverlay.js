@@ -5,6 +5,9 @@ import {
 import {
     Color
 } from './../common/Color';
+import {
+    isArray
+} from './../common/util';
 import BoundaryConfig from './../config/BoundaryConfig';
 
 
@@ -28,7 +31,6 @@ export class BoundaryOverlay extends Parameter {
     }
     setOptionStyle(ops) {
         this._setStyle(this.baseConfig, ops);
-
         this.TInit();
         this.refresh();
     }
@@ -268,8 +270,8 @@ export class BoundaryOverlay extends Parameter {
         });
     }
     setPoints(points) {
-        if (!points) {
-            return;
+        if (!isArray(points)) {
+            throw new TypeError('data must be a Array');
         }
         this.cancerSelectd();
         this.points = points;

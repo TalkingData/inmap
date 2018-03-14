@@ -1,6 +1,9 @@
 import {
     Parameter
 } from './base/Parameter.js';
+import {
+    isArray
+} from './../common/util';
 import HoneycombConfig from './../config/HoneycombConfig.js';
 export class HoneycombOverlay extends Parameter {
     constructor(ops) {
@@ -26,8 +29,8 @@ export class HoneycombOverlay extends Parameter {
         this.drawMap();
     }
     setPoints(points) {
-        if (!points) {
-            return;
+        if (!isArray(points)) {
+            throw new TypeError('data must be a Array');
         }
         this.points = points;
         this.drawMap();

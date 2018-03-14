@@ -3,7 +3,8 @@ import {
 } from './base/Parameter';
 import ImgConfig from './../config/ImgConfig';
 import {
-    isString
+    isString,
+    isArray
 } from './../common/util';
 /*
  * 点的绘制
@@ -30,8 +31,8 @@ export class ImgOverlay extends Parameter {
         });
     }
     setPoints(points) {
-        if (!points) {
-            return;
+        if (!isArray(points)) {
+            throw new TypeError('data must be a Array');
         }
         this.cancerSelectd();
         this.points = points;

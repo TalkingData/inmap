@@ -4,7 +4,8 @@ import {
 import {
     merge,
     isString,
-    isObject
+    isObject,
+    isArray
 } from './../common/util';
 import {
     WhiteLover,
@@ -335,8 +336,8 @@ export class MoveLineOverlay extends BaseClass {
         });
     }
     setPoints(points) {
-        if (!points) {
-            return;
+        if (!isArray(points)) {
+            throw new TypeError('data must be a Array');
         }
         this.data = points;
         this.markLines.length = 0;

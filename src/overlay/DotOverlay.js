@@ -8,6 +8,9 @@ import {
 import {
     Parameter
 } from './base/Parameter';
+import {
+    isArray
+} from './../common/util';
 import DotConfig from './../config/DotConfig';
 export class DotOverlay extends Parameter {
     constructor(opts) {
@@ -45,9 +48,12 @@ export class DotOverlay extends Parameter {
             me.refresh();
         });
     }
+    cancerSelectd() {
+        this.selectItem = [];
+    }
     setPoints(points) {
-        if (!points) {
-            return;
+        if (!isArray(points)) {
+            throw new TypeError('data must be a Array');
         }
         this.cancerSelectd();
         this.points = points;

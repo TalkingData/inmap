@@ -3,7 +3,8 @@
  */
 
 import {
-    merge
+    merge,
+    isArray
 } from './../common/util';
 import {
     CanvasOverlay
@@ -34,8 +35,8 @@ export class CircuitOverlay extends CanvasOverlay {
         this.drawMap();
     }
     setPoints(points) {
-        if (!points) {
-            return;
+        if (!isArray(points)) {
+            throw new TypeError('data must be a Array');
         }
         this.points = points;
 
