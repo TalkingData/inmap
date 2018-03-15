@@ -32,7 +32,7 @@ export class Parameter extends CanvasOverlay {
         this.legendDom = null; //图例
         this.tooltipTemplate = null;
 
-       
+
     }
 
     _setStyle(config, ops) {
@@ -117,11 +117,11 @@ export class Parameter extends CanvasOverlay {
         }
         if (result.opacity) {
             let color = new Color(result.backgroundColor);
-            result.backgroundColor = 'rgba(' + color.r + ',' + color.g + ',' + color.a + ',' + result.opacity + ')';
+            result.backgroundColor = color.getRgbaStyle(result.opacity);
         }
         if (result.borderOpacity) {
             let color = new Color(result.borderColor);
-            result.borderColor = 'rgba(' + color.r + ',' + color.g + ',' + color.a + ',' + result.borderOpacity + ')';
+            result.borderColor = color.getRgbaStyle(result.borderOpacity);
         }
         return result;
     }
@@ -362,7 +362,7 @@ export class Parameter extends CanvasOverlay {
 
         this.swopData(result.index, item);
         this.event.onMouseClick(this.selectItem, event);
-        
+
         this.refresh();
         if (detectmob()) {
             this.overItem = item;

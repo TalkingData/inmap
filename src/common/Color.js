@@ -497,8 +497,8 @@ Colors.prototype = {
         return 'rgb(' + ((this.r * 255) | 0) + ',' + ((this.g * 255) | 0) + ',' + ((this.b * 255) | 0) + ')';
 
     },
-    getRgbaStyle() {
-        return 'rgba(' + ((this.r * 255) | 0) + ',' + ((this.g * 255) | 0) + ',' + ((this.b * 255) | 0) + ',1)';
+    getRgbaStyle(opacity) {
+        return 'rgba(' + ((this.r * 255) | 0) + ',' + ((this.g * 255) | 0) + ',' + ((this.b * 255) | 0) + ',' + (opacity || 1) + ')';
     },
 
     offsetHSL: function (h, s, l) {
