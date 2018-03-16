@@ -22,7 +22,7 @@ import {
 import {
     ImgOverlay
 } from './overlay/ImgOverlay';
-import{
+import {
     MoveLineOverlay
 } from './overlay/MoveLineOverlay';
 import {

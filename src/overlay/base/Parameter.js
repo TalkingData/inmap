@@ -37,6 +37,7 @@ export class Parameter extends CanvasOverlay {
         ops = ops || {};
         let option = merge(config, ops);
         this.toRgba(option.style);
+        this._option = option;
         this.tooltip = option.tooltip;
         this.legend = option.legend;
         this.event = option.event;
@@ -316,12 +317,12 @@ export class Parameter extends CanvasOverlay {
     }
     tMousemove(event) {
 
-        if (this.eventType == 'onmoving'|| isEmpty(this.style.mouseOver)) {
+        if (this.eventType == 'onmoving' || isEmpty(this.style.mouseOver)) {
             return;
         }
         let result = this.getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
-        
+
         if (temp != this.overItem) { //防止过度重新绘画
             this.overItem = temp;
             if (temp) {

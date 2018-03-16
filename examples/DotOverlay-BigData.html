@@ -50,6 +50,10 @@
     data = data.concat(data).concat(data).concat(data);
     console.log(data.length);
     var overlay = new inMap.DotOverlay({
+        draw: {
+            // interval: 400,
+            splitList: 1900
+        },
         style: {
             normal: {
                 backgroundColor: "green", // 填充颜色

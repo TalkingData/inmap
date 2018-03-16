@@ -9,7 +9,8 @@ import {
     Parameter
 } from './base/Parameter';
 import {
-    isArray
+    isArray,
+    isEmpty
 } from './../common/util';
 import BatchesData from './base/BatchesData';
 import DotConfig from './../config/DotConfig';
@@ -17,9 +18,13 @@ export class DotOverlay extends Parameter {
     constructor(opts) {
         super(DotConfig, opts);
         this.polyme = opts.type == 'polyme';
-        this.batchesData = new BatchesData(400, 1500);
         this._loopDraw = this._loopDraw.bind(this);
+        if (!isEmpty(this._option.draw)) {
+            this.batchesData = new BatchesData(this._option.draw);
+        }
+
     }
+
     TInit() {
         if (this.style.colors.length > 0) {
             this.compileSplitList(this.points);
@@ -29,6 +34,11 @@ export class DotOverlay extends Parameter {
     }
     setOptionStyle(ops) {
         this._setStyle(this.baseConfig, ops);
+        if (!isEmpty(this._option.draw)) {
+            this.batchesData = new BatchesData(this._option.draw);
+        } else {
+            this.batchesData = null;
+        }
         this.TInit();
         this.refresh();
     }
@@ -37,7 +47,7 @@ export class DotOverlay extends Parameter {
     }
     drawMap() {
         let me = this;
-        this.batchesData.clear();
+        this.batchesData && this.batchesData.clear();
         let path = me.polyme ? 'PolymeOverlay.mergePoint' : 'HeatOverlay.pointsToPixels';
         let data = me.polyme ? {
             points: this.points,
@@ -73,14 +83,6 @@ export class DotOverlay extends Parameter {
     compileSplitList(data) {
         let colors = this.style.colors;
         if (colors.length <= 0) return;
-
-        if (!Array.isArray(this.points)) {
-            /*eslint-disable */
-            console.error(' array is not defined <shouild be setPoints(Array)>');
-            /*eslint-enable */
-            return;
-        }
-
         data = data.sort((a, b) => {
             return parseFloat(a.count) - parseFloat(b.count);
         });
@@ -159,7 +161,11 @@ export class DotOverlay extends Parameter {
     refresh() {
         this.clearCanvas();
         this.canvasResize();
-        this.batchesData.action(this.workerData, this._loopDraw);
+        if (this.batchesData) {
+            this.batchesData.action(this.workerData, this._loopDraw);
+        } else {
+            this._loopDraw(this.workerData);
+        }
         if (this.style.normal.label.show) {
             this._drawLabel(this.ctx, this.workerData);
         }

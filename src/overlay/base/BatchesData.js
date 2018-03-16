@@ -5,13 +5,19 @@ import {
  * 数据分批间断执行
  */
 export default class BatchesData {
-    constructor(interval, splitCount) {
-        this.interval = interval || 400;
+    constructor(option) {
+        this.setOption(option);
         this.intervalId = null;
-        this.splitCount = splitCount || 1500;
         this.splitArray = [];
         this.index = 0;
-
+    }
+    setOption({
+        interval = 400,
+        splitCount = 1500
+    }) {
+        this.clear();
+        this.interval = interval;
+        this.splitCount = splitCount;
     }
     clear() {
         if (this.intervalId) {

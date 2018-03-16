@@ -16,7 +16,10 @@
          show: false,
          toFixed: 2, //保留两位小数
      },
-
+     draw: {
+        //  interval: 400,
+        //  splitList: 1500
+     },
      style: {
          normal: {
              borderWidth: 0.1,
