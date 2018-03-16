@@ -317,13 +317,9 @@ export class Parameter extends CanvasOverlay {
 
     }
     tMousemove(event) {
-
-        if (this.eventType == 'onmoving' || this.style.mouseOver == null || Object.keys(this.style.mouseOver).length == 0) {
-            return;
-        }
+        if (this.eventType == 'onmoving') return;
         let result = this.getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
-        
         if (temp != this.overItem) { //防止过度重新绘画
             this.overItem = temp;
             if (temp) {
