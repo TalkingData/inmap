@@ -1,5 +1,8 @@
 import {
+    isFunction,
+    isString,
     detectmob,
+    isEmpty,
     merge
 } from './../../common/util';
 import {
@@ -8,11 +11,6 @@ import {
 import {
     Color
 } from './../../common/Color';
-import {
-    isFunction,
-    isString,
-} from './../../common/util';
-
 
 /**
  * 接头定义 参数解析类
@@ -318,7 +316,7 @@ export class Parameter extends CanvasOverlay {
     }
     tMousemove(event) {
 
-        if (this.eventType == 'onmoving' || this.style.mouseOver == null || Object.keys(this.style.mouseOver).length == 0) {
+        if (this.eventType == 'onmoving'|| isEmpty(this.style.mouseOver)) {
             return;
         }
         let result = this.getTarget(event.pixel.x, event.pixel.y);

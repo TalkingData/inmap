@@ -1,43 +1,46 @@
 import deepmerge from 'deepmerge';
+
+export function typeOf(obj) {
+    const toString = Object.prototype.toString;
+    const map = {
+        '[object Boolean]': 'boolean',
+        '[object Number]': 'number',
+        '[object String]': 'string',
+        '[object Function]': 'function',
+        '[object Array]': 'array',
+        '[object Date]': 'date',
+        '[object RegExp]': 'regExp',
+        '[object Undefined]': 'undefined',
+        '[object Null]': 'null',
+        '[object Object]': 'object'
+    };
+    return map[toString.call(obj)];
+}
 /**
  * 是否是函数
  * @param {Mix}
  * @returns {Boolean}
  */
 export function isFunction(func) {
-    return typeof func == 'function';
+    return typeOf(func) == 'function';
 }
-/**
- * 是否是数字
- * @param {Mix}
- * @returns {Boolean}
- */
-export function isNumber(number) {
-    return typeof number == 'number';
-}
+
 /**
  * 是否是字符串
  * @param {Mix}
  * @returns {Boolean}
  */
 export function isString(string) {
-    return typeof string == 'string';
+    return typeOf(string) == 'string';
 }
-/**
- * 是否定义
- * @param {Mix}
- * @returns {Boolean}
- */
-export function isDefined(object) {
-    return typeof object != 'undefined';
-}
+
 /**
  * 是否为对象类型
  * @param {Mix}
  * @returns {Boolean}
  */
 export function isObject(object) {
-    return typeof object == 'object';
+    return typeOf(object) == 'object';
 }
 /**
  * 判断目标参数是否Array对象
@@ -45,19 +48,18 @@ export function isObject(object) {
  * @returns {boolean} 类型判断结果
  */
 export function isArray(source) {
-    return '[object Array]' == Object.prototype.toString.call(source);
+    return typeOf(source) == 'array';
 }
-/**
- * 判断字符串长度英文占1个字符，中文汉字占2个字符
- * @param {Object} str
- */
-export function getBlen(str) {
-    return str.replace(/[^\x00-\xff]/g, '01').length;
-}
+export const isEmpty = val => val == null || !(Object.keys(val) || val).length;
+
+export const isPromiseLike = obj =>
+    obj !== null &&
+    (typeof obj === 'object' || typeof obj === 'function') &&
+    typeof obj.then === 'function';
 
 export const extend = function (target, source) {
 
-    if (target && source && typeof (source) == 'object') {
+    if (target && source && isObject(source)) {
         for (let p in source) {
             target[p] = source[p];
         }
@@ -138,9 +140,8 @@ export function isPolyContainsPt(lng, lat, geos) {
     return isPolyContains(lats, lngs, lng, lat);
 }
 
-/**
- * 判断是否是移动端
- */
+
+
 export function detectmob() {
     if (navigator.userAgent.match(/Android/i) ||
         navigator.userAgent.match(/webOS/i) ||
@@ -155,6 +156,17 @@ export function detectmob() {
         return false;
     }
 }
+
+
+
+export const chunk = (arr, size) =>
+    Array.from({
+            length: Math.ceil(arr.length / size)
+        }, (v, i) =>
+        arr.slice(i * size, i * size + size)
+    );
+
+
 export function merge() {
     let arr = Array.prototype.slice.call(arguments);
     return deepmerge.all(arr, {
@@ -167,10 +179,3 @@ export function merge() {
         }
     });
 }
-
-export const chunk = (arr, size) =>
-    Array.from({
-            length: Math.ceil(arr.length / size)
-        }, (v, i) =>
-        arr.slice(i * size, i * size + size)
-    );
