@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DotOverlay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="data/bigdata.js"></script>
+    <script src="../dist/inmap.js"></script>
+
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        skin: "Blueness",
+        center: [116.579477, 40.131411],
+        zoom: {
+            value: 11,
+            show: true,
+            max: 18,
+            min: 5
+        },
+    });
+    data = data.concat(data).concat(data).concat(data);
+    console.log(data.length);
+    var overlay = new inMap.DotOverlay({
+        style: {
+            normal: {
+                backgroundColor: "green", // 填充颜色
+                shadowColor: "rgba(255, 255, 255, 1)", // 投影颜色
+                shadowBlur: 1, // 投影模糊级数
+                globalCompositeOperation: "lighter", // 颜色叠加方式
+                size: 1 // 半径
+            }
+        },
+        data: data
+    });
+    inmap.add(overlay);
+</script>
