@@ -7,7 +7,8 @@
     "dev": "webpack --watch --config  webpack.inmap.js",
     "build": "webpack --config webpack.inmap.pro.js && node build-worker",
     "lint": "eslint --fix --ext .js src",
-    "test": "npm run lint && karma start karma.inmap.test.js",
+    "test": "npm run lint",
+    "karma": "npm run lint && karma start karma.inmap.test.js",
     "prepublish": "npm run build"
   },
   "repository": {
