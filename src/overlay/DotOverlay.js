@@ -11,11 +11,14 @@ import {
 import {
     isArray
 } from './../common/util';
+import BatchesData from './base/BatchesData';
 import DotConfig from './../config/DotConfig';
 export class DotOverlay extends Parameter {
     constructor(opts) {
         super(DotConfig, opts);
         this.polyme = opts.type == 'polyme';
+        this.batchesData = new BatchesData(400, 1500);
+        this._loopDraw = this._loopDraw.bind(this);
     }
     TInit() {
         if (this.style.colors.length > 0) {
@@ -34,6 +37,7 @@ export class DotOverlay extends Parameter {
     }
     drawMap() {
         let me = this;
+        this.batchesData.clear();
         let path = me.polyme ? 'PolymeOverlay.mergePoint' : 'HeatOverlay.pointsToPixels';
         let data = me.polyme ? {
             points: this.points,
@@ -155,7 +159,7 @@ export class DotOverlay extends Parameter {
     refresh() {
         this.clearCanvas();
         this.canvasResize();
-        this._loopDraw(this.ctx, this.workerData);
+        this.batchesData.action(this.workerData, this._loopDraw);
         if (this.style.normal.label.show) {
             this._drawLabel(this.ctx, this.workerData);
         }
@@ -166,7 +170,8 @@ export class DotOverlay extends Parameter {
             this.workerData[this.workerData.length - 1] = item;
         }
     }
-    _loopDraw(ctx, pixels) {
+    _loopDraw(pixels) {
+        let ctx = this.ctx;
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.pixel;
