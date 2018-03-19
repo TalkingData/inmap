@@ -22,16 +22,17 @@ export class BoundaryOverlay extends Parameter {
         };
     }
     TInit() {
-        if (this.style.colors.length > 0) {
-            this.compileSplitList(this.points);
-            this.patchSplitList();
-        } else {
-            this.setlegend(this.legend, this.style.splitList);
-        }
+        this.initLegend();
     }
+    initLegend() {
+        this.compileSplitList(this.style.colors, this.points);
+        this.patchSplitList();
+        this.setlegend(this.legend, this.style.splitList);
+    }
+
     setOptionStyle(ops) {
         this._setStyle(this.baseConfig, ops);
-        this.TInit();
+        this.initLegend();
         this.refresh();
     }
 
@@ -39,8 +40,8 @@ export class BoundaryOverlay extends Parameter {
      * 颜色等分策略
      * @param {} data 
      */
-    compileSplitList(data) {
-        let colors = this.style.colors;
+    compileSplitList(colors, data) {
+
         if (colors.length <= 0) return;
 
         if (!Array.isArray(this.points)) {
@@ -49,7 +50,6 @@ export class BoundaryOverlay extends Parameter {
             /*eslint-enable */
             return;
         }
-
         data = data.sort((a, b) => {
             return parseFloat(a.count) - parseFloat(b.count);
         });
@@ -88,17 +88,17 @@ export class BoundaryOverlay extends Parameter {
         }
 
         this.style.splitList = split;
-        this.setlegend(this.legend, this.style.splitList);
+
     }
     patchSplitList() {
         let normal = this.style.normal;
-        if (normal.borderWidth != null && normal.borderColor != null) {
+        if (normal.borderWidth != null && normal.borderColor == null) {
             normal.borderColor = (new Color(normal.backgroundColor)).getRgbaStyle();
         }
         let splitList = this.style.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];
-            if (condition.borderWidth != null && condition.borderColor != null) {
+            if ((condition.borderWidth != null || normal.borderColor != null) && condition.borderColor == null) {
                 condition.borderColor = (new Color(condition.backgroundColor)).getRgbaStyle();
             }
         }
@@ -242,7 +242,6 @@ export class BoundaryOverlay extends Parameter {
                 return val && val.name == item.name;
             });
         }
-
         return index;
     }
     refresh() {
@@ -275,16 +274,11 @@ export class BoundaryOverlay extends Parameter {
         }
         this.cancerSelectd();
         this.points = points;
-
-        if (this.style.colors.length > 0) {
-            this.compileSplitList(this.points);
-        }
+        this.initLegend();
         this.drawMap();
     }
     getTarget(x, y) {
-
         let data = this.workerData;
-
         this.ctx.beginPath();
         for (let i = 0, len = data.length; i < len; i++) {
             let item = data[i];
