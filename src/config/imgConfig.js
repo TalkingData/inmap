@@ -17,23 +17,24 @@ export default {
             icon: null,
             width: 0,
             height: 0,
-            
+
             offsets: {
                 top: 0,
                 left: 0
             }
         },
         mouseOver: {
-            
+
         },
         selected: {
-            
+
         },
         colors: [],
         splitList: [],
     },
     data: [],
     event: {
-
+        multiSelect: false, //是否支持多选
+        onMouseClick() {}
     }
 };
