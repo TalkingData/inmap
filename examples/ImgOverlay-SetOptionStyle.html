@@ -28,10 +28,13 @@
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="../dist/inmap.js"></script>
     <script src="data/data.js"></script>
+
 </head>
+
 <body>
     <div id="allmap"></div>
 </body>
+
 </html>
 <script>
     data.length = 5;
@@ -45,19 +48,16 @@
             min: 5
         },
     })
-
-
     var img = "./img/bso.svg";
     var img2 = "./img/mark (2).png";
-
+    var img3 = "./img/place.svg";
     var overlay = new inMap.ImgOverlay({
         tooltip: {
             show: true,
             position: 'top',
-            // formatter: function (params) {
-            //     return params.count;
-            // }
-            formatter: "{count}"
+            formatter: function (params) {
+                return params.count;
+            }
         },
         style: {
             normal: {
@@ -91,12 +91,31 @@
                 }
             ],
         },
-        data: data,
-        event: {
-            onMouseClick: function (item) {
-                //能获取当前点的信息
-            }
-        }
+        data: data
     });
     map.add(overlay);
+
+    setTimeout(() => {
+        overlay.setOptionStyle({
+            skin: "Blueness",
+            tooltip: {
+                show: true,
+                position: 'top',
+                formatter: function (params) {
+                    return params.count;
+                }
+            },
+            style: {
+                normal: {
+                    icon: img3,
+                    width: 40,
+                    height: 40,
+                    offsets: {
+                        top: "-100%",
+                        left: "-50%",
+                    }
+                }
+            }
+        });
+    }, 2000);
 </script>

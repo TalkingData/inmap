@@ -17,6 +17,10 @@ export class ImgOverlay extends Parameter {
     resize() {
         this.drawMap();
     }
+    setOptionStyle(ops) {
+        this._setStyle(this.baseConfig, ops);
+        this.refresh();
+    }
     TInit() {
 
     }
