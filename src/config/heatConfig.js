@@ -2,8 +2,8 @@ export default {
     tooltip: {
         show: false,
         offsets: {
-            top: 0,
-            left: 0
+            top: 5,
+            left: 12,
         },
     },
     legend: {

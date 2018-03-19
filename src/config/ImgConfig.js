@@ -4,8 +4,8 @@ export default {
         position: 'top',
         customClass: 'inmap-tooltip-black', //是否自定义样式
         offsets: {
-            top: 0,
-            left: 0
+            top: 5,
+            left: 12,
         },
         formatter: '{count}'
     },

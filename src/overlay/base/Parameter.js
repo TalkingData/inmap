@@ -317,9 +317,13 @@ export class Parameter extends CanvasOverlay {
     }
     tMousemove(event) {
 
-        if (this.eventType == 'onmoving' || isEmpty(this.style.mouseOver)) {
+        if (this.eventType == 'onmoving') {
             return;
         }
+        if (!this.tooltip.show && isEmpty(this.style.mouseOver)) {
+            return;
+        }
+
         let result = this.getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
 
@@ -329,8 +333,9 @@ export class Parameter extends CanvasOverlay {
                 this.swopData(result.index, result.item);
             }
             this.eventType = 'mousemove';
-            this.refresh();
-
+            if (!isEmpty(this.style.mouseOver)) {
+                this.refresh();
+            }
         }
         if (temp) {
             this.map.setDefaultCursor('pointer');

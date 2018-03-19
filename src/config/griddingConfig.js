@@ -4,8 +4,8 @@ export default {
         position: 'top',
         formatter: '{count}',
         offsets: {
-            top: 0,
-            left: 0
+            top: 5,
+            left: 12,
         },
     },
     legend: {
