@@ -11,14 +11,14 @@ import {
  */
 export class ImgOverlay extends Parameter {
     constructor(opts) {
-        super(ImgConfig,opts);
+        super(ImgConfig, opts);
         this.cacheImg = {}; //缓存图片对象
     }
     resize() {
         this.drawMap();
     }
     TInit() {
-        
+
     }
     drawMap() {
         let me = this;
@@ -37,6 +37,9 @@ export class ImgOverlay extends Parameter {
         this.cancerSelectd();
         this.points = points;
         this.drawMap();
+    }
+    cancerSelectd() {
+        this.selectItem = [];
     }
     _isMouseOver(x, y, imgX, imgY, imgW, imgH) {
         return !(x < imgX || x > imgX + imgW || y < imgY || y > imgY + imgH);
