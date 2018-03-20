@@ -18,7 +18,7 @@
      },
      draw: {
          //  interval: 400,
-         //  splitList: 1500
+         //  splitCount: 1500
      },
      style: {
          normal: {

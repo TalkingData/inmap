@@ -1,7 +1,9 @@
 /*
  * 点的绘制
  */
-
+import {
+    CanvasOverlay
+} from './base/CanvasOverlay.js';
 import {
     Label
 } from './../worker/helper/Label';
@@ -10,10 +12,12 @@ import {
 } from './base/Parameter';
 import {
     isArray,
-    isEmpty
+    isEmpty,
+    detectmob
 } from './../common/util';
 import BatchesData from './base/BatchesData';
 import DotConfig from './../config/DotConfig';
+let isMobile = detectmob();
 export class DotOverlay extends Parameter {
     constructor(opts) {
         super(DotConfig, opts);
@@ -22,10 +26,12 @@ export class DotOverlay extends Parameter {
         if (!isEmpty(this._option.draw)) {
             this.batchesData = new BatchesData(this._option.draw);
         }
-
+        this.mouseLayer = new CanvasOverlay();
     }
 
+
     TInit() {
+        this.map.addOverlay(this.mouseLayer);
         if (this.style.colors.length > 0) {
             this.compileSplitList(this.points);
         } else {
@@ -45,6 +51,12 @@ export class DotOverlay extends Parameter {
     resize() {
         this.drawMap();
     }
+    drawMouseLayer() {
+        let overArr = this.overItem ? [this.overItem] : [];
+        this.mouseLayer.clearCanvas();
+        this._loopDraw(this.mouseLayer.ctx, this.selectItem.concat(overArr));
+        
+    }
     drawMap() {
         let me = this;
         this.batchesData && this.batchesData.clear();
@@ -59,9 +71,23 @@ export class DotOverlay extends Parameter {
                 return;
             }
             me.setWorkerData(pixels);
+            me.updateOverClickItem();
             me.refresh();
+
         });
     }
+    updateOverClickItem() {
+        let overArr = this.overItem ? [this.overItem] : [];
+        let allItems = this.selectItem.concat(overArr);
+        for (let i = 0; i < allItems.length; i++) {
+            let item = allItems[i];
+            let ret = this.workerData.find(function (val) {
+                return val && val.lat == item.lat && val.lng == item.lng && val.count == item.count;
+            });
+            item.pixel = ret.pixel;
+        }
+    }
+
     cancerSelectd() {
         this.selectItem = [];
     }
@@ -152,23 +178,24 @@ export class DotOverlay extends Parameter {
         let index = -1;
         if (item) {
             index = this.selectItem.findIndex(function (val) {
-                return val && val.lat == item.lat && val.lng == item.lng;
+                return val && val.lat == item.lat && val.lng == item.lng && val.count == item.count;
             });
         }
-
         return index;
     }
     refresh() {
         this.clearCanvas();
         this.canvasResize();
+        this.mouseLayer.canvasResize();
         if (this.batchesData) {
-            this.batchesData.action(this.workerData, this._loopDraw);
+            this.batchesData.action(this.workerData, this._loopDraw, this.ctx);
         } else {
-            this._loopDraw(this.workerData);
+            this._loopDraw(this.ctx, this.workerData);
         }
         if (this.style.normal.label.show) {
             this._drawLabel(this.ctx, this.workerData);
         }
+        this.drawMouseLayer();
     }
     swopData(index, item) {
         if (index > -1 && !this.style.normal.label.show) { //导致文字闪
@@ -176,8 +203,8 @@ export class DotOverlay extends Parameter {
             this.workerData[this.workerData.length - 1] = item;
         }
     }
-    _loopDraw(pixels) {
-        let ctx = this.ctx;
+    _loopDraw(ctx, pixels) {
+
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.pixel;
@@ -267,5 +294,69 @@ export class DotOverlay extends Parameter {
             }
             ctx.stroke();
         }
+    }
+    Tdispose(){
+        this.map.removeOverlay(this.mouseLayer);
+    }
+
+    tMousemove(event) {
+
+        if (this.eventType == 'onmoving') {
+            return;
+        }
+        if (!this.tooltip.show && isEmpty(this.style.mouseOver)) {
+            return;
+        }
+        let result = this.getTarget(event.pixel.x, event.pixel.y);
+        let temp = result.item;
+
+        if (temp != this.overItem) { //防止过度重新绘画
+            this.overItem = temp;
+            this.eventType = 'mousemove';
+            if (!isEmpty(this.style.mouseOver)) {
+                this.drawMouseLayer();
+            }
+        }
+        if (temp) {
+            this.map.setDefaultCursor('pointer');
+        } else {
+            this.map.setDefaultCursor('default');
+        }
+
+        this.setTooltip(event);
+
+    }
+    tMouseClick(event) {
+        if (this.eventType == 'onmoving') return;
+        let {
+            multiSelect
+        } = this.event;
+        let result = this.getTarget(event.pixel.x, event.pixel.y);
+        if (result.index == -1) {
+            return;
+        }
+
+        let item = result.item;
+        if (multiSelect) {
+            if (this.selectItemContains(item)) {
+                this.deleteSelectItem(item); //二次点击取消选中
+            } else {
+                this.selectItem.push(result.item);
+            }
+
+        } else {
+            this.selectItem = [result.item];
+        }
+
+        this.event.onMouseClick(this.selectItem, event);
+
+
+        if (isMobile) {
+            this.overItem = [item];
+            this.setTooltip(event);
+        }
+        this.drawMouseLayer();
+
+
     }
 }

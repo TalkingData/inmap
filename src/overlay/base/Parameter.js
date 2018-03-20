@@ -11,7 +11,7 @@ import {
 import {
     Color
 } from './../../common/Color';
-
+let isMobile = detectmob();
 /**
  * 接头定义 参数解析类
  */
@@ -216,6 +216,8 @@ export class Parameter extends CanvasOverlay {
             this.legendDom = null;
         }
     }
+    
+
 
     /**
      * 设置图例
@@ -372,7 +374,7 @@ export class Parameter extends CanvasOverlay {
         this.event.onMouseClick(this.selectItem, event);
 
         this.refresh();
-        if (detectmob()) {
+        if (isMobile) {
             this.overItem = item;
             this.setTooltip(event);
         }

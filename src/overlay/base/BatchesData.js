@@ -12,7 +12,7 @@ export default class BatchesData {
         this.index = 0;
     }
     setOption({
-        interval = 400,
+        interval =  400,
         splitCount = 1500
     }) {
         this.clear();
@@ -26,7 +26,7 @@ export default class BatchesData {
         this.splitArray = [];
         this.index = 0;
     }
-    action(data, callback) {
+    action(data, callback, ctx) {
         this.clear();
         let {
             splitCount,
@@ -36,7 +36,7 @@ export default class BatchesData {
 
         let loop = () => {
             let item = this.splitArray[this.index];
-            item && callback(item);
+            item && callback(ctx, item);
 
             this.index++;
 

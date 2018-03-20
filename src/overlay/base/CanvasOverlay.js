@@ -25,7 +25,6 @@ export class CanvasOverlay extends BaseClass {
         this.tMouseleave = this.tMouseleave.bind(this);
         this.tMouseClick = this.tMouseClick.bind(this);
         this.devicePixelRatio = window.devicePixelRatio;
-        this.first = true; //只触发一次
         this.repaintEnd = opts && opts.repaintEnd; //重绘回调
         this.animationFlag = true;
     }
@@ -45,7 +44,9 @@ export class CanvasOverlay extends BaseClass {
         map.addEventListener('mousemove', me.tMousemove);
         this.container.addEventListener('mouseleave', me.tMouseleave);
         map.addEventListener('click', me.tMouseClick);
+        this.TInit();
         return this.container;
+
     }
     tMapStyle(skin) {
         let styleJson = null;
@@ -94,14 +95,7 @@ export class CanvasOverlay extends BaseClass {
         //抽象方法 子类去实现
     }
     draw() {
-
-        if (this.first) {
-            this.first = false;
-            this.resize();
-            this.TInit();
-
-        }
-
+        this.resize();
     }
     tMouseClick() {
 
@@ -157,6 +151,9 @@ export class CanvasOverlay extends BaseClass {
     Tclear() {
 
     }
+    Tdispose() {
+
+    }
     /**
      * 对象销毁
      */
@@ -171,6 +168,7 @@ export class CanvasOverlay extends BaseClass {
         this.container.removeEventListener('mouseleave', this.tMouseleave);
         this.map.removeEventListener('click', this.tMouseClick);
         this.Tclear();
+        this.Tdispose();
         this.map.removeOverlay(this);
 
 
