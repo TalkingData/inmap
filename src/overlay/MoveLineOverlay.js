@@ -213,7 +213,7 @@ export class MoveLineOverlay extends BaseClass {
         let option = merge(config, ops);
         this.style = option.style.normal;
         this.data = ops.data ? option.data : this.data;
-        this.tMapStyle(this.style.skin);
+        this.tMapStyle(option.skin);
         if (this.baseLayer) {
             this.markLines.length = 0;
             this.draw();

@@ -4678,7 +4678,7 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
             var option = (0, _util.merge)(_MoveLineConfig2.default, ops);
             this.style = option.style.normal;
             this.data = ops.data ? option.data : this.data;
-            this.tMapStyle(this.style.skin);
+            this.tMapStyle(option.skin);
             if (this.baseLayer) {
                 this.markLines.length = 0;
                 this.draw();
