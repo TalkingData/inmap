@@ -14,22 +14,22 @@ class Marker {
         this.pixel = map.pointToPixel(this.location);
         this.color = opts.color;
         this.speed = opts.speed;
-        this.size = 0;
-        this.radius = opts.radius;
+        this.radius = 0;
+        this.size = opts.size;
     }
     draw(context) {
         let pixel = this.pixel;
         context.save();
         context.beginPath();
         context.strokeStyle = this.color;
-        context.moveTo(pixel.x + pixel.size, pixel.y);
-        context.arc(pixel.x, pixel.y, this.size, 0, Math.PI * 2);
+        context.moveTo(pixel.x + pixel.radius, pixel.y);
+        context.arc(pixel.x, pixel.y, this.radius, 0, Math.PI * 2);
         context.stroke();
         context.closePath();
         context.restore();
-        this.size += this.speed;
-        if (this.size > this.radius) {
-            this.size = 0;
+        this.radius += this.speed;
+        if (this.radius > this.size) {
+            this.radius = 0;
         }
     }
 
