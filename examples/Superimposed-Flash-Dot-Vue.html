@@ -43,7 +43,7 @@
             </i-button-group>
         </div>
         <div class="ivu-btn-group" style="margin-left:20px;">
-            <i-button type="primary" @click="addFlashDot">添加气泡动画图层</i-button>
+            <i-button type="primary" @click="addFlashDot2">添加气泡动画图层</i-button>
             <i-button type="primary" @click="addImg">添加图标图层</i-button>
         </div>
     </div>
@@ -105,7 +105,28 @@
         speed: 1,
         radius: 50,
     }];
+    let data3 = [{
+        name: '北京',
+        lnglat: ['116.3', '39.9'],
+        speed: 1,
 
+    }, {
+        name: '上海',
+        lnglat: ['121.29', '31.11'],
+        speed: 0.4,
+    }, {
+        name: '福建',
+        lnglat: ['117.984943', '26.050118'],
+        speed: 0.45
+    }, {
+        name: '广东',
+        lnglat: ['113.394818', '23.408004'],
+        speed: 0.7,
+    }, {
+        name: '广西',
+        lnglat: ['108.924274', '23.552255'],
+        speed: 1
+    }];
     var inmap = new inMap.Map({
         id: 'allmap',
         skin: "WhiteLover",
@@ -124,8 +145,12 @@
         el: '#app',
         data: {},
         methods: {
+            clear: function () {
+                overlays.forEach(function (item) {
+                    inmap.remove(item);
+                });
+            },
             addDot: function () {
-
                 var overlay = new inMap.DotOverlay({
                     tooltip: {
                         show: true,
@@ -140,16 +165,19 @@
                             borderWidth: 0,
                         },
                         mouseOver: {
+                            backgroundColor: "#f73737",
                             borderColor: "#f73737",
-                            borderWidth: 7,
+                            borderWidth: 3,
                             shadowBlur: 0, // 投影模糊级
                         }
                     },
                     data: data1,
                 });
                 inmap.add(overlay);
+                overlays.push(overlay);
             },
             addFlashDot: function () {
+                this.clear();
                 var overlay = new inMap.FlashDotOverlay({
                     style: {
                         normal: {
@@ -163,11 +191,49 @@
                     data: data2
                 });
                 inmap.add(overlay);
+                overlays.push(overlay);
+            },
+            addFlashDot2: function () {
+                this.clear();
+                var overlay = new inMap.FlashDotOverlay({
+                    style: {
+                        normal: {
+                            fps: 25, //动画帧数
+                            color: "#f18080",
+                            size: 30,
+                            speed: 0.4
+                        }
+
+                    },
+                    data: data3
+                });
+                inmap.add(overlay);
+                overlays.push(overlay);
             },
             addImg: function () {
+                var img = "./img/scenic.png";
+                var overlay = new inMap.ImgOverlay({
+                    tooltip: {
+                        show: true,
+                        formatter: "{name}"
+                    },
+                    style: {
+                        normal: {
+                            icon: img,
+                            width: 40,
+                            height: 40,
+                            offsets: {
+                                top: "-50%",
+                                left: "-50%",
+                            }
+                        }
+                    },
+                    data: data1,
 
-            },
-
+                });
+                inmap.add(overlay);
+                overlays.push(overlay);
+            }
         },
         mounted: function () {
 
