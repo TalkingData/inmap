@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>获取地区轮廓线</title>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script type="text/javascript" src="/coordtransform.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 13px;
+            margin: 10px;
+        }
+
+        #container {
+            width: 800px;
+            height: 500px;
+            border: 1px solid gray;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <div id="controler">
+        输入省、直辖市或县名称：
+        <input type="text" id="districtName" style="width:80px" value="合肥市">
+        <input type="button" onclick="getBoundary()" value="获取轮廓线">
+    </div>
+
+    <script type="text/javascript">
+        //国测局坐标(火星坐标,比如高德地图在用),百度坐标,wgs84坐标(谷歌国外以及绝大部分国外在线地图使用的坐标)
+        //百度经纬度坐标转国测局坐标
+        //var bd09togcj02 = coordtransform.bd09togcj02(116.404, 39.915);
+        //国测局坐标转百度经纬度坐标
+        //var gcj02tobd09 = coordtransform.gcj02tobd09(116.404, 39.915);
+        //wgs84转国测局坐标
+        //var wgs84togcj02 = coordtransform.wgs84togcj02(116.404, 39.915);
+        //国测局坐标转wgs84坐标
+        //var gcj02towgs84 = coordtransform.gcj02towgs84(116.404, 39.915);
+
+        var map = new BMap.Map("container");
+        map.centerAndZoom(new BMap.Point(116.403765, 39.914850), 5);
+        map.addControl(new BMap.NavigationControl({
+            type: BMAP_NAVIGATION_CONTROL_SMALL
+        }));
+        map.enableScrollWheelZoom();
+
+        function getBoundary() {
+            var bdary = new BMap.Boundary();
+            var name = document.getElementById("districtName").value;
+            bdary.get(name, function (rs) { //获取行政区域
+                map.clearOverlays(); //清除地图覆盖物
+
+                var count = rs.boundaries.length; //行政区域的点有多少个
+                for (var i = 0; i < count; i++) {
+                    var ply = new BMap.Polygon(rs.boundaries[i], {
+                        strokeWeight: 2,
+                        strokeColor: "#ff0000"
+                    }); //建立多边形覆盖物
+                    map.addOverlay(ply); //添加覆盖物
+                    map.setViewport(ply.getPath()); //调整视野
+                }
+
+                //alert(rs.boundaries[0]);
+                var pointArr = rs.boundaries[0].split(";");
+                var geos = [];
+                pointArr.forEach(function (item, index, arr) {
+                    var tempArr = item.split(",");
+                    var lng = tempArr[0];
+                    var lat = tempArr[1];
+
+                    geos.push([parseFloat(lng), parseFloat(lat)])
+
+                });
+                var result={
+                    count:1,
+                    name:name,
+                    geo:geos
+                }
+                console.log(JSON.stringify(result, null, 0))
+            });
+        }
+    </script>
+</body>
+
+</html>
