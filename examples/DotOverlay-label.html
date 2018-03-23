@@ -58,7 +58,6 @@
     var overlay = new inMap.DotOverlay({
         tooltip: {
             show: true,
-            position: 'top',
             // formatter: function (params) {
             //     return params.count;
             // }
@@ -69,8 +68,7 @@
             data: ["描述1", "描述2", "描述3", "描述4"],
             formatter: function (start, end, index) {
                 return start + "万~" + (end || "max") + "万";
-            },
-            position: "right"
+            }
         },
 
         style: {
