@@ -89,16 +89,22 @@ export class Parameter extends CanvasOverlay {
         let splitList = this.style.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];
-            if (condition.end == null) {
-                if (item.count >= condition.start) {
+            if (i == splitList.length - 1) {
+                if (condition.end == null) {
+                    if (item.count >= condition.start) {
+                        result = merge(normal, condition);
+                        break;
+                    }
+                } else if (item.count >= condition.start && item.count <= condition.end) {
                     result = merge(normal, condition);
                     break;
                 }
-            } else if (item.count >= condition.start && item.count < condition.end) {
-                result = merge(normal, condition);
-                break;
+            } else {
+                if (item.count >= condition.start && item.count < condition.end) {
+                    result = merge(normal, condition);
+                    break;
+                }
             }
-
         }
         result = merge(result, item.style || {});
 
@@ -216,7 +222,7 @@ export class Parameter extends CanvasOverlay {
             this.legendDom = null;
         }
     }
-    
+
 
 
     /**

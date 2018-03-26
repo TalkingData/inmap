@@ -558,14 +558,21 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
             var splitList = this.style.splitList;
             for (var i = 0; i < splitList.length; i++) {
                 var condition = splitList[i];
-                if (condition.end == null) {
-                    if (item.count >= condition.start) {
+                if (i == splitList.length - 1) {
+                    if (condition.end == null) {
+                        if (item.count >= condition.start) {
+                            result = (0, _util.merge)(normal, condition);
+                            break;
+                        }
+                    } else if (item.count >= condition.start && item.count <= condition.end) {
                         result = (0, _util.merge)(normal, condition);
                         break;
                     }
-                } else if (item.count >= condition.start && item.count < condition.end) {
-                    result = (0, _util.merge)(normal, condition);
-                    break;
+                } else {
+                    if (item.count >= condition.start && item.count < condition.end) {
+                        result = (0, _util.merge)(normal, condition);
+                        break;
+                    }
                 }
             }
             result = (0, _util.merge)(result, item.style || {});
