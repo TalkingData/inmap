@@ -22,7 +22,6 @@ export class CanvasOverlay extends BaseClass {
         this.tOnZoomend = this.tOnZoomend.bind(this);
         this.tOnMoving = this.tOnMoving.bind(this);
         this.tMousemove = this.tMousemove.bind(this);
-        this.tMouseleave = this.tMouseleave.bind(this);
         this.tMouseClick = this.tMouseClick.bind(this);
         this.devicePixelRatio = window.devicePixelRatio;
         this.repaintEnd = opts && opts.repaintEnd; //重绘回调
@@ -42,7 +41,6 @@ export class CanvasOverlay extends BaseClass {
         map.addEventListener('zoomstart', me.tOnZoomstart);
         map.addEventListener('zoomend', me.tOnZoomend);
         map.addEventListener('mousemove', me.tMousemove);
-        this.container.addEventListener('mouseleave', me.tMouseleave);
         map.addEventListener('click', me.tMouseClick);
         this.TInit();
         return this.container;
@@ -60,14 +58,12 @@ export class CanvasOverlay extends BaseClass {
         });
     }
     tOnResize(event) {
-
         this.setCanvasSize();
         this.tDraw(this, event);
     }
     tOnMoveend(event) {
         this.animationFlag = true;
         this.eventType = event.type;
-        this.tDraw(this, event);
     }
     tOnZoomstart() {
         this.animationFlag = false;
@@ -76,15 +72,10 @@ export class CanvasOverlay extends BaseClass {
     tOnZoomend(e) {
         this.animationFlag = true;
         this.eventType = e.type;
-        this.tDraw(this, e);
     }
     tOnMoving(e) {
         this.animationFlag = false;
         this.eventType = e.type;
-    }
-    tMouseleave() {
-
-        //抽象方法 子类去实现
     }
     tMousemove() {
 
@@ -95,27 +86,22 @@ export class CanvasOverlay extends BaseClass {
         //抽象方法 子类去实现
     }
     draw() {
+        // debugger
         this.resize();
     }
     tMouseClick() {
-
         //抽象方法 子类去实现
-
     }
     tDraw(me, event) {
-
         this.eventType = event.type;
         me.resize();
         this.repaintEnd && this.repaintEnd(this); //重绘回调
         me.keysss = true;
     }
-
     resize() {
         //  抽象方法 子类去实现
     }
-
     canvasResize() {
-
         let map = this.map;
         let container = this.container;
         let point = map.getCenter();
@@ -129,7 +115,6 @@ export class CanvasOverlay extends BaseClass {
         let size = this.map.getSize();
         this.getContext().clearRect(0, 0, size.width, size.height); //调整画布
     }
-
     setCanvasSize() {
         let size = this.map.getSize();
         this.container.width = size.width;
@@ -165,7 +150,6 @@ export class CanvasOverlay extends BaseClass {
         this.map.removeEventListener('zoomend', this.tOnZoomend);
         this.map.removeEventListener('moving', this.tOnMoving);
         this.map.removeEventListener('mousemove', this.tMousemove);
-        this.container.removeEventListener('mouseleave', this.tMouseleave);
         this.map.removeEventListener('click', this.tMouseClick);
         this.Tclear();
         this.Tdispose();

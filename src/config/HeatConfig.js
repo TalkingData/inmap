@@ -28,6 +28,7 @@ export default {
     },
     data: [],
     event: {
-        multiSelect: false
+        multiSelect: false,
+        onState() {}
     }
 };

@@ -10,6 +10,7 @@ import {
     CanvasOverlay
 } from './base/CanvasOverlay';
 import CircuitConfig from './../config/CircuitConfig';
+import State from './../config/OnState';
 
 export class CircuitOverlay extends CanvasOverlay {
     constructor(ops) {
@@ -24,6 +25,7 @@ export class CircuitOverlay extends CanvasOverlay {
         let option = merge(config, ops);
         this.points = ops.data ? option.data : this.points;
         this.style = option.style;
+        this.event = option.event;
         this.tMapStyle(option.skin);
     }
     resize() {
@@ -45,28 +47,33 @@ export class CircuitOverlay extends CanvasOverlay {
     }
 
     drawMap() {
-        let me = this;
         let zoomUnit = Math.pow(2, 18 - this.map.getZoom());
         let projection = this.map.getMapType().getProjection();
         let mcCenter = projection.lngLatToPoint(this.map.getCenter());
         let nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit); //左上角墨卡托坐标
         let params = {
-            points: me.points,
+            points: this.points,
             nwMc: nwMc,
             zoomUnit: zoomUnit
         };
         if (!this._isCoordinates) {
             this.coordinates(this.points);
         }
-        this.postMessage('CircuitOverlay.calculatePixel', params, function (pixels) {
-            if (me.eventType == 'onmoving') {
+        this.event.onState(State.computeBefore);
+        this.postMessage('CircuitOverlay.calculatePixel', params, (pixels) => {
+            if (this.eventType == 'onmoving') {
                 return;
             }
-            me.clearCanvas();
-            me.canvasResize();
-            me.drawLine(pixels);
-        });
+            this.event.onState(State.conputeAfter);
 
+            this.clearCanvas();
+            this.canvasResize();
+            this.event.onState(State.drawBefore);
+
+            this.drawLine(pixels);
+            this.event.onState(State.drawAfter);
+
+        });
     }
     coordinates(data) {
         this._isCoordinates = true;

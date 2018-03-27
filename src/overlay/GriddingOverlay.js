@@ -5,7 +5,7 @@ import {
     isArray
 } from './../common/util';
 import GriddingConfig from './../config/GriddingConfig.js';
-
+import State from './../config/OnState';
 export class GriddingOverlay extends Parameter {
     constructor(ops) {
         super(GriddingConfig, ops);
@@ -29,47 +29,53 @@ export class GriddingOverlay extends Parameter {
         this.drawMap();
     }
     drawMap() {
-        let me = this;
+
         let {
             normal,
             type
         } = this.style;
-        let zoom = me.map.getZoom();
+        let zoom = this.map.getZoom();
         let zoomUnit = Math.pow(2, 18 - zoom);
-        let mercatorProjection = me.map.getMapType().getProjection();
-        let mcCenter = mercatorProjection.lngLatToPoint(me.map.getCenter());
+        let mercatorProjection = this.map.getMapType().getProjection();
+        let mcCenter = mercatorProjection.lngLatToPoint(this.map.getCenter());
         let size = normal.size * zoomUnit;
-        let nwMcX = mcCenter.x - me.map.getSize().width / 2 * zoomUnit;
-        let nwMc = new BMap.Pixel(nwMcX, mcCenter.y + me.map.getSize().height / 2 * zoomUnit);
+        let nwMcX = mcCenter.x - this.map.getSize().width / 2 * zoomUnit;
+        let nwMc = new BMap.Pixel(nwMcX, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
 
         let params = {
-            points: me.points,
+            points: this.points,
             size: size,
             type: type,
             nwMc: nwMc,
             zoomUnit: zoomUnit,
-            mapSize: me.map.getSize(),
-            mapCenter: me.map.getCenter(),
+            mapSize: this.map.getSize(),
+            mapCenter: this.map.getCenter(),
             zoom: zoom
         };
+        this.event.onState(State.computeBefore);
 
-        this.postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj) {
-            if (me.eventType == 'onmoving') {
+        this.postMessage('GriddingOverlay.toRecGrids', params, (gridsObj) => {
+            if (this.eventType == 'onmoving') {
                 return;
             }
             let grids = gridsObj.grids;
+            this.event.onState(State.conputeAfter);
 
             //清除
-            me.clearCanvas();
-            me.canvasResize();
+            this.clearCanvas();
+            this.canvasResize();
 
-            me.setWorkerData({
+            this.setWorkerData({
                 size: size,
                 zoomUnit: zoomUnit,
                 grids: []
             });
-            me.createColorSplit(grids);
-            me.drawRec(size, zoomUnit, grids);
+            this.event.onState(State.drawBefore);
+            
+            this.createColorSplit(grids);
+            this.drawRec(size, zoomUnit, grids);
+            this.event.onState(State.drawAfter);
+            
 
         });
     }

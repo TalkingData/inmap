@@ -67,7 +67,12 @@
                 "rgba(92,1,0,1)"
             ]
         },
-        data: data
+        data: data,
+        event: {
+            onState(state) {
+                console.log(state);
+            }
+        }
     });
     map.add(overlay)
 </script>

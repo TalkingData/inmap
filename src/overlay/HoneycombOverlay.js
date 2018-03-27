@@ -5,6 +5,7 @@ import {
     isArray
 } from './../common/util';
 import HoneycombConfig from './../config/HoneycombConfig.js';
+import State from './../config/OnState';
 export class HoneycombOverlay extends Parameter {
     constructor(ops) {
         super(HoneycombConfig, ops);
@@ -36,31 +37,35 @@ export class HoneycombOverlay extends Parameter {
         this.drawMap();
     }
     drawMap() {
-        let me = this;
+
         let style = this.style.normal;
-        let zoom = me.map.getZoom();
+        let zoom = this.map.getZoom();
         let zoomUnit = Math.pow(2, 18 - zoom);
-        let mercatorProjection = me.map.getMapType().getProjection();
-        let mcCenter = mercatorProjection.lngLatToPoint(me.map.getCenter());
+        let mercatorProjection = this.map.getMapType().getProjection();
+        let mcCenter = mercatorProjection.lngLatToPoint(this.map.getCenter());
         let size = style.size * zoomUnit;
-        let nwMcX = mcCenter.x - me.map.getSize().width / 2 * zoomUnit;
-        let nwMc = new BMap.Pixel(nwMcX, mcCenter.y + me.map.getSize().height / 2 * zoomUnit);
+        let nwMcX = mcCenter.x - this.map.getSize().width / 2 * zoomUnit;
+        let nwMc = new BMap.Pixel(nwMcX, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
 
         let params = {
-            points: me.points,
+            points: this.points,
             size: size,
             nwMc: nwMc,
             zoomUnit: zoomUnit,
-            mapSize: me.map.getSize(),
-            mapCenter: me.map.getCenter(),
+            mapSize: this.map.getSize(),
+            mapCenter: this.map.getCenter(),
             zoom: zoom
         };
-        this.postMessage('HoneycombOverlay.toRecGrids', params, function (gridsObj) {
-            if (me.eventType == 'onmoving') {
+        this.event.onState(State.computeBefore);
+
+        this.postMessage('HoneycombOverlay.toRecGrids', params, (gridsObj) => {
+            if (this.eventType == 'onmoving') {
                 return;
             }
-            me.clearCanvas();
-            me.canvasResize();
+            this.event.onState(State.conputeAfter);
+
+            this.clearCanvas();
+            this.canvasResize();
 
             let grids = gridsObj.grids;
             let max = gridsObj.max;
@@ -72,11 +77,15 @@ export class HoneycombOverlay extends Parameter {
                 max: max,
                 min: min,
                 grids: grids,
-                margin: me.margin
+                margin: this.margin
             };
-            me.setWorkerData(obj);
-            me.createColorSplit(grids);
-            me.drawRec(obj);
+            this.setWorkerData(obj);
+            this.event.onState(State.drawBefore);
+
+            this.createColorSplit(grids);
+            this.drawRec(obj);
+            this.event.onState(State.drawAfter);
+
         });
     }
     createColorSplit(grids) {

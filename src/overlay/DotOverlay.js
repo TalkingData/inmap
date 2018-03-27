@@ -17,6 +17,7 @@ import {
 } from './../common/util';
 import BatchesData from './base/BatchesData';
 import DotConfig from './../config/DotConfig';
+import State from './../config/OnState';
 let isMobile = detectmob();
 export class DotOverlay extends Parameter {
     constructor(opts) {
@@ -55,24 +56,28 @@ export class DotOverlay extends Parameter {
         let overArr = this.overItem ? [this.overItem] : [];
         this.mouseLayer.clearCanvas();
         this._loopDraw(this.mouseLayer.ctx, this.selectItem.concat(overArr));
-        
+
     }
     drawMap() {
-        let me = this;
+
         this.batchesData && this.batchesData.clear();
-        let path = me.polyme ? 'PolymeOverlay.mergePoint' : 'HeatOverlay.pointsToPixels';
-        let data = me.polyme ? {
+        let path = this.polyme ? 'PolymeOverlay.mergePoint' : 'HeatOverlay.pointsToPixels';
+        let data = this.polyme ? {
             points: this.points,
             mergeCount: this.style.normal.mergeCount,
             size: this.style.normal.size
         } : this.points;
-        this.postMessage(path, data, function (pixels) {
-            if (me.eventType == 'onmoving') {
+        this.event.onState(State.computeBefore);
+        this.postMessage(path, data, (pixels) => {
+            if (this.eventType == 'onmoving') {
                 return;
             }
-            me.setWorkerData(pixels);
-            me.updateOverClickItem();
-            me.refresh();
+            this.event.onState(State.conputeAfter);
+            this.setWorkerData(pixels);
+            this.updateOverClickItem();
+            this.event.onState(State.drawBefore);
+            this.refresh();
+            this.event.onState(State.drawAfter);
 
         });
     }
@@ -295,7 +300,7 @@ export class DotOverlay extends Parameter {
             ctx.stroke();
         }
     }
-    Tdispose(){
+    Tdispose() {
         this.map.removeOverlay(this.mouseLayer);
     }
 

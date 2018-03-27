@@ -7,6 +7,7 @@ import {
 } from './../common/util';
 
 import HeatConfig from './../config/HeatConfig';
+import State from './../config/OnState';
 export class HeatOverlay extends CanvasOverlay {
     constructor(ops) {
         super(ops);
@@ -21,6 +22,7 @@ export class HeatOverlay extends CanvasOverlay {
         ops = ops || {};
         let option = merge(config, ops);
         this.style = option.style;
+        this.event = option.event;
         this.gradient = option.style.gradient;
         this.points = ops.data ? option.data : this.points;
         this.tMapStyle(option.skin);
@@ -59,16 +61,23 @@ export class HeatOverlay extends CanvasOverlay {
         }
     }
     drawMap() {
-        let me = this;
-        this.postMessage('HeatOverlay.pointsToPixels', this.points, function (pixels) {
+        this.event.onState(State.computeBefore);
 
-            if (me.eventType == 'onmoving') {
+        this.postMessage('HeatOverlay.pointsToPixels', this.points, (pixels) => {
+
+            if (this.eventType == 'onmoving') {
                 return;
             }
-            me.clearCanvas();
-            me.canvasResize();
-            me.workerData = pixels;
-            me.refresh();
+            this.event.onState(State.conputeAfter);
+
+            this.clearCanvas();
+            this.canvasResize();
+            this.event.onState(State.drawBefore);
+
+            this.workerData = pixels;
+            this.refresh();
+            this.event.onState(State.drawAfter);
+
 
         });
     }

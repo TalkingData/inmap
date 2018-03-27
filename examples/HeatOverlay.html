@@ -54,7 +54,12 @@
                 radius: 15, // 半径
             }
         },
-        data: data
+        data: data,
+        event: {
+            onState(state) {
+                console.log(state);
+            }
+        }
     });
     inmap.add(overlay)
 </script>

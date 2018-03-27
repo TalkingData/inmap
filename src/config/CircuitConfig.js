@@ -6,4 +6,9 @@ export default {
         },
     },
     data: [],
+    event: {
+        onState() {
+
+        }
+    }
 };

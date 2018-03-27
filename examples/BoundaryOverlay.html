@@ -60,7 +60,12 @@
             },
            
         },
-        data: data
+        data: data,
+        event:{
+            onState(state){
+                console.log(state);
+            }
+        }
     });
     inmap.add(overlay);
 </script>

@@ -6,6 +6,7 @@ import {
     isString,
     isArray
 } from './../common/util';
+import State from './../config/OnState';
 /*
  * 点的绘制
  */
@@ -25,13 +26,18 @@ export class ImgOverlay extends Parameter {
 
     }
     drawMap() {
-        let me = this;
-        this.postMessage('HeatOverlay.pointsToPixels', this.points, function (pixels) {
-            if (me.eventType == 'onmoving') {
+        this.event.onState(State.computeBefore);
+
+        this.postMessage('HeatOverlay.pointsToPixels', this.points, (pixels) => {
+            if (this.eventType == 'onmoving') {
                 return;
             }
-            me.setWorkerData(pixels);
-            me.refresh();
+            this.event.onState(State.conputeAfter);
+            this.event.onState(State.drawBefore);
+            this.setWorkerData(pixels);
+            this.refresh();
+            this.event.onState(State.drawAfter);
+
         });
     }
     setPoints(points) {

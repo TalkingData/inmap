@@ -56,7 +56,11 @@
             },
         },
         data: [],
-
+        event: {
+            onState(state) {
+                console.log(state);
+            }
+        }
     });
     map.add(overlay);
     overlay.setPoints(data);

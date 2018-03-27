@@ -41,6 +41,9 @@
      data: [],
      event: {
          multiSelect: false, //是否支持多选
-         onMouseClick() {}
+         onMouseClick() {},
+         onState() {
+
+         }
      }
  };

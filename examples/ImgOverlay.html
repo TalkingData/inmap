@@ -29,9 +29,11 @@
     <script src="../dist/inmap.js"></script>
     <script src="data/data.js"></script>
 </head>
+
 <body>
     <div id="allmap"></div>
 </body>
+
 </html>
 <script>
     data.length = 5;
@@ -94,6 +96,9 @@
         event: {
             onMouseClick: function (item) {
                 //能获取当前点的信息
+            },
+            onState(state) {
+                console.log(state);
             }
         }
     });

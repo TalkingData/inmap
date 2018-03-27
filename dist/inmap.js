@@ -288,7 +288,6 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
         _this.tOnZoomend = _this.tOnZoomend.bind(_this);
         _this.tOnMoving = _this.tOnMoving.bind(_this);
         _this.tMousemove = _this.tMousemove.bind(_this);
-        _this.tMouseleave = _this.tMouseleave.bind(_this);
         _this.tMouseClick = _this.tMouseClick.bind(_this);
         _this.devicePixelRatio = window.devicePixelRatio;
         _this.repaintEnd = opts && opts.repaintEnd;
@@ -312,7 +311,6 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
             map.addEventListener('zoomstart', me.tOnZoomstart);
             map.addEventListener('zoomend', me.tOnZoomend);
             map.addEventListener('mousemove', me.tMousemove);
-            this.container.addEventListener('mouseleave', me.tMouseleave);
             map.addEventListener('click', me.tMouseClick);
             this.TInit();
             return this.container;
@@ -333,7 +331,6 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
     }, {
         key: 'tOnResize',
         value: function tOnResize(event) {
-
             this.setCanvasSize();
             this.tDraw(this, event);
         }
@@ -342,7 +339,6 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
         value: function tOnMoveend(event) {
             this.animationFlag = true;
             this.eventType = event.type;
-            this.tDraw(this, event);
         }
     }, {
         key: 'tOnZoomstart',
@@ -355,7 +351,6 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
         value: function tOnZoomend(e) {
             this.animationFlag = true;
             this.eventType = e.type;
-            this.tDraw(this, e);
         }
     }, {
         key: 'tOnMoving',
@@ -363,9 +358,6 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
             this.animationFlag = false;
             this.eventType = e.type;
         }
-    }, {
-        key: 'tMouseleave',
-        value: function tMouseleave() {}
     }, {
         key: 'tMousemove',
         value: function tMousemove() {}
@@ -383,7 +375,6 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
     }, {
         key: 'tDraw',
         value: function tDraw(me, event) {
-
             this.eventType = event.type;
             me.resize();
             this.repaintEnd && this.repaintEnd(this);
@@ -395,7 +386,6 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
     }, {
         key: 'canvasResize',
         value: function canvasResize() {
-
             var map = this.map;
             var container = this.container;
             var point = map.getCenter();
@@ -444,7 +434,6 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
             this.map.removeEventListener('zoomend', this.tOnZoomend);
             this.map.removeEventListener('moving', this.tOnMoving);
             this.map.removeEventListener('mousemove', this.tMousemove);
-            this.container.removeEventListener('mouseleave', this.tMouseleave);
             this.map.removeEventListener('click', this.tMouseClick);
             this.Tclear();
             this.Tdispose();
@@ -2298,6 +2287,10 @@ var _BoundaryConfig = __webpack_require__(30);
 
 var _BoundaryConfig2 = _interopRequireDefault(_BoundaryConfig);
 
+var _OnState = __webpack_require__(50);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2571,20 +2564,21 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
     }, {
         key: 'drawMap',
         value: function drawMap() {
+            var _this2 = this;
 
-            var me = this;
+            this.event.onState(_OnState2.default.computeBefore);
             this.postMessage('BoundaryOverlay.calculatePixel', this.points, function (pixels) {
-                if (me.eventType == 'onmoving') {
+                if (_this2.eventType == 'onmoving') {
                     return;
                 }
-
-                me.clearCanvas();
-                me.canvasResize();
-                me.overItem = null;
-
-                me.setWorkerData(pixels);
-
-                me.drawLine(pixels);
+                _this2.event.onState(_OnState2.default.conputeAfter);
+                _this2.clearCanvas();
+                _this2.canvasResize();
+                _this2.overItem = null;
+                _this2.setWorkerData(pixels);
+                _this2.event.onState(_OnState2.default.drawBefore);
+                _this2.drawLine(pixels);
+                _this2.event.onState(_OnState2.default.drawAfter);
             });
         }
     }, {
@@ -2700,6 +2694,10 @@ var _CircuitConfig = __webpack_require__(31);
 
 var _CircuitConfig2 = _interopRequireDefault(_CircuitConfig);
 
+var _OnState = __webpack_require__(50);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2730,6 +2728,7 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
             var option = (0, _util.merge)(config, ops);
             this.points = ops.data ? option.data : this.points;
             this.style = option.style;
+            this.event = option.event;
             this.tMapStyle(option.skin);
         }
     }, {
@@ -2758,26 +2757,33 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
     }, {
         key: 'drawMap',
         value: function drawMap() {
-            var me = this;
+            var _this2 = this;
+
             var zoomUnit = Math.pow(2, 18 - this.map.getZoom());
             var projection = this.map.getMapType().getProjection();
             var mcCenter = projection.lngLatToPoint(this.map.getCenter());
             var nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
             var params = {
-                points: me.points,
+                points: this.points,
                 nwMc: nwMc,
                 zoomUnit: zoomUnit
             };
             if (!this._isCoordinates) {
                 this.coordinates(this.points);
             }
+            this.event.onState(_OnState2.default.computeBefore);
             this.postMessage('CircuitOverlay.calculatePixel', params, function (pixels) {
-                if (me.eventType == 'onmoving') {
+                if (_this2.eventType == 'onmoving') {
                     return;
                 }
-                me.clearCanvas();
-                me.canvasResize();
-                me.drawLine(pixels);
+                _this2.event.onState(_OnState2.default.conputeAfter);
+
+                _this2.clearCanvas();
+                _this2.canvasResize();
+                _this2.event.onState(_OnState2.default.drawBefore);
+
+                _this2.drawLine(pixels);
+                _this2.event.onState(_OnState2.default.drawAfter);
             });
         }
     }, {
@@ -2879,6 +2885,10 @@ var _DotConfig = __webpack_require__(32);
 
 var _DotConfig2 = _interopRequireDefault(_DotConfig);
 
+var _OnState = __webpack_require__(50);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2943,34 +2953,39 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
     }, {
         key: 'drawMap',
         value: function drawMap() {
-            var me = this;
+            var _this2 = this;
+
             this.batchesData && this.batchesData.clear();
-            var path = me.polyme ? 'PolymeOverlay.mergePoint' : 'HeatOverlay.pointsToPixels';
-            var data = me.polyme ? {
+            var path = this.polyme ? 'PolymeOverlay.mergePoint' : 'HeatOverlay.pointsToPixels';
+            var data = this.polyme ? {
                 points: this.points,
                 mergeCount: this.style.normal.mergeCount,
                 size: this.style.normal.size
             } : this.points;
+            this.event.onState(_OnState2.default.computeBefore);
             this.postMessage(path, data, function (pixels) {
-                if (me.eventType == 'onmoving') {
+                if (_this2.eventType == 'onmoving') {
                     return;
                 }
-                me.setWorkerData(pixels);
-                me.updateOverClickItem();
-                me.refresh();
+                _this2.event.onState(_OnState2.default.conputeAfter);
+                _this2.setWorkerData(pixels);
+                _this2.updateOverClickItem();
+                _this2.event.onState(_OnState2.default.drawBefore);
+                _this2.refresh();
+                _this2.event.onState(_OnState2.default.drawAfter);
             });
         }
     }, {
         key: 'updateOverClickItem',
         value: function updateOverClickItem() {
-            var _this2 = this;
+            var _this3 = this;
 
             var overArr = this.overItem ? [this.overItem] : [];
             var allItems = this.selectItem.concat(overArr);
 
             var _loop = function _loop(i) {
                 var item = allItems[i];
-                var ret = _this2.workerData.find(function (val) {
+                var ret = _this3.workerData.find(function (val) {
                     return val && val.lat == item.lat && val.lng == item.lng && val.count == item.count;
                 });
                 item.pixel = ret.pixel;
@@ -3126,7 +3141,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
     }, {
         key: '_drawLabel',
         value: function _drawLabel(ctx, pixels) {
-            var _this3 = this;
+            var _this4 = this;
 
             var fontStyle = this.style.normal.label;
             var fontSize = parseInt(fontStyle.font);
@@ -3136,7 +3151,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             var byteWidth = ctx.measureText('a').width;
 
             var labels = pixels.map(function (val) {
-                var radius = val.pixel.radius + _this3.style.normal.borderWidth;
+                var radius = val.pixel.radius + _this4.style.normal.borderWidth;
                 return new _Label.Label(val.pixel.x, val.pixel.y, radius, fontSize, byteWidth, val.name);
             });
 
@@ -3427,6 +3442,10 @@ var _GriddingConfig = __webpack_require__(34);
 
 var _GriddingConfig2 = _interopRequireDefault(_GriddingConfig);
 
+var _OnState = __webpack_require__(50);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3477,46 +3496,52 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
     }, {
         key: 'drawMap',
         value: function drawMap() {
-            var me = this;
+            var _this2 = this;
+
             var _style = this.style,
                 normal = _style.normal,
                 type = _style.type;
 
-            var zoom = me.map.getZoom();
+            var zoom = this.map.getZoom();
             var zoomUnit = Math.pow(2, 18 - zoom);
-            var mercatorProjection = me.map.getMapType().getProjection();
-            var mcCenter = mercatorProjection.lngLatToPoint(me.map.getCenter());
+            var mercatorProjection = this.map.getMapType().getProjection();
+            var mcCenter = mercatorProjection.lngLatToPoint(this.map.getCenter());
             var size = normal.size * zoomUnit;
-            var nwMcX = mcCenter.x - me.map.getSize().width / 2 * zoomUnit;
-            var nwMc = new BMap.Pixel(nwMcX, mcCenter.y + me.map.getSize().height / 2 * zoomUnit);
+            var nwMcX = mcCenter.x - this.map.getSize().width / 2 * zoomUnit;
+            var nwMc = new BMap.Pixel(nwMcX, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
 
             var params = {
-                points: me.points,
+                points: this.points,
                 size: size,
                 type: type,
                 nwMc: nwMc,
                 zoomUnit: zoomUnit,
-                mapSize: me.map.getSize(),
-                mapCenter: me.map.getCenter(),
+                mapSize: this.map.getSize(),
+                mapCenter: this.map.getCenter(),
                 zoom: zoom
             };
+            this.event.onState(_OnState2.default.computeBefore);
 
             this.postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj) {
-                if (me.eventType == 'onmoving') {
+                if (_this2.eventType == 'onmoving') {
                     return;
                 }
                 var grids = gridsObj.grids;
+                _this2.event.onState(_OnState2.default.conputeAfter);
 
-                me.clearCanvas();
-                me.canvasResize();
+                _this2.clearCanvas();
+                _this2.canvasResize();
 
-                me.setWorkerData({
+                _this2.setWorkerData({
                     size: size,
                     zoomUnit: zoomUnit,
                     grids: []
                 });
-                me.createColorSplit(grids);
-                me.drawRec(size, zoomUnit, grids);
+                _this2.event.onState(_OnState2.default.drawBefore);
+
+                _this2.createColorSplit(grids);
+                _this2.drawRec(size, zoomUnit, grids);
+                _this2.event.onState(_OnState2.default.drawAfter);
             });
         }
     }, {
@@ -3700,6 +3725,10 @@ var _HeatConfig = __webpack_require__(35);
 
 var _HeatConfig2 = _interopRequireDefault(_HeatConfig);
 
+var _OnState = __webpack_require__(50);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3733,6 +3762,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
             ops = ops || {};
             var option = (0, _util.merge)(config, ops);
             this.style = option.style;
+            this.event = option.event;
             this.gradient = option.style.gradient;
             this.points = ops.data ? option.data : this.points;
             this.tMapStyle(option.skin);
@@ -3777,16 +3807,24 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
     }, {
         key: 'drawMap',
         value: function drawMap() {
-            var me = this;
+            var _this2 = this;
+
+            this.event.onState(_OnState2.default.computeBefore);
+
             this.postMessage('HeatOverlay.pointsToPixels', this.points, function (pixels) {
 
-                if (me.eventType == 'onmoving') {
+                if (_this2.eventType == 'onmoving') {
                     return;
                 }
-                me.clearCanvas();
-                me.canvasResize();
-                me.workerData = pixels;
-                me.refresh();
+                _this2.event.onState(_OnState2.default.conputeAfter);
+
+                _this2.clearCanvas();
+                _this2.canvasResize();
+                _this2.event.onState(_OnState2.default.drawBefore);
+
+                _this2.workerData = pixels;
+                _this2.refresh();
+                _this2.event.onState(_OnState2.default.drawAfter);
             });
         }
     }, {
@@ -3907,6 +3945,10 @@ var _HoneycombConfig = __webpack_require__(36);
 
 var _HoneycombConfig2 = _interopRequireDefault(_HoneycombConfig);
 
+var _OnState = __webpack_require__(50);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3964,31 +4006,36 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
     }, {
         key: 'drawMap',
         value: function drawMap() {
-            var me = this;
+            var _this2 = this;
+
             var style = this.style.normal;
-            var zoom = me.map.getZoom();
+            var zoom = this.map.getZoom();
             var zoomUnit = Math.pow(2, 18 - zoom);
-            var mercatorProjection = me.map.getMapType().getProjection();
-            var mcCenter = mercatorProjection.lngLatToPoint(me.map.getCenter());
+            var mercatorProjection = this.map.getMapType().getProjection();
+            var mcCenter = mercatorProjection.lngLatToPoint(this.map.getCenter());
             var size = style.size * zoomUnit;
-            var nwMcX = mcCenter.x - me.map.getSize().width / 2 * zoomUnit;
-            var nwMc = new BMap.Pixel(nwMcX, mcCenter.y + me.map.getSize().height / 2 * zoomUnit);
+            var nwMcX = mcCenter.x - this.map.getSize().width / 2 * zoomUnit;
+            var nwMc = new BMap.Pixel(nwMcX, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
 
             var params = {
-                points: me.points,
+                points: this.points,
                 size: size,
                 nwMc: nwMc,
                 zoomUnit: zoomUnit,
-                mapSize: me.map.getSize(),
-                mapCenter: me.map.getCenter(),
+                mapSize: this.map.getSize(),
+                mapCenter: this.map.getCenter(),
                 zoom: zoom
             };
+            this.event.onState(_OnState2.default.computeBefore);
+
             this.postMessage('HoneycombOverlay.toRecGrids', params, function (gridsObj) {
-                if (me.eventType == 'onmoving') {
+                if (_this2.eventType == 'onmoving') {
                     return;
                 }
-                me.clearCanvas();
-                me.canvasResize();
+                _this2.event.onState(_OnState2.default.conputeAfter);
+
+                _this2.clearCanvas();
+                _this2.canvasResize();
 
                 var grids = gridsObj.grids;
                 var max = gridsObj.max;
@@ -4000,11 +4047,14 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
                     max: max,
                     min: min,
                     grids: grids,
-                    margin: me.margin
+                    margin: _this2.margin
                 };
-                me.setWorkerData(obj);
-                me.createColorSplit(grids);
-                me.drawRec(obj);
+                _this2.setWorkerData(obj);
+                _this2.event.onState(_OnState2.default.drawBefore);
+
+                _this2.createColorSplit(grids);
+                _this2.drawRec(obj);
+                _this2.event.onState(_OnState2.default.drawAfter);
             });
         }
     }, {
@@ -4185,6 +4235,10 @@ var _ImgConfig2 = _interopRequireDefault(_ImgConfig);
 
 var _util = __webpack_require__(0);
 
+var _OnState = __webpack_require__(50);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -4221,13 +4275,19 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
     }, {
         key: 'drawMap',
         value: function drawMap() {
-            var me = this;
+            var _this2 = this;
+
+            this.event.onState(_OnState2.default.computeBefore);
+
             this.postMessage('HeatOverlay.pointsToPixels', this.points, function (pixels) {
-                if (me.eventType == 'onmoving') {
+                if (_this2.eventType == 'onmoving') {
                     return;
                 }
-                me.setWorkerData(pixels);
-                me.refresh();
+                _this2.event.onState(_OnState2.default.conputeAfter);
+                _this2.event.onState(_OnState2.default.drawBefore);
+                _this2.setWorkerData(pixels);
+                _this2.refresh();
+                _this2.event.onState(_OnState2.default.drawAfter);
             });
         }
     }, {
@@ -4392,19 +4452,19 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
     }, {
         key: '_loopDraw',
         value: function _loopDraw(ctx, pixels) {
-            var _this2 = this;
+            var _this3 = this;
 
             var _loop = function _loop(i, len) {
                 var item = pixels[i];
                 var pixel = item.pixel;
-                var style = _this2.setDrawStyle(item);
-                _this2.loadImg(style.icon, function (img) {
+                var style = _this3.setDrawStyle(item);
+                _this3.loadImg(style.icon, function (img) {
                     if (style.width && style.height) {
-                        var xy = _this2._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height);
-                        _this2._drawImage(_this2.ctx, img, xy.x, xy.y, style.width, style.height);
+                        var xy = _this3._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height);
+                        _this3._drawImage(_this3.ctx, img, xy.x, xy.y, style.width, style.height);
                     } else {
-                        var _xy2 = _this2._getDrawXY(pixel, style.offsets.left, style.offsets.top, img.width, img.height, 1);
-                        _this2._drawImage(_this2.ctx, img, _xy2.x, _xy2.y, img.width, img.height);
+                        var _xy2 = _this3._getDrawXY(pixel, style.offsets.left, style.offsets.top, img.width, img.height, 1);
+                        _this3._drawImage(_this3.ctx, img, _xy2.x, _xy2.y, img.width, img.height);
                     }
                 });
             };
@@ -4879,7 +4939,8 @@ exports.default = {
     },
     data: [],
     event: {
-        multiSelect: false, onMouseClick: function onMouseClick() {}
+        multiSelect: false, onMouseClick: function onMouseClick() {},
+        onState: function onState() {}
     }
 };
 
@@ -4900,7 +4961,10 @@ exports.default = {
             borderWidth: 0.05
         }
     },
-    data: []
+    data: [],
+    event: {
+        onState: function onState() {}
+    }
 };
 
 /***/ }),
@@ -4945,7 +5009,8 @@ exports.default = {
     },
     data: [],
     event: {
-        multiSelect: false, onMouseClick: function onMouseClick() {}
+        multiSelect: false, onMouseClick: function onMouseClick() {},
+        onState: function onState() {}
     }
 };
 
@@ -5021,7 +5086,8 @@ exports.default = {
     },
     data: [],
     event: {
-        multiSelect: false
+        multiSelect: false,
+        onState: function onState() {}
     }
 };
 
@@ -5064,7 +5130,8 @@ exports.default = {
     },
     data: [],
     event: {
-        multiSelect: false
+        multiSelect: false,
+        onState: function onState() {}
     }
 };
 
@@ -5118,7 +5185,8 @@ exports.default = {
     },
     data: [],
     event: {
-        multiSelect: false
+        multiSelect: false,
+        onState: function onState() {}
     }
 };
 
@@ -5164,7 +5232,8 @@ exports.default = {
     },
     data: [],
     event: {
-        multiSelect: false, onMouseClick: function onMouseClick() {}
+        multiSelect: false, onMouseClick: function onMouseClick() {},
+        onState: function onState() {}
     }
 };
 
@@ -5785,6 +5854,24 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+/* 49 */,
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    computeBefore: 0,
+    conputeAfter: 1,
+    drawBefore: 2,
+    drawAfter: 3
+};
 
 /***/ })
 /******/ ]);

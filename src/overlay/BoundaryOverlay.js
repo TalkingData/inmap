@@ -9,6 +9,7 @@ import {
     isArray
 } from './../common/util';
 import BoundaryConfig from './../config/BoundaryConfig';
+import State from './../config/OnState';
 
 
 export class BoundaryOverlay extends Parameter {
@@ -250,22 +251,19 @@ export class BoundaryOverlay extends Parameter {
         this.cancerExp();
     }
     drawMap() {
-
-        let me = this;
-        this.postMessage('BoundaryOverlay.calculatePixel', this.points, function (pixels) {
-            if (me.eventType == 'onmoving') {
+        this.event.onState(State.computeBefore);
+        this.postMessage('BoundaryOverlay.calculatePixel', this.points, (pixels) => {
+            if (this.eventType == 'onmoving') {
                 return;
             }
-
-            me.clearCanvas();
-            me.canvasResize();
-            me.overItem = null;
-
-            me.setWorkerData(pixels);
-
-
-
-            me.drawLine(pixels);
+            this.event.onState(State.conputeAfter);
+            this.clearCanvas();
+            this.canvasResize();
+            this.overItem = null;
+            this.setWorkerData(pixels);
+            this.event.onState(State.drawBefore);
+            this.drawLine(pixels);
+            this.event.onState(State.drawAfter);
         });
     }
     setPoints(points) {
