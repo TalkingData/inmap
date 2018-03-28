@@ -125,8 +125,7 @@ export let GriddingOverlay = {
                 }
             }
         }
-
-        if (type === 'svg') {
+        if (type === 'avg') {
             grids = GriddingOverlay.valueToAvg(grids);
         } else {
             grids = GriddingOverlay.valueToSum(grids);

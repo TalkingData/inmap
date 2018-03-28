@@ -1720,8 +1720,7 @@ var GriddingOverlay = exports.GriddingOverlay = {
                 }
             }
         }
-
-        if (type === 'svg') {
+        if (type === 'avg') {
             grids = GriddingOverlay.valueToAvg(grids);
         } else {
             grids = GriddingOverlay.valueToSum(grids);

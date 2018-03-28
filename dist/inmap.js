@@ -3485,9 +3485,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
 
     _createClass(GriddingOverlay, [{
         key: 'TInit',
-        value: function TInit() {
-            this.compileSplitList(this.points);
-        }
+        value: function TInit() {}
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
@@ -3526,7 +3524,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             var size = normal.size * zoomUnit;
             var nwMcX = mcCenter.x - this.map.getSize().width / 2 * zoomUnit;
             var nwMc = new BMap.Pixel(nwMcX, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
-
+            console.log(type);
             var params = {
                 points: this.points,
                 size: size,
@@ -3987,7 +3985,6 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
         key: 'TInit',
         value: function TInit() {
             this.delteOption();
-            this.compileSplitList(this.points);
         }
     }, {
         key: 'setOptionStyle',

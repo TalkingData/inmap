@@ -12,7 +12,6 @@ export class HoneycombOverlay extends Parameter {
     }
     TInit() {
         this.delteOption();
-        this.compileSplitList(this.points);
     }
 
     setOptionStyle(ops) {

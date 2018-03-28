@@ -12,7 +12,7 @@ export class GriddingOverlay extends Parameter {
         this.delteOption();
     }
     TInit() {
-        this.compileSplitList(this.points);
+       
     }
     setOptionStyle(ops) {
         this._setStyle(this.baseConfig, ops);
@@ -41,7 +41,7 @@ export class GriddingOverlay extends Parameter {
         let size = normal.size * zoomUnit;
         let nwMcX = mcCenter.x - this.map.getSize().width / 2 * zoomUnit;
         let nwMc = new BMap.Pixel(nwMcX, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
-
+console.log(type);
         let params = {
             points: this.points,
             size: size,
