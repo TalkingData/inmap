@@ -2211,6 +2211,19 @@ var Map = exports.Map = function () {
     }
 
     _createClass(Map, [{
+        key: 'tMapStyle',
+        value: function tMapStyle(map, skin) {
+            var styleJson = null;
+            if ((0, _util.isString)(skin)) {
+                styleJson = skin == 'Blueness' ? _MapStyle.Blueness : _MapStyle.WhiteLover;
+            } else if ((0, _util.isObject)(skin)) {
+                styleJson = skin;
+            }
+            skin && map && map.setMapStyle({
+                styleJson: styleJson
+            });
+        }
+    }, {
         key: 'create',
         value: function create() {
             var id = this.option.id;
@@ -2223,12 +2236,7 @@ var Map = exports.Map = function () {
             bmap.disableDoubleClickZoom();
             bmap.enableKeyboard();
 
-            if (this.option.skin) {
-                var setStyle = this.option.skin == 'Blueness' ? _MapStyle.Blueness : _MapStyle.WhiteLover;
-                bmap.setMapStyle({
-                    styleJson: setStyle
-                });
-            }
+            this.tMapStyle(bmap, this.option.skin);
 
             var toolDom = this.crtateContainer(mapDom);
             var _inmapOption = {};

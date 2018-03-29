@@ -1,6 +1,7 @@
 import {
     isString,
-    merge
+    merge,
+    isObject
 } from './../common/util';
 import {
     WhiteLover,
@@ -20,7 +21,17 @@ export class Map {
 
         this.create();
     }
-
+    tMapStyle(map, skin) {
+        let styleJson = null;
+        if (isString(skin)) {
+            styleJson = skin == 'Blueness' ? Blueness : WhiteLover;
+        } else if (isObject(skin)) {
+            styleJson = skin;
+        }
+        skin && map && map.setMapStyle({
+            styleJson: styleJson
+        });
+    }
     create() {
         let id = this.option.id;
 
@@ -33,12 +44,8 @@ export class Map {
         bmap.enableKeyboard();
 
         //设置皮肤
-        if (this.option.skin) {
-            let setStyle = this.option.skin == 'Blueness' ? Blueness : WhiteLover;
-            bmap.setMapStyle({
-                styleJson: setStyle
-            });
-        }
+        this.tMapStyle(bmap, this.option.skin);
+
 
         //设置 地图工具容器
         let toolDom = this.crtateContainer(mapDom);
@@ -79,7 +86,7 @@ export class Map {
         if (overlay.map) {
             overlay.dispose();
         }
-        
+
     }
 
 }
