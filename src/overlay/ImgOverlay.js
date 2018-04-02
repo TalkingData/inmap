@@ -14,6 +14,7 @@ export class ImgOverlay extends Parameter {
     constructor(opts) {
         super(ImgConfig, opts);
         this.cacheImg = {}; //缓存图片对象
+        this.state = null;
     }
     resize() {
         this.drawMap();
@@ -22,21 +23,25 @@ export class ImgOverlay extends Parameter {
         this._setStyle(this.baseConfig, ops);
         this.refresh();
     }
+    setState(val) {
+        this.state = val;
+        this.event.onState(this.state);
+    }
     TInit() {
 
     }
     drawMap() {
-        this.event.onState(State.computeBefore);
+        this.setState(State.computeBefore);
 
         this.postMessage('HeatOverlay.pointsToPixels', this.points, (pixels) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
-            this.event.onState(State.conputeAfter);
-            this.event.onState(State.drawBefore);
+            this.setState(State.conputeAfter);
+            this.setState(State.drawBefore);
             this.setWorkerData(pixels);
             this.refresh();
-            this.event.onState(State.drawAfter);
+            this.setState(State.drawAfter);
 
         });
     }

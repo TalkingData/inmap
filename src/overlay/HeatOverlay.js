@@ -14,6 +14,7 @@ export class HeatOverlay extends CanvasOverlay {
         this.points = [];
         this._setStyle(HeatConfig, ops);
         this.delteOption();
+        this.state = null;
     }
     resize() {
         this.drawMap();
@@ -32,6 +33,10 @@ export class HeatOverlay extends CanvasOverlay {
         this._setStyle(HeatConfig, ops);
         this.delteOption();
         this.drawMap();
+    }
+    setState(val) {
+        this.state = val;
+        this.event.onState(this.state);
     }
     /**
      * 屏蔽参数
@@ -61,22 +66,22 @@ export class HeatOverlay extends CanvasOverlay {
         }
     }
     drawMap() {
-        this.event.onState(State.computeBefore);
+        this.setState(State.computeBefore);
 
         this.postMessage('HeatOverlay.pointsToPixels', this.points, (pixels) => {
 
             if (this.eventType == 'onmoving') {
                 return;
             }
-            this.event.onState(State.conputeAfter);
+            this.setState(State.conputeAfter);
 
             this.clearCanvas();
             this.canvasResize();
-            this.event.onState(State.drawBefore);
+            this.setState(State.drawBefore);
 
             this.workerData = pixels;
             this.refresh();
-            this.event.onState(State.drawAfter);
+            this.setState(State.drawAfter);
 
 
         });

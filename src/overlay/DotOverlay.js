@@ -28,6 +28,7 @@ export class DotOverlay extends Parameter {
             this.batchesData = new BatchesData(this._option.draw);
         }
         this.mouseLayer = new CanvasOverlay();
+        this.state = null;
     }
 
 
@@ -49,6 +50,10 @@ export class DotOverlay extends Parameter {
         this.TInit();
         this.refresh();
     }
+    setState(val) {
+        this.state = val;
+        this.event.onState(this.state);
+    }
     resize() {
         this.drawMap();
     }
@@ -67,17 +72,17 @@ export class DotOverlay extends Parameter {
             mergeCount: this.style.normal.mergeCount,
             size: this.style.normal.size
         } : this.points;
-        this.event.onState(State.computeBefore);
+        this.setState(State.computeBefore);
         this.postMessage(path, data, (pixels) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
-            this.event.onState(State.conputeAfter);
+            this.setState(State.conputeAfter);
             this.setWorkerData(pixels);
             this.updateOverClickItem();
-            this.event.onState(State.drawBefore);
+            this.setState(State.drawBefore);
             this.refresh();
-            this.event.onState(State.drawAfter);
+            this.setState(State.drawAfter);
 
         });
     }

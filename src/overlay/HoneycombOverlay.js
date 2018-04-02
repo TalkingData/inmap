@@ -9,6 +9,7 @@ import State from './../config/OnState';
 export class HoneycombOverlay extends Parameter {
     constructor(ops) {
         super(HoneycombConfig, ops);
+        this.state = null;
     }
     TInit() {
         this.delteOption();
@@ -18,6 +19,10 @@ export class HoneycombOverlay extends Parameter {
         this._setStyle(this.baseConfig, ops);
         this.TInit();
         this.refresh();
+    }
+    setState(val) {
+        this.state = val;
+        this.event.onState(this.state);
     }
     delteOption() {
         this.style['selected'] = null;
@@ -55,13 +60,13 @@ export class HoneycombOverlay extends Parameter {
             mapCenter: this.map.getCenter(),
             zoom: zoom
         };
-        this.event.onState(State.computeBefore);
+        this.setState(State.computeBefore);
 
         this.postMessage('HoneycombOverlay.toRecGrids', params, (gridsObj) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
-            this.event.onState(State.conputeAfter);
+            this.setState(State.conputeAfter);
 
             this.clearCanvas();
             this.canvasResize();
@@ -79,11 +84,11 @@ export class HoneycombOverlay extends Parameter {
                 margin: this.margin
             };
             this.setWorkerData(obj);
-            this.event.onState(State.drawBefore);
+            this.setState(State.drawBefore);
 
             this.createColorSplit(grids);
             this.drawRec(obj);
-            this.event.onState(State.drawAfter);
+            this.setState(State.drawAfter);
 
         });
     }

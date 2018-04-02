@@ -9,6 +9,7 @@ import State from './../config/OnState';
 export class GriddingOverlay extends Parameter {
     constructor(ops) {
         super(GriddingConfig, ops);
+        this.state = null;
         this.delteOption();
     }
     TInit() {
@@ -17,7 +18,11 @@ export class GriddingOverlay extends Parameter {
     setOptionStyle(ops) {
         this._setStyle(this.baseConfig, ops);
         this.TInit();
-        this.refresh();
+        this.drawMap();
+    }
+    setState(val) {
+        this.state = val;
+        this.event.onState(this.state);
     }
     delteOption() {
         this.style['selected'] = null;
@@ -41,7 +46,6 @@ export class GriddingOverlay extends Parameter {
         let size = normal.size * zoomUnit;
         let nwMcX = mcCenter.x - this.map.getSize().width / 2 * zoomUnit;
         let nwMc = new BMap.Pixel(nwMcX, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
-console.log(type);
         let params = {
             points: this.points,
             size: size,
@@ -52,14 +56,14 @@ console.log(type);
             mapCenter: this.map.getCenter(),
             zoom: zoom
         };
-        this.event.onState(State.computeBefore);
+        this.setState(State.computeBefore);
 
         this.postMessage('GriddingOverlay.toRecGrids', params, (gridsObj) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
             let grids = gridsObj.grids;
-            this.event.onState(State.conputeAfter);
+            this.setState(State.conputeAfter);
 
             //清除
             this.clearCanvas();
@@ -70,11 +74,11 @@ console.log(type);
                 zoomUnit: zoomUnit,
                 grids: []
             });
-            this.event.onState(State.drawBefore);
+            this.setState(State.drawBefore);
             
             this.createColorSplit(grids);
             this.drawRec(size, zoomUnit, grids);
-            this.event.onState(State.drawAfter);
+            this.setState(State.drawAfter);
             
 
         });

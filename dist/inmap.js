@@ -2338,6 +2338,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
             show: false,
             exp: null
         };
+        _this.state = null;
         return _this;
     }
 
@@ -2361,16 +2362,16 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
             this.refresh();
         }
     }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.event.onState(this.state);
+        }
+    }, {
         key: 'compileSplitList',
         value: function compileSplitList(colors, data) {
 
             if (colors.length <= 0) return;
-
-            if (!Array.isArray(this.points)) {
-                console.error(' array is not defined <shouild be setPoints(Array)>');
-
-                return;
-            }
             data = data.sort(function (a, b) {
                 return parseFloat(a.count) - parseFloat(b.count);
             });
@@ -2591,19 +2592,19 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
         value: function drawMap() {
             var _this2 = this;
 
-            this.event.onState(_OnState2.default.computeBefore);
+            this.setState(_OnState2.default.computeBefore);
             this.postMessage('BoundaryOverlay.calculatePixel', this.points, function (pixels) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
-                _this2.event.onState(_OnState2.default.conputeAfter);
+                _this2.setState(_OnState2.default.conputeAfter);
                 _this2.clearCanvas();
                 _this2.canvasResize();
                 _this2.overItem = null;
                 _this2.setWorkerData(pixels);
-                _this2.event.onState(_OnState2.default.drawBefore);
+                _this2.setState(_OnState2.default.drawBefore);
                 _this2.drawLine(pixels);
-                _this2.event.onState(_OnState2.default.drawAfter);
+                _this2.setState(_OnState2.default.drawAfter);
             });
         }
     }, {
@@ -2743,7 +2744,7 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
         _this.style = {};
         _this._setStyle(_CircuitConfig2.default, ops);
         _this._isCoordinates = false;
-
+        _this.state = null;
         return _this;
     }
 
@@ -2755,6 +2756,12 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
             this.style = option.style;
             this.event = option.event;
             this.tMapStyle(option.skin);
+        }
+    }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.event.onState(this.state);
         }
     }, {
         key: 'resize',
@@ -2796,19 +2803,19 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
             if (!this._isCoordinates) {
                 this.coordinates(this.points);
             }
-            this.event.onState(_OnState2.default.computeBefore);
+            this.setState(_OnState2.default.computeBefore);
             this.postMessage('CircuitOverlay.calculatePixel', params, function (pixels) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
-                _this2.event.onState(_OnState2.default.conputeAfter);
+                _this2.setState(_OnState2.default.conputeAfter);
 
                 _this2.clearCanvas();
                 _this2.canvasResize();
-                _this2.event.onState(_OnState2.default.drawBefore);
+                _this2.setState(_OnState2.default.drawBefore);
 
                 _this2.drawLine(pixels);
-                _this2.event.onState(_OnState2.default.drawAfter);
+                _this2.setState(_OnState2.default.drawAfter);
             });
         }
     }, {
@@ -2938,6 +2945,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             _this.batchesData = new _BatchesData2.default(_this._option.draw);
         }
         _this.mouseLayer = new _CanvasOverlay.CanvasOverlay();
+        _this.state = null;
         return _this;
     }
 
@@ -2964,6 +2972,12 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             this.refresh();
         }
     }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.event.onState(this.state);
+        }
+    }, {
         key: 'resize',
         value: function resize() {
             this.drawMap();
@@ -2987,17 +3001,17 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
                 mergeCount: this.style.normal.mergeCount,
                 size: this.style.normal.size
             } : this.points;
-            this.event.onState(_OnState2.default.computeBefore);
+            this.setState(_OnState2.default.computeBefore);
             this.postMessage(path, data, function (pixels) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
-                _this2.event.onState(_OnState2.default.conputeAfter);
+                _this2.setState(_OnState2.default.conputeAfter);
                 _this2.setWorkerData(pixels);
                 _this2.updateOverClickItem();
-                _this2.event.onState(_OnState2.default.drawBefore);
+                _this2.setState(_OnState2.default.drawBefore);
                 _this2.refresh();
-                _this2.event.onState(_OnState2.default.drawAfter);
+                _this2.setState(_OnState2.default.drawAfter);
             });
         }
     }, {
@@ -3487,6 +3501,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
 
         var _this = _possibleConstructorReturn(this, (GriddingOverlay.__proto__ || Object.getPrototypeOf(GriddingOverlay)).call(this, _GriddingConfig2.default, ops));
 
+        _this.state = null;
         _this.delteOption();
         return _this;
     }
@@ -3499,7 +3514,13 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
         value: function setOptionStyle(ops) {
             this._setStyle(this.baseConfig, ops);
             this.TInit();
-            this.refresh();
+            this.drawMap();
+        }
+    }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.event.onState(this.state);
         }
     }, {
         key: 'delteOption',
@@ -3532,7 +3553,6 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             var size = normal.size * zoomUnit;
             var nwMcX = mcCenter.x - this.map.getSize().width / 2 * zoomUnit;
             var nwMc = new BMap.Pixel(nwMcX, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
-            console.log(type);
             var params = {
                 points: this.points,
                 size: size,
@@ -3543,14 +3563,14 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                 mapCenter: this.map.getCenter(),
                 zoom: zoom
             };
-            this.event.onState(_OnState2.default.computeBefore);
+            this.setState(_OnState2.default.computeBefore);
 
             this.postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
                 var grids = gridsObj.grids;
-                _this2.event.onState(_OnState2.default.conputeAfter);
+                _this2.setState(_OnState2.default.conputeAfter);
 
                 _this2.clearCanvas();
                 _this2.canvasResize();
@@ -3560,11 +3580,11 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                     zoomUnit: zoomUnit,
                     grids: []
                 });
-                _this2.event.onState(_OnState2.default.drawBefore);
+                _this2.setState(_OnState2.default.drawBefore);
 
                 _this2.createColorSplit(grids);
                 _this2.drawRec(size, zoomUnit, grids);
-                _this2.event.onState(_OnState2.default.drawAfter);
+                _this2.setState(_OnState2.default.drawAfter);
             });
         }
     }, {
@@ -3771,6 +3791,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
         _this.points = [];
         _this._setStyle(_HeatConfig2.default, ops);
         _this.delteOption();
+        _this.state = null;
         return _this;
     }
 
@@ -3796,6 +3817,12 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
             this._setStyle(_HeatConfig2.default, ops);
             this.delteOption();
             this.drawMap();
+        }
+    }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.event.onState(this.state);
         }
     }, {
         key: 'delteOption',
@@ -3832,22 +3859,22 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
         value: function drawMap() {
             var _this2 = this;
 
-            this.event.onState(_OnState2.default.computeBefore);
+            this.setState(_OnState2.default.computeBefore);
 
             this.postMessage('HeatOverlay.pointsToPixels', this.points, function (pixels) {
 
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
-                _this2.event.onState(_OnState2.default.conputeAfter);
+                _this2.setState(_OnState2.default.conputeAfter);
 
                 _this2.clearCanvas();
                 _this2.canvasResize();
-                _this2.event.onState(_OnState2.default.drawBefore);
+                _this2.setState(_OnState2.default.drawBefore);
 
                 _this2.workerData = pixels;
                 _this2.refresh();
-                _this2.event.onState(_OnState2.default.drawAfter);
+                _this2.setState(_OnState2.default.drawAfter);
             });
         }
     }, {
@@ -3986,7 +4013,10 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
     function HoneycombOverlay(ops) {
         _classCallCheck(this, HoneycombOverlay);
 
-        return _possibleConstructorReturn(this, (HoneycombOverlay.__proto__ || Object.getPrototypeOf(HoneycombOverlay)).call(this, _HoneycombConfig2.default, ops));
+        var _this = _possibleConstructorReturn(this, (HoneycombOverlay.__proto__ || Object.getPrototypeOf(HoneycombOverlay)).call(this, _HoneycombConfig2.default, ops));
+
+        _this.state = null;
+        return _this;
     }
 
     _createClass(HoneycombOverlay, [{
@@ -4000,6 +4030,12 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             this._setStyle(this.baseConfig, ops);
             this.TInit();
             this.refresh();
+        }
+    }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.event.onState(this.state);
         }
     }, {
         key: 'delteOption',
@@ -4048,13 +4084,13 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
                 mapCenter: this.map.getCenter(),
                 zoom: zoom
             };
-            this.event.onState(_OnState2.default.computeBefore);
+            this.setState(_OnState2.default.computeBefore);
 
             this.postMessage('HoneycombOverlay.toRecGrids', params, function (gridsObj) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
-                _this2.event.onState(_OnState2.default.conputeAfter);
+                _this2.setState(_OnState2.default.conputeAfter);
 
                 _this2.clearCanvas();
                 _this2.canvasResize();
@@ -4072,11 +4108,11 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
                     margin: _this2.margin
                 };
                 _this2.setWorkerData(obj);
-                _this2.event.onState(_OnState2.default.drawBefore);
+                _this2.setState(_OnState2.default.drawBefore);
 
                 _this2.createColorSplit(grids);
                 _this2.drawRec(obj);
-                _this2.event.onState(_OnState2.default.drawAfter);
+                _this2.setState(_OnState2.default.drawAfter);
             });
         }
     }, {
@@ -4277,7 +4313,9 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
 
         var _this = _possibleConstructorReturn(this, (ImgOverlay.__proto__ || Object.getPrototypeOf(ImgOverlay)).call(this, _ImgConfig2.default, opts));
 
-        _this.cacheImg = {};return _this;
+        _this.cacheImg = {};
+        _this.state = null;
+        return _this;
     }
 
     _createClass(ImgOverlay, [{
@@ -4292,6 +4330,12 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
             this.refresh();
         }
     }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.event.onState(this.state);
+        }
+    }, {
         key: 'TInit',
         value: function TInit() {}
     }, {
@@ -4299,17 +4343,17 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
         value: function drawMap() {
             var _this2 = this;
 
-            this.event.onState(_OnState2.default.computeBefore);
+            this.setState(_OnState2.default.computeBefore);
 
             this.postMessage('HeatOverlay.pointsToPixels', this.points, function (pixels) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
-                _this2.event.onState(_OnState2.default.conputeAfter);
-                _this2.event.onState(_OnState2.default.drawBefore);
+                _this2.setState(_OnState2.default.conputeAfter);
+                _this2.setState(_OnState2.default.drawBefore);
                 _this2.setWorkerData(pixels);
                 _this2.refresh();
-                _this2.event.onState(_OnState2.default.drawAfter);
+                _this2.setState(_OnState2.default.drawAfter);
             });
         }
     }, {

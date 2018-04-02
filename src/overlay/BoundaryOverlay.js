@@ -21,6 +21,7 @@ export class BoundaryOverlay extends Parameter {
             show: false,
             exp: null,
         };
+        this.state = null;
     }
     TInit() {
         this.initLegend();
@@ -36,6 +37,10 @@ export class BoundaryOverlay extends Parameter {
         this.initLegend();
         this.refresh();
     }
+    setState(val) {
+        this.state = val;
+        this.event.onState(this.state);
+    }
 
     /**
      * 颜色等分策略
@@ -44,13 +49,6 @@ export class BoundaryOverlay extends Parameter {
     compileSplitList(colors, data) {
 
         if (colors.length <= 0) return;
-
-        if (!Array.isArray(this.points)) {
-            /*eslint-disable */
-            console.error(' array is not defined <shouild be setPoints(Array)>');
-            /*eslint-enable */
-            return;
-        }
         data = data.sort((a, b) => {
             return parseFloat(a.count) - parseFloat(b.count);
         });
@@ -251,19 +249,19 @@ export class BoundaryOverlay extends Parameter {
         this.cancerExp();
     }
     drawMap() {
-        this.event.onState(State.computeBefore);
+        this.setState(State.computeBefore);
         this.postMessage('BoundaryOverlay.calculatePixel', this.points, (pixels) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
-            this.event.onState(State.conputeAfter);
+            this.setState(State.conputeAfter);
             this.clearCanvas();
             this.canvasResize();
             this.overItem = null;
             this.setWorkerData(pixels);
-            this.event.onState(State.drawBefore);
+            this.setState(State.drawBefore);
             this.drawLine(pixels);
-            this.event.onState(State.drawAfter);
+            this.setState(State.drawAfter);
         });
     }
     setPoints(points) {
