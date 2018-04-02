@@ -13,7 +13,7 @@ export default {
         title: '图例'
     },
     style: {
-        type: 'svg', //sum svg
+        type: 'sum', //sum avg
         colors: ['rgba(31,98,1,1)',
             'rgba(95,154,4,1)',
             'rgba(139,227,7,1)',
