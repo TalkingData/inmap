@@ -1456,8 +1456,8 @@ var WorkerMrg = function () {
 
             this.worker = new Worker(workerUrl);
             this.worker.addEventListener('message', this.message);
-            this.worker.onerror = function (e) {
-                console.error('worker.onerror', e);
+            this.worker.onerror = function () {
+                throw new TypeError('inMap : worker.onerror');
             };
         }
     }, {
@@ -2129,12 +2129,6 @@ BaseClass.prototype.postMessage = function (workerClassPath, data, callback) {
     var size = map.getSize();
     var msgId = this.setMsgId();
 
-    if (!Array.isArray(this.points)) {
-        console.error(' array is not defined <shouild be setPoints(Array)>');
-
-        return;
-    }
-
     var request = {
         'type': 'web',
         'data': data,
@@ -2611,7 +2605,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
         key: 'setPoints',
         value: function setPoints(points) {
             if (!(0, _util.isArray)(points)) {
-                throw new TypeError('data must be a Array');
+                throw new TypeError('inMap: data must be a Array');
             }
             this.cancerSelectd();
             this.points = points;
@@ -2779,7 +2773,7 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
         key: 'setPoints',
         value: function setPoints(points) {
             if (!(0, _util.isArray)(points)) {
-                throw new TypeError('data must be a Array');
+                throw new TypeError('inMap: data must be a Array');
             }
             this.points = points;
 
@@ -3043,7 +3037,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
         key: 'setPoints',
         value: function setPoints(points) {
             if (!(0, _util.isArray)(points)) {
-                throw new TypeError('data must be a Array');
+                throw new TypeError('inMap: data must be a Array');
             }
             this.cancerSelectd();
             this.points = points;
@@ -3592,7 +3586,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
         value: function setPoints(points) {
 
             if (!(0, _util.isArray)(points)) {
-                throw new TypeError('data must be a Array');
+                throw new TypeError('inMap: data must be a Array');
             }
             this.points = points;
 
@@ -3838,7 +3832,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
         key: 'setPoints',
         value: function setPoints(points) {
             if (!(0, _util.isArray)(points)) {
-                throw new TypeError('data must be a Array');
+                throw new TypeError('inMap :data must be a Array');
             }
             this.points = points;
             this.drawMap();
@@ -4056,7 +4050,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
         key: 'setPoints',
         value: function setPoints(points) {
             if (!(0, _util.isArray)(points)) {
-                throw new TypeError('data must be a Array');
+                throw new TypeError('inMap: data must be a Array');
             }
             this.points = points;
             this.drawMap();
@@ -4362,7 +4356,7 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
         key: 'setPoints',
         value: function setPoints(points) {
             if (!(0, _util.isArray)(points)) {
-                throw new TypeError('data must be a Array');
+                throw new TypeError('inMap :data must be a Array');
             }
             this.cancerSelectd();
             this.points = points;
@@ -4939,7 +4933,7 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
         key: 'setPoints',
         value: function setPoints(points) {
             if (!(0, _util.isArray)(points)) {
-                throw new TypeError('data must be a Array');
+                throw new TypeError('inMap: data must be a Array');
             }
             this.data = points;
             this.markLines.length = 0;

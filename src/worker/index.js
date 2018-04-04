@@ -28,7 +28,7 @@ let callbackList = {
     'CircuitOverlay': CircuitOverlay,
     'HoneycombOverlay': HoneycombOverlay,
     'PolymeOverlay': PolymeOverlay,
-    'LablEvading':LablEvading
+    'LablEvading': LablEvading
 };
 
 /**
@@ -69,10 +69,7 @@ let callbackFun = function (data) {
         }
 
         if (!callback) {
-            /*eslint-disable */
-            console.error(p[index - 1] + 'worker ' + classPath + ' is not a function');
-            /*eslint-enable */
-            return;
+            throw new TypeError(`inMap : ${p[index - 1]} worker ${ classPath } is not a function`);
         }
     }
 };

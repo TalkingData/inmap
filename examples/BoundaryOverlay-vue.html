@@ -53,6 +53,7 @@
         },
         watch: {
             model: function (newVal, oldVal) {
+            
                 console.log(newVal);
                 overlay.setSelectd("name=='" + newVal + "'", true);
             }
@@ -61,7 +62,8 @@
             data.forEach(function (element) {
                 this.boundarys.push({
                     value: element.name,
-                    label: element.name
+                    label: element.name,
+                   
                 })
             }, this);
         }

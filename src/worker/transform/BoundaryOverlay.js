@@ -28,7 +28,7 @@ export let BoundaryOverlay = {
                 let bestCell = polylabel([tmp]);
                 if (bestCell == null) {
                     /*eslint-disable */
-                    console.error(`${points[j].name}围栏数据有问题！`);
+                    console.error(`inMap : ${points[j].name}围栏数据有错误！`);
                     /*eslint-enable */
                 }
 

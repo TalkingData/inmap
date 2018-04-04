@@ -35,7 +35,7 @@ export class HoneycombOverlay extends Parameter {
     }
     setPoints(points) {
         if (!isArray(points)) {
-            throw new TypeError('data must be a Array');
+            throw new TypeError('inMap: data must be a Array');
         }
         this.points = points;
         this.drawMap();
