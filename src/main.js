@@ -30,9 +30,6 @@ import {
     Map
 } from './map/index';
 import * as utils from './common/util';
-import {
-    workerMrg
-} from './common/workerMrg';
 
 const inMap = {
     utils,
@@ -43,7 +40,6 @@ const inMap = {
     HeatOverlay,
     CircuitOverlay,
     HoneycombOverlay,
-    workerMrg,
     ImgOverlay,
     MoveLineOverlay,
     FlashDotOverlay
@@ -57,7 +53,6 @@ export {
     HeatOverlay,
     CircuitOverlay,
     HoneycombOverlay,
-    workerMrg,
     ImgOverlay,
     MoveLineOverlay,
     FlashDotOverlay
