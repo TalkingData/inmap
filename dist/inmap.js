@@ -270,7 +270,7 @@ exports.CanvasOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _BaseClass2 = __webpack_require__(12);
+var _BaseClass2 = __webpack_require__(11);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
@@ -480,7 +480,7 @@ var _util = __webpack_require__(0);
 
 var _CanvasOverlay2 = __webpack_require__(2);
 
-var _Color = __webpack_require__(10);
+var _Color = __webpack_require__(9);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1428,83 +1428,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var instances = {};
-
-var WorkerMrg = function () {
-    function WorkerMrg() {
-        _classCallCheck(this, WorkerMrg);
-
-        this.worker = null;
-        this.workerContent = '[workerContentString]';
-    }
-
-    _createClass(WorkerMrg, [{
-        key: 'create',
-        value: function create(workerPath) {
-            var workerUrl = void 0;
-            if (this.workerContent.length == 21) {
-                workerUrl = workerPath.indexOf('http') > -1 ? URL.createObjectURL(new Blob(['importScripts(\'' + workerPath + '\');'])) : workerPath;
-            } else {
-                workerUrl = URL.createObjectURL(new Blob([this.workerContent], {
-                    type: 'application/javascript'
-                }));
-            }
-
-            this.worker = new Worker(workerUrl);
-            this.worker.addEventListener('message', this.message);
-            this.worker.onerror = function () {
-                throw new TypeError('inMap : worker.onerror');
-            };
-        }
-    }, {
-        key: 'message',
-        value: function message(e) {
-            var data = e.data;
-            var hashCode = data.request.hashCode;
-            var msgId = data.request.msgId;
-            var classPath = data.request.classPath;
-            if (instances[classPath + '_' + hashCode] && instances[classPath + '_' + hashCode] == hashCode + '_' + msgId) {
-                instances[hashCode + '_' + msgId](data.response.data);
-            } else {
-                instances[hashCode + '_' + msgId] = null;
-            }
-        }
-    }, {
-        key: 'postMessage',
-        value: function postMessage(data, callback) {
-            if (this.worker == null) {
-                this.create('../dist/worker.js');
-            }
-            var hashCode = data.request.hashCode;
-            var msgId = data.request.msgId;
-            var classPath = data.request.classPath;
-            instances[hashCode + '_' + msgId] = callback;
-
-            instances[classPath + '_' + hashCode] = hashCode + '_' + msgId;
-            this.worker.postMessage(data);
-        }
-    }]);
-
-    return WorkerMrg;
-}();
-
-var workerMrg = exports.workerMrg = new WorkerMrg();
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
 var ColorKeywords = {
     'aliceblue': 0xF0F8FF,
     'antiquewhite': 0xFAEBD7,
@@ -2053,8 +1976,8 @@ Colors.prototype = {
 var Color = exports.Color = Colors;
 
 /***/ }),
-/* 11 */,
-/* 12 */
+/* 10 */,
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2064,7 +1987,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _workerMrg = __webpack_require__(9);
+var _workerMrg = __webpack_require__(30);
 
 var baseClassCounter = 0;
 var inmap_instances = {};
@@ -2164,7 +2087,7 @@ BaseClass.prototype.setMsgId = function () {
 exports.default = BaseClass;
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2283,7 +2206,7 @@ var Map = exports.Map = function () {
 }();
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2298,7 +2221,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Parameter2 = __webpack_require__(4);
 
-var _Color = __webpack_require__(10);
+var _Color = __webpack_require__(9);
 
 var _util = __webpack_require__(0);
 
@@ -2693,7 +2616,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2882,7 +2805,7 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3299,7 +3222,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3454,7 +3377,7 @@ var FlashDotOverlay = function (_CanvasOverlay) {
 exports.default = FlashDotOverlay;
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3741,7 +3664,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3968,7 +3891,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4268,7 +4191,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4546,7 +4469,7 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4569,7 +4492,7 @@ var _MoveLineConfig = __webpack_require__(40);
 
 var _MoveLineConfig2 = _interopRequireDefault(_MoveLineConfig);
 
-var _BaseClass2 = __webpack_require__(12);
+var _BaseClass2 = __webpack_require__(11);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
@@ -4952,6 +4875,7 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
 }(_BaseClass3.default);
 
 /***/ }),
+/* 22 */,
 /* 23 */,
 /* 24 */,
 /* 25 */,
@@ -4959,7 +4883,83 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
 /* 27 */,
 /* 28 */,
 /* 29 */,
-/* 30 */,
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var instances = {};
+
+var WorkerMrg = function () {
+    function WorkerMrg() {
+        _classCallCheck(this, WorkerMrg);
+
+        this.worker = null;
+        this.workerContent = '[workerContentString]';
+    }
+
+    _createClass(WorkerMrg, [{
+        key: 'create',
+        value: function create(workerPath) {
+            var workerUrl = void 0;
+            if (this.workerContent.length == 21) {
+                workerUrl = workerPath.indexOf('http') > -1 ? URL.createObjectURL(new Blob(['importScripts(\'' + workerPath + '\');'])) : workerPath;
+            } else {
+                workerUrl = URL.createObjectURL(new Blob([this.workerContent], {
+                    type: 'application/javascript'
+                }));
+            }
+
+            this.worker = new Worker(workerUrl);
+            this.worker.addEventListener('message', this.message);
+            this.worker.onerror = function () {
+                throw new TypeError('inMap : worker.onerror');
+            };
+        }
+    }, {
+        key: 'message',
+        value: function message(e) {
+            var data = e.data;
+            var hashCode = data.request.hashCode;
+            var msgId = data.request.msgId;
+            var classPath = data.request.classPath;
+            if (instances[classPath + '_' + hashCode] && instances[classPath + '_' + hashCode] == hashCode + '_' + msgId) {
+                instances[hashCode + '_' + msgId](data.response.data);
+            } else {
+                instances[hashCode + '_' + msgId] = null;
+            }
+        }
+    }, {
+        key: 'postMessage',
+        value: function postMessage(data, callback) {
+            if (this.worker == null) {
+                this.create('../dist/worker.js');
+            }
+            var hashCode = data.request.hashCode;
+            var msgId = data.request.msgId;
+            var classPath = data.request.classPath;
+            instances[hashCode + '_' + msgId] = callback;
+
+            instances[classPath + '_' + hashCode] = hashCode + '_' + msgId;
+            this.worker.postMessage(data);
+        }
+    }]);
+
+    return WorkerMrg;
+}();
+
+var workerMrg = exports.workerMrg = new WorkerMrg();
+
+/***/ }),
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5368,41 +5368,43 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.FlashDotOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.workerMrg = exports.HoneycombOverlay = exports.CircuitOverlay = exports.HeatOverlay = exports.BoundaryOverlay = exports.GriddingOverlay = exports.DotOverlay = exports.Map = exports.utils = undefined;
+exports.FlashDotOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.CircuitOverlay = exports.HeatOverlay = exports.BoundaryOverlay = exports.GriddingOverlay = exports.DotOverlay = exports.Map = exports.utils = exports.version = undefined;
 
-var _DotOverlay = __webpack_require__(16);
+var _DotOverlay = __webpack_require__(15);
 
-var _GriddingOverlay = __webpack_require__(18);
+var _GriddingOverlay = __webpack_require__(17);
 
-var _BoundaryOverlay = __webpack_require__(14);
+var _BoundaryOverlay = __webpack_require__(13);
 
-var _HeatOverlay = __webpack_require__(19);
+var _HeatOverlay = __webpack_require__(18);
 
-var _CircuitOverlay = __webpack_require__(15);
+var _CircuitOverlay = __webpack_require__(14);
 
-var _HoneycombOverlay = __webpack_require__(20);
+var _HoneycombOverlay = __webpack_require__(19);
 
-var _ImgOverlay = __webpack_require__(21);
+var _ImgOverlay = __webpack_require__(20);
 
-var _MoveLineOverlay = __webpack_require__(22);
+var _MoveLineOverlay = __webpack_require__(21);
 
-var _FlashDotOverlay = __webpack_require__(17);
+var _FlashDotOverlay = __webpack_require__(16);
 
 var _FlashDotOverlay2 = _interopRequireDefault(_FlashDotOverlay);
 
-var _index = __webpack_require__(13);
+var _index = __webpack_require__(12);
 
 var _util = __webpack_require__(0);
 
 var utils = _interopRequireWildcard(_util);
 
-var _workerMrg = __webpack_require__(9);
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var version = "1.5.2";
+console.log('inMap v' + version);
+
 var inMap = {
+    version: version,
     utils: utils,
     Map: _index.Map,
     DotOverlay: _DotOverlay.DotOverlay,
@@ -5411,11 +5413,11 @@ var inMap = {
     HeatOverlay: _HeatOverlay.HeatOverlay,
     CircuitOverlay: _CircuitOverlay.CircuitOverlay,
     HoneycombOverlay: _HoneycombOverlay.HoneycombOverlay,
-    workerMrg: _workerMrg.workerMrg,
     ImgOverlay: _ImgOverlay.ImgOverlay,
     MoveLineOverlay: _MoveLineOverlay.MoveLineOverlay,
     FlashDotOverlay: _FlashDotOverlay2.default
 };
+exports.version = version;
 exports.utils = utils;
 exports.Map = _index.Map;
 exports.DotOverlay = _DotOverlay.DotOverlay;
@@ -5424,7 +5426,6 @@ exports.BoundaryOverlay = _BoundaryOverlay.BoundaryOverlay;
 exports.HeatOverlay = _HeatOverlay.HeatOverlay;
 exports.CircuitOverlay = _CircuitOverlay.CircuitOverlay;
 exports.HoneycombOverlay = _HoneycombOverlay.HoneycombOverlay;
-exports.workerMrg = _workerMrg.workerMrg;
 exports.ImgOverlay = _ImgOverlay.ImgOverlay;
 exports.MoveLineOverlay = _MoveLineOverlay.MoveLineOverlay;
 exports.FlashDotOverlay = _FlashDotOverlay2.default;

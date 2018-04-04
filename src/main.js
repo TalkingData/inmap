@@ -31,7 +31,11 @@ import {
 } from './map/index';
 import * as utils from './common/util';
 
+let version = VERSION;
+console.log(`inMap v${version}`);
+
 const inMap = {
+    version,
     utils,
     Map,
     DotOverlay,
@@ -45,6 +49,7 @@ const inMap = {
     FlashDotOverlay
 };
 export {
+    version,
     utils,
     Map,
     DotOverlay,
@@ -55,6 +60,6 @@ export {
     HoneycombOverlay,
     ImgOverlay,
     MoveLineOverlay,
-    FlashDotOverlay
+    FlashDotOverlay,
 };
 export default inMap;

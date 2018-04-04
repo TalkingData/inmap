@@ -2,7 +2,8 @@
  * Created by lu on 2016/12/5.
  */
 const path = require('path');
-
+const webpack = require('webpack');
+const version = require('./package.json').version;
 const option = {
   entry: {
     inmap: './src/main.js',
@@ -11,9 +12,9 @@ const option = {
   output: {
     path: path.join(__dirname, './dist'),
     libraryTarget: 'umd',
-    library: "inMap",
+    library: 'inMap',
     umdNamedDefine: true,
-    filename: "[name].js"
+    filename: '[name].js'
   },
   module: {
     rules: [{
@@ -29,8 +30,12 @@ const option = {
   },
   externals: {
     BMap: {}
-},
-  plugins: []
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      VERSION: JSON.stringify(version)
+    }),
+  ]
 };
 
 module.exports = option;

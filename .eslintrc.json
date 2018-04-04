@@ -8,6 +8,7 @@
         "sourceType": "module"
     },
     "globals": {
+        "VERSION":true,
         "BMap": true,
         "Point": true,
         "expect":true
