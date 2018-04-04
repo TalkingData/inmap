@@ -6,18 +6,20 @@ import Point from './../../common/Point';
 
 export let HoneycombOverlay = {
     toRecGrids: function (webObj) {
-        let data = webObj,
-            points = data.request.data.points,
-            zoomUnit = data.request.data.zoomUnit,
-            size = data.request.data.size,
-            mapSize = data.request.data.mapSize,
-            mapCenter = data.request.data.mapCenter,
-            nwMc = data.request.data.nwMc,
-            map = data.request.map,
-            zoom = data.request.data.zoom;
+        let {
+            points,
+            zoomUnit,
+            size,
+            mapSize,
+            mapCenter,
+            nwMc,
+            map,
+            zoom,
+            type
+        } = webObj.request.data;
 
         HoneycombOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
-        let gridsObj = HoneycombOverlay.honeycombGrid(points, map, nwMc, size, zoomUnit, mapSize);
+        let gridsObj = HoneycombOverlay.honeycombGrid(points, map, nwMc, size, zoomUnit, mapSize, type);
 
         return {
             data: gridsObj,
@@ -45,11 +47,7 @@ export let HoneycombOverlay = {
         }
         return data;
     },
-    honeycombGrid: function (data, map, nwMc, size, zoomUnit, mapSize) {
-
-        let max = 0;
-        let min = 0;
-
+    honeycombGrid: function (data, map, nwMc, size, zoomUnit, mapSize, type) {
         let grids = {};
 
         let gridStep = size / zoomUnit;
@@ -88,10 +86,10 @@ export let HoneycombOverlay = {
                     maxPointY = row.py;
                 }
             }
-            startX = parseInt(minPointX - 11,10);
-            startY = parseInt(minPointY - 11,10);
-            endX = parseInt(maxPointX + 11,10);
-            endY = parseInt(maxPointY + 11,10);
+            startX = parseInt(minPointX - 11, 10);
+            startY = parseInt(minPointY - 11, 10);
+            endX = parseInt(maxPointX + 11, 10);
+            endY = parseInt(maxPointY + 11, 10);
         }
         let pointX = startX;
         let pointY = startY;
@@ -104,6 +102,7 @@ export let HoneycombOverlay = {
                 grids[x + '|' + pointY] = grids[x + '|' + pointY] || {
                     x: x,
                     y: pointY,
+                    count: 0,
                     len: 0
                 };
 
@@ -132,21 +131,22 @@ export let HoneycombOverlay = {
             }
 
             if (grids[fixX + '|' + fixY]) {
-                grids[fixX + '|' + fixY].len += count;
-                let num = grids[fixX + '|' + fixY].len;
-                max = max || num;
-                min = min || num;
-                max = Math.max(max, num);
-                min = Math.min(min, num);
+                grids[fixX + '|' + fixY].count += count;
+                grids[fixX + '|' + fixY].len += 1;
             }
         }
-
+        if (type == 'avg') {
+            for (let o in grids) {
+                let honey = grids[o];
+                let count = honey.count;
+                if (count > 0) {
+                    honey.count = count / honey.len;
+                }
+            }
+        }
+        
         return {
             grids: grids,
-            max: max,
-            min: min
         };
     }
-
-
 };

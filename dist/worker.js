@@ -1825,18 +1825,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var HoneycombOverlay = exports.HoneycombOverlay = {
     toRecGrids: function toRecGrids(webObj) {
-        var data = webObj,
-            points = data.request.data.points,
-            zoomUnit = data.request.data.zoomUnit,
-            size = data.request.data.size,
-            mapSize = data.request.data.mapSize,
-            mapCenter = data.request.data.mapCenter,
-            nwMc = data.request.data.nwMc,
-            map = data.request.map,
-            zoom = data.request.data.zoom;
+        var _webObj$request$data = webObj.request.data,
+            points = _webObj$request$data.points,
+            zoomUnit = _webObj$request$data.zoomUnit,
+            size = _webObj$request$data.size,
+            mapSize = _webObj$request$data.mapSize,
+            mapCenter = _webObj$request$data.mapCenter,
+            nwMc = _webObj$request$data.nwMc,
+            map = _webObj$request$data.map,
+            zoom = _webObj$request$data.zoom,
+            type = _webObj$request$data.type;
+
 
         HoneycombOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
-        var gridsObj = HoneycombOverlay.honeycombGrid(points, map, nwMc, size, zoomUnit, mapSize);
+        var gridsObj = HoneycombOverlay.honeycombGrid(points, map, nwMc, size, zoomUnit, mapSize, type);
 
         return {
             data: gridsObj,
@@ -1862,11 +1864,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
         }
         return data;
     },
-    honeycombGrid: function honeycombGrid(data, map, nwMc, size, zoomUnit, mapSize) {
-
-        var max = 0;
-        var min = 0;
-
+    honeycombGrid: function honeycombGrid(data, map, nwMc, size, zoomUnit, mapSize, type) {
         var grids = {};
 
         var gridStep = size / zoomUnit;
@@ -1921,6 +1919,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
                 grids[x + '|' + pointY] = grids[x + '|' + pointY] || {
                     x: x,
                     y: pointY,
+                    count: 0,
                     len: 0
                 };
 
@@ -1949,22 +1948,24 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
             }
 
             if (grids[fixX + '|' + fixY]) {
-                grids[fixX + '|' + fixY].len += count;
-                var num = grids[fixX + '|' + fixY].len;
-                max = max || num;
-                min = min || num;
-                max = Math.max(max, num);
-                min = Math.min(min, num);
+                grids[fixX + '|' + fixY].count += count;
+                grids[fixX + '|' + fixY].len += 1;
+            }
+        }
+        if (type == 'avg') {
+            for (var o in grids) {
+                var honey = grids[o];
+                var _count = honey.count;
+                if (_count > 0) {
+                    honey.count = _count / honey.len;
+                }
             }
         }
 
         return {
-            grids: grids,
-            max: max,
-            min: min
+            grids: grids
         };
     }
-
 };
 
 /***/ }),

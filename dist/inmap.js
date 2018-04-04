@@ -4066,16 +4066,20 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
         value: function drawMap() {
             var _this2 = this;
 
-            var style = this.style.normal;
+            var _style = this.style,
+                normal = _style.normal,
+                type = _style.type;
+
             var zoom = this.map.getZoom();
             var zoomUnit = Math.pow(2, 18 - zoom);
             var mercatorProjection = this.map.getMapType().getProjection();
             var mcCenter = mercatorProjection.lngLatToPoint(this.map.getCenter());
-            var size = style.size * zoomUnit;
+            var size = normal.size * zoomUnit;
             var nwMcX = mcCenter.x - this.map.getSize().width / 2 * zoomUnit;
             var nwMc = new BMap.Pixel(nwMcX, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
 
             var params = {
+                type: type,
                 points: this.points,
                 size: size,
                 nwMc: nwMc,
@@ -4096,14 +4100,12 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
                 _this2.canvasResize();
 
                 var grids = gridsObj.grids;
-                var max = gridsObj.max;
-                var min = gridsObj.min;
+
 
                 var obj = {
                     size: size,
                     zoomUnit: zoomUnit,
-                    max: max,
-                    min: min,
+
                     grids: grids,
                     margin: _this2.margin
                 };
@@ -4120,7 +4122,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
         value: function createColorSplit(grids) {
             var data = [];
             for (var key in grids) {
-                var count = grids[key].len;
+                var count = grids[key].count;
 
                 if (count > 0) {
                     data.push({
@@ -4245,7 +4247,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             for (var i in grids) {
                 var x = grids[i].x;
                 var y = grids[i].y;
-                var count = grids[i].len;
+                var count = grids[i].count;
                 if (count > 0) {
                     var color = this.getColor(count);
                     this.drawLine(x, y, gridsW - style.padding, color, this.ctx);

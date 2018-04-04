@@ -41,17 +41,20 @@ export class HoneycombOverlay extends Parameter {
         this.drawMap();
     }
     drawMap() {
-
-        let style = this.style.normal;
+        let {
+            normal,
+            type
+        } = this.style;
         let zoom = this.map.getZoom();
         let zoomUnit = Math.pow(2, 18 - zoom);
         let mercatorProjection = this.map.getMapType().getProjection();
         let mcCenter = mercatorProjection.lngLatToPoint(this.map.getCenter());
-        let size = style.size * zoomUnit;
+        let size = normal.size * zoomUnit;
         let nwMcX = mcCenter.x - this.map.getSize().width / 2 * zoomUnit;
         let nwMc = new BMap.Pixel(nwMcX, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
 
         let params = {
+            type,
             points: this.points,
             size: size,
             nwMc: nwMc,
@@ -72,14 +75,14 @@ export class HoneycombOverlay extends Parameter {
             this.canvasResize();
 
             let grids = gridsObj.grids;
-            let max = gridsObj.max;
-            let min = gridsObj.min;
+            // let max = gridsObj.max;
+            // let min = gridsObj.min;
 
             let obj = {
                 size: size,
                 zoomUnit: zoomUnit,
-                max: max,
-                min: min,
+                // max: max,
+                // min: min,
                 grids: grids,
                 margin: this.margin
             };
@@ -95,7 +98,7 @@ export class HoneycombOverlay extends Parameter {
     createColorSplit(grids) {
         let data = [];
         for (let key in grids) {
-            let count = grids[key].len;
+            let count = grids[key].count;
 
             if (count > 0) {
                 data.push({
@@ -216,7 +219,7 @@ export class HoneycombOverlay extends Parameter {
         for (let i in grids) {
             let x = grids[i].x;
             let y = grids[i].y;
-            let count = grids[i].len;
+            let count = grids[i].count;
             if (count > 0) {
                 let color = this.getColor(count);
                 this.drawLine(x, y, gridsW - style.padding, color, this.ctx);
