@@ -266,7 +266,7 @@ Colors.prototype = {
                         this.r = Math.min(255, parseInt(color[1], 10)) / 255;
                         this.g = Math.min(255, parseInt(color[2], 10)) / 255;
                         this.b = Math.min(255, parseInt(color[3], 10)) / 255;
-
+                        this.a = Math.min(1, parseFloat(color[5]));
                         handleAlpha(color[5]);
 
                         return this;

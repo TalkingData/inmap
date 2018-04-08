@@ -302,7 +302,7 @@ export class BoundaryOverlay extends Parameter {
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
         this.ctx.miterLimit = 4;
-
+         
         for (let i = 0, len = data.length; i < len; i++) {
             let item = data[i];
             let geo = item.pgeo;

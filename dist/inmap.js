@@ -567,16 +567,16 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
                 if (i == splitList.length - 1) {
                     if (condition.end == null) {
                         if (item.count >= condition.start) {
-                            result = (0, _util.merge)(normal, condition);
+                            result = this.mergeCondition(result, condition);
                             break;
                         }
                     } else if (item.count >= condition.start && item.count <= condition.end) {
-                        result = (0, _util.merge)(normal, condition);
+                        result = this.mergeCondition(result, condition);
                         break;
                     }
                 } else {
                     if (item.count >= condition.start && item.count < condition.end) {
-                        result = (0, _util.merge)(normal, condition);
+                        result = this.mergeCondition(result, condition);
                         break;
                     }
                 }
@@ -604,6 +604,17 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
                 result.borderColor = _color.getRgbaStyle(result.borderOpacity);
             }
             return result;
+        }
+    }, {
+        key: 'mergeCondition',
+        value: function mergeCondition(normal, condition) {
+            if (condition.opacity == null && normal.opacity != null) {
+                normal.opacity = null;
+            }
+            if (condition.borderOpacity == null && normal.borderOpacity != null) {
+                normal.borderOpacity = null;
+            }
+            return (0, _util.merge)(normal, condition);
         }
     }, {
         key: 'brightness',
@@ -723,6 +734,20 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
             splitList.forEach(function (val, index) {
                 var text = null,
                     backgroundColor = val.backgroundColor;
+                var legendBg = new _Color.Color(backgroundColor),
+                    difference = 0.2;
+
+                var opacity = val.opacity;
+                if (opacity) {
+                    opacity += difference;
+                }
+                if (legendBg.a) {
+                    opacity = legendBg.a + difference;
+                } else {
+                    opacity = 1;
+                }
+                backgroundColor = legendBg.getRgbaStyle(opacity);
+
                 if (legendFunc) {
                     text = legendFunc(me.toFixed(val.start), me.toFixed(val.end), index);
                 } else if (legendData) {
@@ -1674,7 +1699,7 @@ Colors.prototype = {
                         this.r = Math.min(255, parseInt(color[1], 10)) / 255;
                         this.g = Math.min(255, parseInt(color[2], 10)) / 255;
                         this.b = Math.min(255, parseInt(color[3], 10)) / 255;
-
+                        this.a = Math.min(1, parseFloat(color[5]));
                         handleAlpha(color[5]);
 
                         return this;

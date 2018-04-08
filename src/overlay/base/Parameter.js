@@ -92,16 +92,16 @@ export class Parameter extends CanvasOverlay {
             if (i == splitList.length - 1) {
                 if (condition.end == null) {
                     if (item.count >= condition.start) {
-                        result = merge(normal, condition);
+                        result = this.mergeCondition(result, condition);
                         break;
                     }
                 } else if (item.count >= condition.start && item.count <= condition.end) {
-                    result = merge(normal, condition);
+                    result = this.mergeCondition(result, condition);
                     break;
                 }
             } else {
                 if (item.count >= condition.start && item.count < condition.end) {
-                    result = merge(normal, condition);
+                    result = this.mergeCondition(result, condition);
                     break;
                 }
             }
@@ -129,6 +129,15 @@ export class Parameter extends CanvasOverlay {
             result.borderColor = color.getRgbaStyle(result.borderOpacity);
         }
         return result;
+    }
+    mergeCondition(normal, condition) {
+        if (condition.opacity == null && normal.opacity != null) {
+            normal.opacity = null;
+        }
+        if (condition.borderOpacity == null && normal.borderOpacity != null) {
+            normal.borderOpacity = null;
+        }
+        return merge(normal, condition);
     }
     /**
      * 亮度效果
@@ -258,6 +267,20 @@ export class Parameter extends CanvasOverlay {
         splitList.forEach(function (val, index) {
             let text = null,
                 backgroundColor = val.backgroundColor;
+            let legendBg = new Color(backgroundColor),
+                difference = 0.2;
+            // debugger
+            let opacity = val.opacity;
+            if (opacity) { 
+                opacity += difference;
+            }
+            if (legendBg.a) {
+                opacity = legendBg.a + difference;
+            } else {
+                opacity = 1;
+            }
+            backgroundColor=legendBg.getRgbaStyle(opacity);
+
             if (legendFunc) {
                 text = legendFunc(me.toFixed(val.start), me.toFixed(val.end), index);
             } else if (legendData) {
