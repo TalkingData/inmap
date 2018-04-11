@@ -10,6 +10,7 @@ import {
 import {
     MapZoom
 } from './mapZoom';
+import Toolbar from './Toolbar';
 import inmapConfig from './../config/InmapConfig';
 import './map.less';
 
@@ -46,16 +47,7 @@ export class Map {
         //设置皮肤
         this.tMapStyle(bmap, this.option.skin);
 
-
-        //设置 地图工具容器
-        let toolDom = this.crtateContainer(mapDom);
-        let _inmapOption = {};
-        Object.assign(_inmapOption, this.option, {
-            mapDom: mapDom,
-            toolDom: toolDom
-        });
-
-        bmap._inmapOption = _inmapOption;
+        bmap.inmapToolBar = new Toolbar(mapDom);
         let center = this.option.center;
 
         bmap.centerAndZoom(new BMap.Point(center[0], center[1]), this.option.zoom.value);
@@ -63,21 +55,13 @@ export class Map {
         bmap.setMaxZoom(this.option.zoom.max);
         if (this.option.zoom.show) {
             //添加地图级别工具条
-            new MapZoom(bmap);
+            new MapZoom(bmap, mapDom, this.option.zoom);
         }
 
         this.map = bmap;
     }
     getMap() {
         return this.map;
-    }
-    crtateContainer(mapDom) {
-        let parent = mapDom;
-        let div = document.createElement('div');
-        div.classList.add('inmap-container');
-        parent.appendChild(div);
-        return div;
-
     }
     add(overlay) {
         this.map.addOverlay(overlay);

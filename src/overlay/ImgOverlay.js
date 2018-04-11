@@ -27,9 +27,7 @@ export class ImgOverlay extends Parameter {
         this.state = val;
         this.event.onState(this.state);
     }
-    TInit() {
-
-    }
+   
     drawMap() {
         this.setState(State.computeBefore);
 

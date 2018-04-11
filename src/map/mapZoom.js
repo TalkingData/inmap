@@ -1,8 +1,8 @@
 export class MapZoom {
-    constructor(map) {
+    constructor(map, mapDom, opts) {
         this.map = map;
-        this.dom = map._inmapOption.toolDom;
-        this.zoom = map._inmapOption.zoom;
+        this.mapDom = mapDom;
+        this.zoom = opts;
         this.createDom();
     }
 
@@ -10,7 +10,7 @@ export class MapZoom {
         let div = document.createElement('div');
         div.classList.add('inmap-scale-group');
         div.innerHTML = '<a>+</a > <a>-</a >';
-        this.dom.appendChild(div);
+        this.mapDom.appendChild(div);
         this.event(div);
     }
     event(div) {

@@ -32,7 +32,7 @@ export class DotOverlay extends Parameter {
     }
 
 
-    TInit() {
+    parameterInit() {
         this.map.addOverlay(this.mouseLayer);
         if (this.style.colors.length > 0) {
             this.compileSplitList(this.points);
@@ -47,7 +47,7 @@ export class DotOverlay extends Parameter {
         } else {
             this.batchesData = null;
         }
-        this.TInit();
+        
         this.refresh();
     }
     setState(val) {

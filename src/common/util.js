@@ -16,6 +16,9 @@ export function typeOf(obj) {
     };
     return map[toString.call(obj)];
 }
+export function isBoolean(obj) {
+    return typeOf(obj) == 'boolean';
+}
 /**
  * 是否是函数
  * @param {Mix}

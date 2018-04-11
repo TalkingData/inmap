@@ -23,7 +23,7 @@ export class BoundaryOverlay extends Parameter {
         };
         this.state = null;
     }
-    TInit() {
+    parameterInit() {
         this.initLegend();
     }
     initLegend() {

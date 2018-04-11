@@ -8,6 +8,7 @@ import {
     WhiteLover,
     Blueness
 } from './../../config/MapStyle';
+import Toolbar from './../../map/Toolbar';
 let zIndex = 1;
 
 export class CanvasOverlay extends BaseClass {
@@ -26,6 +27,7 @@ export class CanvasOverlay extends BaseClass {
         this.devicePixelRatio = window.devicePixelRatio;
         this.repaintEnd = opts && opts.repaintEnd; //重绘回调
         this.animationFlag = true;
+
     }
     initialize(map) {
         let me = this;
@@ -42,10 +44,16 @@ export class CanvasOverlay extends BaseClass {
         map.addEventListener('zoomend', me.tOnZoomend);
         map.addEventListener('mousemove', me.tMousemove);
         map.addEventListener('click', me.tMouseClick);
-        this.TInit();
+        if (map.inmapToolBar) {
+            this.ToolBar = map.inmapToolBar;
+        } else {
+            this.ToolBar = map.inmapToolBar = new Toolbar(map.Va);
+        }
+        this.canvasInit();
         return this.container;
 
     }
+
     tMapStyle(skin) {
         let styleJson = null;
         if (isString(skin)) {
@@ -81,12 +89,10 @@ export class CanvasOverlay extends BaseClass {
 
         //抽象方法 子类去实现
     }
-    TInit() {
-
+    canvasInit() {
         //抽象方法 子类去实现
     }
     draw() {
-        // debugger
         this.resize();
     }
     tMouseClick() {
@@ -151,6 +157,9 @@ export class CanvasOverlay extends BaseClass {
         this.map.removeEventListener('moving', this.tOnMoving);
         this.map.removeEventListener('mousemove', this.tMousemove);
         this.map.removeEventListener('click', this.tMouseClick);
+        this.ToolBar.legend.hide();
+        this.ToolBar.toolTip.hide();
+        this.ToolBar = null;
         this.Tclear();
         this.Tdispose();
         this.map.removeOverlay(this);

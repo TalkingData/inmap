@@ -43,7 +43,7 @@ export default class FlashDotOverlay extends CanvasOverlay {
         this.render = this.render.bind(this);
         this.setOptionStyle(ops);
     }
-    TInit() {
+    canvasInit() {
         this.addMarker();
         let now;
         let then = Date.now();

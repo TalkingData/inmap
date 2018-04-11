@@ -12,12 +12,11 @@ export class GriddingOverlay extends Parameter {
         this.state = null;
         this.delteOption();
     }
-    TInit() {
+    parameterInit() {
        
     }
     setOptionStyle(ops) {
         this._setStyle(this.baseConfig, ops);
-        this.TInit();
         this.drawMap();
     }
     setState(val) {

@@ -1,6 +1,4 @@
 import {
-    isFunction,
-    isString,
     detectmob,
     isEmpty,
     merge
@@ -26,11 +24,6 @@ export class Parameter extends CanvasOverlay {
         this.overItem = null; //悬浮
         this.workerData = []; //缓存woker 转换后的数据
 
-        this.tooltipDom = null; //悬浮弹层
-        this.legendDom = null; //图例
-        this.tooltipTemplate = null;
-
-
     }
 
     _setStyle(config, ops) {
@@ -44,7 +37,18 @@ export class Parameter extends CanvasOverlay {
         this.style = option.style;
         this.points = ops.data ? option.data : this.points;
         this.tMapStyle(option.skin);
+        this.ToolBar && this.ToolBar.toolTip.setOption(option.tooltip);
 
+    }
+    canvasInit() {
+        this.ToolBar.toolTip.setOption(this.tooltip);
+        this.parameterInit();
+    }
+
+    parameterInit() {
+        /**
+         *  抽象方法，子类去实现
+         */
     }
     /**
      * 抽象方法
@@ -173,10 +177,6 @@ export class Parameter extends CanvasOverlay {
         let index = this.findIndexSelectItem(item);
         index > -1 && this.selectItem.splice(index, 1);
     }
-    compileTooltipTemplate(formatter) {
-        formatter = '`' + formatter.replace(/\{/g, '${overItem.') + '`';
-        this.tooltipTemplate = new Function('overItem', 'return ' + formatter);
-    }
 
     setWorkerData(val) {
         this.workerData = val;
@@ -185,51 +185,11 @@ export class Parameter extends CanvasOverlay {
      * 设置悬浮信息
      */
     setTooltip(event) {
-        let {
-            show,
-            customClass,
-            offsets,
-            formatter
-        } = this.tooltip;
-        if (this.tooltipDom == null) {
-            this.tooltipDom = document.createElement('div');
-            this.tooltipDom.classList.add('inmap-tooltip');
-            this.tooltipDom.classList.add(customClass);
-            this.map._inmapOption.toolDom.appendChild(this.tooltipDom);
-        }
-        if (!show) {
-            this.tooltipDom.style.display = 'none';
-            return;
-        }
-        if (this.overItem) {
-            let overItem = this.overItem;
-            if (isFunction(formatter)) {
-                this.tooltipDom.innerHTML = formatter(overItem);
-            } else if (isString(formatter)) {
-                if (!this.tooltipTemplate) { //编译
-                    this.compileTooltipTemplate(formatter);
-                }
-                this.tooltipDom.innerHTML = this.tooltipTemplate(overItem);
-            }
-
-            this.tooltipDom.style.left = event.offsetX + offsets.left + 'px';
-            this.tooltipDom.style.top = event.offsetY + offsets.top + 'px';
-            this.tooltipDom.style.display = 'block';
-        } else {
-            this.tooltipDom.style.display = 'none';
-        }
-
+        this.ToolBar.toolTip.render(event, this.overItem);
     }
 
     Tclear() {
-        if (this.tooltipDom) {
-            this.tooltipDom.parentNode.removeChild(this.tooltipDom);
-            this.tooltipDom = null;
-        }
-        if (this.legendDom && this.legendDom.parentNode) {
-            this.legendDom.parentNode.removeChild(this.legendDom);
-            this.legendDom = null;
-        }
+
     }
 
 
@@ -237,80 +197,10 @@ export class Parameter extends CanvasOverlay {
     /**
      * 设置图例
      */
-    setlegend(legend, splitList) {
-
+    setlegend(legend, list) {
         if (!this.map) return;
-        if (legend == null || legend.show == false) {
-            if (this.legendDom) {
-                this.legendDom.style.display = 'none';
-            }
-            return;
-        }
-        let legendData = legend.data;
-        let legendDom = this.map._inmapOption.toolDom.querySelector('.inmap-legend');
-        if (!legendDom) {
-            let div = document.createElement('div');
-            div.classList.add('inmap-legend');
-            this.map._inmapOption.toolDom.appendChild(div);
-            this.legendDom = div;
-        } else {
-            this.legendDom = legendDom;
-        }
-
-        let str = '';
-        if (legend.title) {
-            str = `<div class="inmap-legend-title">${legend.title} </div>`;
-        }
-        let legendFunc = this.legend.formatter; //回调 设置复杂显示
-        let me = this;
-        str += '<table cellpadding="0" cellspacing="0">';
-        splitList.forEach(function (val, index) {
-            let text = null,
-                backgroundColor = val.backgroundColor;
-            let legendBg = new Color(backgroundColor),
-                difference = 0.2;
-            // debugger
-            let opacity = val.opacity;
-            if (opacity) { 
-                opacity += difference;
-            }
-            if (legendBg.a) {
-                opacity = legendBg.a + difference;
-            } else {
-                opacity = 1;
-            }
-            backgroundColor=legendBg.getRgbaStyle(opacity);
-
-            if (legendFunc) {
-                text = legendFunc(me.toFixed(val.start), me.toFixed(val.end), index);
-            } else if (legendData) {
-                text = legendData[index];
-            } else {
-                text = `${me.toFixed(val.start)} ~ ${ val.end==null ?'<span class="inmap-infinity"></span>':me.toFixed(val.end)}`;
-            }
-            if (backgroundColor) {
-                str += `
-                <tr>
-                    <td style="background:${backgroundColor}; width:17px;"></td>
-                    <td class="inmap-legend-text">
-                       ${text}
-                    </td>
-                </tr>
-                `;
-            } else {
-                //非颜色分类的暂时未找到很好的图例设计， 先隐藏
-                legend.show = false;
-            }
-        });
-        str += '</table>';
-        let show = false;
-        if (legend.show) {
-            show = splitList.length > 0;
-        } else {
-            show = false;
-        }
-        this.legendDom.style.display = show ? 'block' : 'none';
-        this.legendDom.innerHTML = str;
+        legend['list'] = list;
+        this.ToolBar.legend.setOption(legend);
     }
     toFixed(num) {
         return isNaN(num) ? num : parseFloat(num).toFixed(this.legend.toFixed);
@@ -333,7 +223,6 @@ export class Parameter extends CanvasOverlay {
     refresh() {
         //抽象方法需要子类去实现
     }
-
     swopData(index, item) {
         if (index > -1) {
             this.workerData[index] = this.workerData[this.workerData.length - 1];
@@ -341,13 +230,9 @@ export class Parameter extends CanvasOverlay {
         }
     }
     tMouseleave() {
-        if (this.tooltipDom) {
-            this.tooltipDom.style.display = 'none';
-        }
-
+        this.ToolBar.tooltip.hide();
     }
     tMousemove(event) {
-
         if (this.eventType == 'onmoving') {
             return;
         }

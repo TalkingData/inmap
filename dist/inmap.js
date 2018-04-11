@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 42);
+/******/ 	return __webpack_require__(__webpack_require__.s = 43);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -91,6 +91,7 @@ exports.chunk = exports.extend = exports.isPromiseLike = exports.isEmpty = undef
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.typeOf = typeOf;
+exports.isBoolean = isBoolean;
 exports.isFunction = isFunction;
 exports.isString = isString;
 exports.isObject = isObject;
@@ -102,7 +103,7 @@ exports.isPolyContainsPt = isPolyContainsPt;
 exports.detectmob = detectmob;
 exports.merge = merge;
 
-var _deepmerge = __webpack_require__(8);
+var _deepmerge = __webpack_require__(9);
 
 var _deepmerge2 = _interopRequireDefault(_deepmerge);
 
@@ -123,6 +124,9 @@ function typeOf(obj) {
         '[object Object]': 'object'
     };
     return map[toString.call(obj)];
+}
+function isBoolean(obj) {
+    return typeOf(obj) == 'boolean';
 }
 function isFunction(func) {
     return typeOf(func) == 'function';
@@ -270,13 +274,17 @@ exports.CanvasOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _BaseClass2 = __webpack_require__(11);
+var _BaseClass2 = __webpack_require__(12);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
 var _util = __webpack_require__(0);
 
-var _MapStyle = __webpack_require__(6);
+var _MapStyle = __webpack_require__(7);
+
+var _Toolbar = __webpack_require__(11);
+
+var _Toolbar2 = _interopRequireDefault(_Toolbar);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -309,6 +317,7 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
         _this.devicePixelRatio = window.devicePixelRatio;
         _this.repaintEnd = opts && opts.repaintEnd;
         _this.animationFlag = true;
+
         return _this;
     }
 
@@ -329,7 +338,12 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
             map.addEventListener('zoomend', me.tOnZoomend);
             map.addEventListener('mousemove', me.tMousemove);
             map.addEventListener('click', me.tMouseClick);
-            this.TInit();
+            if (map.inmapToolBar) {
+                this.ToolBar = map.inmapToolBar;
+            } else {
+                this.ToolBar = map.inmapToolBar = new _Toolbar2.default(map.Va);
+            }
+            this.canvasInit();
             return this.container;
         }
     }, {
@@ -379,8 +393,8 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
         key: 'tMousemove',
         value: function tMousemove() {}
     }, {
-        key: 'TInit',
-        value: function TInit() {}
+        key: 'canvasInit',
+        value: function canvasInit() {}
     }, {
         key: 'draw',
         value: function draw() {
@@ -452,6 +466,9 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
             this.map.removeEventListener('moving', this.tOnMoving);
             this.map.removeEventListener('mousemove', this.tMousemove);
             this.map.removeEventListener('click', this.tMouseClick);
+            this.ToolBar.legend.hide();
+            this.ToolBar.toolTip.hide();
+            this.ToolBar = null;
             this.Tclear();
             this.Tdispose();
             this.map.removeOverlay(this);
@@ -480,7 +497,7 @@ var _util = __webpack_require__(0);
 
 var _CanvasOverlay2 = __webpack_require__(2);
 
-var _Color = __webpack_require__(9);
+var _Color = __webpack_require__(5);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -504,13 +521,7 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
 
         _this.selectItem = [];
         _this.overItem = null;
-        _this.workerData = [];
-
-        _this.tooltipDom = null;
-        _this.legendDom = null;
-        _this.tooltipTemplate = null;
-
-        return _this;
+        _this.workerData = [];return _this;
     }
 
     _createClass(Parameter, [{
@@ -526,7 +537,17 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
             this.style = option.style;
             this.points = ops.data ? option.data : this.points;
             this.tMapStyle(option.skin);
+            this.ToolBar && this.ToolBar.toolTip.setOption(option.tooltip);
         }
+    }, {
+        key: 'canvasInit',
+        value: function canvasInit() {
+            this.ToolBar.toolTip.setOption(this.tooltip);
+            this.parameterInit();
+        }
+    }, {
+        key: 'parameterInit',
+        value: function parameterInit() {}
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle() {}
@@ -643,12 +664,6 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
             index > -1 && this.selectItem.splice(index, 1);
         }
     }, {
-        key: 'compileTooltipTemplate',
-        value: function compileTooltipTemplate(formatter) {
-            formatter = '`' + formatter.replace(/\{/g, '${overItem.') + '`';
-            this.tooltipTemplate = new Function('overItem', 'return ' + formatter);
-        }
-    }, {
         key: 'setWorkerData',
         value: function setWorkerData(val) {
             this.workerData = val;
@@ -656,120 +671,17 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
     }, {
         key: 'setTooltip',
         value: function setTooltip(event) {
-            var _tooltip = this.tooltip,
-                show = _tooltip.show,
-                customClass = _tooltip.customClass,
-                offsets = _tooltip.offsets,
-                formatter = _tooltip.formatter;
-
-            if (this.tooltipDom == null) {
-                this.tooltipDom = document.createElement('div');
-                this.tooltipDom.classList.add('inmap-tooltip');
-                this.tooltipDom.classList.add(customClass);
-                this.map._inmapOption.toolDom.appendChild(this.tooltipDom);
-            }
-            if (!show) {
-                this.tooltipDom.style.display = 'none';
-                return;
-            }
-            if (this.overItem) {
-                var overItem = this.overItem;
-                if ((0, _util.isFunction)(formatter)) {
-                    this.tooltipDom.innerHTML = formatter(overItem);
-                } else if ((0, _util.isString)(formatter)) {
-                    if (!this.tooltipTemplate) {
-                        this.compileTooltipTemplate(formatter);
-                    }
-                    this.tooltipDom.innerHTML = this.tooltipTemplate(overItem);
-                }
-
-                this.tooltipDom.style.left = event.offsetX + offsets.left + 'px';
-                this.tooltipDom.style.top = event.offsetY + offsets.top + 'px';
-                this.tooltipDom.style.display = 'block';
-            } else {
-                this.tooltipDom.style.display = 'none';
-            }
+            this.ToolBar.toolTip.render(event, this.overItem);
         }
     }, {
         key: 'Tclear',
-        value: function Tclear() {
-            if (this.tooltipDom) {
-                this.tooltipDom.parentNode.removeChild(this.tooltipDom);
-                this.tooltipDom = null;
-            }
-            if (this.legendDom && this.legendDom.parentNode) {
-                this.legendDom.parentNode.removeChild(this.legendDom);
-                this.legendDom = null;
-            }
-        }
+        value: function Tclear() {}
     }, {
         key: 'setlegend',
-        value: function setlegend(legend, splitList) {
-
+        value: function setlegend(legend, list) {
             if (!this.map) return;
-            if (legend == null || legend.show == false) {
-                if (this.legendDom) {
-                    this.legendDom.style.display = 'none';
-                }
-                return;
-            }
-            var legendData = legend.data;
-            var legendDom = this.map._inmapOption.toolDom.querySelector('.inmap-legend');
-            if (!legendDom) {
-                var div = document.createElement('div');
-                div.classList.add('inmap-legend');
-                this.map._inmapOption.toolDom.appendChild(div);
-                this.legendDom = div;
-            } else {
-                this.legendDom = legendDom;
-            }
-
-            var str = '';
-            if (legend.title) {
-                str = '<div class="inmap-legend-title">' + legend.title + ' </div>';
-            }
-            var legendFunc = this.legend.formatter;
-            var me = this;
-            str += '<table cellpadding="0" cellspacing="0">';
-            splitList.forEach(function (val, index) {
-                var text = null,
-                    backgroundColor = val.backgroundColor;
-                var legendBg = new _Color.Color(backgroundColor),
-                    difference = 0.2;
-
-                var opacity = val.opacity;
-                if (opacity) {
-                    opacity += difference;
-                }
-                if (legendBg.a) {
-                    opacity = legendBg.a + difference;
-                } else {
-                    opacity = 1;
-                }
-                backgroundColor = legendBg.getRgbaStyle(opacity);
-
-                if (legendFunc) {
-                    text = legendFunc(me.toFixed(val.start), me.toFixed(val.end), index);
-                } else if (legendData) {
-                    text = legendData[index];
-                } else {
-                    text = me.toFixed(val.start) + ' ~ ' + (val.end == null ? '<span class="inmap-infinity"></span>' : me.toFixed(val.end));
-                }
-                if (backgroundColor) {
-                    str += '\n                <tr>\n                    <td style="background:' + backgroundColor + '; width:17px;"></td>\n                    <td class="inmap-legend-text">\n                       ' + text + '\n                    </td>\n                </tr>\n                ';
-                } else {
-                    legend.show = false;
-                }
-            });
-            str += '</table>';
-            var show = false;
-            if (legend.show) {
-                show = splitList.length > 0;
-            } else {
-                show = false;
-            }
-            this.legendDom.style.display = show ? 'block' : 'none';
-            this.legendDom.innerHTML = str;
+            legend['list'] = list;
+            this.ToolBar.legend.setOption(legend);
         }
     }, {
         key: 'toFixed',
@@ -798,14 +710,11 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
     }, {
         key: 'tMouseleave',
         value: function tMouseleave() {
-            if (this.tooltipDom) {
-                this.tooltipDom.style.display = 'none';
-            }
+            this.ToolBar.tooltip.hide();
         }
     }, {
         key: 'tMousemove',
         value: function tMousemove(event) {
-
             if (this.eventType == 'onmoving') {
                 return;
             }
@@ -871,579 +780,7 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 5 */,
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var WhiteLover = exports.WhiteLover = [{
-    'featureType': 'water',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#dbe0e7'
-    }
-}, {
-    'featureType': 'land',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#f1f3f5'
-    }
-}, {
-    'featureType': 'green',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#e9ecf2'
-    }
-}, {
-    'featureType': 'manmade',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#dde1e8'
-    }
-}, {
-    'featureType': 'building',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#dde1e8'
-    }
-}, {
-    'featureType': 'boundary',
-    'elementType': 'geometry',
-    'stylers': {
-        'color': '#d7dadf'
-    }
-}, {
-    'featureType': 'railway',
-    'elementType': 'geometry',
-    'stylers': {
-        'hue': '#3d85c6',
-        'lightness': 63,
-        'saturation': 21,
-        'visibility': 'on'
-    }
-}, {
-    'featureType': 'local',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#e7ebf2',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'local',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#b5bfc7',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'subway',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#73b1df'
-    }
-}, {
-    'featureType': 'poi',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#b5bfc7',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'subway',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#d9e3ea',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'labels',
-    'stylers': {
-        'color': '#c6d4df',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#c1c9d5'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'geometry.fill',
-    'stylers': {
-        'color': '#d3d8e1',
-        'visibility': 'on'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'labels',
-    'stylers': {
-        'visibility': 'on'
-    }
-}, {
-    'featureType': 'administrative',
-    'elementType': 'labels',
-    'stylers': {
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'background',
-    'elementType': 'labels',
-    'stylers': {
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'geometry.fill',
-    'stylers': {
-        'color': '#e9ecf2'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#d9dce3'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'labels.text.fill',
-    'stylers': {
-        'visibility': 'off'
-    }
-}];
-var Blueness = exports.Blueness = [{
-    'featureType': 'water',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#566382'
-    }
-}, {
-    'featureType': 'land',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#172137'
-    }
-}, {
-    'featureType': 'green',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#282f57'
-    }
-}, {
-    'featureType': 'manmade',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#3f4b8c'
-    }
-}, {
-    'featureType': 'building',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#3f4b8c'
-    }
-}, {
-    'featureType': 'boundary',
-    'elementType': 'geometry',
-    'stylers': {
-        'color': '#4f6b9e'
-    }
-}, {
-    'featureType': 'railway',
-    'elementType': 'geometry',
-    'stylers': {
-        'color': '#4f6b9e'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#202749',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'geometry.fill',
-    'stylers': {
-        'color': '#4f6b9e',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'local',
-    'elementType': 'geometry.fill',
-    'stylers': {
-        'color': '#303a6d'
-    }
-}, {
-    'featureType': 'local',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#2d3667',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'subway',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#445195',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'all',
-    'elementType': 'labels.text.stroke',
-    'stylers': {
-        'color': '#141831'
-    }
-}, {
-    'featureType': 'all',
-    'elementType': 'labels.text.fill',
-    'stylers': {
-        'color': '#5564b2'
-    }
-}, {
-    'featureType': 'poi',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#141831',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'subway',
-    'elementType': 'all',
-    'stylers': {
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#181e3e'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'geometry',
-    'stylers': {
-        'color': '#324160',
-        'weight': '0.9'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'labels',
-    'stylers': {
-        'color': '#172137',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'label',
-    'elementType': 'labels',
-    'stylers': {
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'administrative',
-    'elementType': 'geometry',
-    'stylers': {}
-}];
-
-/***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Label = exports.Label = function () {
-    function Label(x, y, radius, height, byteWidth, name) {
-        _classCallCheck(this, Label);
-
-        this.center = {
-            x: x,
-            y: y
-        };
-        this.virtualReact = {
-            maxX: 0,
-            maxY: 0,
-            minX: 0,
-            minY: 0,
-            width: 0,
-            height: 0
-        };
-        this.show = true;
-        this.text = name;
-        this.textReact = {
-            width: 0,
-            height: 0
-        };
-        this.radius = radius + 2;
-        this.padding = 0;
-        this.aIndex = 0;
-        this._getRectangle(height * 1.1, byteWidth - 0.6);
-    }
-
-    _createClass(Label, [{
-        key: 'getCurrentRect',
-        value: function getCurrentRect() {
-            var result = null;
-            switch (this.aIndex.toString()) {
-                case '0':
-                    result = this._getRightAnchor();
-                    break;
-                case '1':
-                    result = this._getBottomAnchor();
-                    break;
-                case '2':
-                    result = this._getLeftAnchor();
-                    break;
-                case '3':
-                    result = this._getTopAnchor();
-                    break;
-                default:
-                    result = this._getCenterRectange();
-                    break;
-
-            }
-            return result;
-        }
-    }, {
-        key: 'next',
-        value: function next() {
-            this.aIndex++;
-            if (this.aIndex > 3) {
-                this.show = false;
-            }
-            return this.getCurrentRect();
-        }
-    }, {
-        key: '_getTrueLength',
-        value: function _getTrueLength(str) {
-            var len = str.length,
-                truelen = 0;
-            for (var x = 0; x < len; x++) {
-                if (str.charCodeAt(x) > 128) {
-                    truelen += 2;
-                } else {
-                    truelen += 1;
-                }
-            }
-            return truelen;
-        }
-    }, {
-        key: 'isAnchorMeet',
-        value: function isAnchorMeet(target) {
-            var react = this.getCurrentRect(),
-                targetReact = target.getCurrentRect();
-            if (react.minX < targetReact.maxX && targetReact.minX < react.maxX && react.minY < targetReact.maxY && targetReact.minY < react.maxY) {
-                return true;
-            }
-            return false;
-        }
-    }, {
-        key: '_getCenterRectange',
-        value: function _getCenterRectange() {
-            return {
-                minX: this.center.x - this.radius,
-                maxX: this.center.x + this.radius,
-                minY: this.center.y - this.radius,
-                maxY: this.center.y + this.radius
-            };
-        }
-    }, {
-        key: '_getRectangle',
-        value: function _getRectangle(height, byteWidth) {
-            var width = this._getTrueLength(this.text) * byteWidth;
-            this.textReact = {
-                width: width + this.padding * 2,
-                height: height
-            };
-        }
-    }, {
-        key: '_getLeftAnchor',
-        value: function _getLeftAnchor() {
-
-            var x = this.center.x - this.radius - this.textReact.width,
-                y = this.center.y - this.textReact.height / 2,
-                diam = this.radius * 2,
-                maxH = diam > this.textReact.height ? diam : this.textReact.height;
-            return {
-                x: x,
-                y: y,
-                minX: x,
-                maxX: this.center.x + this.radius,
-                minY: this.center.y - maxH / 2,
-                maxY: this.center.y + maxH / 2
-            };
-        }
-    }, {
-        key: '_getRightAnchor',
-        value: function _getRightAnchor() {
-            var x = this.center.x + this.radius,
-                y = this.center.y - this.textReact.height / 2,
-                diam = this.radius * 2,
-                maxH = diam > this.textReact.height ? diam : this.textReact.height;
-            return {
-                x: x,
-                y: y,
-                minX: this.center.x - this.radius,
-                maxX: this.center.x + this.radius + this.textReact.width,
-                minY: this.center.y - maxH / 2,
-                maxY: this.center.y + maxH / 2
-            };
-        }
-    }, {
-        key: '_getTopAnchor',
-        value: function _getTopAnchor() {
-            var x = this.center.x - this.textReact.width / 2,
-                y = this.center.y - this.radius - this.textReact.height,
-                diam = this.radius * 2,
-                maxW = diam > this.textReact.width ? diam : this.textReact.width;
-            return {
-                x: x,
-                y: y,
-                minX: this.center.x - maxW / 2,
-                maxX: this.center.x + maxW / 2,
-                minY: this.center.y - this.radius - this.textReact.height,
-                maxY: this.center.y + this.radius
-            };
-        }
-    }, {
-        key: '_getBottomAnchor',
-        value: function _getBottomAnchor() {
-            var x = this.center.x - this.textReact.width / 2,
-                y = this.center.y + this.radius,
-                maxW = this.radius > this.textReact.width ? this.radius : this.textReact.width;
-            return {
-                x: x,
-                y: y,
-                minX: this.center.x - maxW / 2,
-                maxX: this.center.x + maxW / 2,
-                minY: this.center.y - this.radius,
-                maxY: this.center.y + this.radius + this.textReact.height
-            };
-        }
-    }]);
-
-    return Label;
-}();
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var isMergeableObject = function isMergeableObject(value) {
-	return isNonNullObject(value)
-		&& !isSpecial(value)
-};
-
-function isNonNullObject(value) {
-	return !!value && typeof value === 'object'
-}
-
-function isSpecial(value) {
-	var stringValue = Object.prototype.toString.call(value);
-
-	return stringValue === '[object RegExp]'
-		|| stringValue === '[object Date]'
-		|| isReactElement(value)
-}
-
-// see https://github.com/facebook/react/blob/b5ac963fb791d1298e7f396236383bc955f916c1/src/isomorphic/classic/element/ReactElement.js#L21-L25
-var canUseSymbol = typeof Symbol === 'function' && Symbol.for;
-var REACT_ELEMENT_TYPE = canUseSymbol ? Symbol.for('react.element') : 0xeac7;
-
-function isReactElement(value) {
-	return value.$$typeof === REACT_ELEMENT_TYPE
-}
-
-function emptyTarget(val) {
-    return Array.isArray(val) ? [] : {}
-}
-
-function cloneIfNecessary(value, optionsArgument) {
-    var clone = optionsArgument && optionsArgument.clone === true;
-    return (clone && isMergeableObject(value)) ? deepmerge(emptyTarget(value), value, optionsArgument) : value
-}
-
-function defaultArrayMerge(target, source, optionsArgument) {
-    var destination = target.slice();
-    source.forEach(function(e, i) {
-        if (typeof destination[i] === 'undefined') {
-            destination[i] = cloneIfNecessary(e, optionsArgument);
-        } else if (isMergeableObject(e)) {
-            destination[i] = deepmerge(target[i], e, optionsArgument);
-        } else if (target.indexOf(e) === -1) {
-            destination.push(cloneIfNecessary(e, optionsArgument));
-        }
-    });
-    return destination
-}
-
-function mergeObject(target, source, optionsArgument) {
-    var destination = {};
-    if (isMergeableObject(target)) {
-        Object.keys(target).forEach(function(key) {
-            destination[key] = cloneIfNecessary(target[key], optionsArgument);
-        });
-    }
-    Object.keys(source).forEach(function(key) {
-        if (!isMergeableObject(source[key]) || !target[key]) {
-            destination[key] = cloneIfNecessary(source[key], optionsArgument);
-        } else {
-            destination[key] = deepmerge(target[key], source[key], optionsArgument);
-        }
-    });
-    return destination
-}
-
-function deepmerge(target, source, optionsArgument) {
-    var sourceIsArray = Array.isArray(source);
-    var targetIsArray = Array.isArray(target);
-    var options = optionsArgument || { arrayMerge: defaultArrayMerge };
-    var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray;
-
-    if (!sourceAndTargetTypesMatch) {
-        return cloneIfNecessary(source, optionsArgument)
-    } else if (sourceIsArray) {
-        var arrayMerge = options.arrayMerge || defaultArrayMerge;
-        return arrayMerge(target, source, optionsArgument)
-    } else {
-        return mergeObject(target, source, optionsArgument)
-    }
-}
-
-deepmerge.all = function deepmergeAll(array, optionsArgument) {
-    if (!Array.isArray(array) || array.length < 2) {
-        throw new Error('first argument should be an array with at least two elements')
-    }
-
-    // we are sure there are at least 2 values, so it is safe to have no initial value
-    return array.reduce(function(prev, next) {
-        return deepmerge(prev, next, optionsArgument)
-    })
-};
-
-var deepmerge_1 = deepmerge;
-
-module.exports = deepmerge_1;
-
-
-/***/ }),
-/* 9 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2001,6 +1338,578 @@ Colors.prototype = {
 var Color = exports.Color = Colors;
 
 /***/ }),
+/* 6 */,
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var WhiteLover = exports.WhiteLover = [{
+    'featureType': 'water',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#dbe0e7'
+    }
+}, {
+    'featureType': 'land',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#f1f3f5'
+    }
+}, {
+    'featureType': 'green',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#e9ecf2'
+    }
+}, {
+    'featureType': 'manmade',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#dde1e8'
+    }
+}, {
+    'featureType': 'building',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#dde1e8'
+    }
+}, {
+    'featureType': 'boundary',
+    'elementType': 'geometry',
+    'stylers': {
+        'color': '#d7dadf'
+    }
+}, {
+    'featureType': 'railway',
+    'elementType': 'geometry',
+    'stylers': {
+        'hue': '#3d85c6',
+        'lightness': 63,
+        'saturation': 21,
+        'visibility': 'on'
+    }
+}, {
+    'featureType': 'local',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#e7ebf2',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'local',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#b5bfc7',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'subway',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#73b1df'
+    }
+}, {
+    'featureType': 'poi',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#b5bfc7',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'subway',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#d9e3ea',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'labels',
+    'stylers': {
+        'color': '#c6d4df',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#c1c9d5'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'geometry.fill',
+    'stylers': {
+        'color': '#d3d8e1',
+        'visibility': 'on'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'labels',
+    'stylers': {
+        'visibility': 'on'
+    }
+}, {
+    'featureType': 'administrative',
+    'elementType': 'labels',
+    'stylers': {
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'background',
+    'elementType': 'labels',
+    'stylers': {
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'geometry.fill',
+    'stylers': {
+        'color': '#e9ecf2'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#d9dce3'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'labels.text.fill',
+    'stylers': {
+        'visibility': 'off'
+    }
+}];
+var Blueness = exports.Blueness = [{
+    'featureType': 'water',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#566382'
+    }
+}, {
+    'featureType': 'land',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#172137'
+    }
+}, {
+    'featureType': 'green',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#282f57'
+    }
+}, {
+    'featureType': 'manmade',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#3f4b8c'
+    }
+}, {
+    'featureType': 'building',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#3f4b8c'
+    }
+}, {
+    'featureType': 'boundary',
+    'elementType': 'geometry',
+    'stylers': {
+        'color': '#4f6b9e'
+    }
+}, {
+    'featureType': 'railway',
+    'elementType': 'geometry',
+    'stylers': {
+        'color': '#4f6b9e'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#202749',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'geometry.fill',
+    'stylers': {
+        'color': '#4f6b9e',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'local',
+    'elementType': 'geometry.fill',
+    'stylers': {
+        'color': '#303a6d'
+    }
+}, {
+    'featureType': 'local',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#2d3667',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'subway',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#445195',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'all',
+    'elementType': 'labels.text.stroke',
+    'stylers': {
+        'color': '#141831'
+    }
+}, {
+    'featureType': 'all',
+    'elementType': 'labels.text.fill',
+    'stylers': {
+        'color': '#5564b2'
+    }
+}, {
+    'featureType': 'poi',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#141831',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'subway',
+    'elementType': 'all',
+    'stylers': {
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#181e3e'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'geometry',
+    'stylers': {
+        'color': '#324160',
+        'weight': '0.9'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'labels',
+    'stylers': {
+        'color': '#172137',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'label',
+    'elementType': 'labels',
+    'stylers': {
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'administrative',
+    'elementType': 'geometry',
+    'stylers': {}
+}];
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Label = exports.Label = function () {
+    function Label(x, y, radius, height, byteWidth, name) {
+        _classCallCheck(this, Label);
+
+        this.center = {
+            x: x,
+            y: y
+        };
+        this.virtualReact = {
+            maxX: 0,
+            maxY: 0,
+            minX: 0,
+            minY: 0,
+            width: 0,
+            height: 0
+        };
+        this.show = true;
+        this.text = name;
+        this.textReact = {
+            width: 0,
+            height: 0
+        };
+        this.radius = radius + 2;
+        this.padding = 0;
+        this.aIndex = 0;
+        this._getRectangle(height * 1.1, byteWidth - 0.6);
+    }
+
+    _createClass(Label, [{
+        key: 'getCurrentRect',
+        value: function getCurrentRect() {
+            var result = null;
+            switch (this.aIndex.toString()) {
+                case '0':
+                    result = this._getRightAnchor();
+                    break;
+                case '1':
+                    result = this._getBottomAnchor();
+                    break;
+                case '2':
+                    result = this._getLeftAnchor();
+                    break;
+                case '3':
+                    result = this._getTopAnchor();
+                    break;
+                default:
+                    result = this._getCenterRectange();
+                    break;
+
+            }
+            return result;
+        }
+    }, {
+        key: 'next',
+        value: function next() {
+            this.aIndex++;
+            if (this.aIndex > 3) {
+                this.show = false;
+            }
+            return this.getCurrentRect();
+        }
+    }, {
+        key: '_getTrueLength',
+        value: function _getTrueLength(str) {
+            var len = str.length,
+                truelen = 0;
+            for (var x = 0; x < len; x++) {
+                if (str.charCodeAt(x) > 128) {
+                    truelen += 2;
+                } else {
+                    truelen += 1;
+                }
+            }
+            return truelen;
+        }
+    }, {
+        key: 'isAnchorMeet',
+        value: function isAnchorMeet(target) {
+            var react = this.getCurrentRect(),
+                targetReact = target.getCurrentRect();
+            if (react.minX < targetReact.maxX && targetReact.minX < react.maxX && react.minY < targetReact.maxY && targetReact.minY < react.maxY) {
+                return true;
+            }
+            return false;
+        }
+    }, {
+        key: '_getCenterRectange',
+        value: function _getCenterRectange() {
+            return {
+                minX: this.center.x - this.radius,
+                maxX: this.center.x + this.radius,
+                minY: this.center.y - this.radius,
+                maxY: this.center.y + this.radius
+            };
+        }
+    }, {
+        key: '_getRectangle',
+        value: function _getRectangle(height, byteWidth) {
+            var width = this._getTrueLength(this.text) * byteWidth;
+            this.textReact = {
+                width: width + this.padding * 2,
+                height: height
+            };
+        }
+    }, {
+        key: '_getLeftAnchor',
+        value: function _getLeftAnchor() {
+
+            var x = this.center.x - this.radius - this.textReact.width,
+                y = this.center.y - this.textReact.height / 2,
+                diam = this.radius * 2,
+                maxH = diam > this.textReact.height ? diam : this.textReact.height;
+            return {
+                x: x,
+                y: y,
+                minX: x,
+                maxX: this.center.x + this.radius,
+                minY: this.center.y - maxH / 2,
+                maxY: this.center.y + maxH / 2
+            };
+        }
+    }, {
+        key: '_getRightAnchor',
+        value: function _getRightAnchor() {
+            var x = this.center.x + this.radius,
+                y = this.center.y - this.textReact.height / 2,
+                diam = this.radius * 2,
+                maxH = diam > this.textReact.height ? diam : this.textReact.height;
+            return {
+                x: x,
+                y: y,
+                minX: this.center.x - this.radius,
+                maxX: this.center.x + this.radius + this.textReact.width,
+                minY: this.center.y - maxH / 2,
+                maxY: this.center.y + maxH / 2
+            };
+        }
+    }, {
+        key: '_getTopAnchor',
+        value: function _getTopAnchor() {
+            var x = this.center.x - this.textReact.width / 2,
+                y = this.center.y - this.radius - this.textReact.height,
+                diam = this.radius * 2,
+                maxW = diam > this.textReact.width ? diam : this.textReact.width;
+            return {
+                x: x,
+                y: y,
+                minX: this.center.x - maxW / 2,
+                maxX: this.center.x + maxW / 2,
+                minY: this.center.y - this.radius - this.textReact.height,
+                maxY: this.center.y + this.radius
+            };
+        }
+    }, {
+        key: '_getBottomAnchor',
+        value: function _getBottomAnchor() {
+            var x = this.center.x - this.textReact.width / 2,
+                y = this.center.y + this.radius,
+                maxW = this.radius > this.textReact.width ? this.radius : this.textReact.width;
+            return {
+                x: x,
+                y: y,
+                minX: this.center.x - maxW / 2,
+                maxX: this.center.x + maxW / 2,
+                minY: this.center.y - this.radius,
+                maxY: this.center.y + this.radius + this.textReact.height
+            };
+        }
+    }]);
+
+    return Label;
+}();
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var isMergeableObject = function isMergeableObject(value) {
+	return isNonNullObject(value)
+		&& !isSpecial(value)
+};
+
+function isNonNullObject(value) {
+	return !!value && typeof value === 'object'
+}
+
+function isSpecial(value) {
+	var stringValue = Object.prototype.toString.call(value);
+
+	return stringValue === '[object RegExp]'
+		|| stringValue === '[object Date]'
+		|| isReactElement(value)
+}
+
+// see https://github.com/facebook/react/blob/b5ac963fb791d1298e7f396236383bc955f916c1/src/isomorphic/classic/element/ReactElement.js#L21-L25
+var canUseSymbol = typeof Symbol === 'function' && Symbol.for;
+var REACT_ELEMENT_TYPE = canUseSymbol ? Symbol.for('react.element') : 0xeac7;
+
+function isReactElement(value) {
+	return value.$$typeof === REACT_ELEMENT_TYPE
+}
+
+function emptyTarget(val) {
+    return Array.isArray(val) ? [] : {}
+}
+
+function cloneIfNecessary(value, optionsArgument) {
+    var clone = optionsArgument && optionsArgument.clone === true;
+    return (clone && isMergeableObject(value)) ? deepmerge(emptyTarget(value), value, optionsArgument) : value
+}
+
+function defaultArrayMerge(target, source, optionsArgument) {
+    var destination = target.slice();
+    source.forEach(function(e, i) {
+        if (typeof destination[i] === 'undefined') {
+            destination[i] = cloneIfNecessary(e, optionsArgument);
+        } else if (isMergeableObject(e)) {
+            destination[i] = deepmerge(target[i], e, optionsArgument);
+        } else if (target.indexOf(e) === -1) {
+            destination.push(cloneIfNecessary(e, optionsArgument));
+        }
+    });
+    return destination
+}
+
+function mergeObject(target, source, optionsArgument) {
+    var destination = {};
+    if (isMergeableObject(target)) {
+        Object.keys(target).forEach(function(key) {
+            destination[key] = cloneIfNecessary(target[key], optionsArgument);
+        });
+    }
+    Object.keys(source).forEach(function(key) {
+        if (!isMergeableObject(source[key]) || !target[key]) {
+            destination[key] = cloneIfNecessary(source[key], optionsArgument);
+        } else {
+            destination[key] = deepmerge(target[key], source[key], optionsArgument);
+        }
+    });
+    return destination
+}
+
+function deepmerge(target, source, optionsArgument) {
+    var sourceIsArray = Array.isArray(source);
+    var targetIsArray = Array.isArray(target);
+    var options = optionsArgument || { arrayMerge: defaultArrayMerge };
+    var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray;
+
+    if (!sourceAndTargetTypesMatch) {
+        return cloneIfNecessary(source, optionsArgument)
+    } else if (sourceIsArray) {
+        var arrayMerge = options.arrayMerge || defaultArrayMerge;
+        return arrayMerge(target, source, optionsArgument)
+    } else {
+        return mergeObject(target, source, optionsArgument)
+    }
+}
+
+deepmerge.all = function deepmergeAll(array, optionsArgument) {
+    if (!Array.isArray(array) || array.length < 2) {
+        throw new Error('first argument should be an array with at least two elements')
+    }
+
+    // we are sure there are at least 2 values, so it is safe to have no initial value
+    return array.reduce(function(prev, next) {
+        return deepmerge(prev, next, optionsArgument)
+    })
+};
+
+var deepmerge_1 = deepmerge;
+
+module.exports = deepmerge_1;
+
+
+/***/ }),
 /* 10 */,
 /* 11 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -2012,7 +1921,60 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _workerMrg = __webpack_require__(30);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Legend = __webpack_require__(44);
+
+var _Legend2 = _interopRequireDefault(_Legend);
+
+var _ToolTip = __webpack_require__(45);
+
+var _ToolTip2 = _interopRequireDefault(_ToolTip);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Toolbar = function () {
+    function Toolbar(mapDom) {
+        _classCallCheck(this, Toolbar);
+
+        var toolDom = this.create(mapDom);
+        var legend = new _Legend2.default(toolDom);
+        var toolTip = new _ToolTip2.default(toolDom);
+        return {
+            legend: legend,
+            toolTip: toolTip
+        };
+    }
+
+    _createClass(Toolbar, [{
+        key: 'create',
+        value: function create(mapDom) {
+            var div = document.createElement('div');
+            div.classList.add('inmap-container');
+            mapDom.appendChild(div);
+            return div;
+        }
+    }]);
+
+    return Toolbar;
+}();
+
+exports.default = Toolbar;
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _workerMrg = __webpack_require__(31);
 
 var baseClassCounter = 0;
 var inmap_instances = {};
@@ -2112,7 +2074,7 @@ BaseClass.prototype.setMsgId = function () {
 exports.default = BaseClass;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2127,15 +2089,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __webpack_require__(0);
 
-var _MapStyle = __webpack_require__(6);
+var _MapStyle = __webpack_require__(7);
 
-var _mapZoom = __webpack_require__(43);
+var _mapZoom = __webpack_require__(46);
 
-var _InmapConfig = __webpack_require__(39);
+var _Toolbar = __webpack_require__(11);
+
+var _Toolbar2 = _interopRequireDefault(_Toolbar);
+
+var _InmapConfig = __webpack_require__(40);
 
 var _InmapConfig2 = _interopRequireDefault(_InmapConfig);
 
-__webpack_require__(49);
+__webpack_require__(52);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2180,21 +2146,14 @@ var Map = exports.Map = function () {
 
             this.tMapStyle(bmap, this.option.skin);
 
-            var toolDom = this.crtateContainer(mapDom);
-            var _inmapOption = {};
-            Object.assign(_inmapOption, this.option, {
-                mapDom: mapDom,
-                toolDom: toolDom
-            });
-
-            bmap._inmapOption = _inmapOption;
+            bmap.inmapToolBar = new _Toolbar2.default(mapDom);
             var center = this.option.center;
 
             bmap.centerAndZoom(new BMap.Point(center[0], center[1]), this.option.zoom.value);
             bmap.setMinZoom(this.option.zoom.min);
             bmap.setMaxZoom(this.option.zoom.max);
             if (this.option.zoom.show) {
-                new _mapZoom.MapZoom(bmap);
+                new _mapZoom.MapZoom(bmap, mapDom, this.option.zoom);
             }
 
             this.map = bmap;
@@ -2203,15 +2162,6 @@ var Map = exports.Map = function () {
         key: 'getMap',
         value: function getMap() {
             return this.map;
-        }
-    }, {
-        key: 'crtateContainer',
-        value: function crtateContainer(mapDom) {
-            var parent = mapDom;
-            var div = document.createElement('div');
-            div.classList.add('inmap-container');
-            parent.appendChild(div);
-            return div;
         }
     }, {
         key: 'add',
@@ -2231,7 +2181,7 @@ var Map = exports.Map = function () {
 }();
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2246,11 +2196,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Parameter2 = __webpack_require__(4);
 
-var _Color = __webpack_require__(9);
+var _Color = __webpack_require__(5);
 
 var _util = __webpack_require__(0);
 
-var _BoundaryConfig = __webpack_require__(31);
+var _BoundaryConfig = __webpack_require__(32);
 
 var _BoundaryConfig2 = _interopRequireDefault(_BoundaryConfig);
 
@@ -2285,8 +2235,8 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
     }
 
     _createClass(BoundaryOverlay, [{
-        key: 'TInit',
-        value: function TInit() {
+        key: 'parameterInit',
+        value: function parameterInit() {
             this.initLegend();
         }
     }, {
@@ -2641,7 +2591,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2658,7 +2608,7 @@ var _util = __webpack_require__(0);
 
 var _CanvasOverlay2 = __webpack_require__(2);
 
-var _CircuitConfig = __webpack_require__(32);
+var _CircuitConfig = __webpack_require__(33);
 
 var _CircuitConfig2 = _interopRequireDefault(_CircuitConfig);
 
@@ -2830,7 +2780,7 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2845,17 +2795,17 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _CanvasOverlay = __webpack_require__(2);
 
-var _Label = __webpack_require__(7);
+var _Label = __webpack_require__(8);
 
 var _Parameter2 = __webpack_require__(4);
 
 var _util = __webpack_require__(0);
 
-var _BatchesData = __webpack_require__(44);
+var _BatchesData = __webpack_require__(47);
 
 var _BatchesData2 = _interopRequireDefault(_BatchesData);
 
-var _DotConfig = __webpack_require__(33);
+var _DotConfig = __webpack_require__(34);
 
 var _DotConfig2 = _interopRequireDefault(_DotConfig);
 
@@ -2892,8 +2842,8 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
     }
 
     _createClass(DotOverlay, [{
-        key: 'TInit',
-        value: function TInit() {
+        key: 'parameterInit',
+        value: function parameterInit() {
             this.map.addOverlay(this.mouseLayer);
             if (this.style.colors.length > 0) {
                 this.compileSplitList(this.points);
@@ -2910,7 +2860,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             } else {
                 this.batchesData = null;
             }
-            this.TInit();
+
             this.refresh();
         }
     }, {
@@ -3247,7 +3197,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3263,7 +3213,7 @@ var _CanvasOverlay2 = __webpack_require__(2);
 
 var _util = __webpack_require__(0);
 
-var _FlashDotConfig = __webpack_require__(34);
+var _FlashDotConfig = __webpack_require__(35);
 
 var _FlashDotConfig2 = _interopRequireDefault(_FlashDotConfig);
 
@@ -3327,8 +3277,8 @@ var FlashDotOverlay = function (_CanvasOverlay) {
     }
 
     _createClass(FlashDotOverlay, [{
-        key: 'TInit',
-        value: function TInit() {
+        key: 'canvasInit',
+        value: function canvasInit() {
             this.addMarker();
             var now = void 0;
             var then = Date.now();
@@ -3402,7 +3352,7 @@ var FlashDotOverlay = function (_CanvasOverlay) {
 exports.default = FlashDotOverlay;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3419,7 +3369,7 @@ var _Parameter2 = __webpack_require__(4);
 
 var _util = __webpack_require__(0);
 
-var _GriddingConfig = __webpack_require__(35);
+var _GriddingConfig = __webpack_require__(36);
 
 var _GriddingConfig2 = _interopRequireDefault(_GriddingConfig);
 
@@ -3449,13 +3399,12 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
     }
 
     _createClass(GriddingOverlay, [{
-        key: 'TInit',
-        value: function TInit() {}
+        key: 'parameterInit',
+        value: function parameterInit() {}
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
             this._setStyle(this.baseConfig, ops);
-            this.TInit();
             this.drawMap();
         }
     }, {
@@ -3689,7 +3638,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3706,7 +3655,7 @@ var _CanvasOverlay2 = __webpack_require__(2);
 
 var _util = __webpack_require__(0);
 
-var _HeatConfig = __webpack_require__(36);
+var _HeatConfig = __webpack_require__(37);
 
 var _HeatConfig2 = _interopRequireDefault(_HeatConfig);
 
@@ -3916,7 +3865,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3933,7 +3882,7 @@ var _Parameter2 = __webpack_require__(4);
 
 var _util = __webpack_require__(0);
 
-var _HoneycombConfig = __webpack_require__(37);
+var _HoneycombConfig = __webpack_require__(38);
 
 var _HoneycombConfig2 = _interopRequireDefault(_HoneycombConfig);
 
@@ -3962,15 +3911,15 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
     }
 
     _createClass(HoneycombOverlay, [{
-        key: 'TInit',
-        value: function TInit() {
+        key: 'parameterInit',
+        value: function parameterInit() {
             this.delteOption();
         }
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
             this._setStyle(this.baseConfig, ops);
-            this.TInit();
+            this.parameterInit();
             this.refresh();
         }
     }, {
@@ -4216,7 +4165,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4231,7 +4180,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Parameter2 = __webpack_require__(4);
 
-var _ImgConfig = __webpack_require__(38);
+var _ImgConfig = __webpack_require__(39);
 
 var _ImgConfig2 = _interopRequireDefault(_ImgConfig);
 
@@ -4279,9 +4228,6 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
             this.state = val;
             this.event.onState(this.state);
         }
-    }, {
-        key: 'TInit',
-        value: function TInit() {}
     }, {
         key: 'drawMap',
         value: function drawMap() {
@@ -4494,7 +4440,7 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4511,13 +4457,13 @@ var _CanvasOverlay = __webpack_require__(2);
 
 var _util = __webpack_require__(0);
 
-var _MapStyle = __webpack_require__(6);
+var _MapStyle = __webpack_require__(7);
 
-var _MoveLineConfig = __webpack_require__(40);
+var _MoveLineConfig = __webpack_require__(41);
 
 var _MoveLineConfig2 = _interopRequireDefault(_MoveLineConfig);
 
-var _BaseClass2 = __webpack_require__(11);
+var _BaseClass2 = __webpack_require__(12);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
@@ -4900,7 +4846,6 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
 }(_BaseClass3.default);
 
 /***/ }),
-/* 22 */,
 /* 23 */,
 /* 24 */,
 /* 25 */,
@@ -4908,7 +4853,8 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
 /* 27 */,
 /* 28 */,
 /* 29 */,
-/* 30 */
+/* 30 */,
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4985,7 +4931,7 @@ var WorkerMrg = function () {
 var workerMrg = exports.workerMrg = new WorkerMrg();
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5032,7 +4978,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5055,7 +5001,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5102,7 +5048,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5123,7 +5069,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5179,7 +5125,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5223,7 +5169,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5278,7 +5224,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5325,7 +5271,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5347,7 +5293,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5383,8 +5329,8 @@ exports.default = {
 };
 
 /***/ }),
-/* 41 */,
-/* 42 */
+/* 42 */,
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5395,27 +5341,27 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.FlashDotOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.CircuitOverlay = exports.HeatOverlay = exports.BoundaryOverlay = exports.GriddingOverlay = exports.DotOverlay = exports.Map = exports.utils = exports.version = undefined;
 
-var _DotOverlay = __webpack_require__(15);
+var _DotOverlay = __webpack_require__(16);
 
-var _GriddingOverlay = __webpack_require__(17);
+var _GriddingOverlay = __webpack_require__(18);
 
-var _BoundaryOverlay = __webpack_require__(13);
+var _BoundaryOverlay = __webpack_require__(14);
 
-var _HeatOverlay = __webpack_require__(18);
+var _HeatOverlay = __webpack_require__(19);
 
-var _CircuitOverlay = __webpack_require__(14);
+var _CircuitOverlay = __webpack_require__(15);
 
-var _HoneycombOverlay = __webpack_require__(19);
+var _HoneycombOverlay = __webpack_require__(20);
 
-var _ImgOverlay = __webpack_require__(20);
+var _ImgOverlay = __webpack_require__(21);
 
-var _MoveLineOverlay = __webpack_require__(21);
+var _MoveLineOverlay = __webpack_require__(22);
 
-var _FlashDotOverlay = __webpack_require__(16);
+var _FlashDotOverlay = __webpack_require__(17);
 
 var _FlashDotOverlay2 = _interopRequireDefault(_FlashDotOverlay);
 
-var _index = __webpack_require__(12);
+var _index = __webpack_require__(13);
 
 var _util = __webpack_require__(0);
 
@@ -5457,7 +5403,256 @@ exports.FlashDotOverlay = _FlashDotOverlay2.default;
 exports.default = inMap;
 
 /***/ }),
-/* 43 */
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Color = __webpack_require__(5);
+
+var _util = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Legend = function () {
+    function Legend(toolDom, opts) {
+        _classCallCheck(this, Legend);
+
+        this.opts = opts || {};
+        this.dom = this.crateDom(toolDom);
+        this.hide();
+    }
+
+    _createClass(Legend, [{
+        key: 'crateDom',
+        value: function crateDom(toolDom) {
+            var div = document.createElement('div');
+            div.classList.add('inmap-legend');
+            toolDom.appendChild(div);
+            return div;
+        }
+    }, {
+        key: 'show',
+        value: function show() {
+            this.dom.style.display = 'block';
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            this.dom.style.display = 'none';
+        }
+    }, {
+        key: 'toFixed',
+        value: function toFixed(num) {
+            return isNaN(num) ? num : parseFloat(num).toFixed(this.opts.toFixed);
+        }
+    }, {
+        key: 'setTitle',
+        value: function setTitle(title) {
+            this.opts.title = title;
+            this.render();
+        }
+    }, {
+        key: 'setOption',
+        value: function setOption(opts) {
+            this.opts = (0, _util.merge)(this.opts, opts);
+            this.render();
+        }
+    }, {
+        key: 'setItems',
+        value: function setItems(list) {
+            this.opts.list = list;
+            this.render();
+        }
+    }, {
+        key: '_verify',
+        value: function _verify() {
+            var _opts = this.opts,
+                show = _opts.show,
+                title = _opts.title,
+                list = _opts.list;
+
+            if (!(0, _util.isBoolean)(show)) {
+                throw new TypeError('inMap: legend options show must be a Boolean');
+            }
+            if (!(0, _util.isEmpty)(title) && !(0, _util.isString)(title)) {
+                throw new TypeError('inMap: legend options title must be a String');
+            }
+            if (!(0, _util.isArray)(list)) {
+                throw new TypeError('inMap: legend options list must be a Array');
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this = this;
+
+            this._verify();
+            var _opts2 = this.opts,
+                show = _opts2.show,
+                title = _opts2.title,
+                list = _opts2.list;
+
+            if (show) {
+                this.show();
+            } else {
+                this.hide();
+                return;
+            }
+
+            var str = '';
+            if (title) {
+                str = '<div class="inmap-legend-title">' + title + ' </div>';
+            }
+
+            str += '<table cellpadding="0" cellspacing="0">';
+            list.forEach(function (val, index) {
+                var text = null,
+                    backgroundColor = val.backgroundColor;
+                var legendBg = new _Color.Color(backgroundColor),
+                    difference = 0.2;
+
+                var opacity = val.opacity;
+                if (opacity) {
+                    opacity += difference;
+                }
+                if (legendBg.a) {
+                    opacity = legendBg.a + difference;
+                } else {
+                    opacity = 1;
+                }
+                backgroundColor = legendBg.getRgbaStyle(opacity);
+                if (val.text) {
+                    text = val.text;
+                } else if (_this.opts.formatter) {
+                    text = _this.opts.formatter(_this.toFixed(val.start), _this.toFixed(val.end), index);
+                } else {
+                    text = _this.toFixed(val.start) + ' ~ ' + (val.end == null ? '<span class="inmap-infinity"></span>' : _this.toFixed(val.end));
+                }
+
+                str += '\n                <tr>\n                    <td style="background:' + backgroundColor + '; width:17px;"></td>\n                    <td class="inmap-legend-text">\n                       ' + text + '\n                    </td>\n                </tr>\n                ';
+            });
+            str += '</table>';
+            if (list.length <= 0) {
+                this.hide();
+            }
+            this.dom.innerHTML = str;
+        }
+    }]);
+
+    return Legend;
+}();
+
+exports.default = Legend;
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ToolTip = function () {
+    function ToolTip(toolDom) {
+        _classCallCheck(this, ToolTip);
+
+        this.dom = this.create(toolDom);
+        this.tooltipTemplate = null;
+        this.opts = {};
+        this.hide();
+    }
+
+    _createClass(ToolTip, [{
+        key: 'create',
+        value: function create(toolDom) {
+            var dom = document.createElement('div');
+            dom.classList.add('inmap-tooltip');
+            toolDom.appendChild(dom);
+            return dom;
+        }
+    }, {
+        key: 'compileTooltipTemplate',
+        value: function compileTooltipTemplate(formatter) {
+            formatter = '`' + formatter.replace(/\{/g, '${overItem.') + '`';
+            this.tooltipTemplate = new Function('overItem', 'return ' + formatter);
+        }
+    }, {
+        key: 'show',
+        value: function show(x, y) {
+            var _opts$offsets = this.opts.offsets,
+                left = _opts$offsets.left,
+                top = _opts$offsets.top;
+
+            this.dom.style.left = x + left + 'px';
+            this.dom.style.top = y + top + 'px';
+            this.dom.style.display = 'block';
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            this.dom.style.display = 'none';
+        }
+    }, {
+        key: 'setOption',
+        value: function setOption(opts) {
+            var result = (0, _util.merge)(this.opts, opts);
+            var formatter = result.formatter,
+                customClass = result.customClass;
+
+
+            if ((0, _util.isString)(formatter)) {
+                this.compileTooltipTemplate(result.formatter);
+            }
+
+            if (this.opts.customClass) {
+                this.dom.classList.remove(this.opts.customClass);
+            }
+
+            this.dom.classList.add(customClass);
+            this.opts = result;
+        }
+    }, {
+        key: 'render',
+        value: function render(event, overItem) {
+            if (!this.opts.show) return;
+            if (overItem) {
+                var formatter = this.opts.formatter;
+                if ((0, _util.isFunction)(formatter)) {
+                    this.dom.innerHTML = formatter(overItem);
+                } else if ((0, _util.isString)(formatter)) {
+                    this.dom.innerHTML = this.tooltipTemplate(overItem);
+                }
+                this.show(event.offsetX, event.offsetY);
+            } else {
+                this.hide();
+            }
+        }
+    }]);
+
+    return ToolTip;
+}();
+
+exports.default = ToolTip;
+
+/***/ }),
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5472,12 +5667,12 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var MapZoom = exports.MapZoom = function () {
-    function MapZoom(map) {
+    function MapZoom(map, mapDom, opts) {
         _classCallCheck(this, MapZoom);
 
         this.map = map;
-        this.dom = map._inmapOption.toolDom;
-        this.zoom = map._inmapOption.zoom;
+        this.mapDom = mapDom;
+        this.zoom = opts;
         this.createDom();
     }
 
@@ -5487,7 +5682,7 @@ var MapZoom = exports.MapZoom = function () {
             var div = document.createElement('div');
             div.classList.add('inmap-scale-group');
             div.innerHTML = '<a>+</a > <a>-</a >';
-            this.dom.appendChild(div);
+            this.mapDom.appendChild(div);
             this.event(div);
         }
     }, {
@@ -5515,7 +5710,7 @@ var MapZoom = exports.MapZoom = function () {
 }();
 
 /***/ }),
-/* 44 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5595,11 +5790,11 @@ var BatchesData = function () {
 exports.default = BatchesData;
 
 /***/ }),
-/* 45 */,
-/* 46 */
+/* 48 */,
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(47)();
+exports = module.exports = __webpack_require__(50)();
 // imports
 
 
@@ -5610,7 +5805,7 @@ exports.push([module.i, ".inmap-container {\n  opacity: 1;\n  font-family: Helve
 
 
 /***/ }),
-/* 47 */
+/* 50 */
 /***/ (function(module, exports) {
 
 /*
@@ -5666,7 +5861,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 48 */
+/* 51 */
 /***/ (function(module, exports) {
 
 /*
@@ -5918,16 +6113,16 @@ function updateLink(linkElement, obj) {
 
 
 /***/ }),
-/* 49 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(46);
+var content = __webpack_require__(49);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(48)(content, {});
+var update = __webpack_require__(51)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {

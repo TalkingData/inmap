@@ -36,17 +36,9 @@
 
 </html>
 <script>
-    var inmap = new inMap.Map({
-        id: 'allmap',
-        skin: "Blueness",
-        center: [105.403119, 38.028658],
-        zoom: {
-            value: 5,
-            show: true,
-            max: 18,
-            min: 5
-        },
-    })
+    var map = new BMap.Map("allmap");
+    var point = new BMap.Point(105.403119, 38.028658);
+    map.centerAndZoom(point, 5);
 
 
     var overlay = new inMap.DotOverlay({
@@ -59,7 +51,7 @@
             }
         },
         legend: {
-            show: false,
+            show: true,
             title: "标题",
             formatter: function (start, end, index) {
                 return start + "万~" + (end || "max") + "万";
@@ -85,25 +77,14 @@
                 backgroundColor: 'rgba(184,0,0,1)',
                 borderColor: "rgba(255,255,255,1)"
             },
-            splitList: [{ //设置区间颜色
-                    start: 0,
-                    end: 2,
-                    size: 3,
-                },
-                {
-                    start: 2,
-                    end: 5,
-                    size: 6,
-                },
-                {
-                    start: 5,
-                    end: 7,
-                    size: 9,
-                },
-                {
-                    start: 7,
-                    size: 12,
-                }
+            colors: [
+                "rgba(156,200,249,0.7)",
+                "rgba(93,158,247,0.7)",
+                "rgba(134,207,55,0.7)",
+                "rgba(252,198,10,0.7)",
+                "rgba(255,144,0,0.7)",
+                "rgba(255,72,0,0.7)",
+                "rgba(255,0,0,0.7)"
             ],
         },
         data: data,
@@ -117,5 +98,5 @@
             // }
         }
     });
-    inmap.add(overlay);
+    map.addOverlay(overlay);
 </script>

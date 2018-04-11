@@ -11,13 +11,13 @@ export class HoneycombOverlay extends Parameter {
         super(HoneycombConfig, ops);
         this.state = null;
     }
-    TInit() {
+    parameterInit() {
         this.delteOption();
     }
 
     setOptionStyle(ops) {
         this._setStyle(this.baseConfig, ops);
-        this.TInit();
+        this.parameterInit();
         this.refresh();
     }
     setState(val) {
