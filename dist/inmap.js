@@ -459,7 +459,6 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
     }, {
         key: 'dispose',
         value: function dispose() {
-
             this.map.removeEventListener('resize', this.tOnResize);
             this.map.removeEventListener('moveend', this.tOnMoveend);
             this.map.removeEventListener('zoomstart', this.tOnZoomstart);
@@ -4693,6 +4692,8 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
         _this.baseLayer = null;
         _this.animationLayer = null;
         _this.setOptionStyle(opts);
+        _this.render = _this.render.bind(_this);
+        _this.animationDraw = null;
         return _this;
     }
 
@@ -4732,49 +4733,52 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
             this.animationLayer = new _CanvasOverlay.CanvasOverlay();
             map.addOverlay(this.baseLayer);
             map.addOverlay(this.animationLayer);
-            var markLines = this.markLines,
-                animationLayer = this.animationLayer,
-                styleConfig = this.styleConfig;
 
-            var me = this;
-
-            function render() {
-                var ops = me.styleConfig;
-
-                var animationCtx = animationLayer.ctx;
-                if (!animationCtx) {
-                    return;
-                }
-
-                if (!animationLayer.animationFlag) {
-                    animationLayer.clearCanvas();
-                    return;
-                }
-                animationCtx.fillStyle = 'rgba(0,0,0,0.93)';
-                var prev = animationCtx.globalCompositeOperation;
-                animationCtx.globalCompositeOperation = 'destination-in';
-                var size = map.getSize();
-                animationCtx.fillRect(0, 0, size.width, size.height);
-                animationCtx.globalCompositeOperation = prev;
-
-                for (var i = 0; i < markLines.length; i++) {
-                    var markLine = markLines[i];
-                    markLine.drawMoveCircle(animationCtx, ops, map);
-                }
-            }
             var now = void 0;
             var then = Date.now();
-            var interval = 1000 / styleConfig.fps;
+            var interval = 1000 / this.styleConfig.fps;
             var delta = void 0;
-            (function drawFrame() {
+            var me = this;
+
+            function drawFrame() {
                 requestAnimationFrame(drawFrame);
                 now = Date.now();
                 delta = now - then;
                 if (delta > interval) {
                     then = now - delta % interval;
-                    render();
+                    me.render();
                 }
-            })();
+            }
+            this.animationDraw = drawFrame;
+            this.animationDraw();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var markLines = this.markLines,
+                animationLayer = this.animationLayer,
+                styleConfig = this.styleConfig;
+
+            var animationCtx = animationLayer.ctx;
+            if (!animationCtx) {
+                return;
+            }
+
+            if (!animationLayer.animationFlag) {
+                animationLayer.clearCanvas();
+                return;
+            }
+            animationCtx.fillStyle = 'rgba(0,0,0,0.93)';
+            var prev = animationCtx.globalCompositeOperation;
+            animationCtx.globalCompositeOperation = 'destination-in';
+            var size = this.map.getSize();
+            animationCtx.fillRect(0, 0, size.width, size.height);
+            animationCtx.globalCompositeOperation = prev;
+
+            for (var i = 0; i < markLines.length; i++) {
+                var markLine = markLines[i];
+                markLine.drawMoveCircle(animationCtx, styleConfig, this.map);
+            }
         }
     }, {
         key: 'drawBaseLayer',
@@ -4840,6 +4844,14 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
             this.baseLayer.canvasResize();
             this.animationLayer.canvasResize();
             this.drawBaseLayer();
+        }
+    }, {
+        key: 'dispose',
+        value: function dispose() {
+            window.requestAnimationFrame(this.animationDraw);
+            this.markLines = [];
+            this.map.removeOverlay(this.animationLayer);
+            this.map.removeOverlay(this.baseLayer);
         }
     }]);
 

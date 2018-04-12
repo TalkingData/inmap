@@ -208,6 +208,8 @@ export class MoveLineOverlay extends BaseClass {
         this.baseLayer = null;
         this.animationLayer = null;
         this.setOptionStyle(opts);
+        this.render = this.render.bind(this);
+        this.animationDraw = null;
     }
     setOptionStyle(ops) {
         let option = merge(config, ops);
@@ -240,52 +242,51 @@ export class MoveLineOverlay extends BaseClass {
         this.animationLayer = new CanvasOverlay();
         map.addOverlay(this.baseLayer);
         map.addOverlay(this.animationLayer);
-        let {
-            markLines,
-            animationLayer,
-            styleConfig
-        } = this;
-        let me = this;
 
-        function render() {
-            let ops = me.styleConfig;
-
-            let animationCtx = animationLayer.ctx;
-            if (!animationCtx) {
-                return;
-            }
-
-            if (!animationLayer.animationFlag) {
-                animationLayer.clearCanvas();
-                return;
-            }
-            animationCtx.fillStyle = 'rgba(0,0,0,0.93)';
-            let prev = animationCtx.globalCompositeOperation;
-            animationCtx.globalCompositeOperation = 'destination-in';
-            let size = map.getSize();
-            animationCtx.fillRect(0, 0, size.width, size.height);
-            animationCtx.globalCompositeOperation = prev;
-
-            for (let i = 0; i < markLines.length; i++) {
-                let markLine = markLines[i];
-                markLine.drawMoveCircle(animationCtx, ops, map);
-            }
-
-        }
         let now;
         let then = Date.now();
-        let interval = 1000 / styleConfig.fps;
+        let interval = 1000 / this.styleConfig.fps;
         let delta;
-        (function drawFrame() {
+        let me = this;
+
+        function drawFrame() {
             requestAnimationFrame(drawFrame);
             now = Date.now();
             delta = now - then;
             if (delta > interval) {
                 then = now - (delta % interval);
-                render();
+                me.render();
             }
+        }
+        this.animationDraw = drawFrame;
+        this.animationDraw();
+    }
+    render() {
+        let {
+            markLines,
+            animationLayer,
+            styleConfig
+        } = this;
+        let animationCtx = animationLayer.ctx;
+        if (!animationCtx) {
+            return;
+        }
 
-        }());
+        if (!animationLayer.animationFlag) {
+            animationLayer.clearCanvas();
+            return;
+        }
+        animationCtx.fillStyle = 'rgba(0,0,0,0.93)';
+        let prev = animationCtx.globalCompositeOperation;
+        animationCtx.globalCompositeOperation = 'destination-in';
+        let size = this.map.getSize();
+        animationCtx.fillRect(0, 0, size.width, size.height);
+        animationCtx.globalCompositeOperation = prev;
+
+        for (let i = 0; i < markLines.length; i++) {
+            let markLine = markLines[i];
+            markLine.drawMoveCircle(animationCtx, styleConfig, this.map);
+        }
     }
     drawBaseLayer() {
         let baseCtx = this.baseLayer.ctx;
@@ -305,7 +306,6 @@ export class MoveLineOverlay extends BaseClass {
             line.drawLinePath(baseCtx, styleConfig, map);
         });
         //文字避让
-
     }
     addMarkLine() {
         let {
@@ -347,5 +347,11 @@ export class MoveLineOverlay extends BaseClass {
         this.baseLayer.canvasResize();
         this.animationLayer.canvasResize();
         this.drawBaseLayer();
+    }
+    dispose() {
+        window.requestAnimationFrame(this.animationDraw);
+        this.markLines = [];
+        this.map.removeOverlay(this.animationLayer);
+        this.map.removeOverlay(this.baseLayer);
     }
 }

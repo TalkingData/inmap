@@ -150,7 +150,6 @@ export class CanvasOverlay extends BaseClass {
      * 对象销毁
      */
     dispose() {
-
         this.map.removeEventListener('resize', this.tOnResize);
         this.map.removeEventListener('moveend', this.tOnMoveend);
         this.map.removeEventListener('zoomstart', this.tOnZoomstart);
@@ -167,7 +166,7 @@ export class CanvasOverlay extends BaseClass {
             this.toolTip.hide();
             this.toolTip = null;
         }
-        
+
         this.Tclear();
         this.Tdispose();
         this.map.removeOverlay(this);
