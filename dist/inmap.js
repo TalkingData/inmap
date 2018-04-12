@@ -3429,6 +3429,15 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             this.drawMap();
         }
     }, {
+        key: 'getMpp',
+        value: function getMpp() {
+            var mapCenter = this.map.getCenter();
+            var assistValue = 10;
+            var cpt = new BMap.Point(mapCenter.lng, mapCenter.lat + assistValue);
+            var dpx = Math.abs(this.map.pointToPixel(mapCenter).y - this.map.pointToPixel(cpt).y);
+            return this.map.getDistance(mapCenter, cpt) / dpx;
+        }
+    }, {
         key: 'drawMap',
         value: function drawMap() {
             var _this2 = this;
@@ -3438,20 +3447,36 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                 type = _styleConfig.type;
 
             var zoom = this.map.getZoom();
+            var mapCenter = this.map.getCenter();
+            var mapSize = this.map.getSize();
+
             var zoomUnit = Math.pow(2, 18 - zoom);
             var mercatorProjection = this.map.getMapType().getProjection();
-            var mcCenter = mercatorProjection.lngLatToPoint(this.map.getCenter());
-            var size = normal.size * zoomUnit;
-            var nwMcX = mcCenter.x - this.map.getSize().width / 2 * zoomUnit;
-            var nwMc = new BMap.Pixel(nwMcX, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
+            var mcCenter = mercatorProjection.lngLatToPoint(mapCenter);
+
+            var nwMcX = mcCenter.x - mapSize.width / 2 * zoomUnit;
+            var nwMc = new BMap.Pixel(nwMcX, mcCenter.y + mapSize.height / 2 * zoomUnit);
+            var size = 0;
+            if (normal.unit == 'px') {
+                size = normal.size * zoomUnit;
+            } else if (normal.unit == 'm') {
+                var mpp = this.getMpp();
+                if (mpp == 0 || isNaN(mpp)) {
+                    return;
+                }
+                size = normal.size / mpp * zoomUnit;
+            } else {
+                throw new TypeError('inMap: style.normal.unit must be is "meters" or "px" .');
+            }
+
             var params = {
                 points: this.points,
                 size: size,
                 type: type,
                 nwMc: nwMc,
                 zoomUnit: zoomUnit,
-                mapSize: this.map.getSize(),
-                mapCenter: this.map.getCenter(),
+                mapSize: mapSize,
+                mapCenter: mapCenter,
                 zoom: zoom
             };
             this.setState(_OnState2.default.computeBefore);
@@ -5107,6 +5132,7 @@ exports.default = {
     },
     style: {
         type: 'sum',
+        unit: 'px',
         colors: ['rgba(31,98,1,1)', 'rgba(95,154,4,1)', 'rgba(139,227,7,1)', 'rgba(218,134,9,1)', 'rgba(220,54,6,1)', 'rgba(218,2,8,1)', 'rgba(148,1,2,1)', 'rgba(92,1,0,1)'],
         normal: {
             backgroundColor: 'rgba(200, 200, 200, 0.5)',

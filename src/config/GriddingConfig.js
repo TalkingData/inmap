@@ -14,6 +14,7 @@ export default {
     },
     style: {
         type: 'sum', //sum avg
+        unit: 'px',
         colors: ['rgba(31,98,1,1)',
             'rgba(95,154,4,1)',
             'rgba(139,227,7,1)',
@@ -48,7 +49,6 @@ export default {
     data: [],
     event: {
         multiSelect: false,
-        onState() {
-        }
+        onState() {}
     }
 };
