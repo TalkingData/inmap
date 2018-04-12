@@ -22,8 +22,8 @@ export class HeatOverlay extends CanvasOverlay {
     _setStyle(config, ops) {
         ops = ops || {};
         let option = merge(config, ops);
-        this.style = option.style;
-        this.event = option.event;
+        this.styleConfig = option.style;
+        this.eventConfig = option.event;
         this.gradient = option.style.gradient;
         this.points = ops.data ? option.data : this.points;
         this.tMapStyle(option.skin);
@@ -36,16 +36,16 @@ export class HeatOverlay extends CanvasOverlay {
     }
     setState(val) {
         this.state = val;
-        this.event.onState(this.state);
+        this.eventConfig.onState(this.state);
     }
     /**
      * 屏蔽参数
      */
     delteOption() {
-        this.tooltip = {
+        this.tooltipConfig = {
             show: false
         };
-        this.legend = {
+        this.legendConfig = {
             show: false
         };
     }
@@ -57,7 +57,7 @@ export class HeatOverlay extends CanvasOverlay {
         this.drawMap();
     }
     getMax() {
-        let normal = this.style.normal;
+        let normal = this.styleConfig.normal;
         normal.maxValue = 0;
         for (let i = 0, len = this.points.length; i < len; i++) {
             if (this.points[i].count > normal.maxValue) {
@@ -87,7 +87,7 @@ export class HeatOverlay extends CanvasOverlay {
         });
     }
     refresh() {
-        let normal = this.style.normal;
+        let normal = this.styleConfig.normal;
         let container = this.container;
         if (normal.maxValue == 0) {
             this.getMax();

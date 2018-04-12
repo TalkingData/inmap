@@ -16,7 +16,7 @@ export class CircuitOverlay extends CanvasOverlay {
     constructor(ops) {
         super(ops);
         this.points = [];
-        this.style = {};
+        this.styleConfig = {};
         this._setStyle(CircuitConfig, ops);
         this._isCoordinates = false;
         this.state = null;
@@ -24,13 +24,13 @@ export class CircuitOverlay extends CanvasOverlay {
     _setStyle(config, ops) {
         let option = merge(config, ops);
         this.points = ops.data ? option.data : this.points;
-        this.style = option.style;
-        this.event = option.event;
+        this.styleConfig = option.style;
+        this.eventConfig = option.event;
         this.tMapStyle(option.skin);
     }
     setState(val) {
         this.state = val;
-        this.event.onState(this.state);
+        this.eventConfig.onState(this.state);
     }
     resize() {
         this.drawMap();
@@ -116,7 +116,7 @@ export class CircuitOverlay extends CanvasOverlay {
 
     drawLine(data) {
 
-        let normal = this.style.normal;
+        let normal = this.styleConfig.normal;
         this.ctx.shadowBlur = 0;
         this.ctx.shadowOffsetX = 0;
         this.ctx.shadowOffsetY = 0;

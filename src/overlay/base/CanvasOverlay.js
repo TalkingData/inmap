@@ -44,11 +44,12 @@ export class CanvasOverlay extends BaseClass {
         map.addEventListener('zoomend', me.tOnZoomend);
         map.addEventListener('mousemove', me.tMousemove);
         map.addEventListener('click', me.tMouseClick);
-        if (map.inmapToolBar) {
-            this.ToolBar = map.inmapToolBar;
-        } else {
-            this.ToolBar = map.inmapToolBar = new Toolbar(map.Va);
+        if (!map.inmapToolBar) {
+            map.inmapToolBar = new Toolbar(map.Va);
         }
+        this.legend = map.inmapToolBar.legend;
+        this.toolTip = map.inmapToolBar.toolTip;
+
         this.canvasInit();
         return this.container;
 
@@ -157,9 +158,16 @@ export class CanvasOverlay extends BaseClass {
         this.map.removeEventListener('moving', this.tOnMoving);
         this.map.removeEventListener('mousemove', this.tMousemove);
         this.map.removeEventListener('click', this.tMouseClick);
-        this.ToolBar.legend.hide();
-        this.ToolBar.toolTip.hide();
-        this.ToolBar = null;
+
+        if (this.legend) {
+            this.legend.hide();
+            this.legend = null;
+        }
+        if (this.toolTip) {
+            this.toolTip.hide();
+            this.toolTip = null;
+        }
+        
         this.Tclear();
         this.Tdispose();
         this.map.removeOverlay(this);

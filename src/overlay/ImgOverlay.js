@@ -25,7 +25,7 @@ export class ImgOverlay extends Parameter {
     }
     setState(val) {
         this.state = val;
-        this.event.onState(this.state);
+        this.eventConfig.onState(this.state);
     }
    
     drawMap() {
@@ -171,12 +171,12 @@ export class ImgOverlay extends Parameter {
      * @param {*} item 
      */
     setDrawStyle(item) {
-        let normal = this.style.normal; //正常样式
+        let normal = this.styleConfig.normal; //正常样式
         let result = {};
         Object.assign(result, normal);
         //区间样式
 
-        let splitList = this.style.splitList;
+        let splitList = this.styleConfig.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];
             if (condition.end == null) {

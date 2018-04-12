@@ -31,17 +31,17 @@ export class Parameter extends CanvasOverlay {
         let option = merge(config, ops);
         this.toRgba(option.style);
         this._option = option;
-        this.tooltip = option.tooltip;
-        this.legend = option.legend;
-        this.event = option.event;
-        this.style = option.style;
+        this.tooltipConfig = option.tooltip;
+        this.legendConfig = option.legend;
+        this.eventConfig = option.event;
+        this.styleConfig = option.style;
         this.points = ops.data ? option.data : this.points;
         this.tMapStyle(option.skin);
-        this.ToolBar && this.ToolBar.toolTip.setOption(option.tooltip);
+        this.toolTip && this.toolTip.setOption(this.tooltipConfig);
 
     }
     canvasInit() {
-        this.ToolBar.toolTip.setOption(this.tooltip);
+        this.toolTip.setOption(this.tooltipConfig);
         this.parameterInit();
     }
 
@@ -57,23 +57,21 @@ export class Parameter extends CanvasOverlay {
      * @memberof Parameter
      */
     setOptionStyle() {}
-    toRgba(style) {
-
+    toRgba(styleConfig) {
         ['normal', 'mouseOver', 'selected'].forEach((status) => {
-            let statusStyle = style[status];
+            let statusStyle = styleConfig[status];
             if (statusStyle) {
                 ['backgroundColor', 'borderColor', 'shadowColor'].forEach((item) => {
                     let val = statusStyle[item];
                     if (val && val.indexOf('rgba') == -1) {
-                        style[status][item] = (new Color(val)).getRgbaStyle();
+                        styleConfig[status][item] = (new Color(val)).getRgbaStyle();
                     }
                 });
 
 
             }
         });
-
-        style.colors && style.colors.forEach((val, index, arr) => {
+        styleConfig.colors && styleConfig.colors.forEach((val, index, arr) => {
             if (val.indexOf('rgba') == -1) {
                 arr[index] = (new Color(val)).getRgbaStyle();
             }
@@ -84,13 +82,13 @@ export class Parameter extends CanvasOverlay {
      * @param {*} item 
      */
     setDrawStyle(item) {
-        let normal = this.style.normal, //正常样式
-            mouseOverStyle = this.style.mouseOver, //悬浮样式
-            selectedStyle = this.style.selected; //选中样式
+        let normal = this.styleConfig.normal, //正常样式
+            mouseOverStyle = this.styleConfig.mouseOver, //悬浮样式
+            selectedStyle = this.styleConfig.selected; //选中样式
         let result = {};
         result = merge(result, normal);
         //区间样式
-        let splitList = this.style.splitList;
+        let splitList = this.styleConfig.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];
             if (i == splitList.length - 1) {
@@ -185,7 +183,7 @@ export class Parameter extends CanvasOverlay {
      * 设置悬浮信息
      */
     setTooltip(event) {
-        this.ToolBar.toolTip.render(event, this.overItem);
+        this.toolTip.render(event, this.overItem);
     }
 
     Tclear() {
@@ -197,13 +195,10 @@ export class Parameter extends CanvasOverlay {
     /**
      * 设置图例
      */
-    setlegend(legend, list) {
+    setlegend(legendConfig, list) {
         if (!this.map) return;
-        legend['list'] = list;
-        this.ToolBar.legend.setOption(legend);
-    }
-    toFixed(num) {
-        return isNaN(num) ? num : parseFloat(num).toFixed(this.legend.toFixed);
+        legendConfig['list'] = list;
+        this.legend.setOption(legendConfig);
     }
     /*eslint-disable */
     /**
@@ -230,13 +225,13 @@ export class Parameter extends CanvasOverlay {
         }
     }
     tMouseleave() {
-        this.ToolBar.tooltip.hide();
+        this.tooltip.hide();
     }
     tMousemove(event) {
         if (this.eventType == 'onmoving') {
             return;
         }
-        if (!this.tooltip.show && isEmpty(this.style.mouseOver)) {
+        if (!this.tooltipConfig.show && isEmpty(this.styleConfig.mouseOver)) {
             return;
         }
 
@@ -249,7 +244,7 @@ export class Parameter extends CanvasOverlay {
                 this.swopData(result.index, result.item);
             }
             this.eventType = 'mousemove';
-            if (!isEmpty(this.style.mouseOver)) {
+            if (!isEmpty(this.styleConfig.mouseOver)) {
                 this.refresh();
             }
         }
@@ -266,7 +261,7 @@ export class Parameter extends CanvasOverlay {
         if (this.eventType == 'onmoving') return;
         let {
             multiSelect
-        } = this.event;
+        } = this.eventConfig;
         let result = this.getTarget(event.pixel.x, event.pixel.y);
         if (result.index == -1) {
             return;
@@ -285,7 +280,7 @@ export class Parameter extends CanvasOverlay {
         }
 
         this.swopData(result.index, item);
-        this.event.onMouseClick(this.selectItem, event);
+        this.eventConfig.onMouseClick(this.selectItem, event);
 
         this.refresh();
         if (isMobile) {

@@ -338,11 +338,12 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
             map.addEventListener('zoomend', me.tOnZoomend);
             map.addEventListener('mousemove', me.tMousemove);
             map.addEventListener('click', me.tMouseClick);
-            if (map.inmapToolBar) {
-                this.ToolBar = map.inmapToolBar;
-            } else {
-                this.ToolBar = map.inmapToolBar = new _Toolbar2.default(map.Va);
+            if (!map.inmapToolBar) {
+                map.inmapToolBar = new _Toolbar2.default(map.Va);
             }
+            this.legend = map.inmapToolBar.legend;
+            this.toolTip = map.inmapToolBar.toolTip;
+
             this.canvasInit();
             return this.container;
         }
@@ -466,9 +467,16 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
             this.map.removeEventListener('moving', this.tOnMoving);
             this.map.removeEventListener('mousemove', this.tMousemove);
             this.map.removeEventListener('click', this.tMouseClick);
-            this.ToolBar.legend.hide();
-            this.ToolBar.toolTip.hide();
-            this.ToolBar = null;
+
+            if (this.legend) {
+                this.legend.hide();
+                this.legend = null;
+            }
+            if (this.toolTip) {
+                this.toolTip.hide();
+                this.toolTip = null;
+            }
+
             this.Tclear();
             this.Tdispose();
             this.map.removeOverlay(this);
@@ -531,18 +539,18 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
             var option = (0, _util.merge)(config, ops);
             this.toRgba(option.style);
             this._option = option;
-            this.tooltip = option.tooltip;
-            this.legend = option.legend;
-            this.event = option.event;
-            this.style = option.style;
+            this.tooltipConfig = option.tooltip;
+            this.legendConfig = option.legend;
+            this.eventConfig = option.event;
+            this.styleConfig = option.style;
             this.points = ops.data ? option.data : this.points;
             this.tMapStyle(option.skin);
-            this.ToolBar && this.ToolBar.toolTip.setOption(option.tooltip);
+            this.toolTip && this.toolTip.setOption(this.tooltipConfig);
         }
     }, {
         key: 'canvasInit',
         value: function canvasInit() {
-            this.ToolBar.toolTip.setOption(this.tooltip);
+            this.toolTip.setOption(this.tooltipConfig);
             this.parameterInit();
         }
     }, {
@@ -553,21 +561,19 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
         value: function setOptionStyle() {}
     }, {
         key: 'toRgba',
-        value: function toRgba(style) {
-
+        value: function toRgba(styleConfig) {
             ['normal', 'mouseOver', 'selected'].forEach(function (status) {
-                var statusStyle = style[status];
+                var statusStyle = styleConfig[status];
                 if (statusStyle) {
                     ['backgroundColor', 'borderColor', 'shadowColor'].forEach(function (item) {
                         var val = statusStyle[item];
                         if (val && val.indexOf('rgba') == -1) {
-                            style[status][item] = new _Color.Color(val).getRgbaStyle();
+                            styleConfig[status][item] = new _Color.Color(val).getRgbaStyle();
                         }
                     });
                 }
             });
-
-            style.colors && style.colors.forEach(function (val, index, arr) {
+            styleConfig.colors && styleConfig.colors.forEach(function (val, index, arr) {
                 if (val.indexOf('rgba') == -1) {
                     arr[index] = new _Color.Color(val).getRgbaStyle();
                 }
@@ -576,13 +582,13 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
     }, {
         key: 'setDrawStyle',
         value: function setDrawStyle(item) {
-            var normal = this.style.normal,
-                mouseOverStyle = this.style.mouseOver,
-                selectedStyle = this.style.selected;
+            var normal = this.styleConfig.normal,
+                mouseOverStyle = this.styleConfig.mouseOver,
+                selectedStyle = this.styleConfig.selected;
             var result = {};
             result = (0, _util.merge)(result, normal);
 
-            var splitList = this.style.splitList;
+            var splitList = this.styleConfig.splitList;
             for (var i = 0; i < splitList.length; i++) {
                 var condition = splitList[i];
                 if (i == splitList.length - 1) {
@@ -671,22 +677,17 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
     }, {
         key: 'setTooltip',
         value: function setTooltip(event) {
-            this.ToolBar.toolTip.render(event, this.overItem);
+            this.toolTip.render(event, this.overItem);
         }
     }, {
         key: 'Tclear',
         value: function Tclear() {}
     }, {
         key: 'setlegend',
-        value: function setlegend(legend, list) {
+        value: function setlegend(legendConfig, list) {
             if (!this.map) return;
-            legend['list'] = list;
-            this.ToolBar.legend.setOption(legend);
-        }
-    }, {
-        key: 'toFixed',
-        value: function toFixed(num) {
-            return isNaN(num) ? num : parseFloat(num).toFixed(this.legend.toFixed);
+            legendConfig['list'] = list;
+            this.legend.setOption(legendConfig);
         }
     }, {
         key: 'getTarget',
@@ -710,7 +711,7 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
     }, {
         key: 'tMouseleave',
         value: function tMouseleave() {
-            this.ToolBar.tooltip.hide();
+            this.tooltip.hide();
         }
     }, {
         key: 'tMousemove',
@@ -718,7 +719,7 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
             if (this.eventType == 'onmoving') {
                 return;
             }
-            if (!this.tooltip.show && (0, _util.isEmpty)(this.style.mouseOver)) {
+            if (!this.tooltipConfig.show && (0, _util.isEmpty)(this.styleConfig.mouseOver)) {
                 return;
             }
 
@@ -731,7 +732,7 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
                     this.swopData(result.index, result.item);
                 }
                 this.eventType = 'mousemove';
-                if (!(0, _util.isEmpty)(this.style.mouseOver)) {
+                if (!(0, _util.isEmpty)(this.styleConfig.mouseOver)) {
                     this.refresh();
                 }
             }
@@ -747,7 +748,7 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
         key: 'tMouseClick',
         value: function tMouseClick(event) {
             if (this.eventType == 'onmoving') return;
-            var multiSelect = this.event.multiSelect;
+            var multiSelect = this.eventConfig.multiSelect;
 
             var result = this.getTarget(event.pixel.x, event.pixel.y);
             if (result.index == -1) {
@@ -766,7 +767,7 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
             }
 
             this.swopData(result.index, item);
-            this.event.onMouseClick(this.selectItem, event);
+            this.eventConfig.onMouseClick(this.selectItem, event);
 
             this.refresh();
             if (isMobile) {
@@ -2242,9 +2243,9 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
     }, {
         key: 'initLegend',
         value: function initLegend() {
-            this.compileSplitList(this.style.colors, this.points);
+            this.compileSplitList(this.styleConfig.colors, this.points);
             this.patchSplitList();
-            this.setlegend(this.legend, this.style.splitList);
+            this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
     }, {
         key: 'setOptionStyle',
@@ -2257,7 +2258,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
         key: 'setState',
         value: function setState(val) {
             this.state = val;
-            this.event.onState(this.state);
+            this.eventConfig.onState(this.state);
         }
     }, {
         key: 'compileSplitList',
@@ -2300,16 +2301,16 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
                 });
             }
 
-            this.style.splitList = split;
+            this.styleConfig.splitList = split;
         }
     }, {
         key: 'patchSplitList',
         value: function patchSplitList() {
-            var normal = this.style.normal;
+            var normal = this.styleConfig.normal;
             if (normal.borderWidth != null && normal.borderColor == null) {
                 normal.borderColor = new _Color.Color(normal.backgroundColor).getRgbaStyle();
             }
-            var splitList = this.style.splitList;
+            var splitList = this.styleConfig.splitList;
             for (var i = 0; i < splitList.length; i++) {
                 var condition = splitList[i];
                 if ((condition.borderWidth != null || normal.borderColor != null) && condition.borderColor == null) {
@@ -2633,7 +2634,7 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
         var _this = _possibleConstructorReturn(this, (CircuitOverlay.__proto__ || Object.getPrototypeOf(CircuitOverlay)).call(this, ops));
 
         _this.points = [];
-        _this.style = {};
+        _this.styleConfig = {};
         _this._setStyle(_CircuitConfig2.default, ops);
         _this._isCoordinates = false;
         _this.state = null;
@@ -2645,15 +2646,15 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
         value: function _setStyle(config, ops) {
             var option = (0, _util.merge)(config, ops);
             this.points = ops.data ? option.data : this.points;
-            this.style = option.style;
-            this.event = option.event;
+            this.styleConfig = option.style;
+            this.eventConfig = option.event;
             this.tMapStyle(option.skin);
         }
     }, {
         key: 'setState',
         value: function setState(val) {
             this.state = val;
-            this.event.onState(this.state);
+            this.eventConfig.onState(this.state);
         }
     }, {
         key: 'resize',
@@ -2751,7 +2752,7 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
         key: 'drawLine',
         value: function drawLine(data) {
 
-            var normal = this.style.normal;
+            var normal = this.styleConfig.normal;
             this.ctx.shadowBlur = 0;
             this.ctx.shadowOffsetX = 0;
             this.ctx.shadowOffsetY = 0;
@@ -2845,10 +2846,10 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
         key: 'parameterInit',
         value: function parameterInit() {
             this.map.addOverlay(this.mouseLayer);
-            if (this.style.colors.length > 0) {
+            if (this.styleConfig.colors.length > 0) {
                 this.compileSplitList(this.points);
             } else {
-                this.setlegend(this.legend, this.style.splitList);
+                this.setlegend(this.legendConfig, this.styleConfig.splitList);
             }
         }
     }, {
@@ -2867,7 +2868,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
         key: 'setState',
         value: function setState(val) {
             this.state = val;
-            this.event.onState(this.state);
+            this.eventConfig.onState(this.state);
         }
     }, {
         key: 'resize',
@@ -2890,8 +2891,8 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             var path = this.polyme ? 'PolymeOverlay.mergePoint' : 'HeatOverlay.pointsToPixels';
             var data = this.polyme ? {
                 points: this.points,
-                mergeCount: this.style.normal.mergeCount,
-                size: this.style.normal.size
+                mergeCount: this.styleConfig.normal.mergeCount,
+                size: this.styleConfig.normal.size
             } : this.points;
             this.setState(_OnState2.default.computeBefore);
             this.postMessage(path, data, function (pixels) {
@@ -2939,7 +2940,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             }
             this.cancerSelectd();
             this.points = points;
-            if (this.style.colors.length > 0) {
+            if (this.styleConfig.colors.length > 0) {
                 this.compileSplitList(this.points);
             }
             this.drawMap();
@@ -2947,7 +2948,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
     }, {
         key: 'compileSplitList',
         value: function compileSplitList(data) {
-            var colors = this.style.colors;
+            var colors = this.styleConfig.colors;
             if (colors.length <= 0) return;
             data = data.sort(function (a, b) {
                 return parseFloat(a.count) - parseFloat(b.count);
@@ -2985,8 +2986,8 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
                 });
             }
 
-            this.style.splitList = split;
-            this.setlegend(this.legend, this.style.splitList);
+            this.styleConfig.splitList = split;
+            this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
     }, {
         key: 'getTarget',
@@ -2996,7 +2997,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var _item = pixels[i];
                 var pixel = _item.pixel;
-                var style = this.polyme ? this.style.normal : this.setDrawStyle(_item);
+                var style = this.polyme ? this.styleConfig.normal : this.setDrawStyle(_item);
                 ctx.beginPath();
                 ctx.arc(pixel.x, pixel.y, style.size, 0, 2 * Math.PI, true);
                 ctx.lineWidth = style.borderWidth;
@@ -3034,7 +3035,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             } else {
                 this._loopDraw(this.ctx, this.workerData);
             }
-            if (this.style.normal.label.show) {
+            if (this.styleConfig.normal.label.show) {
                 this._drawLabel(this.ctx, this.workerData);
             }
             this.drawMouseLayer();
@@ -3042,7 +3043,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
     }, {
         key: 'swopData',
         value: function swopData(index, item) {
-            if (index > -1 && !this.style.normal.label.show) {
+            if (index > -1 && !this.styleConfig.normal.label.show) {
                 this.workerData[index] = this.workerData[this.workerData.length - 1];
                 this.workerData[this.workerData.length - 1] = item;
             }
@@ -3054,7 +3055,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var _item2 = pixels[i];
                 var pixel = _item2.pixel;
-                var style = this.polyme ? this.style.normal : this.setDrawStyle(_item2);
+                var style = this.polyme ? this.styleConfig.normal : this.setDrawStyle(_item2);
                 if (style.shadowBlur) {
                     ctx.shadowBlur = style.shadowBlur;
                 }
@@ -3074,7 +3075,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
         value: function _drawLabel(ctx, pixels) {
             var _this4 = this;
 
-            var fontStyle = this.style.normal.label;
+            var fontStyle = this.styleConfig.normal.label;
             var fontSize = parseInt(fontStyle.font);
             ctx.font = fontStyle.font;
             ctx.textBaseline = 'top';
@@ -3082,7 +3083,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             var byteWidth = ctx.measureText('a').width;
 
             var labels = pixels.map(function (val) {
-                var radius = val.pixel.radius + _this4.style.normal.borderWidth;
+                var radius = val.pixel.radius + _this4.styleConfig.normal.borderWidth;
                 return new _Label.Label(val.pixel.x, val.pixel.y, radius, fontSize, byteWidth, val.name);
             });
 
@@ -3140,7 +3141,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             if (this.eventType == 'onmoving') {
                 return;
             }
-            if (!this.tooltip.show && (0, _util.isEmpty)(this.style.mouseOver)) {
+            if (!this.tooltipConfig.show && (0, _util.isEmpty)(this.styleConfig.mouseOver)) {
                 return;
             }
             var result = this.getTarget(event.pixel.x, event.pixel.y);
@@ -3149,7 +3150,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             if (temp != this.overItem) {
                 this.overItem = temp;
                 this.eventType = 'mousemove';
-                if (!(0, _util.isEmpty)(this.style.mouseOver)) {
+                if (!(0, _util.isEmpty)(this.styleConfig.mouseOver)) {
                     this.drawMouseLayer();
                 }
             }
@@ -3165,7 +3166,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
         key: 'tMouseClick',
         value: function tMouseClick(event) {
             if (this.eventType == 'onmoving') return;
-            var multiSelect = this.event.multiSelect;
+            var multiSelect = this.eventConfig.multiSelect;
 
             var result = this.getTarget(event.pixel.x, event.pixel.y);
             if (result.index == -1) {
@@ -3183,7 +3184,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
                 this.selectItem = [result.item];
             }
 
-            this.event.onMouseClick(this.selectItem, event);
+            this.eventConfig.onMouseClick(this.selectItem, event);
 
             if (isMobile) {
                 this.overItem = [item];
@@ -3269,7 +3270,7 @@ var FlashDotOverlay = function (_CanvasOverlay) {
         var _this = _possibleConstructorReturn(this, (FlashDotOverlay.__proto__ || Object.getPrototypeOf(FlashDotOverlay)).call(this));
 
         _this.data = [];
-        _this.style = null;
+        _this.styleConfig = null;
         _this.markers = [];
         _this.render = _this.render.bind(_this);
         _this.setOptionStyle(ops);
@@ -3299,7 +3300,7 @@ var FlashDotOverlay = function (_CanvasOverlay) {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
             var option = (0, _util.merge)(_FlashDotConfig2.default, ops);
-            this.style = option.style.normal;
+            this.styleConfig = option.style.normal;
             this.data = ops.data ? option.data : this.data;
             this.tMapStyle(option.skin);
             this.map && this.addMarker();
@@ -3309,7 +3310,7 @@ var FlashDotOverlay = function (_CanvasOverlay) {
         value: function addMarker() {
             this.markers = [];
             for (var i = 0; i < this.data.length; i++) {
-                var item = (0, _util.merge)(this.style, this.data[i]);
+                var item = (0, _util.merge)(this.styleConfig, this.data[i]);
                 this.markers.push(new Marker(item, this.map));
             }
         }
@@ -3411,12 +3412,12 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
         key: 'setState',
         value: function setState(val) {
             this.state = val;
-            this.event.onState(this.state);
+            this.eventConfig.onState(this.state);
         }
     }, {
         key: 'delteOption',
         value: function delteOption() {
-            this.style['selected'] = null;
+            this.styleConfig['selected'] = null;
         }
     }, {
         key: 'refresh',
@@ -3433,9 +3434,9 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
         value: function drawMap() {
             var _this2 = this;
 
-            var _style = this.style,
-                normal = _style.normal,
-                type = _style.type;
+            var _styleConfig = this.styleConfig,
+                normal = _styleConfig.normal,
+                type = _styleConfig.type;
 
             var zoom = this.map.getZoom();
             var zoomUnit = Math.pow(2, 18 - zoom);
@@ -3500,7 +3501,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             var grids = data.grids || [];
             var gridStep = size / zoomUnit;
 
-            var style = this.style.normal;
+            var style = this.styleConfig.normal;
             var width = gridStep - style.borderWidth;
             for (var i = 0; i < grids.length; i++) {
                 var item = grids[i];
@@ -3532,7 +3533,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
         key: 'compileSplitList',
         value: function compileSplitList(data) {
 
-            var colors = this.style.colors;
+            var colors = this.styleConfig.colors;
             if (colors.length < 0 || data.length <= 0) return;
             data = data.sort(function (a, b) {
                 return parseFloat(a.count) - parseFloat(b.count);
@@ -3570,8 +3571,8 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                 });
             }
 
-            this.style.splitList = split;
-            this.setlegend(this.legend, this.style.splitList);
+            this.styleConfig.splitList = split;
+            this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
     }, {
         key: 'createColorSplit',
@@ -3588,7 +3589,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                 }
             }
 
-            if (this.style.colors.length > 0) {
+            if (this.styleConfig.colors.length > 0) {
                 this.compileSplitList(data);
             }
         }
@@ -3615,7 +3616,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             this.workerData.grids = [];
             var gridStep = size / zoomUnit;
 
-            var style = this.style.normal;
+            var style = this.styleConfig.normal;
             for (var i in grids) {
                 var sp = i.split('_');
                 var x = sp[0];
@@ -3696,8 +3697,8 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
         value: function _setStyle(config, ops) {
             ops = ops || {};
             var option = (0, _util.merge)(config, ops);
-            this.style = option.style;
-            this.event = option.event;
+            this.styleConfig = option.style;
+            this.eventConfig = option.event;
             this.gradient = option.style.gradient;
             this.points = ops.data ? option.data : this.points;
             this.tMapStyle(option.skin);
@@ -3713,15 +3714,15 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
         key: 'setState',
         value: function setState(val) {
             this.state = val;
-            this.event.onState(this.state);
+            this.eventConfig.onState(this.state);
         }
     }, {
         key: 'delteOption',
         value: function delteOption() {
-            this.tooltip = {
+            this.tooltipConfig = {
                 show: false
             };
-            this.legend = {
+            this.legendConfig = {
                 show: false
             };
         }
@@ -3737,7 +3738,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
     }, {
         key: 'getMax',
         value: function getMax() {
-            var normal = this.style.normal;
+            var normal = this.styleConfig.normal;
             normal.maxValue = 0;
             for (var i = 0, len = this.points.length; i < len; i++) {
                 if (this.points[i].count > normal.maxValue) {
@@ -3771,7 +3772,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
     }, {
         key: 'refresh',
         value: function refresh() {
-            var normal = this.style.normal;
+            var normal = this.styleConfig.normal;
             var container = this.container;
             if (normal.maxValue == 0) {
                 this.getMax();
@@ -3926,12 +3927,12 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
         key: 'setState',
         value: function setState(val) {
             this.state = val;
-            this.event.onState(this.state);
+            this.eventConfig.onState(this.state);
         }
     }, {
         key: 'delteOption',
         value: function delteOption() {
-            this.style['selected'] = null;
+            this.styleConfig['selected'] = null;
         }
     }, {
         key: 'refresh',
@@ -3957,9 +3958,9 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
         value: function drawMap() {
             var _this2 = this;
 
-            var _style = this.style,
-                normal = _style.normal,
-                type = _style.type;
+            var _styleConfig = this.styleConfig,
+                normal = _styleConfig.normal,
+                type = _styleConfig.type;
 
             var zoom = this.map.getZoom();
             var zoomUnit = Math.pow(2, 18 - zoom);
@@ -4023,7 +4024,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
                 }
             }
 
-            if (this.style.colors.length > 0) {
+            if (this.styleConfig.colors.length > 0) {
                 this.compileSplitList(data);
             }
         }
@@ -4031,7 +4032,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
         key: 'compileSplitList',
         value: function compileSplitList(data) {
 
-            var colors = this.style.colors;
+            var colors = this.styleConfig.colors;
             if (colors.length < 0 || data.length <= 0) return;
             data = data.sort(function (a, b) {
                 return parseFloat(a.count) - parseFloat(b.count);
@@ -4069,8 +4070,8 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
                 });
             }
 
-            this.style.splitList = split;
-            this.setlegend(this.legend, this.style.splitList);
+            this.styleConfig.splitList = split;
+            this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
     }, {
         key: 'getColor',
@@ -4097,7 +4098,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             var grids = data.grids || [];
             var gridStep = size / zoomUnit;
 
-            var style = this.style.normal;
+            var style = this.styleConfig.normal;
             var width = gridStep - style.borderWidth;
             for (var i = 0; i < grids.length; i++) {
                 var item = grids[i];
@@ -4134,7 +4135,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
 
             this.workerData.grids = [];
             var gridsW = size / zoomUnit;
-            var style = this.style.normal;
+            var style = this.styleConfig.normal;
             for (var i in grids) {
                 var x = grids[i].x;
                 var y = grids[i].y;
@@ -4226,7 +4227,7 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
         key: 'setState',
         value: function setState(val) {
             this.state = val;
-            this.event.onState(this.state);
+            this.eventConfig.onState(this.state);
         }
     }, {
         key: 'drawMap',
@@ -4384,12 +4385,12 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
     }, {
         key: 'setDrawStyle',
         value: function setDrawStyle(item) {
-            var normal = this.style.normal;
+            var normal = this.styleConfig.normal;
             var result = {};
             Object.assign(result, normal);
 
 
-            var splitList = this.style.splitList;
+            var splitList = this.styleConfig.splitList;
             for (var i = 0; i < splitList.length; i++) {
                 var condition = splitList[i];
                 if (condition.end == null) {
@@ -4479,7 +4480,7 @@ var Marker = function () {
     function Marker(opts) {
         _classCallCheck(this, Marker);
 
-        this.style = {
+        this.styleConfig = {
             markerColor: opts.markerColor || opts.color,
             markerRadius: opts.markerRadius,
             fontColor: opts.color
@@ -4495,10 +4496,10 @@ var Marker = function () {
                 x = _map$pointToPixel.x,
                 y = _map$pointToPixel.y;
 
-            var _style = this.style,
-                markerColor = _style.markerColor,
-                markerRadius = _style.markerRadius,
-                fontColor = _style.fontColor;
+            var _styleConfig = this.styleConfig,
+                markerColor = _styleConfig.markerColor,
+                markerRadius = _styleConfig.markerRadius,
+                fontColor = _styleConfig.fontColor;
 
 
             ctx.save();
@@ -4631,20 +4632,20 @@ var MarkLine = function () {
         }
     }, {
         key: 'drawLinePath',
-        value: function drawLinePath(context, style, map) {
+        value: function drawLinePath(context, styleConfig, map) {
             var pointList = this.path = this.getPointList(map.pointToPixel(this.from.point), map.pointToPixel(this.to.point));
             var len = pointList.length;
             context.save();
             context.beginPath();
-            context.lineWidth = style.lineWidth;
-            context.strokeStyle = style.colors[this.id];
+            context.lineWidth = styleConfig.lineWidth;
+            context.strokeStyle = styleConfig.colors[this.id];
 
-            if (!style.lineType || style.lineType == 'solid') {
+            if (!styleConfig.lineType || styleConfig.lineType == 'solid') {
                 context.moveTo(pointList[0][0], pointList[0][1]);
                 for (var i = 0; i < len; i++) {
                     context.lineTo(pointList[i][0], pointList[i][1]);
                 }
-            } else if (style.lineType == 'dashed' || style.lineType == 'dotted') {
+            } else if (styleConfig.lineType == 'dashed' || styleConfig.lineType == 'dotted') {
                 for (var _i2 = 1; _i2 < len; _i2 += 2) {
                     context.moveTo(pointList[_i2 - 1][0], pointList[_i2 - 1][1]);
                     context.lineTo(pointList[_i2][0], pointList[_i2][1]);
@@ -4656,14 +4657,14 @@ var MarkLine = function () {
         }
     }, {
         key: 'drawMoveCircle',
-        value: function drawMoveCircle(context, style, map) {
+        value: function drawMoveCircle(context, styleConfig, map) {
             var pointList = this.path || this.getPointList(map.pointToPixel(this.from.point), map.pointToPixel(this.to.point));
             context.save();
-            context.fillStyle = style.fillColor;
-            context.shadowColor = style.shadowColor;
-            context.shadowBlur = style.shadowBlur;
+            context.fillStyle = styleConfig.fillColor;
+            context.shadowColor = styleConfig.shadowColor;
+            context.shadowBlur = styleConfig.shadowBlur;
             context.beginPath();
-            context.arc(pointList[this.step][0], pointList[this.step][1], style.moveRadius, 0, Math.PI * 2, true);
+            context.arc(pointList[this.step][0], pointList[this.step][1], styleConfig.moveRadius, 0, Math.PI * 2, true);
             context.fill();
             context.closePath();
             context.restore();
@@ -4687,7 +4688,7 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
 
         _this.markLines = [];
         _this.map = null;
-        _this.style = null;
+        _this.styleConfig = null;
         _this.data = opts.data || [];
         _this.baseLayer = null;
         _this.animationLayer = null;
@@ -4699,7 +4700,7 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
             var option = (0, _util.merge)(_MoveLineConfig2.default, ops);
-            this.style = option.style.normal;
+            this.styleConfig = option.style.normal;
             this.data = ops.data ? option.data : this.data;
             this.tMapStyle(option.skin);
             if (this.baseLayer) {
@@ -4733,12 +4734,12 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
             map.addOverlay(this.animationLayer);
             var markLines = this.markLines,
                 animationLayer = this.animationLayer,
-                style = this.style;
+                styleConfig = this.styleConfig;
 
             var me = this;
 
             function render() {
-                var ops = me.style;
+                var ops = me.styleConfig;
 
                 var animationCtx = animationLayer.ctx;
                 if (!animationCtx) {
@@ -4763,7 +4764,7 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
             }
             var now = void 0;
             var then = Date.now();
-            var interval = 1000 / style.fps;
+            var interval = 1000 / styleConfig.fps;
             var delta = void 0;
             (function drawFrame() {
                 requestAnimationFrame(drawFrame);
@@ -4785,19 +4786,19 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
             if (this.markLines.length == 0) {
                 this.addMarkLine();
             }
-            var style = this.style,
+            var styleConfig = this.styleConfig,
                 map = this.map;
 
             this.baseLayer.clearCanvas();
             this.markLines.forEach(function (line) {
                 line.drawMarker(baseCtx, map);
-                line.drawLinePath(baseCtx, style, map);
+                line.drawLinePath(baseCtx, styleConfig, map);
             });
         }
     }, {
         key: 'addMarkLine',
         value: function addMarkLine() {
-            var style = this.style,
+            var styleConfig = this.styleConfig,
                 markLines = this.markLines,
                 data = this.data;
 
@@ -4808,17 +4809,17 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
                     id: i,
                     from: new Marker({
                         name: line.from.city,
-                        markerColor: style.markerColor,
-                        markerRadius: style.markerRadius,
+                        markerColor: styleConfig.markerColor,
+                        markerRadius: styleConfig.markerRadius,
                         point: new BMap.Point(line.from.lnglat[0], line.from.lnglat[1]),
-                        color: style.markerColor || style.colors[i]
+                        color: styleConfig.markerColor || styleConfig.colors[i]
                     }),
                     to: new Marker({
                         name: line.to.city,
-                        markerColor: style.markerColor,
-                        markerRadius: style.markerRadius,
+                        markerColor: styleConfig.markerColor,
+                        markerRadius: styleConfig.markerRadius,
                         point: new BMap.Point(line.to.lnglat[0], line.to.lnglat[1]),
-                        color: style.markerColor || style.colors[i]
+                        color: styleConfig.markerColor || styleConfig.colors[i]
                     })
                 }));
             });

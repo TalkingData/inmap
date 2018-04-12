@@ -27,9 +27,9 @@ export class BoundaryOverlay extends Parameter {
         this.initLegend();
     }
     initLegend() {
-        this.compileSplitList(this.style.colors, this.points);
+        this.compileSplitList(this.styleConfig.colors, this.points);
         this.patchSplitList();
-        this.setlegend(this.legend, this.style.splitList);
+        this.setlegend(this.legendConfig, this.styleConfig.splitList);
     }
 
     setOptionStyle(ops) {
@@ -39,7 +39,7 @@ export class BoundaryOverlay extends Parameter {
     }
     setState(val) {
         this.state = val;
-        this.event.onState(this.state);
+        this.eventConfig.onState(this.state);
     }
 
     /**
@@ -86,15 +86,15 @@ export class BoundaryOverlay extends Parameter {
 
         }
 
-        this.style.splitList = split;
+        this.styleConfig.splitList = split;
 
     }
     patchSplitList() {
-        let normal = this.style.normal;
+        let normal = this.styleConfig.normal;
         if (normal.borderWidth != null && normal.borderColor == null) {
             normal.borderColor = (new Color(normal.backgroundColor)).getRgbaStyle();
         }
-        let splitList = this.style.splitList;
+        let splitList = this.styleConfig.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];
             if ((condition.borderWidth != null || normal.borderColor != null) && condition.borderColor == null) {

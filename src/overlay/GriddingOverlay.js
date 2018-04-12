@@ -21,10 +21,10 @@ export class GriddingOverlay extends Parameter {
     }
     setState(val) {
         this.state = val;
-        this.event.onState(this.state);
+        this.eventConfig.onState(this.state);
     }
     delteOption() {
-        this.style['selected'] = null;
+        this.styleConfig['selected'] = null;
     }
     refresh() {
         this.drawMap();
@@ -37,7 +37,7 @@ export class GriddingOverlay extends Parameter {
         let {
             normal,
             type
-        } = this.style;
+        } = this.styleConfig;
         let zoom = this.map.getZoom();
         let zoomUnit = Math.pow(2, 18 - zoom);
         let mercatorProjection = this.map.getMapType().getProjection();
@@ -101,7 +101,7 @@ export class GriddingOverlay extends Parameter {
         let grids = data.grids || [];
         let gridStep = size / zoomUnit;
 
-        let style = this.style.normal;
+        let style = this.styleConfig.normal;
         let width = gridStep - style.borderWidth;
         for (let i = 0; i < grids.length; i++) {
             let item = grids[i];
@@ -132,7 +132,7 @@ export class GriddingOverlay extends Parameter {
 
     compileSplitList(data) {
 
-        let colors = this.style.colors;
+        let colors = this.styleConfig.colors;
         if (colors.length < 0 || data.length <= 0) return;
         data = data.sort((a, b) => {
             return parseFloat(a.count) - parseFloat(b.count);
@@ -172,8 +172,8 @@ export class GriddingOverlay extends Parameter {
 
         }
 
-        this.style.splitList = split;
-        this.setlegend(this.legend, this.style.splitList);
+        this.styleConfig.splitList = split;
+        this.setlegend(this.legendConfig, this.styleConfig.splitList);
     }
     createColorSplit(grids) {
         let data = [];
@@ -189,7 +189,7 @@ export class GriddingOverlay extends Parameter {
 
         }
 
-        if (this.style.colors.length > 0) {
+        if (this.styleConfig.colors.length > 0) {
             this.compileSplitList(data);
         }
 
@@ -213,7 +213,7 @@ export class GriddingOverlay extends Parameter {
         this.workerData.grids = [];
         let gridStep = size / zoomUnit;
 
-        let style = this.style.normal;
+        let style = this.styleConfig.normal;
         for (let i in grids) {
             let sp = i.split('_');
             let x = sp[0];
