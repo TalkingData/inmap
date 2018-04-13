@@ -1,7 +1,7 @@
 import {
     isString,
     merge,
-    isObject
+    isArray
 } from './../common/util';
 import {
     WhiteLover,
@@ -26,7 +26,7 @@ export class Map {
         let styleJson = null;
         if (isString(skin)) {
             styleJson = skin == 'Blueness' ? Blueness : WhiteLover;
-        } else if (isObject(skin)) {
+        } else if (isArray(skin)) {
             styleJson = skin;
         }
         skin && map && map.setMapStyle({

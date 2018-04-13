@@ -353,7 +353,7 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
             var styleJson = null;
             if ((0, _util.isString)(skin)) {
                 styleJson = skin == 'Blueness' ? _MapStyle.Blueness : _MapStyle.WhiteLover;
-            } else if ((0, _util.isObject)(skin)) {
+            } else if ((0, _util.isArray)(skin)) {
                 styleJson = skin;
             }
             skin && this.map && this.map.setMapStyle({
@@ -2124,7 +2124,7 @@ var Map = exports.Map = function () {
             var styleJson = null;
             if ((0, _util.isString)(skin)) {
                 styleJson = skin == 'Blueness' ? _MapStyle.Blueness : _MapStyle.WhiteLover;
-            } else if ((0, _util.isObject)(skin)) {
+            } else if ((0, _util.isArray)(skin)) {
                 styleJson = skin;
             }
             skin && map && map.setMapStyle({
@@ -4744,7 +4744,7 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
             var styleJson = null;
             if ((0, _util.isString)(skin)) {
                 styleJson = skin == 'Blueness' ? _MapStyle.Blueness : _MapStyle.WhiteLover;
-            } else if ((0, _util.isObject)(skin)) {
+            } else if ((0, _util.isArray)(skin)) {
                 styleJson = skin;
             }
             skin && this.map && this.map.setMapStyle({
@@ -5413,7 +5413,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.5.3";
+var version = "1.5.4";
 console.log('inMap v' + version);
 
 var inMap = {

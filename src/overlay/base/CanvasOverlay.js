@@ -2,7 +2,8 @@ import BaseClass from './BaseClass';
 import {
     setDevicePixelRatio,
     isString,
-    isObject
+    isObject,
+    isArray
 } from './../../common/util';
 import {
     WhiteLover,
@@ -59,7 +60,7 @@ export class CanvasOverlay extends BaseClass {
         let styleJson = null;
         if (isString(skin)) {
             styleJson = skin == 'Blueness' ? Blueness : WhiteLover;
-        } else if (isObject(skin)) {
+        } else if (isArray(skin)) {
             styleJson = skin;
         }
         skin && this.map && this.map.setMapStyle({
