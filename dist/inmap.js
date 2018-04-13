@@ -5558,6 +5558,7 @@ var Legend = function () {
             list.forEach(function (val, index) {
                 var text = null,
                     backgroundColor = val.backgroundColor;
+                var isShow = backgroundColor != null;
                 var legendBg = new _Color.Color(backgroundColor),
                     difference = 0.2;
 
@@ -5578,8 +5579,8 @@ var Legend = function () {
                 } else {
                     text = _this.toFixed(val.start) + ' ~ ' + (val.end == null ? '<span class="inmap-infinity"></span>' : _this.toFixed(val.end));
                 }
-
-                str += '\n                <tr>\n                    <td style="background:' + backgroundColor + '; width:17px;"></td>\n                    <td class="inmap-legend-text">\n                       ' + text + '\n                    </td>\n                </tr>\n                ';
+                var td = isShow ? ' <td style="background:' + backgroundColor + '; width:17px;"></td>' : '';
+                str += '\n                <tr>\n                   ' + td + '\n                    <td class="inmap-legend-text">\n                       ' + text + '\n                    </td>\n                </tr>\n                ';
             });
             str += '</table>';
             if (list.length <= 0) {

@@ -56,7 +56,7 @@ export default class Legend {
         if (!isArray(list)) {
             throw new TypeError('inMap: legend options list must be a Array');
         }
-       
+
 
     }
     render() {
@@ -82,6 +82,7 @@ export default class Legend {
         list.forEach((val, index) => {
             let text = null,
                 backgroundColor = val.backgroundColor;
+            let isShow = backgroundColor != null;
             let legendBg = new Color(backgroundColor),
                 difference = 0.2;
 
@@ -102,10 +103,10 @@ export default class Legend {
             } else {
                 text = `${this.toFixed(val.start)} ~ ${ val.end==null ?'<span class="inmap-infinity"></span>':this.toFixed(val.end)}`;
             }
-
+            let td = isShow ? ` <td style="background:${backgroundColor}; width:17px;"></td>` : '';
             str += `
                 <tr>
-                    <td style="background:${backgroundColor}; width:17px;"></td>
+                   ${td}
                     <td class="inmap-legend-text">
                        ${text}
                     </td>
