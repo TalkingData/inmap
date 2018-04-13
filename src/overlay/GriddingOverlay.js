@@ -238,22 +238,26 @@ export class GriddingOverlay extends Parameter {
     drawRec(size, zoomUnit, grids) {
         this.workerData.grids = [];
         let gridStep = size / zoomUnit;
-
         let style = this.styleConfig.normal;
+        let mapSize = this.map.getSize();
+
         for (let i in grids) {
             let sp = i.split('_');
             let x = sp[0];
             let y = sp[1];
-            let count = grids[i];
-            let color = this.getColor(count);
-            this.ctx.fillStyle = color;
-            this.ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
-            if (count > 0) {
-                this.workerData.grids.push({
-                    pixels: [x, y],
-                    count: count
-                });
+            if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
+                let count = grids[i];
+                let color = this.getColor(count);
+                this.ctx.fillStyle = color;
+                this.ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
+                if (count > 0) {
+                    this.workerData.grids.push({
+                        pixels: [x, y],
+                        count: count
+                    });
+                }
             }
+
         }
     }
 }

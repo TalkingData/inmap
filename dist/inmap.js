@@ -3639,21 +3639,24 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
         value: function drawRec(size, zoomUnit, grids) {
             this.workerData.grids = [];
             var gridStep = size / zoomUnit;
-
             var style = this.styleConfig.normal;
+            var mapSize = this.map.getSize();
+
             for (var i in grids) {
                 var sp = i.split('_');
                 var x = sp[0];
                 var y = sp[1];
-                var count = grids[i];
-                var color = this.getColor(count);
-                this.ctx.fillStyle = color;
-                this.ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
-                if (count > 0) {
-                    this.workerData.grids.push({
-                        pixels: [x, y],
-                        count: count
-                    });
+                if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
+                    var count = grids[i];
+                    var color = this.getColor(count);
+                    this.ctx.fillStyle = color;
+                    this.ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
+                    if (count > 0) {
+                        this.workerData.grids.push({
+                            pixels: [x, y],
+                            count: count
+                        });
+                    }
                 }
             }
         }
