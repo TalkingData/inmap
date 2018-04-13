@@ -2,7 +2,6 @@ import BaseClass from './BaseClass';
 import {
     setDevicePixelRatio,
     isString,
-    isObject,
     isArray
 } from './../../common/util';
 import {

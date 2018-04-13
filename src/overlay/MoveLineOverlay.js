@@ -4,7 +4,6 @@ import {
 import {
     merge,
     isString,
-    isObject,
     isArray
 } from './../common/util';
 import {
