@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 48);
+/******/ 	return __webpack_require__(__webpack_require__.s = 49);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1109,7 +1109,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
   }]);
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(53)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)(module)))
 
 /***/ }),
 /* 4 */,
@@ -2138,7 +2138,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = polylabel;
 
-var _tinyqueue = __webpack_require__(42);
+var _tinyqueue = __webpack_require__(43);
 
 var _tinyqueue2 = _interopRequireDefault(_tinyqueue);
 
@@ -2283,7 +2283,8 @@ function polylabel(polygon) {
 /* 39 */,
 /* 40 */,
 /* 41 */,
-/* 42 */
+/* 42 */,
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2380,12 +2381,12 @@ TinyQueue.prototype = {
 };
 
 /***/ }),
-/* 43 */,
 /* 44 */,
 /* 45 */,
 /* 46 */,
 /* 47 */,
-/* 48 */
+/* 48 */,
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2473,11 +2474,11 @@ var TDpost = exports.TDpost = function TDpost(data, client) {
 var boundaryOverlay = exports.boundaryOverlay = _BoundaryOverlay.BoundaryOverlay;
 
 /***/ }),
-/* 49 */,
 /* 50 */,
 /* 51 */,
 /* 52 */,
-/* 53 */
+/* 53 */,
+/* 54 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {

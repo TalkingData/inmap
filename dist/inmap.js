@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 43);
+/******/ 	return __webpack_require__(__webpack_require__.s = 44);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1923,11 +1923,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Legend = __webpack_require__(44);
+var _Legend = __webpack_require__(45);
 
 var _Legend2 = _interopRequireDefault(_Legend);
 
-var _ToolTip = __webpack_require__(45);
+var _ToolTip = __webpack_require__(46);
 
 var _ToolTip2 = _interopRequireDefault(_ToolTip);
 
@@ -2091,7 +2091,7 @@ var _util = __webpack_require__(0);
 
 var _MapStyle = __webpack_require__(7);
 
-var _mapZoom = __webpack_require__(46);
+var _mapZoom = __webpack_require__(47);
 
 var _Toolbar = __webpack_require__(11);
 
@@ -2101,7 +2101,7 @@ var _InmapConfig = __webpack_require__(40);
 
 var _InmapConfig2 = _interopRequireDefault(_InmapConfig);
 
-__webpack_require__(52);
+__webpack_require__(53);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2801,7 +2801,7 @@ var _Parameter2 = __webpack_require__(4);
 
 var _util = __webpack_require__(0);
 
-var _BatchesData = __webpack_require__(47);
+var _BatchesData = __webpack_require__(48);
 
 var _BatchesData2 = _interopRequireDefault(_BatchesData);
 
@@ -4487,7 +4487,7 @@ var _util = __webpack_require__(0);
 
 var _MapStyle = __webpack_require__(7);
 
-var _MoveLineConfig = __webpack_require__(41);
+var _MoveLineConfig = __webpack_require__(42);
 
 var _MoveLineConfig2 = _interopRequireDefault(_MoveLineConfig);
 
@@ -5345,6 +5345,23 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.default = {
+    show: false,
+    title: null,
+    formatter: null,
+    list: []
+};
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
     style: {
         normal: {
             markerRadius: 3,
@@ -5371,8 +5388,8 @@ exports.default = {
 };
 
 /***/ }),
-/* 42 */,
-/* 43 */
+/* 43 */,
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5445,7 +5462,7 @@ exports.FlashDotOverlay = _FlashDotOverlay2.default;
 exports.default = inMap;
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5459,7 +5476,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Color = __webpack_require__(5);
 
-var _Legend = __webpack_require__(54);
+var _Legend = __webpack_require__(41);
 
 var _Legend2 = _interopRequireDefault(_Legend);
 
@@ -5548,6 +5565,7 @@ var Legend = function () {
                 title = _opts2.title,
                 list = _opts2.list;
 
+
             if (show) {
                 this.show();
             } else {
@@ -5581,7 +5599,7 @@ var Legend = function () {
                 if (val.text) {
                     text = val.text;
                 } else if (_this.opts.formatter) {
-                    text = _this.opts.formatter(_this.toFixed(val.start), _this.toFixed(val.end), index);
+                    text = _this.opts.formatter(_this.toFixed(val.start), _this.toFixed(val.end), index, val);
                 } else {
                     text = _this.toFixed(val.start) + ' ~ ' + (val.end == null ? '<span class="inmap-infinity"></span>' : _this.toFixed(val.end));
                 }
@@ -5602,7 +5620,7 @@ var Legend = function () {
 exports.default = Legend;
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5701,7 +5719,7 @@ var ToolTip = function () {
 exports.default = ToolTip;
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5759,7 +5777,7 @@ var MapZoom = exports.MapZoom = function () {
 }();
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5839,11 +5857,11 @@ var BatchesData = function () {
 exports.default = BatchesData;
 
 /***/ }),
-/* 48 */,
-/* 49 */
+/* 49 */,
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(50)();
+exports = module.exports = __webpack_require__(51)();
 // imports
 
 
@@ -5854,7 +5872,7 @@ exports.push([module.i, ".inmap-container {\n  opacity: 1;\n  font-family: Helve
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports) {
 
 /*
@@ -5910,7 +5928,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports) {
 
 /*
@@ -6162,16 +6180,16 @@ function updateLink(linkElement, obj) {
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(49);
+var content = __webpack_require__(50);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(51)(content, {});
+var update = __webpack_require__(52)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -6186,24 +6204,6 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
-
-/***/ }),
-/* 53 */,
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    show: false,
-    title: null,
-    formatter: null,
-    list: []
-};
 
 /***/ })
 /******/ ]);
