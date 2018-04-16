@@ -50,6 +50,13 @@
     })
 
     var overlay = new inMap.GriddingOverlay({
+        tooltip: {
+            show: true,
+            formatter: function (val) {
+                return val.count;
+            }
+
+        },
         style: {
             type: "sum",
             normal: {
@@ -72,7 +79,11 @@
         event: {
             onState(state) {
                 console.log(state);
+            },
+            onMouseClick(data, event) {
+                console.log(data, event);
             }
+
         }
     });
     map.add(overlay)

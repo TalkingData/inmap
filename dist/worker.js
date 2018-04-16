@@ -1710,7 +1710,8 @@ var GriddingOverlay = exports.GriddingOverlay = {
         for (var _i2 = 0; _i2 < data.length; _i2++) {
             var x = data[_i2].px;
             var y = data[_i2].py;
-            var val = data[_i2].count;
+
+            var item = data[_i2];
 
             for (var _j = 0; _j < stockXA.length; _j++) {
                 var dataX = Number(stockXA[_j]);
@@ -1718,7 +1719,7 @@ var GriddingOverlay = exports.GriddingOverlay = {
                     for (var k = 0; k < stockYA.length; k++) {
                         var dataY = Number(stockYA[k]);
                         if (y >= dataY && y < dataY + gridStep) {
-                            grids[stockXA[_j] + '_' + stockYA[k]].push(val);
+                            grids[stockXA[_j] + '_' + stockYA[k]].push(item);
                         }
                     }
                 }
@@ -1734,17 +1735,22 @@ var GriddingOverlay = exports.GriddingOverlay = {
         };
     },
     valueToAvg: function valueToAvg(grids) {
+
         for (var o in grids) {
             var arr = grids[o],
                 all = 0;
+            var item = {
+                list: [],
+                count: 0
+            };
             if (arr.length > 0) {
+                item.list = arr;
                 for (var i = 0; i < arr.length; i++) {
-                    all += arr[i];
+                    all += arr[i].count;
                 }
-                grids[o] = all / arr.length;
-            } else {
-                grids[o] = 0;
+                item.count = all / arr.length;
             }
+            grids[o] = item;
         }
         return grids;
     },
@@ -1752,14 +1758,19 @@ var GriddingOverlay = exports.GriddingOverlay = {
         for (var o in grids) {
             var arr = grids[o],
                 all = 0;
+
+            var item = {
+                list: [],
+                count: 0
+            };
             if (arr.length > 0) {
+                item.list = arr;
                 for (var i = 0; i < arr.length; i++) {
-                    all += arr[i];
+                    all += arr[i].count;
                 }
-                grids[o] = all;
-            } else {
-                grids[o] = 0;
+                item.count = all;
             }
+            grids[o] = item;
         }
         return grids;
     }

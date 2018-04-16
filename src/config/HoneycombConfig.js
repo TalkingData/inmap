@@ -1,7 +1,6 @@
 export default {
     tooltip: {
         show: true,
-        position: 'top',
         formatter: '{count}',
         offsets: {
             top: 5,

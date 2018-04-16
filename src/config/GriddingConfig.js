@@ -1,7 +1,7 @@
 export default {
     tooltip: {
         show: true,
-        position: 'top',
+        customClass: 'inmap-tooltip-black', //是否自定义样式
         formatter: '{count}',
         offsets: {
             top: 5,
@@ -49,6 +49,7 @@ export default {
     data: [],
     event: {
         multiSelect: false,
+        onMouseClick(){},
         onState() {}
     }
 };

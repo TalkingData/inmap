@@ -10,6 +10,7 @@ export class GriddingOverlay extends Parameter {
     constructor(ops) {
         super(GriddingConfig, ops);
         this.state = null;
+        this._drawSize = 0;
         this.delteOption();
     }
     parameterInit() {
@@ -93,12 +94,7 @@ export class GriddingOverlay extends Parameter {
             //清除
             this.clearCanvas();
             this.canvasResize();
-
-            this.setWorkerData({
-                size: size,
-                zoomUnit: zoomUnit,
-                grids: []
-            });
+            this.workerData = grids;
             this.setState(State.drawBefore);
 
             this.createColorSplit(grids);
@@ -118,38 +114,28 @@ export class GriddingOverlay extends Parameter {
 
         this.drawMap();
     }
+    _isMouseOver(mouseX, mouseY, x, y, w, h) {
+        return !(mouseX < x || mouseX > x + w || mouseY < y || mouseY > y + h);
+    }
     getTarget(x, y) {
 
-        let data = this.workerData;
-        let size = data.size;
-        let zoomUnit = data.zoomUnit;
-
-        let grids = data.grids || [];
-        let gridStep = size / zoomUnit;
-
-        let style = this.styleConfig.normal;
-        let width = gridStep - style.borderWidth;
-        for (let i = 0; i < grids.length; i++) {
+        let grids = this.workerData;
+        let gridStep = this._drawSize;
+        let mapSize = this.map.getSize();
+        for (let i in grids) {
+            let sp = i.split('_');
             let item = grids[i];
-
-            let x1 = parseFloat(item.pixels[0]);
-            let y1 = parseFloat(item.pixels[1]);
-
-            this.ctx.beginPath();
-            this.ctx.moveTo(x1, y1);
-            this.ctx.lineTo(x1 + width, y1);
-            this.ctx.lineTo(x1 + width, y1 + width);
-            this.ctx.lineTo(x1, y1 + width);
-
-            this.ctx.closePath();
-            if (this.ctx.isPointInPath(x, y)) {
-                return {
-                    index: i,
-                    item: item
-                };
+            let x1 = parseFloat(sp[0]);
+            let y1 = parseFloat(sp[1]);
+            if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
+                if (this._isMouseOver(x, y, x1, y1, gridStep, gridStep)) {
+                    return {
+                        index: i,
+                        item: item
+                    };
+                }
             }
         }
-
         return {
             index: -1,
             item: null
@@ -164,7 +150,6 @@ export class GriddingOverlay extends Parameter {
             return parseFloat(a.count) - parseFloat(b.count);
         });
         let mod = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144];
-
 
         let colorMod = mod.slice(0, colors.length).reverse();
         let sunMod = colorMod.reduce((sum, val) => {
@@ -202,10 +187,10 @@ export class GriddingOverlay extends Parameter {
         this.setlegend(this.legendConfig, this.styleConfig.splitList);
     }
     createColorSplit(grids) {
+
         let data = [];
         for (let key in grids) {
-            let count = grids[key];
-
+            let count = grids[key].count;
             if (count > 0) {
                 data.push({
                     name: key,
@@ -223,6 +208,10 @@ export class GriddingOverlay extends Parameter {
     setlegendParams() {
 
     }
+    setTooltip(event) {
+        let item = this.overItem && this.overItem.list.length > 0 ? this.overItem : null;
+        this.toolTip.render(event, item);
+    }
     getColor(count) {
         let color = null;
         if (count == 0) {
@@ -236,8 +225,8 @@ export class GriddingOverlay extends Parameter {
         return color;
     }
     drawRec(size, zoomUnit, grids) {
-        this.workerData.grids = [];
-        let gridStep = size / zoomUnit;
+
+        let gridStep = this._drawSize = size / zoomUnit;
         let style = this.styleConfig.normal;
         let mapSize = this.map.getSize();
 
@@ -246,16 +235,12 @@ export class GriddingOverlay extends Parameter {
             let x = sp[0];
             let y = sp[1];
             if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
-                let count = grids[i];
+                let count = grids[i].count;
+
                 let color = this.getColor(count);
                 this.ctx.fillStyle = color;
                 this.ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
-                if (count > 0) {
-                    this.workerData.grids.push({
-                        pixels: [x, y],
-                        count: count
-                    });
-                }
+
             }
 
         }

@@ -3394,6 +3394,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
         var _this = _possibleConstructorReturn(this, (GriddingOverlay.__proto__ || Object.getPrototypeOf(GriddingOverlay)).call(this, _GriddingConfig2.default, ops));
 
         _this.state = null;
+        _this._drawSize = 0;
         _this.delteOption();
         return _this;
     }
@@ -3490,12 +3491,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
 
                 _this2.clearCanvas();
                 _this2.canvasResize();
-
-                _this2.setWorkerData({
-                    size: size,
-                    zoomUnit: zoomUnit,
-                    grids: []
-                });
+                _this2.workerData = grids;
                 _this2.setState(_OnState2.default.drawBefore);
 
                 _this2.createColorSplit(grids);
@@ -3515,39 +3511,31 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             this.drawMap();
         }
     }, {
+        key: '_isMouseOver',
+        value: function _isMouseOver(mouseX, mouseY, x, y, w, h) {
+            return !(mouseX < x || mouseX > x + w || mouseY < y || mouseY > y + h);
+        }
+    }, {
         key: 'getTarget',
         value: function getTarget(x, y) {
 
-            var data = this.workerData;
-            var size = data.size;
-            var zoomUnit = data.zoomUnit;
-
-            var grids = data.grids || [];
-            var gridStep = size / zoomUnit;
-
-            var style = this.styleConfig.normal;
-            var width = gridStep - style.borderWidth;
-            for (var i = 0; i < grids.length; i++) {
+            var grids = this.workerData;
+            var gridStep = this._drawSize;
+            var mapSize = this.map.getSize();
+            for (var i in grids) {
+                var sp = i.split('_');
                 var item = grids[i];
-
-                var x1 = parseFloat(item.pixels[0]);
-                var y1 = parseFloat(item.pixels[1]);
-
-                this.ctx.beginPath();
-                this.ctx.moveTo(x1, y1);
-                this.ctx.lineTo(x1 + width, y1);
-                this.ctx.lineTo(x1 + width, y1 + width);
-                this.ctx.lineTo(x1, y1 + width);
-
-                this.ctx.closePath();
-                if (this.ctx.isPointInPath(x, y)) {
-                    return {
-                        index: i,
-                        item: item
-                    };
+                var x1 = parseFloat(sp[0]);
+                var y1 = parseFloat(sp[1]);
+                if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
+                    if (this._isMouseOver(x, y, x1, y1, gridStep, gridStep)) {
+                        return {
+                            index: i,
+                            item: item
+                        };
+                    }
                 }
             }
-
             return {
                 index: -1,
                 item: null
@@ -3601,10 +3589,10 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
     }, {
         key: 'createColorSplit',
         value: function createColorSplit(grids) {
+
             var data = [];
             for (var key in grids) {
-                var count = grids[key];
-
+                var count = grids[key].count;
                 if (count > 0) {
                     data.push({
                         name: key,
@@ -3620,6 +3608,12 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
     }, {
         key: 'setlegendParams',
         value: function setlegendParams() {}
+    }, {
+        key: 'setTooltip',
+        value: function setTooltip(event) {
+            var item = this.overItem && this.overItem.list.length > 0 ? this.overItem : null;
+            this.toolTip.render(event, item);
+        }
     }, {
         key: 'getColor',
         value: function getColor(count) {
@@ -3637,8 +3631,8 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
     }, {
         key: 'drawRec',
         value: function drawRec(size, zoomUnit, grids) {
-            this.workerData.grids = [];
-            var gridStep = size / zoomUnit;
+
+            var gridStep = this._drawSize = size / zoomUnit;
             var style = this.styleConfig.normal;
             var mapSize = this.map.getSize();
 
@@ -3647,16 +3641,11 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                 var x = sp[0];
                 var y = sp[1];
                 if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
-                    var count = grids[i];
+                    var count = grids[i].count;
+
                     var color = this.getColor(count);
                     this.ctx.fillStyle = color;
                     this.ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
-                    if (count > 0) {
-                        this.workerData.grids.push({
-                            pixels: [x, y],
-                            count: count
-                        });
-                    }
                 }
             }
         }
@@ -5122,7 +5111,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
     tooltip: {
         show: true,
-        position: 'top',
+        customClass: 'inmap-tooltip-black',
         formatter: '{count}',
         offsets: {
             top: 5,
@@ -5162,6 +5151,7 @@ exports.default = {
     data: [],
     event: {
         multiSelect: false,
+        onMouseClick: function onMouseClick() {},
         onState: function onState() {}
     }
 };
@@ -5223,7 +5213,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
     tooltip: {
         show: true,
-        position: 'top',
         formatter: '{count}',
         offsets: {
             top: 5,
@@ -5278,7 +5267,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
     tooltip: {
         show: true,
-        position: 'top',
         customClass: 'inmap-tooltip-black',
         offsets: {
             top: 5,
@@ -5565,7 +5553,6 @@ var Legend = function () {
                 title = _opts2.title,
                 list = _opts2.list;
 
-
             if (show) {
                 this.show();
             } else {
@@ -5599,7 +5586,7 @@ var Legend = function () {
                 if (val.text) {
                     text = val.text;
                 } else if (_this.opts.formatter) {
-                    text = _this.opts.formatter(_this.toFixed(val.start), _this.toFixed(val.end), index, val);
+                    text = _this.opts.formatter(_this.toFixed(val.start), _this.toFixed(val.end), index);
                 } else {
                     text = _this.toFixed(val.start) + ' ~ ' + (val.end == null ? '<span class="inmap-infinity"></span>' : _this.toFixed(val.end));
                 }
