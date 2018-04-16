@@ -50,6 +50,9 @@
     var overlay = new inMap.HoneycombOverlay({
         tooltip: {
             show: true,
+            // formatter: function (params) {
+            //     return params.count;
+            // }
             formatter: "{count}"
         },
         legend: {
@@ -58,6 +61,7 @@
 
         },
         style: {
+            type: "sum",
             colors: [
                 "rgba(156,200,249,0.7)", "rgba(93,158,247,0.7)",
                 "rgba(134,207,55,0.7)",
@@ -66,8 +70,9 @@
             ],
             normal: {
                 backgroundColor: 'rgba(200, 200, 200, 0.5)',
-                padding: 0,
-                size: 50,
+                padding: 1,
+                size: 300000,
+                unit: 'm', //地理属性单位，米
             },
             mouseOver: {
                 backgroundColor: 'rgba(200, 200, 200, 1)',
@@ -78,29 +83,15 @@
             },
 
         },
-        data: data
+        data: data,
+        event: {
+            onState(state) {
+                console.log(state);
+            },
+            onMouseClick(data, event) {
+                console.log(data, event);
+            }
+        }
     });
     map.add(overlay)
-    setTimeout(() => {
-        overlay.setOptionStyle({
-            style: {
-            colors: [
-                
-            ],
-            normal: {
-                backgroundColor: 'rgba(200, 200, 200, 0.5)',
-                padding: 3,
-                size: 50,
-            },
-            mouseOver: {
-                backgroundColor: 'rgba(200, 200, 200, 1)',
-            },
-            selected: {
-                backgroundColor: 'rgba(184,0,0,1)',
-                borderColor: "rgba(255,255,255,1)"
-            },
-
-        },
-        })
-    }, 2000);
 </script>

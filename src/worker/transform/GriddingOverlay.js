@@ -12,10 +12,10 @@ export let GriddingOverlay = {
             mapSize,
             mapCenter,
             nwMc,
-            map,
             zoom,
             type
         } = webObj.request.data;
+        let map = webObj.request.map;
         GriddingOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
         let gridsObj = GriddingOverlay.recGrids(points, map, nwMc, size, zoomUnit, mapSize, type);
 
@@ -50,7 +50,6 @@ export let GriddingOverlay = {
 
         let grids = {};
         let gridStep = size / zoomUnit;
-
         let startXMc = parseInt(nwMc.x / size, 10) * size;
         let startX = (startXMc - nwMc.x) / zoomUnit;
         let endX = mapSize.width;
@@ -110,7 +109,6 @@ export let GriddingOverlay = {
         for (let i = 0; i < data.length; i++) {
             let x = data[i].px;
             let y = data[i].py;
-            // debugger
             let item = data[i];
 
             for (let j = 0; j < stockXA.length; j++) {

@@ -10,6 +10,7 @@ export class HoneycombOverlay extends Parameter {
     constructor(ops) {
         super(HoneycombConfig, ops);
         this.state = null;
+        this.mpp = {};
     }
     parameterInit() {
         this.delteOption();
@@ -40,27 +41,62 @@ export class HoneycombOverlay extends Parameter {
         this.points = points;
         this.drawMap();
     }
+    _calculateMpp() {
+        let zoom = this.map.getZoom();
+        if (this.mpp[zoom]) {
+            return this.mpp[zoom];
+        } else {
+            this.mpp[zoom] = this.getMpp();
+            return this.mpp[zoom];
+        }
+    }
+    /**
+     * 获得每个像素对应多少米	
+     */
+    getMpp() {
+        let mapCenter = this.map.getCenter();
+        let assistValue = 10;
+        let cpt = new BMap.Point(mapCenter.lng, mapCenter.lat + assistValue);
+        let dpx = Math.abs(this.map.pointToPixel(mapCenter).y - this.map.pointToPixel(cpt).y);
+        return this.map.getDistance(mapCenter, cpt) / dpx;
+    }
     drawMap() {
         let {
             normal,
             type
         } = this.styleConfig;
         let zoom = this.map.getZoom();
+        let mapCenter = this.map.getCenter();
+        let mapSize = this.map.getSize();
+
         let zoomUnit = Math.pow(2, 18 - zoom);
         let mercatorProjection = this.map.getMapType().getProjection();
-        let mcCenter = mercatorProjection.lngLatToPoint(this.map.getCenter());
-        let size = normal.size * zoomUnit;
-        let nwMcX = mcCenter.x - this.map.getSize().width / 2 * zoomUnit;
-        let nwMc = new BMap.Pixel(nwMcX, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
+        let mcCenter = mercatorProjection.lngLatToPoint(mapCenter);
+
+        let nwMcX = mcCenter.x - mapSize.width / 2 * zoomUnit;
+        let nwMc = new BMap.Pixel(nwMcX, mcCenter.y + mapSize.height / 2 * zoomUnit);
+        let size = 0;
+
+        if (normal.unit == 'px') {
+            size = normal.size * zoomUnit;
+        } else if (normal.unit == 'm') {
+            let mpp = this._calculateMpp();
+            if (mpp == 0 || isNaN(mpp)) {
+                return;
+            }
+            size = (normal.size / mpp) * zoomUnit;
+        } else {
+            throw new TypeError('inMap: style.normal.unit must be is "meters" or "px" .');
+        }
 
         let params = {
-            type,
             points: this.points,
             size: size,
+            type: type,
             nwMc: nwMc,
             zoomUnit: zoomUnit,
-            mapSize: this.map.getSize(),
-            mapCenter: this.map.getCenter(),
+            mapSize: mapSize,
+            mapCenter: mapCenter,
             zoom: zoom
         };
         this.setState(State.computeBefore);

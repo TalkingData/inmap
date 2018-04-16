@@ -13,11 +13,10 @@ export let HoneycombOverlay = {
             mapSize,
             mapCenter,
             nwMc,
-            map,
             zoom,
             type
         } = webObj.request.data;
-
+        let map = webObj.request.map;
         HoneycombOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
         let gridsObj = HoneycombOverlay.honeycombGrid(points, map, nwMc, size, zoomUnit, mapSize, type);
 
@@ -49,12 +48,9 @@ export let HoneycombOverlay = {
     },
     honeycombGrid: function (data, map, nwMc, size, zoomUnit, mapSize, type) {
         let grids = {};
-
-        let gridStep = size / zoomUnit;
-
+        let gridStep = Math.round(size / zoomUnit);
         let depthX = gridStep;
         let depthY = gridStep * 3 / 4;
-
         let sizeY = 2 * size * 3 / 4;
         let startYMc = parseInt(nwMc.y / sizeY + 1, 10) * sizeY;
         let startY = (nwMc.y - startYMc) / zoomUnit;
@@ -86,10 +82,10 @@ export let HoneycombOverlay = {
                     maxPointY = row.py;
                 }
             }
-            startX = parseInt(minPointX - 11, 10);
-            startY = parseInt(minPointY - 11, 10);
-            endX = parseInt(maxPointX + 11, 10);
-            endY = parseInt(maxPointY + 11, 10);
+            startX = parseInt(minPointX , 10);
+            startY = parseInt(minPointY , 10);
+            endX = parseInt(maxPointX , 10);
+            endY = parseInt(maxPointY , 10);
         }
         let pointX = startX;
         let pointY = startY;
@@ -129,7 +125,6 @@ export let HoneycombOverlay = {
             if (fixX < startX || fixX > endX || fixY < startY || fixY > endY) {
                 continue;
             }
-
             if (grids[fixX + '|' + fixY]) {
                 grids[fixX + '|' + fixY].count += count;
                 grids[fixX + '|' + fixY].len += 1;
@@ -144,7 +139,7 @@ export let HoneycombOverlay = {
                 }
             }
         }
-        
+
         return {
             grids: grids,
         };

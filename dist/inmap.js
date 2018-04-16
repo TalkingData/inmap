@@ -3924,6 +3924,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
         var _this = _possibleConstructorReturn(this, (HoneycombOverlay.__proto__ || Object.getPrototypeOf(HoneycombOverlay)).call(this, _HoneycombConfig2.default, ops));
 
         _this.state = null;
+        _this.mpp = {};
         return _this;
     }
 
@@ -3970,6 +3971,26 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             this.drawMap();
         }
     }, {
+        key: '_calculateMpp',
+        value: function _calculateMpp() {
+            var zoom = this.map.getZoom();
+            if (this.mpp[zoom]) {
+                return this.mpp[zoom];
+            } else {
+                this.mpp[zoom] = this.getMpp();
+                return this.mpp[zoom];
+            }
+        }
+    }, {
+        key: 'getMpp',
+        value: function getMpp() {
+            var mapCenter = this.map.getCenter();
+            var assistValue = 10;
+            var cpt = new BMap.Point(mapCenter.lng, mapCenter.lat + assistValue);
+            var dpx = Math.abs(this.map.pointToPixel(mapCenter).y - this.map.pointToPixel(cpt).y);
+            return this.map.getDistance(mapCenter, cpt) / dpx;
+        }
+    }, {
         key: 'drawMap',
         value: function drawMap() {
             var _this2 = this;
@@ -3979,21 +4000,37 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
                 type = _styleConfig.type;
 
             var zoom = this.map.getZoom();
+            var mapCenter = this.map.getCenter();
+            var mapSize = this.map.getSize();
+
             var zoomUnit = Math.pow(2, 18 - zoom);
             var mercatorProjection = this.map.getMapType().getProjection();
-            var mcCenter = mercatorProjection.lngLatToPoint(this.map.getCenter());
-            var size = normal.size * zoomUnit;
-            var nwMcX = mcCenter.x - this.map.getSize().width / 2 * zoomUnit;
-            var nwMc = new BMap.Pixel(nwMcX, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
+            var mcCenter = mercatorProjection.lngLatToPoint(mapCenter);
+
+            var nwMcX = mcCenter.x - mapSize.width / 2 * zoomUnit;
+            var nwMc = new BMap.Pixel(nwMcX, mcCenter.y + mapSize.height / 2 * zoomUnit);
+            var size = 0;
+
+            if (normal.unit == 'px') {
+                size = normal.size * zoomUnit;
+            } else if (normal.unit == 'm') {
+                var mpp = this._calculateMpp();
+                if (mpp == 0 || isNaN(mpp)) {
+                    return;
+                }
+                size = normal.size / mpp * zoomUnit;
+            } else {
+                throw new TypeError('inMap: style.normal.unit must be is "meters" or "px" .');
+            }
 
             var params = {
-                type: type,
                 points: this.points,
                 size: size,
+                type: type,
                 nwMc: nwMc,
                 zoomUnit: zoomUnit,
-                mapSize: this.map.getSize(),
-                mapCenter: this.map.getCenter(),
+                mapSize: mapSize,
+                mapCenter: mapCenter,
                 zoom: zoom
             };
             this.setState(_OnState2.default.computeBefore);
@@ -5213,6 +5250,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
     tooltip: {
         show: true,
+        customClass: 'inmap-tooltip-black',
         formatter: '{count}',
         offsets: {
             top: 5,
@@ -5229,6 +5267,7 @@ exports.default = {
             backgroundColor: 'rgba(200, 200, 200, 0.5)',
             padding: 1,
             size: 50,
+            unit: 'px',
             label: {
                 show: false,
                 font: '12px sans-serif',
@@ -5250,6 +5289,7 @@ exports.default = {
     data: [],
     event: {
         multiSelect: false,
+        onMouseClick: function onMouseClick() {},
         onState: function onState() {}
     }
 };
@@ -5282,7 +5322,6 @@ exports.default = {
             icon: null,
             width: 0,
             height: 0,
-
             offsets: {
                 top: 0,
                 left: 0

@@ -1615,10 +1615,10 @@ var GriddingOverlay = exports.GriddingOverlay = {
             mapSize = _webObj$request$data.mapSize,
             mapCenter = _webObj$request$data.mapCenter,
             nwMc = _webObj$request$data.nwMc,
-            map = _webObj$request$data.map,
             zoom = _webObj$request$data.zoom,
             type = _webObj$request$data.type;
 
+        var map = webObj.request.map;
         GriddingOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
         var gridsObj = GriddingOverlay.recGrids(points, map, nwMc, size, zoomUnit, mapSize, type);
 
@@ -1650,7 +1650,6 @@ var GriddingOverlay = exports.GriddingOverlay = {
 
         var grids = {};
         var gridStep = size / zoomUnit;
-
         var startXMc = parseInt(nwMc.x / size, 10) * size;
         var startX = (startXMc - nwMc.x) / zoomUnit;
         var endX = mapSize.width;
@@ -1710,7 +1709,6 @@ var GriddingOverlay = exports.GriddingOverlay = {
         for (var _i2 = 0; _i2 < data.length; _i2++) {
             var x = data[_i2].px;
             var y = data[_i2].py;
-
             var item = data[_i2];
 
             for (var _j = 0; _j < stockXA.length; _j++) {
@@ -1847,11 +1845,10 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
             mapSize = _webObj$request$data.mapSize,
             mapCenter = _webObj$request$data.mapCenter,
             nwMc = _webObj$request$data.nwMc,
-            map = _webObj$request$data.map,
             zoom = _webObj$request$data.zoom,
             type = _webObj$request$data.type;
 
-
+        var map = webObj.request.map;
         HoneycombOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
         var gridsObj = HoneycombOverlay.honeycombGrid(points, map, nwMc, size, zoomUnit, mapSize, type);
 
@@ -1881,12 +1878,9 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
     },
     honeycombGrid: function honeycombGrid(data, map, nwMc, size, zoomUnit, mapSize, type) {
         var grids = {};
-
-        var gridStep = size / zoomUnit;
-
+        var gridStep = Math.round(size / zoomUnit);
         var depthX = gridStep;
         var depthY = gridStep * 3 / 4;
-
         var sizeY = 2 * size * 3 / 4;
         var startYMc = parseInt(nwMc.y / sizeY + 1, 10) * sizeY;
         var startY = (nwMc.y - startYMc) / zoomUnit;
@@ -1918,10 +1912,10 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
                     maxPointY = row.py;
                 }
             }
-            startX = parseInt(minPointX - 11, 10);
-            startY = parseInt(minPointY - 11, 10);
-            endX = parseInt(maxPointX + 11, 10);
-            endY = parseInt(maxPointY + 11, 10);
+            startX = parseInt(minPointX, 10);
+            startY = parseInt(minPointY, 10);
+            endX = parseInt(maxPointX, 10);
+            endY = parseInt(maxPointY, 10);
         }
         var pointX = startX;
         var pointY = startY;
@@ -1961,7 +1955,6 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
             if (fixX < startX || fixX > endX || fixY < startY || fixY > endY) {
                 continue;
             }
-
             if (grids[fixX + '|' + fixY]) {
                 grids[fixX + '|' + fixY].count += count;
                 grids[fixX + '|' + fixY].len += 1;

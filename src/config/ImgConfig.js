@@ -16,7 +16,6 @@ export default {
             icon: null,
             width: 0,
             height: 0,
-
             offsets: {
                 top: 0,
                 left: 0
