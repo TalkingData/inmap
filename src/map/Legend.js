@@ -1,6 +1,7 @@
 import {
     Color
 } from './../common/Color';
+import config from './../config/Legend';
 import {
     isArray,
     isString,
@@ -10,7 +11,7 @@ import {
 } from './../common/util';
 export default class Legend {
     constructor(toolDom, opts) {
-        this.opts = opts || {};
+        this.opts = opts || config;
         this.dom = this.crateDom(toolDom);
         this.hide();
     }
@@ -34,7 +35,7 @@ export default class Legend {
         this.render();
     }
     setOption(opts) {
-        this.opts = merge(this.opts, opts);
+        this.opts = merge(config, this.opts, opts);
         this.render();
     }
     setItems(list) {

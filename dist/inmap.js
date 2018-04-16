@@ -5459,7 +5459,13 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Color = __webpack_require__(5);
 
+var _Legend = __webpack_require__(54);
+
+var _Legend2 = _interopRequireDefault(_Legend);
+
 var _util = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -5467,7 +5473,7 @@ var Legend = function () {
     function Legend(toolDom, opts) {
         _classCallCheck(this, Legend);
 
-        this.opts = opts || {};
+        this.opts = opts || _Legend2.default;
         this.dom = this.crateDom(toolDom);
         this.hide();
     }
@@ -5504,7 +5510,7 @@ var Legend = function () {
     }, {
         key: 'setOption',
         value: function setOption(opts) {
-            this.opts = (0, _util.merge)(this.opts, opts);
+            this.opts = (0, _util.merge)(_Legend2.default, this.opts, opts);
             this.render();
         }
     }, {
@@ -6180,6 +6186,24 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+/* 53 */,
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    show: false,
+    title: null,
+    formatter: null,
+    list: []
+};
 
 /***/ })
 /******/ ]);
