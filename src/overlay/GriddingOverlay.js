@@ -11,6 +11,7 @@ export class GriddingOverlay extends Parameter {
         super(GriddingConfig, ops);
         this.state = null;
         this._drawSize = 0;
+        this.mpp = {};
         this.delteOption();
     }
     parameterInit() {
@@ -32,6 +33,15 @@ export class GriddingOverlay extends Parameter {
     }
     resize() {
         this.drawMap();
+    }
+    _calculateMpp() {
+        let zoom = this.map.getZoom();
+        if (this.mpp[zoom]) {
+            return this.mpp[zoom];
+        } else {
+            this.mpp[zoom] = this.getMpp();
+            return this.mpp[zoom];
+        }
     }
     /**
      * 获得每个像素对应多少米	
@@ -63,7 +73,7 @@ export class GriddingOverlay extends Parameter {
         if (normal.unit == 'px') {
             size = normal.size * zoomUnit;
         } else if (normal.unit == 'm') {
-            let mpp = this.getMpp();
+            let mpp = this._calculateMpp();
             if (mpp == 0 || isNaN(mpp)) {
                 return;
             }
@@ -83,7 +93,6 @@ export class GriddingOverlay extends Parameter {
             zoom: zoom
         };
         this.setState(State.computeBefore);
-
         this.postMessage('GriddingOverlay.toRecGrids', params, (gridsObj) => {
             if (this.eventType == 'onmoving') {
                 return;

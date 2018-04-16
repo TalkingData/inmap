@@ -37,12 +37,11 @@ export default {
             },
         },
         mouseOver: {
-            backgroundColor: 'rgba(200, 200, 200, 1)',
+           
 
         },
         selected: {
-            backgroundColor: 'rgba(184,0,0,1)',
-            borderColor: 'rgba(255,255,255,1)'
+          
         },
 
     },

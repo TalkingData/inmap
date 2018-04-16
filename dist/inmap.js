@@ -3395,6 +3395,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
 
         _this.state = null;
         _this._drawSize = 0;
+        _this.mpp = {};
         _this.delteOption();
         return _this;
     }
@@ -3430,6 +3431,17 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             this.drawMap();
         }
     }, {
+        key: '_calculateMpp',
+        value: function _calculateMpp() {
+            var zoom = this.map.getZoom();
+            if (this.mpp[zoom]) {
+                return this.mpp[zoom];
+            } else {
+                this.mpp[zoom] = this.getMpp();
+                return this.mpp[zoom];
+            }
+        }
+    }, {
         key: 'getMpp',
         value: function getMpp() {
             var mapCenter = this.map.getCenter();
@@ -3461,7 +3473,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             if (normal.unit == 'px') {
                 size = normal.size * zoomUnit;
             } else if (normal.unit == 'm') {
-                var mpp = this.getMpp();
+                var mpp = this._calculateMpp();
                 if (mpp == 0 || isNaN(mpp)) {
                     return;
                 }
@@ -3481,7 +3493,6 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                 zoom: zoom
             };
             this.setState(_OnState2.default.computeBefore);
-
             this.postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj) {
                 if (_this2.eventType == 'onmoving') {
                     return;
@@ -5175,14 +5186,8 @@ exports.default = {
                 color: 'rgba(75,80,86,1)'
             }
         },
-        mouseOver: {
-            backgroundColor: 'rgba(200, 200, 200, 1)'
-
-        },
-        selected: {
-            backgroundColor: 'rgba(184,0,0,1)',
-            borderColor: 'rgba(255,255,255,1)'
-        }
+        mouseOver: {},
+        selected: {}
 
     },
     data: [],
@@ -5276,14 +5281,8 @@ exports.default = {
                 color: 'rgba(75,80,86,1)'
             }
         },
-        mouseOver: {
-            backgroundColor: 'rgba(200, 200, 200, 1)'
-
-        },
-        selected: {
-            backgroundColor: 'rgba(184,0,0,1)',
-            borderColor: 'rgba(255,255,255,1)'
-        }
+        mouseOver: {},
+        selected: {}
 
     },
     data: [],
