@@ -66,11 +66,12 @@
             ],
             normal: {
                 backgroundColor: 'rgba(200, 200, 200, 0.5)',
-                padding: 0,
+                padding: 3,
                 size: 50,
             },
             mouseOver: {
-                backgroundColor: 'rgba(200, 200, 200, 1)',
+                shadowColor: 'rgba(255, 250, 255, 1)',
+                shadowBlur: 20,
             },
             selected: {
                 backgroundColor: 'rgba(184,0,0,1)',
@@ -83,24 +84,22 @@
     map.add(overlay)
     setTimeout(() => {
         overlay.setOptionStyle({
+            skin: "Blueness",
             style: {
-            colors: [
-                
-            ],
-            normal: {
-                backgroundColor: 'rgba(200, 200, 200, 0.5)',
-                padding: 3,
-                size: 50,
-            },
-            mouseOver: {
-                backgroundColor: 'rgba(200, 200, 200, 1)',
-            },
-            selected: {
-                backgroundColor: 'rgba(184,0,0,1)',
-                borderColor: "rgba(255,255,255,1)"
-            },
+                normal: {
+                    backgroundColor: 'rgba(200, 200, 200, 0.5)',
+                    padding: 3,
+                    size: 50,
+                },
+                mouseOver: {
+                    shadowColor: 'rgba(255, 250, 255, 1)',
+                    shadowBlur: 20,
+                },
+                selected: {
 
-        },
+                },
+
+            },
         })
     }, 2000);
 </script>

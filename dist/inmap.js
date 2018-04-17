@@ -3946,14 +3946,13 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
 
     _createClass(HoneycombOverlay, [{
         key: 'parameterInit',
-        value: function parameterInit() {
-            this.delteOption();
-        }
+        value: function parameterInit() {}
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
             this._setStyle(this.baseConfig, ops);
             this.parameterInit();
+            this.createColorSplit();
             this.refresh();
         }
     }, {
@@ -3961,11 +3960,6 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
         value: function setState(val) {
             this.state = val;
             this.eventConfig.onState(this.state);
-        }
-    }, {
-        key: 'delteOption',
-        value: function delteOption() {
-            this.styleConfig['selected'] = null;
         }
     }, {
         key: 'refresh',
@@ -4065,15 +4059,16 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
                 _this2._drawSize = size / zoomUnit;
 
                 _this2.setState(_OnState2.default.drawBefore);
-                _this2.createColorSplit(grids);
+                _this2.createColorSplit();
                 _this2.drawRec();
                 _this2.setState(_OnState2.default.drawAfter);
             });
         }
     }, {
         key: 'createColorSplit',
-        value: function createColorSplit(grids) {
-            var data = [];
+        value: function createColorSplit() {
+            var data = [],
+                grids = this.workerData;
             for (var key in grids) {
                 var count = grids[key].count;
 
@@ -4132,6 +4127,18 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
 
             this.styleConfig.splitList = split;
             this.setlegend(this.legendConfig, this.styleConfig.splitList);
+        }
+    }, {
+        key: 'findIndexSelectItem',
+        value: function findIndexSelectItem(item) {
+            var index = -1;
+            if (item) {
+
+                index = this.selectItem.findIndex(function (val) {
+                    return val && val.x == item.x && val.y == item.y;
+                });
+            }
+            return index;
         }
     }, {
         key: 'getStyle',

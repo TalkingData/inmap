@@ -14,21 +14,19 @@ export class HoneycombOverlay extends Parameter {
         this._drawSize = 0;
     }
     parameterInit() {
-        this.delteOption();
+        
     }
-
     setOptionStyle(ops) {
         this._setStyle(this.baseConfig, ops);
         this.parameterInit();
+        this.createColorSplit();
         this.refresh();
     }
     setState(val) {
         this.state = val;
         this.eventConfig.onState(this.state);
     }
-    delteOption() {
-        this.styleConfig['selected'] = null;
-    }
+    
     refresh() {
         this.drawRec();
     }
@@ -118,14 +116,15 @@ export class HoneycombOverlay extends Parameter {
             this._drawSize = size / zoomUnit;
 
             this.setState(State.drawBefore);
-            this.createColorSplit(grids);
+            this.createColorSplit();
             this.drawRec();
             this.setState(State.drawAfter);
 
         });
     }
-    createColorSplit(grids) {
-        let data = [];
+    createColorSplit() {
+        let data = [],
+            grids = this.workerData;
         for (let key in grids) {
             let count = grids[key].count;
 
@@ -186,6 +185,16 @@ export class HoneycombOverlay extends Parameter {
 
         this.styleConfig.splitList = split;
         this.setlegend(this.legendConfig, this.styleConfig.splitList);
+    }
+    findIndexSelectItem(item) {
+        let index = -1;
+        if (item) {
+           
+            index = this.selectItem.findIndex(function (val) {
+                return val && val.x == item.x && val.y == item.y;
+            });
+        }
+        return index;
     }
     getStyle(item) {
         if (item.count == 0) {
