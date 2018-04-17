@@ -16,6 +16,9 @@ export function typeOf(obj) {
     };
     return map[toString.call(obj)];
 }
+export function isNumber(num) {
+    return typeOf(num) == 'number';
+}
 export function isBoolean(obj) {
     return typeOf(obj) == 'boolean';
 }

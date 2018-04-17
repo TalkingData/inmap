@@ -91,6 +91,7 @@ exports.chunk = exports.extend = exports.isPromiseLike = exports.isEmpty = undef
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.typeOf = typeOf;
+exports.isNumber = isNumber;
 exports.isBoolean = isBoolean;
 exports.isFunction = isFunction;
 exports.isString = isString;
@@ -124,6 +125,9 @@ function typeOf(obj) {
         '[object Object]': 'object'
     };
     return map[toString.call(obj)];
+}
+function isNumber(num) {
+    return typeOf(num) == 'number';
 }
 function isBoolean(obj) {
     return typeOf(obj) == 'boolean';
@@ -702,7 +706,7 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
     }, {
         key: 'swopData',
         value: function swopData(index, item) {
-            if (index > -1) {
+            if ((0, _util.isNumber)(index) && index > -1) {
                 this.workerData[index] = this.workerData[this.workerData.length - 1];
                 this.workerData[this.workerData.length - 1] = item;
             }
@@ -3936,6 +3940,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
 
         _this.state = null;
         _this.mpp = {};
+        _this._drawSize = 0;
         return _this;
     }
 
@@ -3965,7 +3970,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
     }, {
         key: 'refresh',
         value: function refresh() {
-            this.drawMap();
+            this.drawRec();
         }
     }, {
         key: 'resize',
@@ -4052,24 +4057,16 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
                 }
                 _this2.setState(_OnState2.default.conputeAfter);
 
-                _this2.clearCanvas();
                 _this2.canvasResize();
 
                 var grids = gridsObj.grids;
+                _this2.workerData = grids;
 
+                _this2._drawSize = size / zoomUnit;
 
-                var obj = {
-                    size: size,
-                    zoomUnit: zoomUnit,
-
-                    grids: grids,
-                    margin: _this2.margin
-                };
-                _this2.setWorkerData(obj);
                 _this2.setState(_OnState2.default.drawBefore);
-
                 _this2.createColorSplit(grids);
-                _this2.drawRec(obj);
+                _this2.drawRec();
                 _this2.setState(_OnState2.default.drawAfter);
             });
         }
@@ -4130,7 +4127,6 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
                     start: star,
                     end: end,
                     backgroundColor: colors[i]
-
                 });
             }
 
@@ -4138,53 +4134,45 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
     }, {
-        key: 'getColor',
-        value: function getColor(count) {
-            var color = null;
-            if (count == 0) {
-                color = 'rgba(255,255,255,0)';
+        key: 'getStyle',
+        value: function getStyle(item) {
+            if (item.count == 0) {
+                return {
+                    backgroundColor: 'rgba(255,255,255,0)'
+                };
             } else {
-                var style = this.setDrawStyle({
-                    count: count
-                });
-                color = style.backgroundColor;
+                return this.setDrawStyle(item);
             }
-            return color;
         }
     }, {
         key: 'getTarget',
-        value: function getTarget(x, y) {
+        value: function getTarget(mouseX, mouseY) {
+            var grids = this.workerData;
+            var gridStep = this._drawSize;
+            var mapSize = this.map.getSize();
 
-            var data = this.workerData;
-            var size = data.size;
-            var zoomUnit = data.zoomUnit;
-
-            var grids = data.grids || [];
-            var gridStep = size / zoomUnit;
-
-            var style = this.styleConfig.normal;
-            var width = gridStep - style.borderWidth;
-            for (var i = 0; i < grids.length; i++) {
+            for (var i in grids) {
                 var item = grids[i];
+                var x = item.x;
+                var y = item.y;
+                if (item.count > 0 && x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, y - gridStep / 2);
+                    this.ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
+                    this.ctx.lineTo(x + gridStep / 2, y + gridStep / 4);
+                    this.ctx.lineTo(x, y + gridStep / 2);
+                    this.ctx.lineTo(x - gridStep / 2, y + gridStep / 4);
+                    this.ctx.lineTo(x - gridStep / 2, y - gridStep / 4);
+                    this.ctx.closePath();
 
-                var x1 = parseFloat(item.pixels[0]);
-                var y1 = parseFloat(item.pixels[1]);
-
-                this.ctx.beginPath();
-                this.ctx.moveTo(x1, y1);
-                this.ctx.lineTo(x1 + width, y1);
-                this.ctx.lineTo(x1 + width, y1 + width);
-                this.ctx.lineTo(x1, y1 + width);
-
-                this.ctx.closePath();
-                if (this.ctx.isPointInPath(x, y)) {
-                    return {
-                        index: i,
-                        item: item
-                    };
+                    if (this.ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
+                        return {
+                            index: i,
+                            item: item
+                        };
+                    }
                 }
             }
-
             return {
                 index: -1,
                 item: null
@@ -4192,29 +4180,32 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
         }
     }, {
         key: 'drawRec',
-        value: function drawRec(_ref) {
-            var size = _ref.size,
-                zoomUnit = _ref.zoomUnit,
-                grids = _ref.grids;
-
-            this.workerData.grids = [];
-            var gridsW = size / zoomUnit;
+        value: function drawRec() {
+            this.clearCanvas();
+            var mapSize = this.map.getSize();
+            var gridsW = this._drawSize;
+            var grids = this.workerData;
             var style = this.styleConfig.normal;
             for (var i in grids) {
                 var x = grids[i].x;
                 var y = grids[i].y;
                 var count = grids[i].count;
-                if (count > 0) {
-                    var color = this.getColor(count);
-                    this.drawLine(x, y, gridsW - style.padding, color, this.ctx);
+                if (count > 0 && x > -gridsW && y > -gridsW && x < mapSize.width + gridsW && y < mapSize.height + gridsW) {
+                    var drawStyle = this.getStyle(grids[i]);
+                    this.drawLine(x, y, gridsW - style.padding, drawStyle, this.ctx);
                 }
             }
         }
     }, {
         key: 'drawLine',
-        value: function drawLine(x, y, gridStep, color, ctx) {
+        value: function drawLine(x, y, gridStep, drawStyle, ctx) {
+
             ctx.beginPath();
-            ctx.fillStyle = color;
+            this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
+            this.ctx.shadowBlur = drawStyle.shadowBlur || 10;
+            this.ctx.shadowOffsetX = 0;
+            this.ctx.shadowOffsetY = 0;
+            ctx.fillStyle = drawStyle.backgroundColor;
             ctx.moveTo(x, y - gridStep / 2);
             ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
             ctx.lineTo(x + gridStep / 2, y + gridStep / 4);
@@ -5456,7 +5447,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.5.4";
+var version = "1.5.5";
 console.log('inMap v' + version);
 
 var inMap = {

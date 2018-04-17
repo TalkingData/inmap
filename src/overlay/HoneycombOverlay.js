@@ -11,6 +11,7 @@ export class HoneycombOverlay extends Parameter {
         super(HoneycombConfig, ops);
         this.state = null;
         this.mpp = {};
+        this._drawSize = 0;
     }
     parameterInit() {
         this.delteOption();
@@ -29,7 +30,7 @@ export class HoneycombOverlay extends Parameter {
         this.styleConfig['selected'] = null;
     }
     refresh() {
-        this.drawMap();
+        this.drawRec();
     }
     resize() {
         this.drawMap();
@@ -107,26 +108,18 @@ export class HoneycombOverlay extends Parameter {
             }
             this.setState(State.conputeAfter);
 
-            this.clearCanvas();
+
             this.canvasResize();
 
             let grids = gridsObj.grids;
-            // let max = gridsObj.max;
-            // let min = gridsObj.min;
+            this.workerData = grids;
 
-            let obj = {
-                size: size,
-                zoomUnit: zoomUnit,
-                // max: max,
-                // min: min,
-                grids: grids,
-                margin: this.margin
-            };
-            this.setWorkerData(obj);
+
+            this._drawSize = size / zoomUnit;
+
             this.setState(State.drawBefore);
-
             this.createColorSplit(grids);
-            this.drawRec(obj);
+            this.drawRec();
             this.setState(State.drawAfter);
 
         });
@@ -187,7 +180,6 @@ export class HoneycombOverlay extends Parameter {
                 start: star,
                 end: end,
                 backgroundColor: colors[i]
-
             });
 
         }
@@ -195,78 +187,72 @@ export class HoneycombOverlay extends Parameter {
         this.styleConfig.splitList = split;
         this.setlegend(this.legendConfig, this.styleConfig.splitList);
     }
-    getColor(count) {
-        let color = null;
-        if (count == 0) {
-            color = 'rgba(255,255,255,0)';
+    getStyle(item) {
+        if (item.count == 0) {
+            return {
+                backgroundColor: 'rgba(255,255,255,0)'
+            };
         } else {
-            let style = this.setDrawStyle({
-                count: count
-            });
-            color = style.backgroundColor;
+            return this.setDrawStyle(item);
         }
-        return color;
+
     }
-    getTarget(x, y) {
+    getTarget(mouseX, mouseY) {
+        let grids = this.workerData;
+        let gridStep = this._drawSize;
+        let mapSize = this.map.getSize();
 
-        let data = this.workerData;
-        let size = data.size;
-        let zoomUnit = data.zoomUnit;
-
-        let grids = data.grids || [];
-        let gridStep = size / zoomUnit;
-
-        let style = this.styleConfig.normal;
-        let width = gridStep - style.borderWidth;
-        for (let i = 0; i < grids.length; i++) {
+        for (let i in grids) {
             let item = grids[i];
+            let x = item.x;
+            let y = item.y;
+            if (item.count > 0 && x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
+                this.ctx.beginPath();
+                this.ctx.moveTo(x, y - gridStep / 2);
+                this.ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
+                this.ctx.lineTo(x + gridStep / 2, y + gridStep / 4);
+                this.ctx.lineTo(x, y + gridStep / 2);
+                this.ctx.lineTo(x - gridStep / 2, y + gridStep / 4);
+                this.ctx.lineTo(x - gridStep / 2, y - gridStep / 4);
+                this.ctx.closePath();
 
-            let x1 = parseFloat(item.pixels[0]);
-            let y1 = parseFloat(item.pixels[1]);
-
-            this.ctx.beginPath();
-            this.ctx.moveTo(x1, y1);
-            this.ctx.lineTo(x1 + width, y1);
-            this.ctx.lineTo(x1 + width, y1 + width);
-            this.ctx.lineTo(x1, y1 + width);
-
-            this.ctx.closePath();
-            if (this.ctx.isPointInPath(x, y)) {
-                return {
-                    index: i,
-                    item: item
-                };
+                if (this.ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
+                    return {
+                        index: i,
+                        item: item
+                    };
+                }
             }
         }
-
         return {
             index: -1,
             item: null
         };
     }
-    drawRec({
-        size,
-        zoomUnit,
-        grids
-    }) {
-        this.workerData.grids = [];
-        let gridsW = size / zoomUnit;
+    drawRec() {
+        this.clearCanvas();
+        let mapSize = this.map.getSize();
+        let gridsW = this._drawSize;
+        let grids = this.workerData;
         let style = this.styleConfig.normal;
         for (let i in grids) {
             let x = grids[i].x;
             let y = grids[i].y;
             let count = grids[i].count;
-            if (count > 0) {
-                let color = this.getColor(count);
-                this.drawLine(x, y, gridsW - style.padding, color, this.ctx);
+            if (count > 0 && x > -gridsW && y > -gridsW && x < mapSize.width + gridsW && y < mapSize.height + gridsW) {
+                let drawStyle = this.getStyle(grids[i]);
+                this.drawLine(x, y, gridsW - style.padding, drawStyle, this.ctx);
             }
-
-
         }
     }
-    drawLine(x, y, gridStep, color, ctx) {
+    drawLine(x, y, gridStep, drawStyle, ctx) {
+
         ctx.beginPath();
-        ctx.fillStyle = color;
+        this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
+        this.ctx.shadowBlur = drawStyle.shadowBlur || 10;
+        this.ctx.shadowOffsetX = 0;
+        this.ctx.shadowOffsetY = 0;
+        ctx.fillStyle = drawStyle.backgroundColor;
         ctx.moveTo(x, y - gridStep / 2);
         ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
         ctx.lineTo(x + gridStep / 2, y + gridStep / 4);

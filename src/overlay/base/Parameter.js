@@ -1,4 +1,5 @@
 import {
+    isNumber,
     detectmob,
     isEmpty,
     merge
@@ -219,7 +220,7 @@ export class Parameter extends CanvasOverlay {
         //抽象方法需要子类去实现
     }
     swopData(index, item) {
-        if (index > -1) {
+        if (isNumber(index) && index > -1) {
             this.workerData[index] = this.workerData[this.workerData.length - 1];
             this.workerData[this.workerData.length - 1] = item;
         }

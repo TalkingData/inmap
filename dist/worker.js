@@ -91,6 +91,7 @@ exports.chunk = exports.extend = exports.isPromiseLike = exports.isEmpty = undef
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
 exports.typeOf = typeOf;
+exports.isNumber = isNumber;
 exports.isBoolean = isBoolean;
 exports.isFunction = isFunction;
 exports.isString = isString;
@@ -124,6 +125,9 @@ function typeOf(obj) {
         '[object Object]': 'object'
     };
     return map[toString.call(obj)];
+}
+function isNumber(num) {
+    return typeOf(num) == 'number';
 }
 function isBoolean(obj) {
     return typeOf(obj) == 'boolean';
