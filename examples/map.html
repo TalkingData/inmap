@@ -64,20 +64,22 @@
                 }
 
                 //alert(rs.boundaries[0]);
-                var pointArr = rs.boundaries[0].split(";");
-                var geos = [];
-                pointArr.forEach(function (item, index, arr) {
-                    var tempArr = item.split(",");
-                    var lng = tempArr[0];
-                    var lat = tempArr[1];
+                let result = [];
+                for (let i = 0; i < rs.boundaries.length; i++) {
+                    var pointArr = rs.boundaries[i].split(";");
+                    var geos = [];
+                    pointArr.forEach(function (item, index, arr) {
+                        var tempArr = item.split(",");
+                        var lng = tempArr[0];
+                        var lat = tempArr[1];
+                        geos.push([parseFloat(lng), parseFloat(lat)])
 
-                    geos.push([parseFloat(lng), parseFloat(lat)])
-
-                });
-                var result={
-                    count:1,
-                    name:name,
-                    geo:geos
+                    });
+                    result.push({
+                        count: 1,
+                        name: name,
+                        geo: geos
+                    });
                 }
                 console.log(JSON.stringify(result, null, 0))
             });
