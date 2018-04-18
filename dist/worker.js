@@ -1916,6 +1916,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
                     maxPointY = row.py;
                 }
             }
+
             startX = parseInt(minPointX, 10);
             startY = parseInt(minPointY, 10);
             endX = parseInt(maxPointX, 10);
@@ -1925,6 +1926,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
         var pointY = startY;
 
         var odd = false;
+
         while (pointY < endY) {
             while (pointX < endX) {
                 var x = odd ? pointX - depthX / 2 : pointX;
@@ -1932,8 +1934,9 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
                 grids[x + '|' + pointY] = grids[x + '|' + pointY] || {
                     x: x,
                     y: pointY,
-                    count: 0,
-                    len: 0
+                    list: [],
+                    count: 0
+
                 };
 
                 pointX += depthX;
@@ -1944,10 +1947,9 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
         }
 
         for (var _i in data) {
-            var count = data[_i].count;
-            var pX = data[_i].px;
-            var pY = data[_i].py;
-
+            var item = data[_i];
+            var pX = item.px;
+            var pY = item.py;
             var fixYIndex = Math.round((pY - startY) / depthY);
             var fixY = fixYIndex * depthY + startY;
             var fixXIndex = Math.round((pX - startX) / depthX);
@@ -1960,16 +1962,15 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
                 continue;
             }
             if (grids[fixX + '|' + fixY]) {
-                grids[fixX + '|' + fixY].count += count;
-                grids[fixX + '|' + fixY].len += 1;
+                grids[fixX + '|' + fixY].list.push(item);
+                grids[fixX + '|' + fixY].count += item.count;
             }
         }
         if (type == 'avg') {
             for (var o in grids) {
-                var honey = grids[o];
-                var _count = honey.count;
-                if (_count > 0) {
-                    honey.count = _count / honey.len;
+                var _item = grids[o];
+                if (_item.count > 0) {
+                    _item.count = _item.count / _item.list.length;
                 }
             }
         }

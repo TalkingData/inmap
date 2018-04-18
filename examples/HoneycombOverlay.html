@@ -51,10 +51,10 @@
     var overlay = new inMap.HoneycombOverlay({
         tooltip: {
             show: true,
-            // formatter: function (params) {
-            //     return params.count;
-            // }
-            formatter: "{count}"
+            formatter: function (params) {
+                return params.count;
+            }
+            
         },
         legend: {
             show: true,
