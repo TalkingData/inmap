@@ -102,7 +102,12 @@ export let GriddingOverlay = {
         for (let i = 0; i < stockXA.length; i++) {
             for (let j = 0; j < stockYA.length; j++) {
                 let name = stockXA[i] + '_' + stockYA[j];
-                grids[name] = [];
+                grids[name] = {
+                    x: stockXA[i],
+                    y: stockYA[j],
+                    list: [],
+                    count: 0,
+                };
             }
         }
 
@@ -117,8 +122,9 @@ export let GriddingOverlay = {
                     for (let k = 0; k < stockYA.length; k++) {
                         let dataY = Number(stockYA[k]);
                         if (y >= dataY && y < dataY + gridStep) {
-                            grids[stockXA[j] + '_' + stockYA[k]].push(item);
-
+                            let grid = grids[stockXA[j] + '_' + stockYA[k]];
+                            grid.list.push(item);
+                            grid.count += item.count; //sum
                         }
                     }
                 }
@@ -126,52 +132,19 @@ export let GriddingOverlay = {
         }
         if (type === 'avg') {
             grids = GriddingOverlay.valueToAvg(grids);
-        } else {
-            grids = GriddingOverlay.valueToSum(grids);
         }
         return {
             grids: grids
         };
     },
     valueToAvg(grids) {
-
         for (let o in grids) {
-            let arr = grids[o],
-                all = 0;
-            let item = {
-                list: [],
-                count: 0
-            };
-            if (arr.length > 0) {
-                item.list = arr;
-                for (let i = 0; i < arr.length; i++) {
-                    all += arr[i].count;
-                }
-                item.count = all / arr.length;
+            let item = grids[o];
+            if (item.list.length > 0) {
+                item.count = item.count / item.list.length;
             }
-            grids[o] = item;
         }
         return grids;
     },
-    valueToSum(grids) {
-        for (let o in grids) {
-            let arr = grids[o],
-                all = 0;
 
-            let item = {
-                list: [],
-                count: 0
-            };
-            if (arr.length > 0) {
-                item.list = arr;
-                for (let i = 0; i < arr.length; i++) {
-                    all += arr[i].count;
-                }
-                item.count = all;
-
-            }
-            grids[o] = item;
-        }
-        return grids;
-    }
 };

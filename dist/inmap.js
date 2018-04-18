@@ -3400,7 +3400,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
         _this.state = null;
         _this._drawSize = 0;
         _this.mpp = {};
-        _this.delteOption();
+
         return _this;
     }
 
@@ -3411,6 +3411,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
             this._setStyle(this.baseConfig, ops);
+            this.createColorSplit();
             this.drawMap();
         }
     }, {
@@ -3420,18 +3421,16 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             this.eventConfig.onState(this.state);
         }
     }, {
-        key: 'delteOption',
-        value: function delteOption() {
-            this.styleConfig['selected'] = null;
-        }
-    }, {
         key: 'refresh',
         value: function refresh() {
-            this.drawMap();
+            this.drawRec();
         }
     }, {
         key: 'resize',
         value: function resize() {
+            if (this.eventType == 'onzoomend') {
+                this.workerData = {};
+            }
             this.drawMap();
         }
     }, {
@@ -3504,13 +3503,13 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                 var grids = gridsObj.grids;
                 _this2.setState(_OnState2.default.conputeAfter);
 
-                _this2.clearCanvas();
                 _this2.canvasResize();
                 _this2.workerData = grids;
+                _this2._drawSize = size / zoomUnit;
                 _this2.setState(_OnState2.default.drawBefore);
 
-                _this2.createColorSplit(grids);
-                _this2.drawRec(size, zoomUnit, grids);
+                _this2.createColorSplit();
+                _this2.drawRec();
                 _this2.setState(_OnState2.default.drawAfter);
             });
         }
@@ -3531,6 +3530,17 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             return !(mouseX < x || mouseX > x + w || mouseY < y || mouseY > y + h);
         }
     }, {
+        key: 'findIndexSelectItem',
+        value: function findIndexSelectItem(item) {
+            var index = -1;
+            if (item) {
+                index = this.selectItem.findIndex(function (val) {
+                    return val && val.x == item.x && val.y == item.y;
+                });
+            }
+            return index;
+        }
+    }, {
         key: 'getTarget',
         value: function getTarget(x, y) {
 
@@ -3538,10 +3548,10 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             var gridStep = this._drawSize;
             var mapSize = this.map.getSize();
             for (var i in grids) {
-                var sp = i.split('_');
+
                 var item = grids[i];
-                var x1 = parseFloat(sp[0]);
-                var y1 = parseFloat(sp[1]);
+                var x1 = parseFloat(item.x);
+                var y1 = parseFloat(item.y);
                 if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
                     if (this._isMouseOver(x, y, x1, y1, gridStep, gridStep)) {
                         return {
@@ -3603,8 +3613,8 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
         }
     }, {
         key: 'createColorSplit',
-        value: function createColorSplit(grids) {
-
+        value: function createColorSplit() {
+            var grids = this.workerData;
             var data = [];
             for (var key in grids) {
                 var count = grids[key].count;
@@ -3630,36 +3640,40 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             this.toolTip.render(event, item);
         }
     }, {
-        key: 'getColor',
-        value: function getColor(count) {
-            var color = null;
-            if (count == 0) {
-                color = 'rgba(255,255,255,0)';
+        key: 'getStyle',
+        value: function getStyle(item) {
+            if (item.count == 0) {
+                return {
+                    backgroundColor: 'rgba(255,255,255,0)'
+                };
             } else {
-                var style = this.setDrawStyle({
-                    count: count
-                });
-                color = style.backgroundColor;
+                return this.setDrawStyle(item);
             }
-            return color;
         }
     }, {
         key: 'drawRec',
-        value: function drawRec(size, zoomUnit, grids) {
-
-            var gridStep = this._drawSize = size / zoomUnit;
+        value: function drawRec() {
+            this.clearCanvas();
+            var gridStep = this._drawSize;
+            var grids = this.workerData;
             var style = this.styleConfig.normal;
             var mapSize = this.map.getSize();
-
+            this.ctx.shadowOffsetX = 0;
+            this.ctx.shadowOffsetY = 0;
             for (var i in grids) {
-                var sp = i.split('_');
-                var x = sp[0];
-                var y = sp[1];
+                var item = grids[i];
+                var x = item.x;
+                var y = item.y;
                 if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
-                    var count = grids[i].count;
-
-                    var color = this.getColor(count);
-                    this.ctx.fillStyle = color;
+                    var drawStyle = this.getStyle(item);
+                    if (drawStyle.shadowColor) {
+                        this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
+                        this.ctx.shadowBlur = drawStyle.shadowBlur || 10;
+                    } else {
+                        this.ctx.shadowColor = 'transparent';
+                        this.ctx.shadowBlur = 0;
+                    }
+                    this.ctx.fillStyle = drawStyle.backgroundColor;
                     this.ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
                 }
             }
@@ -4052,10 +4066,8 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
                 _this2.setState(_OnState2.default.conputeAfter);
 
                 _this2.canvasResize();
-
                 var grids = gridsObj.grids;
                 _this2.workerData = grids;
-
                 _this2._drawSize = size / zoomUnit;
 
                 _this2.setState(_OnState2.default.drawBefore);
@@ -5170,12 +5182,12 @@ exports.default = {
     },
     style: {
         type: 'sum',
-        unit: 'px',
         colors: ['rgba(31,98,1,1)', 'rgba(95,154,4,1)', 'rgba(139,227,7,1)', 'rgba(218,134,9,1)', 'rgba(220,54,6,1)', 'rgba(218,2,8,1)', 'rgba(148,1,2,1)', 'rgba(92,1,0,1)'],
         normal: {
             backgroundColor: 'rgba(200, 200, 200, 0.5)',
             padding: 1,
             size: 50,
+            unit: 'px',
             label: {
                 show: false,
                 font: '12px sans-serif',

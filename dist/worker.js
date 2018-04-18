@@ -1702,7 +1702,12 @@ var GriddingOverlay = exports.GriddingOverlay = {
         for (var _i = 0; _i < stockXA.length; _i++) {
             for (var j = 0; j < stockYA.length; j++) {
                 var name = stockXA[_i] + '_' + stockYA[j];
-                grids[name] = [];
+                grids[name] = {
+                    x: stockXA[_i],
+                    y: stockYA[j],
+                    list: [],
+                    count: 0
+                };
             }
         }
 
@@ -1717,7 +1722,9 @@ var GriddingOverlay = exports.GriddingOverlay = {
                     for (var k = 0; k < stockYA.length; k++) {
                         var dataY = Number(stockYA[k]);
                         if (y >= dataY && y < dataY + gridStep) {
-                            grids[stockXA[_j] + '_' + stockYA[k]].push(item);
+                            var grid = grids[stockXA[_j] + '_' + stockYA[k]];
+                            grid.list.push(item);
+                            grid.count += item.count;
                         }
                     }
                 }
@@ -1725,50 +1732,17 @@ var GriddingOverlay = exports.GriddingOverlay = {
         }
         if (type === 'avg') {
             grids = GriddingOverlay.valueToAvg(grids);
-        } else {
-            grids = GriddingOverlay.valueToSum(grids);
         }
         return {
             grids: grids
         };
     },
     valueToAvg: function valueToAvg(grids) {
-
         for (var o in grids) {
-            var arr = grids[o],
-                all = 0;
-            var item = {
-                list: [],
-                count: 0
-            };
-            if (arr.length > 0) {
-                item.list = arr;
-                for (var i = 0; i < arr.length; i++) {
-                    all += arr[i].count;
-                }
-                item.count = all / arr.length;
+            var item = grids[o];
+            if (item.list.length > 0) {
+                item.count = item.count / item.list.length;
             }
-            grids[o] = item;
-        }
-        return grids;
-    },
-    valueToSum: function valueToSum(grids) {
-        for (var o in grids) {
-            var arr = grids[o],
-                all = 0;
-
-            var item = {
-                list: [],
-                count: 0
-            };
-            if (arr.length > 0) {
-                item.list = arr;
-                for (var i = 0; i < arr.length; i++) {
-                    all += arr[i].count;
-                }
-                item.count = all;
-            }
-            grids[o] = item;
         }
         return grids;
     }

@@ -106,13 +106,9 @@ export class HoneycombOverlay extends Parameter {
             }
             this.setState(State.conputeAfter);
 
-
             this.canvasResize();
-
             let grids = gridsObj.grids;
             this.workerData = grids;
-
-
             this._drawSize = size / zoomUnit;
 
             this.setState(State.drawBefore);
