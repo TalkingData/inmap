@@ -2994,21 +2994,27 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
         }
     }, {
         key: 'getTarget',
-        value: function getTarget(x, y) {
+        value: function getTarget(mouseX, mouseY) {
             var pixels = this.workerData,
                 ctx = this.ctx;
+            var mapSize = this.map.getSize();
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var _item = pixels[i];
-                var pixel = _item.pixel;
-                var style = this.polyme ? this.styleConfig.normal : this.setDrawStyle(_item);
-                ctx.beginPath();
-                ctx.arc(pixel.x, pixel.y, style.size, 0, 2 * Math.PI, true);
-                ctx.lineWidth = style.borderWidth;
-                if (ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
-                    return {
-                        index: i,
-                        item: _item
-                    };
+                var _item$pixel = _item.pixel,
+                    x = _item$pixel.x,
+                    y = _item$pixel.y,
+                    radius = _item$pixel.radius;
+
+                var r = radius + this.styleConfig.normal.borderWidth;
+                if (x > -r && y > -r && x < mapSize.width + r && y < mapSize.height + r) {
+                    ctx.beginPath();
+                    ctx.arc(x, y, r, 0, 2 * Math.PI, true);
+                    if (ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
+                        return {
+                            index: i,
+                            item: _item
+                        };
+                    }
                 }
             }
             return {
@@ -3054,23 +3060,30 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
     }, {
         key: '_loopDraw',
         value: function _loopDraw(ctx, pixels) {
-
+            var mapSize = this.map.getSize();
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var _item2 = pixels[i];
                 var pixel = _item2.pixel;
+                var x = pixel.x,
+                    y = pixel.y;
+
+
                 var style = this.polyme ? this.styleConfig.normal : this.setDrawStyle(_item2);
-                if (style.shadowBlur) {
-                    ctx.shadowBlur = style.shadowBlur;
-                }
-                if (style.shadowColor) {
-                    ctx.shadowColor = style.shadowColor;
-                }
-                if (style.globalCompositeOperation) {
-                    ctx.globalCompositeOperation = style.globalCompositeOperation;
-                }
                 var size = this.polyme ? pixel.radius : style.size;
                 pixel['radius'] = size;
-                this._drawCircle(ctx, pixel.x, pixel.y, size, style.backgroundColor, style.borderWidth, style.borderColor);
+                if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
+                    if (style.shadowColor) {
+                        ctx.shadowColor = style.shadowColor || 'transparent';
+                        ctx.shadowBlur = style.shadowBlur || 10;
+                    } else {
+                        ctx.shadowColor = 'transparent';
+                        ctx.shadowBlur = 0;
+                    }
+                    if (style.globalCompositeOperation) {
+                        ctx.globalCompositeOperation = style.globalCompositeOperation;
+                    }
+                    this._drawCircle(ctx, x, y, size, style.backgroundColor, style.borderWidth, style.borderColor);
+                }
             }
         }
     }, {

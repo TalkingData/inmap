@@ -47,7 +47,7 @@ export class DotOverlay extends Parameter {
         } else {
             this.batchesData = null;
         }
-        
+
         this.refresh();
     }
     setState(val) {
@@ -160,21 +160,27 @@ export class DotOverlay extends Parameter {
         this.setlegend(this.legendConfig, this.styleConfig.splitList);
     }
 
-    getTarget(x, y) {
+    getTarget(mouseX, mouseY) {
         let pixels = this.workerData,
             ctx = this.ctx;
+        let mapSize = this.map.getSize();
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
-            let pixel = item.pixel;
-            let style = this.polyme ? this.styleConfig.normal : this.setDrawStyle(item);
-            ctx.beginPath();
-            ctx.arc(pixel.x, pixel.y, style.size, 0, 2 * Math.PI, true);
-            ctx.lineWidth = style.borderWidth;
-            if (ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
-                return {
-                    index: i,
-                    item: item
-                };
+            let {
+                x,
+                y,
+                radius
+            } = item.pixel;
+            let r = radius + this.styleConfig.normal.borderWidth;
+            if (x > -r && y > -r && x < mapSize.width + r && y < mapSize.height + r) {
+                ctx.beginPath();
+                ctx.arc(x, y, r, 0, 2 * Math.PI, true);
+                if (ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
+                    return {
+                        index: i,
+                        item: item
+                    };
+                }
             }
         }
         return {
@@ -214,23 +220,31 @@ export class DotOverlay extends Parameter {
         }
     }
     _loopDraw(ctx, pixels) {
-
+        let mapSize = this.map.getSize();
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.pixel;
+            let {
+                x,
+                y
+            } = pixel;
+
             let style = this.polyme ? this.styleConfig.normal : this.setDrawStyle(item);
-            if (style.shadowBlur) {
-                ctx.shadowBlur = style.shadowBlur;
-            }
-            if (style.shadowColor) {
-                ctx.shadowColor = style.shadowColor;
-            }
-            if (style.globalCompositeOperation) {
-                ctx.globalCompositeOperation = style.globalCompositeOperation;
-            }
             let size = this.polyme ? pixel.radius : style.size;
             pixel['radius'] = size;
-            this._drawCircle(ctx, pixel.x, pixel.y, size, style.backgroundColor, style.borderWidth, style.borderColor);
+            if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
+                if (style.shadowColor) {
+                    ctx.shadowColor = style.shadowColor || 'transparent';
+                    ctx.shadowBlur = style.shadowBlur || 10;
+                } else {
+                    ctx.shadowColor = 'transparent';
+                    ctx.shadowBlur = 0;
+                }
+                if (style.globalCompositeOperation) {
+                    ctx.globalCompositeOperation = style.globalCompositeOperation;
+                }
+                this._drawCircle(ctx, x, y, size, style.backgroundColor, style.borderWidth, style.borderColor);
+            }
         }
     }
     _drawLabel(ctx, pixels) {
