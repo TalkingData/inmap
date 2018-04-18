@@ -1536,10 +1536,6 @@ var BoundaryOverlay = exports.BoundaryOverlay = {
                 }
                 points[j].pgeo = tmp;
                 var bestCell = (0, _polylabel2.default)([tmp]);
-                if (bestCell == null) {
-                    console.error('inMap : ' + points[j].name + '\u56F4\u680F\u6570\u636E\u6709\u9519\u8BEF\uFF01');
-                }
-
                 points[j]['bestCell'] = bestCell;
             }
         }

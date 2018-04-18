@@ -26,12 +26,6 @@ export let BoundaryOverlay = {
                 }
                 points[j].pgeo = tmp;
                 let bestCell = polylabel([tmp]);
-                if (bestCell == null) {
-                    /*eslint-disable */
-                    console.error(`inMap : ${points[j].name}围栏数据有错误！`);
-                    /*eslint-enable */
-                }
-
                 points[j]['bestCell'] = bestCell;
 
             }
