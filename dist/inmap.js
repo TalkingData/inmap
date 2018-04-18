@@ -3978,6 +3978,9 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
     }, {
         key: 'refresh',
         value: function refresh() {
+            if (this.eventType == 'onzoomend') {
+                this.workerData = {};
+            }
             this.drawRec();
         }
     }, {
@@ -4205,6 +4208,8 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             var gridsW = this._drawSize;
             var grids = this.workerData;
             var style = this.styleConfig.normal;
+            this.ctx.shadowOffsetX = 0;
+            this.ctx.shadowOffsetY = 0;
             for (var i in grids) {
                 var x = grids[i].x;
                 var y = grids[i].y;
@@ -4220,10 +4225,13 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
         value: function drawLine(x, y, gridStep, drawStyle, ctx) {
 
             ctx.beginPath();
-            this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
-            this.ctx.shadowBlur = drawStyle.shadowBlur || 10;
-            this.ctx.shadowOffsetX = 0;
-            this.ctx.shadowOffsetY = 0;
+            if (drawStyle.shadowColor) {
+                this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
+                this.ctx.shadowBlur = drawStyle.shadowBlur || 10;
+            } else {
+                this.ctx.shadowColor = 'transparent';
+                this.ctx.shadowBlur = 0;
+            }
             ctx.fillStyle = drawStyle.backgroundColor;
             ctx.moveTo(x, y - gridStep / 2);
             ctx.lineTo(x + gridStep / 2, y - gridStep / 4);

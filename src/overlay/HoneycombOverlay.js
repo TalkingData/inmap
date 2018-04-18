@@ -14,7 +14,7 @@ export class HoneycombOverlay extends Parameter {
         this._drawSize = 0;
     }
     parameterInit() {
-        
+
     }
     setOptionStyle(ops) {
         this._setStyle(this.baseConfig, ops);
@@ -26,8 +26,11 @@ export class HoneycombOverlay extends Parameter {
         this.state = val;
         this.eventConfig.onState(this.state);
     }
-    
+
     refresh() {
+        if (this.eventType == 'onzoomend') {
+            this.workerData = {};
+        }
         this.drawRec();
     }
     resize() {
@@ -185,7 +188,7 @@ export class HoneycombOverlay extends Parameter {
     findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-           
+
             index = this.selectItem.findIndex(function (val) {
                 return val && val.x == item.x && val.y == item.y;
             });
@@ -240,6 +243,8 @@ export class HoneycombOverlay extends Parameter {
         let gridsW = this._drawSize;
         let grids = this.workerData;
         let style = this.styleConfig.normal;
+        this.ctx.shadowOffsetX = 0;
+        this.ctx.shadowOffsetY = 0;
         for (let i in grids) {
             let x = grids[i].x;
             let y = grids[i].y;
@@ -253,10 +258,13 @@ export class HoneycombOverlay extends Parameter {
     drawLine(x, y, gridStep, drawStyle, ctx) {
 
         ctx.beginPath();
-        this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
-        this.ctx.shadowBlur = drawStyle.shadowBlur || 10;
-        this.ctx.shadowOffsetX = 0;
-        this.ctx.shadowOffsetY = 0;
+        if (drawStyle.shadowColor) {
+            this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
+            this.ctx.shadowBlur = drawStyle.shadowBlur || 10;
+        } else {
+            this.ctx.shadowColor = 'transparent';
+            this.ctx.shadowBlur = 0;
+        }
         ctx.fillStyle = drawStyle.backgroundColor;
         ctx.moveTo(x, y - gridStep / 2);
         ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
