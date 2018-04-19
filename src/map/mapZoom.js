@@ -13,6 +13,21 @@ export class MapZoom {
         this.mapDom.appendChild(div);
         this.event(div);
     }
+    setButtonState() {
+        let doms = this.mapDom.querySelectorAll('.inmap-scale-group a');
+        let zoom = this.map.getZoom();
+        if (zoom >= this.zoom.max) {
+            doms[0].setAttribute('disabled', 'true');
+        } else {
+            doms[0].removeAttribute('disabled');
+        }
+        if (zoom <= this.zoom.min) {
+            doms[1].setAttribute('disabled', 'true');
+        } else {
+            doms[1].removeAttribute('disabled');
+        }
+
+    }
     event(div) {
         let doms = div.querySelectorAll('a');
         doms[0].addEventListener('click', () => {
@@ -20,7 +35,7 @@ export class MapZoom {
             if (zoom < this.zoom.max) {
                 this.map.zoomIn();
             }
-
+            
         });
         doms[1].addEventListener('click', () => {
             let zoom = this.map.getZoom();
@@ -28,6 +43,7 @@ export class MapZoom {
                 this.map.zoomOut();
             }
         });
+
 
     }
 }

@@ -55,7 +55,10 @@ export class Map {
         bmap.setMaxZoom(this.option.zoom.max);
         if (this.option.zoom.show) {
             //添加地图级别工具条
-            new MapZoom(bmap, mapDom, this.option.zoom);
+            let mapZoom = new MapZoom(bmap, mapDom, this.option.zoom);
+            bmap.addEventListener('zoomend', () => {
+                mapZoom.setButtonState();
+            });
         }
 
         this.map = bmap;

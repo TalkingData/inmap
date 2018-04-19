@@ -4,7 +4,7 @@
 
 .inmap {
     &-container,
-    {
+        {
         opacity: 1;
         font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
     }
@@ -32,6 +32,11 @@
         color: #666;
         cursor: pointer;
         text-decoration: none;
+    }
+    &-scale-group>a[disabled] {
+        color: rgba(187, 190, 196, 0.6);;
+        background-color: #f7f7f7;
+        border-color: #dddee1;
     }
     &-tooltip {
         position: absolute;
