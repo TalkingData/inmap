@@ -5658,7 +5658,7 @@ var Legend = function () {
                 if (val.text) {
                     text = val.text;
                 } else if (_this.opts.formatter) {
-                    text = _this.opts.formatter(_this.toFixed(val.start), _this.toFixed(val.end), index);
+                    text = _this.opts.formatter(_this.toFixed(val.start), _this.toFixed(val.end), index, val);
                 } else {
                     text = _this.toFixed(val.start) + ' ~ ' + (val.end == null ? '<span class="inmap-infinity"></span>' : _this.toFixed(val.end));
                 }

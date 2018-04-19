@@ -61,7 +61,7 @@
         legend: {
             show: true,
             title: "标题",
-            formatter: function (start, end, index) {
+            formatter: function (start, end, index,item) {
                 return start + "万~" + (end || "max") + "万";
             },
         },

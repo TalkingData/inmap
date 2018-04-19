@@ -100,7 +100,7 @@ export default class Legend {
             if (val.text) {
                 text = val.text;
             } else if (this.opts.formatter) {
-                text = this.opts.formatter(this.toFixed(val.start), this.toFixed(val.end), index);
+                text = this.opts.formatter(this.toFixed(val.start), this.toFixed(val.end), index, val);
             } else {
                 text = `${this.toFixed(val.start)} ~ ${ val.end==null ?'<span class="inmap-infinity"></span>':this.toFixed(val.end)}`;
             }
