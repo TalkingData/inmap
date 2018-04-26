@@ -463,6 +463,7 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
     }, {
         key: 'dispose',
         value: function dispose() {
+            this.removeWorkerMessage();
             this.map.removeEventListener('resize', this.tOnResize);
             this.map.removeEventListener('moveend', this.tOnMoveend);
             this.map.removeEventListener('zoomstart', this.tOnZoomstart);
@@ -2006,7 +2007,7 @@ var BaseClass = function BaseClass(hc) {
 };
 
 BaseClass.guid = function () {
-    return 'td_' + (baseClassCounter++).toString(36);
+    return 'td' + (baseClassCounter++).toString(36);
 };
 
 BaseClass.prototype.dispose = function () {
@@ -2068,11 +2069,14 @@ BaseClass.prototype.postMessage = function (workerClassPath, data, callback) {
     }, callback);
 };
 BaseClass.prototype.getMsgId = function () {
-    return 'msgId_' + _count.toString(36);
+    return 'msgId' + _count.toString(36);
 };
 BaseClass.prototype.setMsgId = function () {
     _count++;
-    return 'msgId_' + _count.toString(36);
+    return 'msgId' + _count.toString(36);
+};
+BaseClass.prototype.removeWorkerMessage = function () {
+    _workerMrg.workerMrg.removeMessage(this.hashCode);
 };
 
 exports.default = BaseClass;
@@ -5022,6 +5026,18 @@ var WorkerMrg = function () {
             }
         }
     }, {
+        key: 'removeMessage',
+        value: function removeMessage(hashCode) {
+            for (var o in instances) {
+                if (!o) continue;
+
+                var key = o.split('_');
+                if (key[0] == hashCode || key[1] == hashCode) {
+                    instances[o] = null;
+                }
+            }
+        }
+    }, {
         key: 'postMessage',
         value: function postMessage(data, callback) {
             if (this.worker == null) {
@@ -5490,7 +5506,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.5.5";
+var version = "1.5.6";
 console.log('inMap v' + version);
 
 var inMap = {

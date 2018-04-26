@@ -3,7 +3,7 @@
      constructor() {
          this.worker = null;
          this.workerContent = '[workerContentString]';
-         
+
      }
      create(workerPath) {
          let workerUrl;
@@ -18,8 +18,8 @@
          this.worker = new Worker(workerUrl);
          this.worker.addEventListener('message', this.message);
          this.worker.onerror = function () {
-            throw new TypeError('inMap : worker.onerror');
-         
+             throw new TypeError('inMap : worker.onerror');
+
          };
      }
      message(e) {
@@ -31,6 +31,17 @@
              instances[hashCode + '_' + msgId](data.response.data);
          } else {
              instances[hashCode + '_' + msgId] = null;
+         }
+     }
+     removeMessage(hashCode) {
+         for (let o in instances) {
+             if (!o) continue;
+             
+             let key = o.split('_');
+             if (key[0] == hashCode || key[1] == hashCode) {
+                 instances[o] = null;
+             }
+
          }
      }
      /**

@@ -40,7 +40,7 @@ let BaseClass = function (hc) {
 
 /** @ignore */
 BaseClass.guid = function () {
-    return 'td_' + (baseClassCounter++).toString(36);
+    return 'td' + (baseClassCounter++).toString(36);
 };
 
 
@@ -87,7 +87,6 @@ let baidu = window.BMap || {
 };
 BaseClass.inherits(baidu.Overlay, 'BaseClass');
 
-
 /**
  * push消息，
  * @param {string} workerClassPath worker请求的path
@@ -125,11 +124,14 @@ BaseClass.prototype.postMessage = function (workerClassPath, data, callback) {
     }, callback);
 };
 BaseClass.prototype.getMsgId = function () {
-    return 'msgId_' + _count.toString(36);
+    return 'msgId' + _count.toString(36);
 };
 BaseClass.prototype.setMsgId = function () {
     _count++;
-    return 'msgId_' + (_count).toString(36);
+    return 'msgId' + (_count).toString(36);
+};
+BaseClass.prototype.removeWorkerMessage = function () {
+    workerMrg.removeMessage(this.hashCode);
 };
 
 export default BaseClass;
