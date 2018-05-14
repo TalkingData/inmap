@@ -27,7 +27,7 @@ export class ImgOverlay extends Parameter {
         this.state = val;
         this.eventConfig.onState(this.state);
     }
-   
+
     drawMap() {
         this.setState(State.computeBefore);
 
@@ -58,14 +58,19 @@ export class ImgOverlay extends Parameter {
         return !(x < imgX || x > imgX + imgW || y < imgY || y > imgY + imgH);
     }
     getTarget(x, y) {
-        let pixels = this.workerData,
-            ctx = this.ctx;
+        let pixels = this.workerData;
+
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.pixel;
             let style = this.setDrawStyle(item);
-            ctx.beginPath();
-            let img = this.cacheImg[style.icon];
+            let img;
+            if (isString(img)) {
+                img = this.cacheImg[style.icon];
+            } else {
+                img = style.icon;
+            }
+
             //img  Not Loaded return 
             if (!img) break;
             if (style.width && style.height) {
@@ -116,7 +121,6 @@ export class ImgOverlay extends Parameter {
     }
     loadImg(img, fun) {
         let me = this;
-
         if (isString(img)) {
             let image = me.cacheImg[img];
             if (!image) {

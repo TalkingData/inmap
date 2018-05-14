@@ -30,6 +30,7 @@ import {
     Map
 } from './map/index';
 import * as utils from './common/util';
+import {workerMrg} from './common/workerMrg';
 
 let version = VERSION;
 console.log(`inMap v${version}`);
@@ -46,7 +47,8 @@ const inMap = {
     HoneycombOverlay,
     ImgOverlay,
     MoveLineOverlay,
-    FlashDotOverlay
+    FlashDotOverlay,
+    workerMrg
 };
 export {
     version,
@@ -61,5 +63,6 @@ export {
     ImgOverlay,
     MoveLineOverlay,
     FlashDotOverlay,
+    workerMrg
 };
 export default inMap;

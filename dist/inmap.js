@@ -278,7 +278,7 @@ exports.CanvasOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _BaseClass2 = __webpack_require__(12);
+var _BaseClass2 = __webpack_require__(13);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
@@ -286,7 +286,7 @@ var _util = __webpack_require__(0);
 
 var _MapStyle = __webpack_require__(7);
 
-var _Toolbar = __webpack_require__(11);
+var _Toolbar = __webpack_require__(12);
 
 var _Toolbar2 = _interopRequireDefault(_Toolbar);
 
@@ -1915,8 +1915,97 @@ module.exports = deepmerge_1;
 
 
 /***/ }),
-/* 10 */,
-/* 11 */
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var instances = {};
+
+var WorkerMrg = function () {
+    function WorkerMrg() {
+        _classCallCheck(this, WorkerMrg);
+
+        this.worker = null;
+        this.workerContent = '[workerContentString]';
+    }
+
+    _createClass(WorkerMrg, [{
+        key: 'create',
+        value: function create(workerPath) {
+            var workerUrl = void 0;
+            if (this.workerContent.length == 21) {
+                workerUrl = workerPath.indexOf('http') > -1 ? URL.createObjectURL(new Blob(['importScripts(\'' + workerPath + '\');'])) : workerPath;
+            } else {
+                workerUrl = URL.createObjectURL(new Blob([this.workerContent], {
+                    type: 'application/javascript'
+                }));
+            }
+
+            this.worker = new Worker(workerUrl);
+            this.worker.addEventListener('message', this.message);
+            this.worker.onerror = function () {
+                throw new TypeError('inMap : worker.onerror');
+            };
+        }
+    }, {
+        key: 'message',
+        value: function message(e) {
+            var data = e.data;
+            var hashCode = data.request.hashCode;
+            var msgId = data.request.msgId;
+            var classPath = data.request.classPath;
+            if (instances[classPath + '_' + hashCode] && instances[classPath + '_' + hashCode] == hashCode + '_' + msgId) {
+                instances[hashCode + '_' + msgId](data.response.data);
+            } else {
+                instances[hashCode + '_' + msgId] = null;
+            }
+        }
+    }, {
+        key: 'removeMessage',
+        value: function removeMessage(hashCode) {
+            for (var o in instances) {
+                if (!o) continue;
+
+                var key = o.split('_');
+                if (key[0] == hashCode || key[1] == hashCode) {
+                    instances[o] = null;
+                }
+            }
+        }
+    }, {
+        key: 'postMessage',
+        value: function postMessage(data, callback) {
+            if (this.worker == null) {
+                this.create('../dist/worker.js');
+            }
+            var hashCode = data.request.hashCode;
+            var msgId = data.request.msgId;
+            var classPath = data.request.classPath;
+            instances[hashCode + '_' + msgId] = callback;
+
+            instances[classPath + '_' + hashCode] = hashCode + '_' + msgId;
+            this.worker.postMessage(data);
+        }
+    }]);
+
+    return WorkerMrg;
+}();
+
+var workerMrg = exports.workerMrg = new WorkerMrg();
+
+/***/ }),
+/* 11 */,
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1969,7 +2058,7 @@ var Toolbar = function () {
 exports.default = Toolbar;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1979,7 +2068,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _workerMrg = __webpack_require__(31);
+var _workerMrg = __webpack_require__(10);
 
 var baseClassCounter = 0;
 var inmap_instances = {};
@@ -2082,7 +2171,7 @@ BaseClass.prototype.removeWorkerMessage = function () {
 exports.default = BaseClass;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2101,7 +2190,7 @@ var _MapStyle = __webpack_require__(7);
 
 var _mapZoom = __webpack_require__(47);
 
-var _Toolbar = __webpack_require__(11);
+var _Toolbar = __webpack_require__(12);
 
 var _Toolbar2 = _interopRequireDefault(_Toolbar);
 
@@ -2192,7 +2281,7 @@ var Map = exports.Map = function () {
 }();
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2602,7 +2691,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2791,7 +2880,7 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3221,7 +3310,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3376,7 +3465,7 @@ var FlashDotOverlay = function (_CanvasOverlay) {
 exports.default = FlashDotOverlay;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3704,7 +3793,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3931,7 +4020,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4268,7 +4357,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4372,14 +4461,18 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
     }, {
         key: 'getTarget',
         value: function getTarget(x, y) {
-            var pixels = this.workerData,
-                ctx = this.ctx;
+            var pixels = this.workerData;
+
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var item = pixels[i];
                 var pixel = item.pixel;
                 var style = this.setDrawStyle(item);
-                ctx.beginPath();
-                var img = this.cacheImg[style.icon];
+                var img = void 0;
+                if ((0, _util.isString)(img)) {
+                    img = this.cacheImg[style.icon];
+                } else {
+                    img = style.icon;
+                }
 
                 if (!img) break;
                 if (style.width && style.height) {
@@ -4432,7 +4525,6 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
         key: 'loadImg',
         value: function loadImg(img, fun) {
             var me = this;
-
             if ((0, _util.isString)(img)) {
                 var image = me.cacheImg[img];
                 if (!image) {
@@ -4543,7 +4635,7 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4566,7 +4658,7 @@ var _MoveLineConfig = __webpack_require__(42);
 
 var _MoveLineConfig2 = _interopRequireDefault(_MoveLineConfig);
 
-var _BaseClass2 = __webpack_require__(12);
+var _BaseClass2 = __webpack_require__(13);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
@@ -4962,7 +5054,6 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
 }(_BaseClass3.default);
 
 /***/ }),
-/* 23 */,
 /* 24 */,
 /* 25 */,
 /* 26 */,
@@ -4970,95 +5061,7 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
 /* 28 */,
 /* 29 */,
 /* 30 */,
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var instances = {};
-
-var WorkerMrg = function () {
-    function WorkerMrg() {
-        _classCallCheck(this, WorkerMrg);
-
-        this.worker = null;
-        this.workerContent = '[workerContentString]';
-    }
-
-    _createClass(WorkerMrg, [{
-        key: 'create',
-        value: function create(workerPath) {
-            var workerUrl = void 0;
-            if (this.workerContent.length == 21) {
-                workerUrl = workerPath.indexOf('http') > -1 ? URL.createObjectURL(new Blob(['importScripts(\'' + workerPath + '\');'])) : workerPath;
-            } else {
-                workerUrl = URL.createObjectURL(new Blob([this.workerContent], {
-                    type: 'application/javascript'
-                }));
-            }
-
-            this.worker = new Worker(workerUrl);
-            this.worker.addEventListener('message', this.message);
-            this.worker.onerror = function () {
-                throw new TypeError('inMap : worker.onerror');
-            };
-        }
-    }, {
-        key: 'message',
-        value: function message(e) {
-            var data = e.data;
-            var hashCode = data.request.hashCode;
-            var msgId = data.request.msgId;
-            var classPath = data.request.classPath;
-            if (instances[classPath + '_' + hashCode] && instances[classPath + '_' + hashCode] == hashCode + '_' + msgId) {
-                instances[hashCode + '_' + msgId](data.response.data);
-            } else {
-                instances[hashCode + '_' + msgId] = null;
-            }
-        }
-    }, {
-        key: 'removeMessage',
-        value: function removeMessage(hashCode) {
-            for (var o in instances) {
-                if (!o) continue;
-
-                var key = o.split('_');
-                if (key[0] == hashCode || key[1] == hashCode) {
-                    instances[o] = null;
-                }
-            }
-        }
-    }, {
-        key: 'postMessage',
-        value: function postMessage(data, callback) {
-            if (this.worker == null) {
-                this.create('../dist/worker.js');
-            }
-            var hashCode = data.request.hashCode;
-            var msgId = data.request.msgId;
-            var classPath = data.request.classPath;
-            instances[hashCode + '_' + msgId] = callback;
-
-            instances[classPath + '_' + hashCode] = hashCode + '_' + msgId;
-            this.worker.postMessage(data);
-        }
-    }]);
-
-    return WorkerMrg;
-}();
-
-var workerMrg = exports.workerMrg = new WorkerMrg();
-
-/***/ }),
+/* 31 */,
 /* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5474,33 +5477,35 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.FlashDotOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.CircuitOverlay = exports.HeatOverlay = exports.BoundaryOverlay = exports.GriddingOverlay = exports.DotOverlay = exports.Map = exports.utils = exports.version = undefined;
+exports.workerMrg = exports.FlashDotOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.CircuitOverlay = exports.HeatOverlay = exports.BoundaryOverlay = exports.GriddingOverlay = exports.DotOverlay = exports.Map = exports.utils = exports.version = undefined;
 
-var _DotOverlay = __webpack_require__(16);
+var _DotOverlay = __webpack_require__(17);
 
-var _GriddingOverlay = __webpack_require__(18);
+var _GriddingOverlay = __webpack_require__(19);
 
-var _BoundaryOverlay = __webpack_require__(14);
+var _BoundaryOverlay = __webpack_require__(15);
 
-var _HeatOverlay = __webpack_require__(19);
+var _HeatOverlay = __webpack_require__(20);
 
-var _CircuitOverlay = __webpack_require__(15);
+var _CircuitOverlay = __webpack_require__(16);
 
-var _HoneycombOverlay = __webpack_require__(20);
+var _HoneycombOverlay = __webpack_require__(21);
 
-var _ImgOverlay = __webpack_require__(21);
+var _ImgOverlay = __webpack_require__(22);
 
-var _MoveLineOverlay = __webpack_require__(22);
+var _MoveLineOverlay = __webpack_require__(23);
 
-var _FlashDotOverlay = __webpack_require__(17);
+var _FlashDotOverlay = __webpack_require__(18);
 
 var _FlashDotOverlay2 = _interopRequireDefault(_FlashDotOverlay);
 
-var _index = __webpack_require__(13);
+var _index = __webpack_require__(14);
 
 var _util = __webpack_require__(0);
 
 var utils = _interopRequireWildcard(_util);
+
+var _workerMrg = __webpack_require__(10);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -5521,7 +5526,8 @@ var inMap = {
     HoneycombOverlay: _HoneycombOverlay.HoneycombOverlay,
     ImgOverlay: _ImgOverlay.ImgOverlay,
     MoveLineOverlay: _MoveLineOverlay.MoveLineOverlay,
-    FlashDotOverlay: _FlashDotOverlay2.default
+    FlashDotOverlay: _FlashDotOverlay2.default,
+    workerMrg: _workerMrg.workerMrg
 };
 exports.version = version;
 exports.utils = utils;
@@ -5535,6 +5541,7 @@ exports.HoneycombOverlay = _HoneycombOverlay.HoneycombOverlay;
 exports.ImgOverlay = _ImgOverlay.ImgOverlay;
 exports.MoveLineOverlay = _MoveLineOverlay.MoveLineOverlay;
 exports.FlashDotOverlay = _FlashDotOverlay2.default;
+exports.workerMrg = _workerMrg.workerMrg;
 exports.default = inMap;
 
 /***/ }),
