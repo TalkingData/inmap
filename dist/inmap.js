@@ -528,12 +528,12 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
         var _this = _possibleConstructorReturn(this, (Parameter.__proto__ || Object.getPrototypeOf(Parameter)).call(this));
 
         _this.points = [];
+        _this.workerData = [];
+
         _this.baseConfig = baseConfig;
         _this._setStyle(baseConfig, ops);
-
         _this.selectItem = [];
-        _this.overItem = null;
-        _this.workerData = [];return _this;
+        _this.overItem = null;return _this;
     }
 
     _createClass(Parameter, [{
@@ -2325,11 +2325,6 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
         var _this = _possibleConstructorReturn(this, (BoundaryOverlay.__proto__ || Object.getPrototypeOf(BoundaryOverlay)).call(this, _BoundaryConfig2.default, ops));
 
         _this.patchSplitList();
-
-        _this.selectedExp = {
-            show: false,
-            exp: null
-        };
         _this.state = null;
         return _this;
     }
@@ -2418,59 +2413,6 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
             }
         }
     }, {
-        key: 'setSelectd',
-        value: function setSelectd(exp) {
-
-            if (this.points.length > 0) {
-                var filterFun = new Function('item', 'with(item){ return ' + exp + ' }');
-                var temp = this.points.filter(filterFun);
-
-                if (temp.length > 0) {
-                    this.setCenterAndZoom(temp[0].geo, exp);
-                }
-            }
-        }
-    }, {
-        key: 'cancerSelectd',
-        value: function cancerSelectd() {
-            this.cancerExp();
-            this.selectItem = [];
-            this.refresh();
-        }
-    }, {
-        key: 'setWorkerData',
-        value: function setWorkerData(val) {
-            this.workerData = val;
-            if (this.filterFun) {
-                this.selectItem = this.workerData.filter(this.filterFun);
-            }
-        }
-    }, {
-        key: 'parserExp',
-        value: function parserExp(exp) {
-            if (exp) {
-                this.selectedExp.show = true;
-                this.selectedExp.exp = exp;
-                this.filterFun = new Function('item', 'with(item){ return ' + exp + ' }');
-            }
-        }
-    }, {
-        key: 'swopData',
-        value: function swopData(index, item) {
-            if (index > -1) {
-                this.workerData[index] = this.workerData[this.workerData.length - 1];
-                this.workerData[this.workerData.length - 1] = item;
-            }
-            this.cancerExp();
-        }
-    }, {
-        key: 'cancerExp',
-        value: function cancerExp() {
-            this.selectedExp.show = false;
-            this.selectedExp.exp = null;
-            this.filterFun = null;
-        }
-    }, {
         key: 'resize',
         value: function resize() {
             this.drawMap();
@@ -2489,62 +2431,6 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
                 maxY = Math.max(maxY, geo[i][1]);
             }
             return [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
-        }
-    }, {
-        key: 'setMapCenter',
-        value: function setMapCenter(geo, exp) {
-            var me = this;
-            this.parserExp(exp);
-
-            if (me.workerData.length > 0) {
-                me.selectItem = me.workerData.filter(me.filterFun);
-                me.refresh();
-            }
-        }
-    }, {
-        key: 'setMapCenterAndZoom',
-        value: function setMapCenterAndZoom(geo, exp) {
-            var arr = [];
-            geo.forEach(function (val) {
-                arr.push(new BMap.Point(val[0], val[1]));
-            });
-
-            var view = this.map.getViewport(arr);
-            var me = this;
-
-            function zoomEnd() {
-
-                me.map.removeEventListener('zoomend', zoomEnd);
-                me.map.panTo(view.center);
-            }
-
-            function moveend() {
-
-                me.map.removeEventListener('moveend', moveend);
-                me.parserExp(exp);
-                if (me.workerData.length > 0) {
-                    me.selectItem = me.workerData.filter(me.filterFun);
-                    me.refresh();
-                }
-            }
-
-            var scale = view.zoom - 1;
-            this.map.addEventListener('zoomend', zoomEnd);
-            this.map.addEventListener('moveend', moveend);
-            if (this.map.getZoom() == scale) {
-                zoomEnd();
-            } else {
-                this.map.setZoom(scale);
-            }
-        }
-    }, {
-        key: 'setCenterAndZoom',
-        value: function setCenterAndZoom(geo, exp, isScale) {
-            if (isScale) {
-                this.setMapCenterAndZoom(geo, exp);
-            } else {
-                this.setMapCenter(geo, exp);
-            }
         }
     }, {
         key: 'getMaxWidth',
@@ -2577,7 +2463,6 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
         value: function refresh() {
             this.clearCanvas();
             this.drawLine(this.workerData);
-            this.cancerExp();
         }
     }, {
         key: 'drawMap',
@@ -2605,7 +2490,6 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
             if (!(0, _util.isArray)(points)) {
                 throw new TypeError('inMap: data must be a Array');
             }
-            this.cancerSelectd();
             this.points = points;
             this.initLegend();
             this.drawMap();

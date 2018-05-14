@@ -16,11 +16,6 @@ export class BoundaryOverlay extends Parameter {
     constructor(ops) {
         super(BoundaryConfig, ops);
         this.patchSplitList();
-
-        this.selectedExp = {
-            show: false,
-            exp: null,
-        };
         this.state = null;
     }
     parameterInit() {
@@ -103,55 +98,6 @@ export class BoundaryOverlay extends Parameter {
         }
 
     }
-    /**
-     * 设置选中
-     * @param {*} exp  表达式
-     */
-    setSelectd(exp) {
-
-        if (this.points.length > 0) {
-            let filterFun = new Function('item', 'with(item){ return ' + exp + ' }');
-            let temp = this.points.filter(filterFun);
-
-            if (temp.length > 0) {
-                this.setCenterAndZoom(temp[0].geo, exp); //default first
-            }
-        }
-    }
-    /**
-     * 取消选中
-     */
-    cancerSelectd() {
-        this.cancerExp();
-        this.selectItem = [];
-        this.refresh();
-    }
-    setWorkerData(val) {
-        this.workerData = val;
-        if (this.filterFun) {
-            this.selectItem = this.workerData.filter(this.filterFun);
-        }
-
-    }
-    parserExp(exp) {
-        if (exp) {
-            this.selectedExp.show = true;
-            this.selectedExp.exp = exp;
-            this.filterFun = new Function('item', 'with(item){ return ' + exp + ' }');
-        }
-    }
-    swopData(index, item) {
-        if (index > -1) {
-            this.workerData[index] = this.workerData[this.workerData.length - 1];
-            this.workerData[this.workerData.length - 1] = item;
-        }
-        this.cancerExp();
-    }
-    cancerExp() {
-        this.selectedExp.show = false;
-        this.selectedExp.exp = null;
-        this.filterFun = null;
-    }
     resize() {
         this.drawMap();
     }
@@ -167,59 +113,6 @@ export class BoundaryOverlay extends Parameter {
             maxY = Math.max(maxY, geo[i][1]);
         }
         return [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
-    }
-    setMapCenter(geo, exp) {
-        let me = this;
-        this.parserExp(exp);
-
-        if (me.workerData.length > 0) {
-            me.selectItem = me.workerData.filter(me.filterFun);
-            me.refresh();
-        }
-    }
-    setMapCenterAndZoom(geo, exp) {
-        let arr = [];
-        geo.forEach(val => {
-            arr.push(new BMap.Point(val[0], val[1]));
-
-        });
-
-        let view = this.map.getViewport(arr);
-        let me = this;
-
-        function zoomEnd() {
-
-            me.map.removeEventListener('zoomend', zoomEnd);
-            me.map.panTo(view.center);
-        }
-
-        function moveend() {
-
-            me.map.removeEventListener('moveend', moveend);
-            me.parserExp(exp);
-            if (me.workerData.length > 0) {
-                me.selectItem = me.workerData.filter(me.filterFun);
-                me.refresh();
-            }
-        }
-
-
-        let scale = view.zoom - 1;
-        this.map.addEventListener('zoomend', zoomEnd);
-        this.map.addEventListener('moveend', moveend);
-        if (this.map.getZoom() == scale) {
-            zoomEnd();
-        } else {
-            this.map.setZoom(scale);
-        }
-    }
-    setCenterAndZoom(geo, exp, isScale) {
-        if (isScale) {
-            this.setMapCenterAndZoom(geo, exp);
-        } else {
-            this.setMapCenter(geo, exp);
-        }
-
     }
     getMaxWidth(geo) {
         let minX = geo[0][0];
@@ -246,7 +139,6 @@ export class BoundaryOverlay extends Parameter {
     refresh() {
         this.clearCanvas();
         this.drawLine(this.workerData);
-        this.cancerExp();
     }
     drawMap() {
         this.setState(State.computeBefore);
@@ -268,7 +160,6 @@ export class BoundaryOverlay extends Parameter {
         if (!isArray(points)) {
             throw new TypeError('inMap: data must be a Array');
         }
-        this.cancerSelectd();
         this.points = points;
         this.initLegend();
         this.drawMap();

@@ -18,12 +18,13 @@ export class Parameter extends CanvasOverlay {
     constructor(baseConfig, ops) {
         super();
         this.points = []; //数据
+        this.workerData = []; //转换后的数据
+
         this.baseConfig = baseConfig;
         this._setStyle(baseConfig, ops);
-
         this.selectItem = []; //选中
         this.overItem = null; //悬浮
-        this.workerData = []; //缓存woker 转换后的数据
+   
 
     }
 
