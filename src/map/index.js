@@ -67,12 +67,18 @@ export class Map {
         return this.map;
     }
     add(overlay) {
-        this.map.addOverlay(overlay);
+        if (overlay.isDispose) {
+            throw new TypeError('inMap: overlay has been destroyed.');
+        } else {
+            this.map.addOverlay(overlay);
+        }
+
     }
     remove(overlay) {
         if (overlay.map) {
             overlay.dispose();
         }
+        overlay = null;
 
     }
 

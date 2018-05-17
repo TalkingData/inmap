@@ -1,9 +1,7 @@
 import {
     Parameter
 } from './base/Parameter.js';
-import {
-    clearPushArray
-} from './../common/util';
+
 import GriddingConfig from './../config/GriddingConfig.js';
 import State from './../config/OnState';
 export class GriddingOverlay extends Parameter {

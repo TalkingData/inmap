@@ -62,95 +62,97 @@
         },
     })
 
-    var overlay1 = new inMap.DotOverlay({
-        tooltip: {
-            show: true,
-            formatter: "{count}",
-            offsets: {
-                top: 0,
-                left: 10,
-            }
-        },
-        legend: {
-            show: true,
-            title: "标题",
-            data: ["描述1", "描述2", "描述3", "描述4"],
-            formatter: function (start, end, index) {
-                return start + "万~" + (end || "max") + "万";
-            }
-        },
-        style: {
-            type: 'cluster',
-            normal: {
-                backgroundColor: 'rgba(200, 200, 50, 1)',
-                borderWidth: 1,
-                borderColor: "rgba(255,255,255,1)",
-                size: 10,
-            },
-            mouseOver: {
-                backgroundColor: 'rgba(200, 200, 200, 1)',
-                borderColor: "rgba(255,255,255,1)",
-                borderWidth: 4,
-                scale: 1,
-            },
-            colors: [
-                "rgba(156,200,249,0.7)", "rgba(93,158,247,0.7)",
-                "rgba(134,207,55,0.7)",
-                "rgba(252,198,10,0.7)", "rgba(255,144,0,0.7)", "rgba(255,72,0,0.7)",
-                "rgba(255,0,0,0.7)"
-            ],
-            selected: {
-                backgroundColor: 'rgba(184,0,0,1)',
-                borderColor: "rgba(255,255,255,1)"
-            },
-            splitList: [{ //设置区间颜色
-                    start: 0,
-                    end: 2,
-                    size: 3,
-                    backgroundColor: 'rgba(200, 200, 50, 1)',
-                },
-                {
-                    start: 2,
-                    end: 5,
-                    size: 6,
-                    backgroundColor: 'rgba(200, 200, 50, 1)',
-                },
-                {
-                    start: 5,
-                    end: 7,
-                    size: 9,
-                    backgroundColor: 'rgba(200, 200, 50, 1)',
-                },
-                {
-                    start: 7,
-                    size: 12,
-                    backgroundColor: 'rgba(200, 200, 50, 1)',
-                }
-            ],
-        },
-        data: data,
-        event: {
-            // onMouseClick: function (item, event) {
-            //     //能获取当前点的信息
-            // }
-        }
-    });
-    var overlay2 = new inMap.HeatOverlay({
-        style: {
-            normal: {
-                radius: 15, // 半径
-            }
-        },
-        data: data
-    });
+    var overlay1 = null;
+    var overlay2 = null
 
     var inMapVue = new Vue({
         el: '#app',
         methods: {
             addDot: function () {
+                overlay1 = new inMap.DotOverlay({
+                    tooltip: {
+                        show: true,
+                        formatter: "{count}",
+                        offsets: {
+                            top: 0,
+                            left: 10,
+                        }
+                    },
+                    legend: {
+                        show: true,
+                        title: "标题",
+                        data: ["描述1", "描述2", "描述3", "描述4"],
+                        formatter: function (start, end, index) {
+                            return start + "万~" + (end || "max") + "万";
+                        }
+                    },
+                    style: {
+                        type: 'cluster',
+                        normal: {
+                            backgroundColor: 'rgba(200, 200, 50, 1)',
+                            borderWidth: 1,
+                            borderColor: "rgba(255,255,255,1)",
+                            size: 10,
+                        },
+                        mouseOver: {
+                            backgroundColor: 'rgba(200, 200, 200, 1)',
+                            borderColor: "rgba(255,255,255,1)",
+                            borderWidth: 4,
+                            scale: 1,
+                        },
+                        colors: [
+                            "rgba(156,200,249,0.7)", "rgba(93,158,247,0.7)",
+                            "rgba(134,207,55,0.7)",
+                            "rgba(252,198,10,0.7)", "rgba(255,144,0,0.7)", "rgba(255,72,0,0.7)",
+                            "rgba(255,0,0,0.7)"
+                        ],
+                        selected: {
+                            backgroundColor: 'rgba(184,0,0,1)',
+                            borderColor: "rgba(255,255,255,1)"
+                        },
+                        splitList: [{ //设置区间颜色
+                                start: 0,
+                                end: 2,
+                                size: 3,
+                                backgroundColor: 'rgba(200, 200, 50, 1)',
+                            },
+                            {
+                                start: 2,
+                                end: 5,
+                                size: 6,
+                                backgroundColor: 'rgba(200, 200, 50, 1)',
+                            },
+                            {
+                                start: 5,
+                                end: 7,
+                                size: 9,
+                                backgroundColor: 'rgba(200, 200, 50, 1)',
+                            },
+                            {
+                                start: 7,
+                                size: 12,
+                                backgroundColor: 'rgba(200, 200, 50, 1)',
+                            }
+                        ],
+                    },
+                    data: data,
+                    event: {
+                        // onMouseClick: function (item, event) {
+                        //     //能获取当前点的信息
+                        // }
+                    }
+                });
                 inmap.add(overlay1);
             },
             addHeat: function () {
+                overlay2 = new inMap.HeatOverlay({
+                    style: {
+                        normal: {
+                            radius: 15, // 半径
+                        }
+                    },
+                    data: data
+                });
                 inmap.add(overlay2);
             },
             delDot: function () {

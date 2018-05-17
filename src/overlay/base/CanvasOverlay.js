@@ -2,7 +2,8 @@ import BaseClass from './BaseClass';
 import {
     setDevicePixelRatio,
     isString,
-    isArray
+    isArray,
+    isFunction
 } from './../../common/util';
 import {
     WhiteLover,
@@ -28,6 +29,7 @@ export class CanvasOverlay extends BaseClass {
         this.devicePixelRatio = window.devicePixelRatio;
         this.repaintEnd = opts && opts.repaintEnd; //重绘回调
         this.animationFlag = true;
+        this.isDispose = false; //是否已销毁
 
     }
     initialize(map) {
@@ -183,6 +185,7 @@ export class CanvasOverlay extends BaseClass {
      * 对象销毁
      */
     dispose() {
+
         this.removeWorkerMessage();
         this.map.removeEventListener('resize', this.tOnResize);
         this.map.removeEventListener('moveend', this.tOnMoveend);
@@ -200,15 +203,17 @@ export class CanvasOverlay extends BaseClass {
             this.toolTip.hide();
             this.toolTip = null;
         }
-         
-    
-       
+
         this.Tclear();
         this.Tdispose();
         this.map.removeOverlay(this);
-        this.container = null;
-        this.ctx = null;
-        this.repaintEnd = null;
-        this.map=null;
+        let me = this;
+        for (let key in me) {
+            if (!isFunction(me[key])) {
+                me[key] = null;
+            }
+        }
+        me.isDispose = true;
+        me = null;
     }
 }

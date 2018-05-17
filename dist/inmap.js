@@ -335,8 +335,7 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
         _this.devicePixelRatio = window.devicePixelRatio;
         _this.repaintEnd = opts && opts.repaintEnd;
         _this.animationFlag = true;
-
-        return _this;
+        _this.isDispose = false;return _this;
     }
 
     _createClass(CanvasOverlay, [{
@@ -504,6 +503,7 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
     }, {
         key: 'dispose',
         value: function dispose() {
+
             this.removeWorkerMessage();
             this.map.removeEventListener('resize', this.tOnResize);
             this.map.removeEventListener('moveend', this.tOnMoveend);
@@ -525,10 +525,14 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
             this.Tclear();
             this.Tdispose();
             this.map.removeOverlay(this);
-            this.container = null;
-            this.ctx = null;
-            this.repaintEnd = null;
-            this.map = null;
+            var me = this;
+            for (var key in me) {
+                if (!(0, _util.isFunction)(me[key])) {
+                    me[key] = null;
+                }
+            }
+            me.isDispose = true;
+            me = null;
         }
     }]);
 
@@ -2375,7 +2379,11 @@ var Map = exports.Map = function () {
     }, {
         key: 'add',
         value: function add(overlay) {
-            this.map.addOverlay(overlay);
+            if (overlay.isDispose) {
+                throw new TypeError('inMap: overlay has been destroyed.');
+            } else {
+                this.map.addOverlay(overlay);
+            }
         }
     }, {
         key: 'remove',
@@ -2383,6 +2391,7 @@ var Map = exports.Map = function () {
             if (overlay.map) {
                 overlay.dispose();
             }
+            overlay = null;
         }
     }]);
 
@@ -3297,6 +3306,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
         key: 'Tdispose',
         value: function Tdispose() {
             this.map.removeOverlay(this.mouseLayer);
+            this.mouseLayer.dispose();
         }
     }, {
         key: 'tMousemove',

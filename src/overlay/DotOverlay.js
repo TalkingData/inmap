@@ -338,6 +338,7 @@ export class DotOverlay extends Parameter {
     }
     Tdispose() {
         this.map.removeOverlay(this.mouseLayer);
+        this.mouseLayer.dispose();
     }
     tMousemove(event) {
 

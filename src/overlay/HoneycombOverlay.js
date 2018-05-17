@@ -1,9 +1,7 @@
 import {
     Parameter
 } from './base/Parameter.js';
-import {
-    isArray
-} from './../common/util';
+
 import HoneycombConfig from './../config/HoneycombConfig.js';
 import State from './../config/OnState';
 export class HoneycombOverlay extends Parameter {
