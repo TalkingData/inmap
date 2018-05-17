@@ -2,7 +2,7 @@ import {
     Parameter
 } from './base/Parameter.js';
 import {
-    isArray
+    clearPushArray
 } from './../common/util';
 import GriddingConfig from './../config/GriddingConfig.js';
 import State from './../config/OnState';
@@ -19,8 +19,18 @@ export class GriddingOverlay extends Parameter {
     }
     setOptionStyle(ops) {
         this._setStyle(this.baseConfig, ops);
-        this.createColorSplit();
-        this.drawMap();
+    }
+    translation(distanceX, distanceY) {
+
+        for (let i = 0; i < this.workerData.length; i++) {
+            let item = this.workerData[i];
+            
+            item.x = item.x + distanceX;
+            item.y = item.y + distanceY;
+        }
+
+        this.refresh();
+
     }
     setState(val) {
         this.state = val;
@@ -28,13 +38,18 @@ export class GriddingOverlay extends Parameter {
     }
 
     refresh() {
+        this.setState(State.drawBefore);
         this.drawRec();
+        this.setState(State.drawAfter);
     }
     resize() {
-        if (this.eventType == 'onzoomend') {
-            this.workerData = {};
-        }
         this.drawMap();
+    }
+    onOptionChange() {
+        this.map && this.createColorSplit();
+    }
+    onDataChange() {
+        this.map && this.createColorSplit();
     }
     _calculateMpp() {
         let zoom = this.map.getZoom();
@@ -56,7 +71,7 @@ export class GriddingOverlay extends Parameter {
         return this.map.getDistance(mapCenter, cpt) / dpx;
     }
     drawMap() {
-
+        this.clearData();
         let {
             normal,
             type
@@ -99,31 +114,17 @@ export class GriddingOverlay extends Parameter {
             if (this.eventType == 'onmoving') {
                 return;
             }
-            let grids = gridsObj.grids;
             this.setState(State.conputeAfter);
-
-            this.canvasResize();
-            this.workerData = grids;
+            this.workerData = gridsObj.grids;
             this._drawSize = size / zoomUnit;
             this.setState(State.drawBefore);
-
             this.createColorSplit();
-            this.drawRec();
-            this.setState(State.drawAfter);
-
-
+            this.refresh();
+            gridsObj = null;
         });
     }
 
-    setPoints(points) {
 
-        if (!isArray(points)) {
-            throw new TypeError('inMap: data must be a Array');
-        }
-        this.points = points;
-
-        this.drawMap();
-    }
     _isMouseOver(mouseX, mouseY, x, y, w, h) {
         return !(mouseX < x || mouseX > x + w || mouseY < y || mouseY > y + h);
     }
@@ -138,14 +139,12 @@ export class GriddingOverlay extends Parameter {
     }
     getTarget(x, y) {
 
-        let grids = this.workerData;
         let gridStep = this._drawSize;
         let mapSize = this.map.getSize();
-        for (let i in grids) {
-
-            let item = grids[i];
-            let x1 = parseFloat(item.x);
-            let y1 = parseFloat(item.y);
+        for (let i = 0; i < this.workerData.length; i++) {
+            let item = this.workerData[i];
+            let x1 = item.x;
+            let y1 = item.y;
             if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
                 if (this._isMouseOver(x, y, x1, y1, gridStep, gridStep)) {
                     return {
@@ -206,24 +205,9 @@ export class GriddingOverlay extends Parameter {
         this.setlegend(this.legendConfig, this.styleConfig.splitList);
     }
     createColorSplit() {
-        let grids = this.workerData;
-        let data = [];
-        for (let key in grids) {
-            let count = grids[key].count;
-            if (count > 0) {
-                data.push({
-                    name: key,
-                    count: count
-                });
-            }
-        }
-
         if (this.styleConfig.colors.length > 0) {
-            this.compileSplitList(data);
+            this.compileSplitList(this.workerData);
         }
-
-    }
-    setlegendParams() {
 
     }
     setTooltip(event) {
@@ -243,13 +227,12 @@ export class GriddingOverlay extends Parameter {
     drawRec() {
         this.clearCanvas();
         let gridStep = this._drawSize;
-        let grids = this.workerData;
         let style = this.styleConfig.normal;
         let mapSize = this.map.getSize();
         this.ctx.shadowOffsetX = 0;
         this.ctx.shadowOffsetY = 0;
-        for (let i in grids) {
-            let item = grids[i];
+        for (let i = 0; i < this.workerData.length; i++) {
+            let item = this.workerData[i];
             let x = item.x;
             let y = item.y;
             if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
@@ -263,7 +246,6 @@ export class GriddingOverlay extends Parameter {
                 }
                 this.ctx.fillStyle = drawStyle.backgroundColor;
                 this.ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
-
             }
 
         }

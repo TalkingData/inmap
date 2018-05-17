@@ -2,7 +2,9 @@ import {
     isNumber,
     detectmob,
     isEmpty,
-    merge
+    merge,
+    isArray,
+    clearPushArray
 } from './../../common/util';
 import {
     CanvasOverlay
@@ -19,15 +21,15 @@ export class Parameter extends CanvasOverlay {
         super();
         this.points = []; //数据
         this.workerData = []; //转换后的数据
-
+        this._option = {};
         this.baseConfig = baseConfig;
-        this._setStyle(baseConfig, ops);
+
         this.selectItem = []; //选中
         this.overItem = null; //悬浮
-   
+
+        this._setStyle(baseConfig, ops);
 
     }
-
     _setStyle(config, ops) {
         ops = ops || {};
         let option = merge(config, ops);
@@ -37,11 +39,65 @@ export class Parameter extends CanvasOverlay {
         this.legendConfig = option.legend;
         this.eventConfig = option.event;
         this.styleConfig = option.style;
-        this.points = ops.data ? option.data : this.points;
+
+        if (ops.data) {
+            this.setData(ops.data);
+        } else {
+            this.onOptionChange();
+            this.map && this.refresh();
+        }
+        // this.points = ops.data ? option.data : this.points;
         this.tMapStyle(option.skin);
         this.toolTip && this.toolTip.setOption(this.tooltipConfig);
 
     }
+    setData(points) {
+        if (!isArray(points)) {
+            throw new TypeError('inMap: data must be a Array');
+        }
+        this.points = points;
+        this.clearData();
+        this.cancerSelectd();
+        this.onDataChange();
+        this.map && this.resize();
+    }
+    onOptionChange() {
+        /**抽象方法，样式发生变化会触发 */
+    }
+    onDataChange() {
+        /**抽象方法，数据发生变化会触发 */
+    }
+    setPoints(points) {
+        this.setData(points);
+    }
+    getData() {
+        return this.workerData;
+    }
+    getTransformData() {
+        return this.workerData.length > 0 ? this.workerData : this.points;
+    }
+    /**
+     * 清除wokerData
+     * 清除悬浮引用
+     */
+    clearData() {
+        clearPushArray(this.workerData, []);
+        this.overItem = null;
+    }
+    /**
+     * 清除选中
+     * @memberof Parameter
+     */
+    cancerSelectd() {
+        clearPushArray(this.selectItem, []);
+    }
+
+    setWorkerData(val) {
+        this.points = []; //优化
+        this.overItem = null;
+        clearPushArray(this.workerData, val);
+    }
+
     canvasInit() {
         this.toolTip.setOption(this.tooltipConfig);
         this.parameterInit();
@@ -52,13 +108,6 @@ export class Parameter extends CanvasOverlay {
          *  抽象方法，子类去实现
          */
     }
-    /**
-     * 抽象方法
-     * 
-     * @param {any} ops 
-     * @memberof Parameter
-     */
-    setOptionStyle() {}
     toRgba(styleConfig) {
         ['normal', 'mouseOver', 'selected'].forEach((status) => {
             let statusStyle = styleConfig[status];
@@ -172,37 +221,6 @@ export class Parameter extends CanvasOverlay {
         //原因 点 线  面 的数据结构不同  判断依据也不相同
         return -1;
     }
-    /*eslint-enable */
-    deleteSelectItem(item) {
-        let index = this.findIndexSelectItem(item);
-        index > -1 && this.selectItem.splice(index, 1);
-    }
-
-    setWorkerData(val) {
-        this.workerData = val;
-    }
-    /**
-     * 设置悬浮信息
-     */
-    setTooltip(event) {
-        this.toolTip.render(event, this.overItem);
-    }
-
-    Tclear() {
-
-    }
-
-
-
-    /**
-     * 设置图例
-     */
-    setlegend(legendConfig, list) {
-        if (!this.map) return;
-        legendConfig['list'] = list;
-        this.legend.setOption(legendConfig);
-    }
-    /*eslint-disable */
     /**
      * 判断触发源
      */
@@ -214,6 +232,41 @@ export class Parameter extends CanvasOverlay {
         };
     }
     /*eslint-enable */
+    deleteSelectItem(item) {
+        let index = this.findIndexSelectItem(item);
+        index > -1 && this.selectItem.splice(index, 1);
+    }
+
+
+    /**
+     * 设置悬浮信息
+     */
+    setTooltip(event) {
+        this.toolTip.render(event, this.overItem);
+    }
+
+    Tclear() {
+        this.points = null;
+        this.workerData = null;
+        this.baseConfig = null;
+        this.selectItem = null;
+        this.overItem = null;
+        this._option = null;
+        this.tooltipConfig = null;
+        this.legendConfig = null;
+        this.eventConfig = null;
+        this.styleConfig = null;
+    }
+
+    /**
+     * 设置图例
+     */
+    setlegend(legendConfig, list) {
+        if (!this.map) return;
+        legendConfig['list'] = list;
+        this.legend.setOption(legendConfig);
+    }
+
     /**
      * 绘画
      */
@@ -268,8 +321,7 @@ export class Parameter extends CanvasOverlay {
         if (result.index == -1) {
             return;
         }
-
-        let item = result.item;
+        let item = JSON.parse(JSON.stringify(result.item)); //优化
         if (multiSelect) {
             if (this.selectItemContains(item)) {
                 this.deleteSelectItem(item); //二次点击取消选中
@@ -278,7 +330,7 @@ export class Parameter extends CanvasOverlay {
             }
 
         } else {
-            this.selectItem = [result.item];
+            clearPushArray(this.selectItem, result.item);
         }
 
         this.swopData(result.index, item);

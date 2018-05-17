@@ -4,7 +4,8 @@
 
 import {
     merge,
-    isArray
+    isArray,
+    clearPushArray
 } from './../common/util';
 import {
     CanvasOverlay
@@ -20,6 +21,7 @@ export class CircuitOverlay extends CanvasOverlay {
         this._setStyle(CircuitConfig, ops);
         this._isCoordinates = false;
         this.state = null;
+        this.workerData = [];
     }
     _setStyle(config, ops) {
         let option = merge(config, ops);
@@ -32,6 +34,20 @@ export class CircuitOverlay extends CanvasOverlay {
         this.state = val;
         this.eventConfig.onState(this.state);
     }
+    translation(distanceX, distanceY) {
+        for (let i = 0; i < this.workerData.length; i++) {
+            let pixels = this.workerData[i].pixels;
+            for (let j = 0; j < pixels.length; j++) {
+                let pixel = pixels[j];
+                pixel[0] = pixel[0] + distanceX;
+                pixel[1] = pixel[1] + distanceY;
+            }
+        }
+        this.setState(State.drawBefore);
+        this.drawLine(this.workerData);
+        this.setState(State.drawAfter);
+    }
+
     resize() {
         this.drawMap();
     }
@@ -39,6 +55,9 @@ export class CircuitOverlay extends CanvasOverlay {
         this._setStyle(CircuitConfig, ops);
         this.coordinates(this.points);
         this.drawMap();
+    }
+    setData(points) {
+        this.setPoints(points);
     }
     setPoints(points) {
         if (!isArray(points)) {
@@ -69,16 +88,16 @@ export class CircuitOverlay extends CanvasOverlay {
                 return;
             }
             this.setState(State.conputeAfter);
-
             this.clearCanvas();
-            this.canvasResize();
+            clearPushArray(this.workerData, pixels);
             this.setState(State.drawBefore);
-
-            this.drawLine(pixels);
+            this.drawLine(this.workerData);
             this.setState(State.drawAfter);
 
         });
     }
+
+
     coordinates(data) {
         this._isCoordinates = true;
         let projection = this.map.getMapType().getProjection();
@@ -115,7 +134,7 @@ export class CircuitOverlay extends CanvasOverlay {
     }
 
     drawLine(data) {
-
+        this.clearCanvas();
         let normal = this.styleConfig.normal;
         this.ctx.shadowBlur = 0;
         this.ctx.shadowOffsetX = 0;

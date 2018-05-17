@@ -67,6 +67,15 @@ export default class FlashDotOverlay extends CanvasOverlay {
         this.tMapStyle(option.skin);
         this.map && this.addMarker();
     }
+    translation(distanceX, distanceY) {
+        
+        for (let i = 0; i < this.markers.length; i++) {
+            let pixel = this.markers[i].pixel;
+            pixel.x = pixel.x + distanceX;
+            pixel.y = pixel.y + distanceY;
+        }
+        
+    }
     addMarker() {
         this.markers = [];
         for (let i = 0; i < this.data.length; i++) {

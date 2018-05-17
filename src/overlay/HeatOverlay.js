@@ -3,7 +3,8 @@ import {
 } from './base/CanvasOverlay';
 import {
     merge,
-    isArray
+    isArray,
+    clearPushArray
 } from './../common/util';
 
 import HeatConfig from './../config/HeatConfig';
@@ -12,6 +13,7 @@ export class HeatOverlay extends CanvasOverlay {
     constructor(ops) {
         super(ops);
         this.points = [];
+        this.workerData = [];
         this._setStyle(HeatConfig, ops);
         this.delteOption();
         this.state = null;
@@ -19,6 +21,10 @@ export class HeatOverlay extends CanvasOverlay {
     resize() {
         this.drawMap();
     }
+    getTransformData() {
+        return this.workerData.length > 0 ? this.workerData : this.points;
+    }
+
     _setStyle(config, ops) {
         ops = ops || {};
         let option = merge(config, ops);
@@ -32,6 +38,7 @@ export class HeatOverlay extends CanvasOverlay {
     setOptionStyle(ops) {
         this._setStyle(HeatConfig, ops);
         this.delteOption();
+        clearPushArray(this.workerData,[]);
         this.drawMap();
     }
     setState(val) {
@@ -49,6 +56,9 @@ export class HeatOverlay extends CanvasOverlay {
             show: false
         };
     }
+    setData(points) {
+        this.setPoints(points);
+    }
     setPoints(points) {
         if (!isArray(points)) {
             throw new TypeError('inMap :data must be a Array');
@@ -65,28 +75,43 @@ export class HeatOverlay extends CanvasOverlay {
             }
         }
     }
+    translation(distanceX, distanceY) {
+        for (let i = 0; i < this.workerData.length; i++) {
+            let pixel = this.workerData[i].pixel;
+            pixel.x = pixel.x + distanceX;
+            pixel.y = pixel.y + distanceY;
+        }
+        this.setState(State.drawBefore);
+        this.refresh();
+        this.setState(State.drawAfter);
+
+    }
+    setWorkerData(val) {
+        this.points = []; //优化
+        clearPushArray(this.workerData, val);
+    }
     drawMap() {
         this.setState(State.computeBefore);
 
-        this.postMessage('HeatOverlay.pointsToPixels', this.points, (pixels) => {
+        this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), (pixels) => {
 
             if (this.eventType == 'onmoving') {
                 return;
             }
             this.setState(State.conputeAfter);
 
-            this.clearCanvas();
-            this.canvasResize();
-            this.setState(State.drawBefore);
+            this.setWorkerData(pixels);
 
-            this.workerData = pixels;
+            this.setState(State.drawBefore);
             this.refresh();
             this.setState(State.drawAfter);
 
+            pixels = null;
 
         });
     }
     refresh() {
+        this.clearCanvas();
         let normal = this.styleConfig.normal;
         let container = this.container;
         if (normal.maxValue == 0) {

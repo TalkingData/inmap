@@ -53,9 +53,18 @@
         },
         watch: {
             model: function (newVal, oldVal) {
-            
                 console.log(newVal);
-                overlay.setSelectd("name=='" + newVal + "'", true);
+                var renderData = overlay.getData();
+                let selectList = []
+                renderData.forEach(function (val) {
+                    if (newVal == val.name) {
+                        selectList.push(val);
+                    }
+                });
+                overlay.setSelectedList(selectList);
+                // overlay.clearSelectedList();
+                // console.log(overlay.getSelectedList());
+                overlay.refresh();
             }
         },
         mounted: function () {
@@ -63,7 +72,7 @@
                 this.boundarys.push({
                     value: element.name,
                     label: element.name,
-                   
+
                 })
             }, this);
         }
@@ -154,7 +163,7 @@
         }
     });
     inmap.add(overlay);
-    overlay.setPoints(data);
+    overlay.setData(data);
 </script>
 
 </html>

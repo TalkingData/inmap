@@ -55,7 +55,7 @@ function pointToPolygonDist(p, polygon) {
 
             if ((a.y > p.y !== b.y > p.y) &&
                 (p.x < (b.x - a.x) * (p.y - a.y) / (b.y - a.y) + a.x)) inside = !inside;
-           
+
             minDistSq = Math.min(minDistSq, distToSegmentSquared(p, a, b));
         }
     }
@@ -70,7 +70,7 @@ function getCentroid(polygon) {
     let points = polygon[0];
     for (let i = 0; i < points.length - 1; ++i) {
         // a、b以及原点构成一个三角形
-       
+
         let a = points[i + 1];
         let b = points[i];
         let area = 0.5 * (a[0] * b[1] - b[0] * a[1]); // 计算面积
@@ -126,5 +126,8 @@ export default function polylabel(polygon) {
         cellQueue.push(new Cell(cell.x - h, cell.y + h, h, polygon));
         cellQueue.push(new Cell(cell.x + h, cell.y + h, h, polygon));
     }
-    return bestCell;
+    return {
+        x: bestCell.x,
+        y: bestCell.y
+    };
 }

@@ -334,6 +334,12 @@ export class MoveLineOverlay extends BaseClass {
             }));
         });
     }
+    setData(points) {
+        this.setPoints(points);
+    }
+    getData() {
+        return this.data;
+    }
     setPoints(points) {
         if (!isArray(points)) {
             throw new TypeError('inMap: data must be a Array');

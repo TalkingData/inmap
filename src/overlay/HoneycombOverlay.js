@@ -13,36 +13,38 @@ export class HoneycombOverlay extends Parameter {
         this.mpp = {};
         this._drawSize = 0;
     }
-    parameterInit() {
 
-    }
     setOptionStyle(ops) {
-        this._setStyle(this.baseConfig, ops);
-        this.parameterInit();
-        this.createColorSplit();
-        this.refresh();
+        this._setStyle( this.baseConfig, ops);
     }
     setState(val) {
         this.state = val;
         this.eventConfig.onState(this.state);
     }
+    translation(distanceX, distanceY) {
 
-    refresh() {
-        if (this.eventType == 'onzoomend') {
-            this.workerData = {};
+        for (let i = 0; i < this.workerData.length; i++) {
+            let item = this.workerData[i];
+            item.x = item.x + distanceX;
+            item.y = item.y + distanceY;
         }
+        this.refresh();
+    }
+    refresh() {
+        this.setState(State.drawBefore);
         this.drawRec();
+        this.setState(State.drawAfter);
     }
     resize() {
         this.drawMap();
     }
-    setPoints(points) {
-        if (!isArray(points)) {
-            throw new TypeError('inMap: data must be a Array');
-        }
-        this.points = points;
-        this.drawMap();
+    onOptionChange() {
+        this.map && this.createColorSplit();
     }
+    onDataChange() {
+        this.map && this.createColorSplit();
+    }
+
     _calculateMpp() {
         let zoom = this.map.getZoom();
         if (this.mpp[zoom]) {
@@ -63,6 +65,7 @@ export class HoneycombOverlay extends Parameter {
         return this.map.getDistance(mapCenter, cpt) / dpx;
     }
     drawMap() {
+        this.clearData();
         let {
             normal,
             type
@@ -109,35 +112,18 @@ export class HoneycombOverlay extends Parameter {
             }
             this.setState(State.conputeAfter);
 
-            this.canvasResize();
-            let grids = gridsObj.grids;
-            this.workerData = grids;
+            this.workerData = gridsObj.grids;
             this._drawSize = size / zoomUnit;
 
-            this.setState(State.drawBefore);
             this.createColorSplit();
-            this.drawRec();
-            this.setState(State.drawAfter);
+            this.refresh();
+            gridsObj = null;
 
         });
     }
     createColorSplit() {
-        let data = [],
-            grids = this.workerData;
-        for (let key in grids) {
-            let count = grids[key].count;
-
-            if (count > 0) {
-                data.push({
-                    name: key,
-                    count: count
-                });
-            }
-
-        }
-
         if (this.styleConfig.colors.length > 0) {
-            this.compileSplitList(data);
+            this.compileSplitList(this.workerData);
         }
 
     }
@@ -188,7 +174,6 @@ export class HoneycombOverlay extends Parameter {
     findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-
             index = this.selectItem.findIndex(function (val) {
                 return val && val.x == item.x && val.y == item.y;
             });
@@ -206,12 +191,11 @@ export class HoneycombOverlay extends Parameter {
 
     }
     getTarget(mouseX, mouseY) {
-        let grids = this.workerData;
         let gridStep = this._drawSize;
         let mapSize = this.map.getSize();
 
-        for (let i in grids) {
-            let item = grids[i];
+        for (let i = 0; i < this.workerData.length; i++) {
+            let item = this.workerData[i];
             let x = item.x;
             let y = item.y;
             if (item.count > 0 && x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
@@ -241,16 +225,17 @@ export class HoneycombOverlay extends Parameter {
         this.clearCanvas();
         let mapSize = this.map.getSize();
         let gridsW = this._drawSize;
-        let grids = this.workerData;
+
         let style = this.styleConfig.normal;
         this.ctx.shadowOffsetX = 0;
         this.ctx.shadowOffsetY = 0;
-        for (let i in grids) {
-            let x = grids[i].x;
-            let y = grids[i].y;
-            let count = grids[i].count;
+        for (let i = 0; i < this.workerData.length; i++) {
+            let item = this.workerData[i];
+            let x = item.x;
+            let y = item.y;
+            let count = item.count;
             if (count > 0 && x > -gridsW && y > -gridsW && x < mapSize.width + gridsW && y < mapSize.height + gridsW) {
-                let drawStyle = this.getStyle(grids[i]);
+                let drawStyle = this.getStyle(item);
                 this.drawLine(x, y, gridsW - style.padding, drawStyle, this.ctx);
             }
         }

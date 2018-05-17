@@ -103,6 +103,7 @@ exports.isPolyContains = isPolyContains;
 exports.isPolyContainsPt = isPolyContainsPt;
 exports.detectmob = detectmob;
 exports.merge = merge;
+exports.clearPushArray = clearPushArray;
 
 var _deepmerge = __webpack_require__(9);
 
@@ -246,6 +247,18 @@ function merge() {
         }
     });
 }
+function clearPushArray(a, b) {
+    if (Array.isArray(b)) {
+        a.splice(0, a.length);
+        b.forEach(function (val) {
+            a.push(val);
+        });
+    } else if (b != null) {
+        a.splice(0, a.length, b);
+    } else {
+        a.splice(0, a.length);
+    }
+}
 
 /***/ }),
 /* 1 */
@@ -311,6 +324,7 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
         _this.ctx = null;
         _this.eventType = 'moveend';
         _this.map = null;
+        _this.container = null;
         _this.tOnResize = _this.tOnResize.bind(_this);
         _this.tOnMoveend = _this.tOnMoveend.bind(_this);
         _this.tOnZoomstart = _this.tOnZoomstart.bind(_this);
@@ -368,6 +382,7 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
         key: 'tOnResize',
         value: function tOnResize(event) {
             this.setCanvasSize();
+            this.eventType = event.type;
             this.tDraw(this, event);
         }
     }, {
@@ -403,7 +418,14 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
     }, {
         key: 'draw',
         value: function draw() {
-            this.resize();
+
+            var eventType = this.eventType;
+
+            if (eventType == 'onmoving') {
+                this.canvasResize();
+            } else {
+                this.resize();
+            }
         }
     }, {
         key: 'tMouseClick',
@@ -412,7 +434,7 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
         key: 'tDraw',
         value: function tDraw(me, event) {
             this.eventType = event.type;
-            me.resize();
+            me.draw();
             this.repaintEnd && this.repaintEnd(this);
             me.keysss = true;
         }
@@ -427,9 +449,28 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
             var point = map.getCenter();
             var size = map.getSize();
             var pixel = map.pointToOverlayPixel(point);
-            container.style.left = pixel.x - size.width / 2 + 'px';
-            container.style.top = pixel.y - size.height / 2 + 'px';
+            var left = pixel.x - size.width / 2;
+            var top = pixel.y - size.height / 2;
+            var containerDomStyle = container.style;
+
+            this.translationIf(parseFloat(containerDomStyle.left), parseFloat(containerDomStyle.top), left, top);
+            containerDomStyle.left = left + 'px';
+            containerDomStyle.top = top + 'px';
+
+            containerDomStyle = null;
+            container = null;
+            map = null;
         }
+    }, {
+        key: 'translationIf',
+        value: function translationIf(oldLeft, oldTop, newLeft, newTop) {
+            if (oldLeft != newLeft || oldTop != newTop) {
+                this.translation(oldLeft - newLeft, oldTop - newTop);
+            }
+        }
+    }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {}
     }, {
         key: 'clearCanvas',
         value: function clearCanvas() {
@@ -484,6 +525,10 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
             this.Tclear();
             this.Tdispose();
             this.map.removeOverlay(this);
+            this.container = null;
+            this.ctx = null;
+            this.repaintEnd = null;
+            this.map = null;
         }
     }]);
 
@@ -529,11 +574,15 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
 
         _this.points = [];
         _this.workerData = [];
-
+        _this._option = {};
         _this.baseConfig = baseConfig;
-        _this._setStyle(baseConfig, ops);
+
         _this.selectItem = [];
-        _this.overItem = null;return _this;
+        _this.overItem = null;
+
+        _this._setStyle(baseConfig, ops);
+
+        return _this;
     }
 
     _createClass(Parameter, [{
@@ -547,9 +596,67 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
             this.legendConfig = option.legend;
             this.eventConfig = option.event;
             this.styleConfig = option.style;
-            this.points = ops.data ? option.data : this.points;
+
+            if (ops.data) {
+                this.setData(ops.data);
+            } else {
+                this.onOptionChange();
+                this.map && this.refresh();
+            }
+
             this.tMapStyle(option.skin);
             this.toolTip && this.toolTip.setOption(this.tooltipConfig);
+        }
+    }, {
+        key: 'setData',
+        value: function setData(points) {
+            if (!(0, _util.isArray)(points)) {
+                throw new TypeError('inMap: data must be a Array');
+            }
+            this.points = points;
+            this.clearData();
+            this.cancerSelectd();
+            this.onDataChange();
+            this.map && this.resize();
+        }
+    }, {
+        key: 'onOptionChange',
+        value: function onOptionChange() {}
+    }, {
+        key: 'onDataChange',
+        value: function onDataChange() {}
+    }, {
+        key: 'setPoints',
+        value: function setPoints(points) {
+            this.setData(points);
+        }
+    }, {
+        key: 'getData',
+        value: function getData() {
+            return this.workerData;
+        }
+    }, {
+        key: 'getTransformData',
+        value: function getTransformData() {
+            return this.workerData.length > 0 ? this.workerData : this.points;
+        }
+    }, {
+        key: 'clearData',
+        value: function clearData() {
+            (0, _util.clearPushArray)(this.workerData, []);
+            this.overItem = null;
+        }
+    }, {
+        key: 'cancerSelectd',
+        value: function cancerSelectd() {
+            (0, _util.clearPushArray)(this.selectItem, []);
+        }
+    }, {
+        key: 'setWorkerData',
+        value: function setWorkerData(val) {
+            this.points = [];
+            this.overItem = null;
+            (0, _util.clearPushArray)(this.workerData, val);
         }
     }, {
         key: 'canvasInit',
@@ -560,9 +667,6 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
     }, {
         key: 'parameterInit',
         value: function parameterInit() {}
-    }, {
-        key: 'setOptionStyle',
-        value: function setOptionStyle() {}
     }, {
         key: 'toRgba',
         value: function toRgba(styleConfig) {
@@ -668,15 +772,18 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
             return -1;
         }
     }, {
+        key: 'getTarget',
+        value: function getTarget(x, y) {
+            return {
+                item: null,
+                index: -1
+            };
+        }
+    }, {
         key: 'deleteSelectItem',
         value: function deleteSelectItem(item) {
             var index = this.findIndexSelectItem(item);
             index > -1 && this.selectItem.splice(index, 1);
-        }
-    }, {
-        key: 'setWorkerData',
-        value: function setWorkerData(val) {
-            this.workerData = val;
         }
     }, {
         key: 'setTooltip',
@@ -685,21 +792,24 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
         }
     }, {
         key: 'Tclear',
-        value: function Tclear() {}
+        value: function Tclear() {
+            this.points = null;
+            this.workerData = null;
+            this.baseConfig = null;
+            this.selectItem = null;
+            this.overItem = null;
+            this._option = null;
+            this.tooltipConfig = null;
+            this.legendConfig = null;
+            this.eventConfig = null;
+            this.styleConfig = null;
+        }
     }, {
         key: 'setlegend',
         value: function setlegend(legendConfig, list) {
             if (!this.map) return;
             legendConfig['list'] = list;
             this.legend.setOption(legendConfig);
-        }
-    }, {
-        key: 'getTarget',
-        value: function getTarget(x, y) {
-            return {
-                item: null,
-                index: -1
-            };
         }
     }, {
         key: 'refresh',
@@ -758,8 +868,7 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
             if (result.index == -1) {
                 return;
             }
-
-            var item = result.item;
+            var item = JSON.parse(JSON.stringify(result.item));
             if (multiSelect) {
                 if (this.selectItemContains(item)) {
                     this.deleteSelectItem(item);
@@ -767,7 +876,7 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
                     this.selectItem.push(result.item);
                 }
             } else {
-                this.selectItem = [result.item];
+                (0, _util.clearPushArray)(this.selectItem, result.item);
             }
 
             this.swopData(result.index, item);
@@ -2337,22 +2446,64 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
     }, {
         key: 'initLegend',
         value: function initLegend() {
-            this.compileSplitList(this.styleConfig.colors, this.points);
+            this.compileSplitList(this.styleConfig.colors, this.getTransformData());
             this.patchSplitList();
             this.setlegend(this.legendConfig, this.styleConfig.splitList);
+        }
+    }, {
+        key: 'setSelectedList',
+        value: function setSelectedList(list) {
+            (0, _util.clearPushArray)(this.selectItem, list);
+        }
+    }, {
+        key: 'clearSelectedList',
+        value: function clearSelectedList() {
+            (0, _util.clearPushArray)(this.selectItem);
+        }
+    }, {
+        key: 'getSelectedList',
+        value: function getSelectedList() {
+            return this.selectItem;
+        }
+    }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+            for (var i = 0; i < this.workerData.length; i++) {
+                var pixels = this.workerData[i].pixels;
+                for (var j = 0; j < pixels.length; j++) {
+                    var pixel = pixels[j];
+                    pixel[0] = pixel[0] + distanceX;
+                    pixel[1] = pixel[1] + distanceY;
+                }
+                if (this.styleConfig.normal.label.show) {
+                    var bestCell = this.workerData[i].bestCell;
+                    bestCell.x = bestCell.x + distanceX;
+                    bestCell.y = bestCell.y + distanceY;
+                }
+            }
+
+            this.refresh();
         }
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
             this._setStyle(this.baseConfig, ops);
-            this.initLegend();
-            this.refresh();
         }
     }, {
         key: 'setState',
         value: function setState(val) {
             this.state = val;
             this.eventConfig.onState(this.state);
+        }
+    }, {
+        key: 'onOptionChange',
+        value: function onOptionChange() {
+            this.map && this.initLegend();
+        }
+    }, {
+        key: 'onDataChange',
+        value: function onDataChange() {
+            this.map && this.initLegend();
         }
     }, {
         key: 'compileSplitList',
@@ -2415,6 +2566,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
     }, {
         key: 'resize',
         value: function resize() {
+
             this.drawMap();
         }
     }, {
@@ -2461,8 +2613,11 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
     }, {
         key: 'refresh',
         value: function refresh() {
+
+            this.setState(_OnState2.default.drawBefore);
             this.clearCanvas();
-            this.drawLine(this.workerData);
+            this.drawLine(this.getData());
+            this.setState(_OnState2.default.drawAfter);
         }
     }, {
         key: 'drawMap',
@@ -2470,42 +2625,33 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
             var _this2 = this;
 
             this.setState(_OnState2.default.computeBefore);
-            this.postMessage('BoundaryOverlay.calculatePixel', this.points, function (pixels) {
+            var parameter = {
+                data: this.getTransformData(),
+                labelShow: this.styleConfig.normal.label.show
+            };
+
+            this.postMessage('BoundaryOverlay.calculatePixel', parameter, function (pixels) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
                 _this2.setState(_OnState2.default.conputeAfter);
-                _this2.clearCanvas();
-                _this2.canvasResize();
-                _this2.overItem = null;
                 _this2.setWorkerData(pixels);
-                _this2.setState(_OnState2.default.drawBefore);
-                _this2.drawLine(pixels);
-                _this2.setState(_OnState2.default.drawAfter);
+
+                _this2.refresh();
             });
-        }
-    }, {
-        key: 'setPoints',
-        value: function setPoints(points) {
-            if (!(0, _util.isArray)(points)) {
-                throw new TypeError('inMap: data must be a Array');
-            }
-            this.points = points;
-            this.initLegend();
-            this.drawMap();
         }
     }, {
         key: 'getTarget',
         value: function getTarget(x, y) {
-            var data = this.workerData;
+            var data = this.getData();
             this.ctx.beginPath();
             for (var i = 0, len = data.length; i < len; i++) {
                 var item = data[i];
-                var geo = item.pgeo;
+                var pixel = item.pixels;
                 this.ctx.beginPath();
-                this.ctx.moveTo(geo[0][0], geo[0][1]);
-                for (var j = 1; j < geo.length; j++) {
-                    this.ctx.lineTo(geo[j][0], geo[j][1]);
+                this.ctx.moveTo(pixel[0][0], pixel[0][1]);
+                for (var j = 1; j < pixel.length; j++) {
+                    this.ctx.lineTo(pixel[j][0], pixel[j][1]);
                 }
                 this.ctx.closePath();
                 if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
@@ -2523,14 +2669,13 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
     }, {
         key: 'drawLine',
         value: function drawLine(data) {
-
             this.ctx.lineCap = 'round';
             this.ctx.lineJoin = 'round';
             this.ctx.miterLimit = 4;
-
             for (var i = 0, len = data.length; i < len; i++) {
                 var item = data[i];
-                var geo = item.pgeo;
+                var pixel = item.pixels;
+
                 var style = this.setDrawStyle(item);
                 this.ctx.beginPath();
                 this.ctx.shadowColor = style.shadowColor || 'transparent';
@@ -2538,9 +2683,9 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
                 this.ctx.shadowOffsetX = 0;
                 this.ctx.shadowOffsetY = 0;
                 this.ctx.fillStyle = style.backgroundColor;
-                this.ctx.moveTo(geo[0][0], geo[0][1]);
-                for (var j = 1; j < geo.length; j++) {
-                    this.ctx.lineTo(geo[j][0], geo[j][1]);
+                this.ctx.moveTo(pixel[0][0], pixel[0][1]);
+                for (var j = 1; j < pixel.length; j++) {
+                    this.ctx.lineTo(pixel[j][0], pixel[j][1]);
                 }
                 this.ctx.closePath();
                 this.ctx.fill();
@@ -2552,7 +2697,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
 
             for (var _i = 0, _len = data.length; _i < _len; _i++) {
                 var _item = data[_i];
-                var _geo = _item.pgeo;
+                var _pixel = _item.pixels;
                 var bestCell = _item.bestCell;
                 var label = this.setDrawStyle(_item).label;
 
@@ -2562,7 +2707,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
                     this.ctx.font = label.font;
                     this.ctx.fillStyle = label.color;
                     var width = this.ctx.measureText(_item.name).width;
-                    if (this.getMaxWidth(_geo) > width) {
+                    if (this.getMaxWidth(_pixel) > width) {
                         this.ctx.fillText(_item.name, bestCell.x - width / 2, bestCell.y);
                     }
                 }
@@ -2621,6 +2766,7 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
         _this._setStyle(_CircuitConfig2.default, ops);
         _this._isCoordinates = false;
         _this.state = null;
+        _this.workerData = [];
         return _this;
     }
 
@@ -2640,6 +2786,21 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
             this.eventConfig.onState(this.state);
         }
     }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+            for (var i = 0; i < this.workerData.length; i++) {
+                var pixels = this.workerData[i].pixels;
+                for (var j = 0; j < pixels.length; j++) {
+                    var pixel = pixels[j];
+                    pixel[0] = pixel[0] + distanceX;
+                    pixel[1] = pixel[1] + distanceY;
+                }
+            }
+            this.setState(_OnState2.default.drawBefore);
+            this.drawLine(this.workerData);
+            this.setState(_OnState2.default.drawAfter);
+        }
+    }, {
         key: 'resize',
         value: function resize() {
             this.drawMap();
@@ -2650,6 +2811,11 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
             this._setStyle(_CircuitConfig2.default, ops);
             this.coordinates(this.points);
             this.drawMap();
+        }
+    }, {
+        key: 'setData',
+        value: function setData(points) {
+            this.setPoints(points);
         }
     }, {
         key: 'setPoints',
@@ -2685,12 +2851,10 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
                     return;
                 }
                 _this2.setState(_OnState2.default.conputeAfter);
-
                 _this2.clearCanvas();
-                _this2.canvasResize();
+                (0, _util.clearPushArray)(_this2.workerData, pixels);
                 _this2.setState(_OnState2.default.drawBefore);
-
-                _this2.drawLine(pixels);
+                _this2.drawLine(_this2.workerData);
                 _this2.setState(_OnState2.default.drawAfter);
             });
         }
@@ -2734,7 +2898,7 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
     }, {
         key: 'drawLine',
         value: function drawLine(data) {
-
+            this.clearCanvas();
             var normal = this.styleConfig.normal;
             this.ctx.shadowBlur = 0;
             this.ctx.shadowOffsetX = 0;
@@ -2815,7 +2979,6 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
 
         var _this = _possibleConstructorReturn(this, (DotOverlay.__proto__ || Object.getPrototypeOf(DotOverlay)).call(this, _DotConfig2.default, opts));
 
-        _this.polyme = opts.type == 'polyme';
         _this._loopDraw = _this._loopDraw.bind(_this);
         if (!(0, _util.isEmpty)(_this._option.draw)) {
             _this.batchesData = new _BatchesData2.default(_this._option.draw);
@@ -2826,14 +2989,29 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
     }
 
     _createClass(DotOverlay, [{
-        key: 'parameterInit',
-        value: function parameterInit() {
-            this.map.addOverlay(this.mouseLayer);
+        key: 'initLegend',
+        value: function initLegend() {
             if (this.styleConfig.colors.length > 0) {
-                this.compileSplitList(this.points);
+                this.compileSplitList(this.getData());
             } else {
                 this.setlegend(this.legendConfig, this.styleConfig.splitList);
             }
+        }
+    }, {
+        key: 'onOptionChange',
+        value: function onOptionChange() {
+            this.map && this.initLegend();
+        }
+    }, {
+        key: 'onDataChange',
+        value: function onDataChange() {
+            this.map && this.initLegend();
+        }
+    }, {
+        key: 'parameterInit',
+        value: function parameterInit() {
+            this.map.addOverlay(this.mouseLayer);
+            this.initLegend();
         }
     }, {
         key: 'setOptionStyle',
@@ -2844,8 +3022,6 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             } else {
                 this.batchesData = null;
             }
-
-            this.refresh();
         }
     }, {
         key: 'setState',
@@ -2857,6 +3033,17 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
         key: 'resize',
         value: function resize() {
             this.drawMap();
+        }
+    }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+            this.batchesData && this.batchesData.clear();
+            for (var i = 0; i < this.workerData.length; i++) {
+                var pixel = this.workerData[i].pixel;
+                pixel.x = pixel.x + distanceX;
+                pixel.y = pixel.y + distanceY;
+            }
+            this.refresh();
         }
     }, {
         key: 'drawMouseLayer',
@@ -2871,23 +3058,18 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             var _this2 = this;
 
             this.batchesData && this.batchesData.clear();
-            var path = this.polyme ? 'PolymeOverlay.mergePoint' : 'HeatOverlay.pointsToPixels';
-            var data = this.polyme ? {
-                points: this.points,
-                mergeCount: this.styleConfig.normal.mergeCount,
-                size: this.styleConfig.normal.size
-            } : this.points;
+
             this.setState(_OnState2.default.computeBefore);
-            this.postMessage(path, data, function (pixels) {
+            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
+
                 _this2.setState(_OnState2.default.conputeAfter);
                 _this2.setWorkerData(pixels);
                 _this2.updateOverClickItem();
-                _this2.setState(_OnState2.default.drawBefore);
                 _this2.refresh();
-                _this2.setState(_OnState2.default.drawAfter);
+                pixels = null;
             });
         }
     }, {
@@ -2909,24 +3091,6 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             for (var i = 0; i < allItems.length; i++) {
                 _loop(i);
             }
-        }
-    }, {
-        key: 'cancerSelectd',
-        value: function cancerSelectd() {
-            this.selectItem = [];
-        }
-    }, {
-        key: 'setPoints',
-        value: function setPoints(points) {
-            if (!(0, _util.isArray)(points)) {
-                throw new TypeError('inMap: data must be a Array');
-            }
-            this.cancerSelectd();
-            this.points = points;
-            if (this.styleConfig.colors.length > 0) {
-                this.compileSplitList(this.points);
-            }
-            this.drawMap();
         }
     }, {
         key: 'compileSplitList',
@@ -3016,10 +3180,11 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
     }, {
         key: 'refresh',
         value: function refresh() {
+            this.setState(_OnState2.default.drawBefore);
             this.clearCanvas();
-            this.canvasResize();
             this.mouseLayer.canvasResize();
             if (this.batchesData) {
+                this.batchesData.clear();
                 this.batchesData.action(this.workerData, this._loopDraw, this.ctx);
             } else {
                 this._loopDraw(this.ctx, this.workerData);
@@ -3028,6 +3193,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
                 this._drawLabel(this.ctx, this.workerData);
             }
             this.drawMouseLayer();
+            this.setState(_OnState2.default.drawAfter);
         }
     }, {
         key: 'swopData',
@@ -3048,9 +3214,11 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
                     y = pixel.y;
 
 
-                var style = this.polyme ? this.styleConfig.normal : this.setDrawStyle(_item2);
-                var size = this.polyme ? pixel.radius : style.size;
-                pixel['radius'] = size;
+                var style = this.setDrawStyle(_item2);
+                var size = style.size;
+                if (this.styleConfig.normal.label.show) {
+                    pixel['radius'] = size;
+                }
                 if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
                     if (style.shadowColor) {
                         ctx.shadowColor = style.shadowColor || 'transparent';
@@ -3302,6 +3470,16 @@ var FlashDotOverlay = function (_CanvasOverlay) {
             this.map && this.addMarker();
         }
     }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+
+            for (var i = 0; i < this.markers.length; i++) {
+                var pixel = this.markers[i].pixel;
+                pixel.x = pixel.x + distanceX;
+                pixel.y = pixel.y + distanceY;
+            }
+        }
+    }, {
         key: 'addMarker',
         value: function addMarker() {
             this.markers = [];
@@ -3404,8 +3582,19 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
             this._setStyle(this.baseConfig, ops);
-            this.createColorSplit();
-            this.drawMap();
+        }
+    }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+
+            for (var i = 0; i < this.workerData.length; i++) {
+                var item = this.workerData[i];
+
+                item.x = item.x + distanceX;
+                item.y = item.y + distanceY;
+            }
+
+            this.refresh();
         }
     }, {
         key: 'setState',
@@ -3416,15 +3605,24 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
     }, {
         key: 'refresh',
         value: function refresh() {
+            this.setState(_OnState2.default.drawBefore);
             this.drawRec();
+            this.setState(_OnState2.default.drawAfter);
         }
     }, {
         key: 'resize',
         value: function resize() {
-            if (this.eventType == 'onzoomend') {
-                this.workerData = {};
-            }
             this.drawMap();
+        }
+    }, {
+        key: 'onOptionChange',
+        value: function onOptionChange() {
+            this.map && this.createColorSplit();
+        }
+    }, {
+        key: 'onDataChange',
+        value: function onDataChange() {
+            this.map && this.createColorSplit();
         }
     }, {
         key: '_calculateMpp',
@@ -3451,6 +3649,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
         value: function drawMap() {
             var _this2 = this;
 
+            this.clearData();
             var _styleConfig = this.styleConfig,
                 normal = _styleConfig.normal,
                 type = _styleConfig.type;
@@ -3493,29 +3692,14 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
-                var grids = gridsObj.grids;
                 _this2.setState(_OnState2.default.conputeAfter);
-
-                _this2.canvasResize();
-                _this2.workerData = grids;
+                _this2.workerData = gridsObj.grids;
                 _this2._drawSize = size / zoomUnit;
                 _this2.setState(_OnState2.default.drawBefore);
-
                 _this2.createColorSplit();
-                _this2.drawRec();
-                _this2.setState(_OnState2.default.drawAfter);
+                _this2.refresh();
+                gridsObj = null;
             });
-        }
-    }, {
-        key: 'setPoints',
-        value: function setPoints(points) {
-
-            if (!(0, _util.isArray)(points)) {
-                throw new TypeError('inMap: data must be a Array');
-            }
-            this.points = points;
-
-            this.drawMap();
         }
     }, {
         key: '_isMouseOver',
@@ -3537,14 +3721,12 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
         key: 'getTarget',
         value: function getTarget(x, y) {
 
-            var grids = this.workerData;
             var gridStep = this._drawSize;
             var mapSize = this.map.getSize();
-            for (var i in grids) {
-
-                var item = grids[i];
-                var x1 = parseFloat(item.x);
-                var y1 = parseFloat(item.y);
+            for (var i = 0; i < this.workerData.length; i++) {
+                var item = this.workerData[i];
+                var x1 = item.x;
+                var y1 = item.y;
                 if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
                     if (this._isMouseOver(x, y, x1, y1, gridStep, gridStep)) {
                         return {
@@ -3607,25 +3789,10 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
     }, {
         key: 'createColorSplit',
         value: function createColorSplit() {
-            var grids = this.workerData;
-            var data = [];
-            for (var key in grids) {
-                var count = grids[key].count;
-                if (count > 0) {
-                    data.push({
-                        name: key,
-                        count: count
-                    });
-                }
-            }
-
             if (this.styleConfig.colors.length > 0) {
-                this.compileSplitList(data);
+                this.compileSplitList(this.workerData);
             }
         }
-    }, {
-        key: 'setlegendParams',
-        value: function setlegendParams() {}
     }, {
         key: 'setTooltip',
         value: function setTooltip(event) {
@@ -3648,13 +3815,12 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
         value: function drawRec() {
             this.clearCanvas();
             var gridStep = this._drawSize;
-            var grids = this.workerData;
             var style = this.styleConfig.normal;
             var mapSize = this.map.getSize();
             this.ctx.shadowOffsetX = 0;
             this.ctx.shadowOffsetY = 0;
-            for (var i in grids) {
-                var item = grids[i];
+            for (var i = 0; i < this.workerData.length; i++) {
+                var item = this.workerData[i];
                 var x = item.x;
                 var y = item.y;
                 if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
@@ -3719,6 +3885,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
         var _this = _possibleConstructorReturn(this, (HeatOverlay.__proto__ || Object.getPrototypeOf(HeatOverlay)).call(this, ops));
 
         _this.points = [];
+        _this.workerData = [];
         _this._setStyle(_HeatConfig2.default, ops);
         _this.delteOption();
         _this.state = null;
@@ -3729,6 +3896,11 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
         key: 'resize',
         value: function resize() {
             this.drawMap();
+        }
+    }, {
+        key: 'getTransformData',
+        value: function getTransformData() {
+            return this.workerData.length > 0 ? this.workerData : this.points;
         }
     }, {
         key: '_setStyle',
@@ -3746,6 +3918,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
         value: function setOptionStyle(ops) {
             this._setStyle(_HeatConfig2.default, ops);
             this.delteOption();
+            (0, _util.clearPushArray)(this.workerData, []);
             this.drawMap();
         }
     }, {
@@ -3763,6 +3936,11 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
             this.legendConfig = {
                 show: false
             };
+        }
+    }, {
+        key: 'setData',
+        value: function setData(points) {
+            this.setPoints(points);
         }
     }, {
         key: 'setPoints',
@@ -3785,31 +3963,50 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
             }
         }
     }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+            for (var i = 0; i < this.workerData.length; i++) {
+                var pixel = this.workerData[i].pixel;
+                pixel.x = pixel.x + distanceX;
+                pixel.y = pixel.y + distanceY;
+            }
+            this.setState(_OnState2.default.drawBefore);
+            this.refresh();
+            this.setState(_OnState2.default.drawAfter);
+        }
+    }, {
+        key: 'setWorkerData',
+        value: function setWorkerData(val) {
+            this.points = [];
+            (0, _util.clearPushArray)(this.workerData, val);
+        }
+    }, {
         key: 'drawMap',
         value: function drawMap() {
             var _this2 = this;
 
             this.setState(_OnState2.default.computeBefore);
 
-            this.postMessage('HeatOverlay.pointsToPixels', this.points, function (pixels) {
+            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels) {
 
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
                 _this2.setState(_OnState2.default.conputeAfter);
 
-                _this2.clearCanvas();
-                _this2.canvasResize();
-                _this2.setState(_OnState2.default.drawBefore);
+                _this2.setWorkerData(pixels);
 
-                _this2.workerData = pixels;
+                _this2.setState(_OnState2.default.drawBefore);
                 _this2.refresh();
                 _this2.setState(_OnState2.default.drawAfter);
+
+                pixels = null;
             });
         }
     }, {
         key: 'refresh',
         value: function refresh() {
+            this.clearCanvas();
             var normal = this.styleConfig.normal;
             var container = this.container;
             if (normal.maxValue == 0) {
@@ -3952,15 +4149,9 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
     }
 
     _createClass(HoneycombOverlay, [{
-        key: 'parameterInit',
-        value: function parameterInit() {}
-    }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
             this._setStyle(this.baseConfig, ops);
-            this.parameterInit();
-            this.createColorSplit();
-            this.refresh();
         }
     }, {
         key: 'setState',
@@ -3969,12 +4160,22 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             this.eventConfig.onState(this.state);
         }
     }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+
+            for (var i = 0; i < this.workerData.length; i++) {
+                var item = this.workerData[i];
+                item.x = item.x + distanceX;
+                item.y = item.y + distanceY;
+            }
+            this.refresh();
+        }
+    }, {
         key: 'refresh',
         value: function refresh() {
-            if (this.eventType == 'onzoomend') {
-                this.workerData = {};
-            }
+            this.setState(_OnState2.default.drawBefore);
             this.drawRec();
+            this.setState(_OnState2.default.drawAfter);
         }
     }, {
         key: 'resize',
@@ -3982,13 +4183,14 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             this.drawMap();
         }
     }, {
-        key: 'setPoints',
-        value: function setPoints(points) {
-            if (!(0, _util.isArray)(points)) {
-                throw new TypeError('inMap: data must be a Array');
-            }
-            this.points = points;
-            this.drawMap();
+        key: 'onOptionChange',
+        value: function onOptionChange() {
+            this.map && this.createColorSplit();
+        }
+    }, {
+        key: 'onDataChange',
+        value: function onDataChange() {
+            this.map && this.createColorSplit();
         }
     }, {
         key: '_calculateMpp',
@@ -4015,6 +4217,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
         value: function drawMap() {
             var _this2 = this;
 
+            this.clearData();
             var _styleConfig = this.styleConfig,
                 normal = _styleConfig.normal,
                 type = _styleConfig.type;
@@ -4061,35 +4264,19 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
                 }
                 _this2.setState(_OnState2.default.conputeAfter);
 
-                _this2.canvasResize();
-                var grids = gridsObj.grids;
-                _this2.workerData = grids;
+                _this2.workerData = gridsObj.grids;
                 _this2._drawSize = size / zoomUnit;
 
-                _this2.setState(_OnState2.default.drawBefore);
                 _this2.createColorSplit();
-                _this2.drawRec();
-                _this2.setState(_OnState2.default.drawAfter);
+                _this2.refresh();
+                gridsObj = null;
             });
         }
     }, {
         key: 'createColorSplit',
         value: function createColorSplit() {
-            var data = [],
-                grids = this.workerData;
-            for (var key in grids) {
-                var count = grids[key].count;
-
-                if (count > 0) {
-                    data.push({
-                        name: key,
-                        count: count
-                    });
-                }
-            }
-
             if (this.styleConfig.colors.length > 0) {
-                this.compileSplitList(data);
+                this.compileSplitList(this.workerData);
             }
         }
     }, {
@@ -4141,7 +4328,6 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
         value: function findIndexSelectItem(item) {
             var index = -1;
             if (item) {
-
                 index = this.selectItem.findIndex(function (val) {
                     return val && val.x == item.x && val.y == item.y;
                 });
@@ -4162,12 +4348,11 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
     }, {
         key: 'getTarget',
         value: function getTarget(mouseX, mouseY) {
-            var grids = this.workerData;
             var gridStep = this._drawSize;
             var mapSize = this.map.getSize();
 
-            for (var i in grids) {
-                var item = grids[i];
+            for (var i = 0; i < this.workerData.length; i++) {
+                var item = this.workerData[i];
                 var x = item.x;
                 var y = item.y;
                 if (item.count > 0 && x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
@@ -4199,16 +4384,17 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             this.clearCanvas();
             var mapSize = this.map.getSize();
             var gridsW = this._drawSize;
-            var grids = this.workerData;
+
             var style = this.styleConfig.normal;
             this.ctx.shadowOffsetX = 0;
             this.ctx.shadowOffsetY = 0;
-            for (var i in grids) {
-                var x = grids[i].x;
-                var y = grids[i].y;
-                var count = grids[i].count;
+            for (var i = 0; i < this.workerData.length; i++) {
+                var item = this.workerData[i];
+                var x = item.x;
+                var y = item.y;
+                var count = item.count;
                 if (count > 0 && x > -gridsW && y > -gridsW && x < mapSize.width + gridsW && y < mapSize.height + gridsW) {
-                    var drawStyle = this.getStyle(grids[i]);
+                    var drawStyle = this.getStyle(item);
                     this.drawLine(x, y, gridsW - style.padding, drawStyle, this.ctx);
                 }
             }
@@ -4296,7 +4482,6 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
             this._setStyle(this.baseConfig, ops);
-            this.refresh();
         }
     }, {
         key: 'setState',
@@ -4305,37 +4490,32 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
             this.eventConfig.onState(this.state);
         }
     }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+            for (var i = 0; i < this.workerData.length; i++) {
+                var pixel = this.workerData[i].pixel;
+                pixel.x = pixel.x + distanceX;
+                pixel.y = pixel.y + distanceY;
+            }
+
+            this.refresh();
+        }
+    }, {
         key: 'drawMap',
         value: function drawMap() {
             var _this2 = this;
 
             this.setState(_OnState2.default.computeBefore);
-
-            this.postMessage('HeatOverlay.pointsToPixels', this.points, function (pixels) {
+            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
                 _this2.setState(_OnState2.default.conputeAfter);
-                _this2.setState(_OnState2.default.drawBefore);
+
                 _this2.setWorkerData(pixels);
                 _this2.refresh();
-                _this2.setState(_OnState2.default.drawAfter);
+                pixels = null;
             });
-        }
-    }, {
-        key: 'setPoints',
-        value: function setPoints(points) {
-            if (!(0, _util.isArray)(points)) {
-                throw new TypeError('inMap :data must be a Array');
-            }
-            this.cancerSelectd();
-            this.points = points;
-            this.drawMap();
-        }
-    }, {
-        key: 'cancerSelectd',
-        value: function cancerSelectd() {
-            this.selectItem = [];
         }
     }, {
         key: '_isMouseOver',
@@ -4390,7 +4570,6 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
         value: function findIndexSelectItem(item) {
             var index = -1;
             if (item) {
-
                 index = this.selectItem.findIndex(function (val) {
                     return val && val.lat == item.lat && val.lng == item.lng;
                 });
@@ -4401,9 +4580,10 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
     }, {
         key: 'refresh',
         value: function refresh() {
+            this.setState(_OnState2.default.drawBefore);
             this.clearCanvas();
-            this.canvasResize();
             this._loopDraw(this.ctx, this.workerData);
+            this.setState(_OnState2.default.drawAfter);
         }
     }, {
         key: 'loadImg',
@@ -4906,6 +5086,16 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
                     })
                 }));
             });
+        }
+    }, {
+        key: 'setData',
+        value: function setData(points) {
+            this.setPoints(points);
+        }
+    }, {
+        key: 'getData',
+        value: function getData() {
+            return this.data;
         }
     }, {
         key: 'setPoints',
@@ -5800,11 +5990,11 @@ var BatchesData = function () {
     }, {
         key: 'clear',
         value: function clear() {
+            this.splitArray = [];
+            this.index = 0;
             if (this.intervalId) {
                 clearInterval(this.intervalId);
             }
-            this.splitArray = [];
-            this.index = 0;
         }
     }, {
         key: 'action',
@@ -5814,6 +6004,7 @@ var BatchesData = function () {
             this.clear();
             var splitCount = this.splitCount,
                 interval = this.interval;
+
 
             this.splitArray = (0, _util.chunk)(data, splitCount);
 

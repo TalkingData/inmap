@@ -20,11 +20,12 @@ export default class BatchesData {
         this.splitCount = splitCount;
     }
     clear() {
+        this.splitArray = [];
+        this.index = 0;
         if (this.intervalId) {
             clearInterval(this.intervalId);
         }
-        this.splitArray = [];
-        this.index = 0;
+      
     }
     action(data, callback, ctx) {
         this.clear();
@@ -32,6 +33,7 @@ export default class BatchesData {
             splitCount,
             interval,
         } = this;
+       
         this.splitArray = chunk(data, splitCount);
 
         let loop = () => {

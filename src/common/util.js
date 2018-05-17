@@ -185,3 +185,15 @@ export function merge() {
         }
     });
 }
+export function clearPushArray(a, b) {
+    if (Array.isArray(b)) {
+        a.splice(0, a.length);
+        b.forEach(function (val) {
+            a.push(val);
+        });
+    } else if (b != null) {
+        a.splice(0, a.length, b);
+    } else {
+        a.splice(0, a.length);
+    }
+}

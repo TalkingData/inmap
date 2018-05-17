@@ -3,8 +3,7 @@ import {
 } from './base/Parameter';
 import ImgConfig from './../config/ImgConfig';
 import {
-    isString,
-    isArray
+    isString
 } from './../common/util';
 import State from './../config/OnState';
 /*
@@ -21,39 +20,37 @@ export class ImgOverlay extends Parameter {
     }
     setOptionStyle(ops) {
         this._setStyle(this.baseConfig, ops);
-        this.refresh();
     }
     setState(val) {
         this.state = val;
         this.eventConfig.onState(this.state);
     }
-
+    translation(distanceX, distanceY) {
+        for (let i = 0; i < this.workerData.length; i++) {
+            let pixel = this.workerData[i].pixel;
+            pixel.x = pixel.x + distanceX;
+            pixel.y = pixel.y + distanceY;
+        }
+        
+        this.refresh();
+    
+    }
     drawMap() {
+       
         this.setState(State.computeBefore);
-
-        this.postMessage('HeatOverlay.pointsToPixels', this.points, (pixels) => {
+        this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), (pixels) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
             this.setState(State.conputeAfter);
-            this.setState(State.drawBefore);
+
             this.setWorkerData(pixels);
             this.refresh();
-            this.setState(State.drawAfter);
+            pixels = null;
 
         });
     }
-    setPoints(points) {
-        if (!isArray(points)) {
-            throw new TypeError('inMap :data must be a Array');
-        }
-        this.cancerSelectd();
-        this.points = points;
-        this.drawMap();
-    }
-    cancerSelectd() {
-        this.selectItem = [];
-    }
+     
     _isMouseOver(x, y, imgX, imgY, imgW, imgH) {
         return !(x < imgX || x > imgX + imgW || y < imgY || y > imgY + imgH);
     }
@@ -106,7 +103,6 @@ export class ImgOverlay extends Parameter {
     findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-
             index = this.selectItem.findIndex(function (val) {
                 return val && val.lat == item.lat && val.lng == item.lng;
             });
@@ -115,9 +111,11 @@ export class ImgOverlay extends Parameter {
         return index;
     }
     refresh() {
+        this.setState(State.drawBefore);
         this.clearCanvas();
-        this.canvasResize();
         this._loopDraw(this.ctx, this.workerData);
+        this.setState(State.drawAfter);
+
     }
     loadImg(img, fun) {
         let me = this;

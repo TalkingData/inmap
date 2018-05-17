@@ -1,7 +1,3 @@
-import {
-    isArray
-} from './../../common/util';
-
 
 import {
     pointToPixelWorker
@@ -13,25 +9,29 @@ import {
 import polylabel from './../../common/polylabel';
 export let BoundaryOverlay = {
     calculatePixel: function (webObj) {
-        let data = webObj,
-            points = isArray(data) ? data : data.request.data,
-            map = data.request.map;
-        for (let j = 0; j < points.length; j++) {
+        let {
+            data,
+            labelShow,
+        } = webObj.request.data;
+        let map = webObj.request.map;
 
-            if (points[j].geo) {
+        for (let j = 0; j < data.length; j++) {
+
+            if (data[j].geo) {
                 let tmp = [];
-                for (let i = 0; i < points[j].geo.length; i++) {
-                    let pixel = pointToPixelWorker(new Point(points[j].geo[i][0], points[j].geo[i][1]), map);
-                    tmp.push([pixel.x, pixel.y, parseFloat(points[j].geo[i][2])]);
+                for (let i = 0; i < data[j].geo.length; i++) {
+                    let pixel = pointToPixelWorker(new Point(data[j].geo[i][0], data[j].geo[i][1]), map);
+                    tmp.push([pixel.x, pixel.y]);
                 }
-                points[j].pgeo = tmp;
-                let bestCell = polylabel([tmp]);
-                points[j]['bestCell'] = bestCell;
-
+                data[j].pixels = tmp;
+                if (labelShow) {
+                    let bestCell = polylabel([tmp]);
+                    data[j]['bestCell'] = bestCell;
+                }
             }
         }
         return {
-            data: points,
+            data: data,
             client: webObj
         };
     }

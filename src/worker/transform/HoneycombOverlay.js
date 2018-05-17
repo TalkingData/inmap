@@ -140,9 +140,16 @@ export let HoneycombOverlay = {
                 }
             }
         }
-
+        let result = [];
+        for (let key in grids) {
+            let item = grids[key];
+            if (item.count > 0) {
+                result.push(item);
+            }
+        }
+        grids = null;
         return {
-            grids: grids,
+            grids: result,
         };
     }
 };

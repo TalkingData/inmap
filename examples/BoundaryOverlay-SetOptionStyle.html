@@ -84,7 +84,7 @@
             }
         },
         legend: {
-            show: false,
+            show: true,
             title: "板块去重设备数 "
         },
 
@@ -187,7 +187,7 @@
     };
     var overlay = new inMap.BoundaryOverlay(skin1);
     map.add(overlay);
-    overlay.setPoints(data);
+    overlay.setData(data);
 </script>
 
 </html>

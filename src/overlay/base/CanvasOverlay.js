@@ -17,6 +17,7 @@ export class CanvasOverlay extends BaseClass {
         this.ctx = null; //canvas对象
         this.eventType = 'moveend';
         this.map = null;
+        this.container = null;
         this.tOnResize = this.tOnResize.bind(this);
         this.tOnMoveend = this.tOnMoveend.bind(this);
         this.tOnZoomstart = this.tOnZoomstart.bind(this);
@@ -68,6 +69,7 @@ export class CanvasOverlay extends BaseClass {
     }
     tOnResize(event) {
         this.setCanvasSize();
+        this.eventType = event.type;
         this.tDraw(this, event);
     }
     tOnMoveend(event) {
@@ -94,14 +96,24 @@ export class CanvasOverlay extends BaseClass {
         //抽象方法 子类去实现
     }
     draw() {
-        this.resize();
+
+        let eventType = this.eventType;
+        // if (eventType == 'onzoomend' || eventType == 'onmoveend' || eventType == 'onresize') {
+        //     this.resize();
+        // }
+        if (eventType == 'onmoving') {
+            this.canvasResize();
+        } else {
+            this.resize();
+        }
+
     }
     tMouseClick() {
         //抽象方法 子类去实现
     }
     tDraw(me, event) {
         this.eventType = event.type;
-        me.resize();
+        me.draw();
         this.repaintEnd && this.repaintEnd(this); //重绘回调
         me.keysss = true;
     }
@@ -114,10 +126,31 @@ export class CanvasOverlay extends BaseClass {
         let point = map.getCenter();
         let size = map.getSize();
         let pixel = map.pointToOverlayPixel(point);
-        container.style.left = (pixel.x - size.width / 2) + 'px';
-        container.style.top = (pixel.y - size.height / 2) + 'px';
-    }
+        let left = pixel.x - size.width / 2;
+        let top = pixel.y - size.height / 2;
+        let containerDomStyle = container.style;
 
+        this.translationIf(parseFloat(containerDomStyle.left), parseFloat(containerDomStyle.top), left, top);
+        containerDomStyle.left = left + 'px';
+        containerDomStyle.top = top + 'px';
+
+        containerDomStyle = null;
+        container = null;
+        map = null;
+
+    }
+    translationIf(oldLeft, oldTop, newLeft, newTop) {
+        if (oldLeft != newLeft || oldTop != newTop) {
+            this.translation(oldLeft - newLeft, oldTop - newTop);
+        }
+    }
+    /*eslint-disable */
+    translation(distanceX, distanceY) {
+        /**       
+         * 抽象方法，子类去实现
+         */
+    }
+    /*eslint-enable */
     clearCanvas() {
         let size = this.map.getSize();
         this.getContext().clearRect(0, 0, size.width, size.height); //调整画布
@@ -167,11 +200,15 @@ export class CanvasOverlay extends BaseClass {
             this.toolTip.hide();
             this.toolTip = null;
         }
-
+         
+    
+       
         this.Tclear();
         this.Tdispose();
         this.map.removeOverlay(this);
-
-
+        this.container = null;
+        this.ctx = null;
+        this.repaintEnd = null;
+        this.map=null;
     }
 }

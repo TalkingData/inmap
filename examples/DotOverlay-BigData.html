@@ -47,7 +47,9 @@
             min: 5
         },
     });
-    data = data.concat(data).concat(data).concat(data);
+
+    data = JSON.parse(JSON.stringify(data.concat(data).concat(data).concat(data)));
+
     console.log(data.length);
     var overlay = new inMap.DotOverlay({
         draw: {
@@ -63,7 +65,13 @@
                 size: 1 // 半径
             }
         },
-        data: data
+        data: data,
+        event: {
+            onState(val) {
+                console.log(val);
+
+            }
+        }
     });
     inmap.add(overlay);
 </script>

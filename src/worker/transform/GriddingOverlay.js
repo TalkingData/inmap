@@ -103,8 +103,8 @@ export let GriddingOverlay = {
             for (let j = 0; j < stockYA.length; j++) {
                 let name = stockXA[i] + '_' + stockYA[j];
                 grids[name] = {
-                    x: stockXA[i],
-                    y: stockYA[j],
+                    x: parseFloat(stockXA[i]),
+                    y: parseFloat(stockYA[j]),
                     list: [],
                     count: 0,
                 };
@@ -133,8 +133,16 @@ export let GriddingOverlay = {
         if (type === 'avg') {
             grids = GriddingOverlay.valueToAvg(grids);
         }
+        let result = [];
+        for (let key in grids) {
+            let item = grids[key];
+            if (item.count > 0) {
+                result.push(item);
+            }
+        }
+        grids = null;
         return {
-            grids: grids
+            grids: result
         };
     },
     valueToAvg(grids) {

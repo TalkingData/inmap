@@ -6,7 +6,7 @@ import {
     Color
 } from './../common/Color';
 import {
-    isArray
+    clearPushArray
 } from './../common/util';
 import BoundaryConfig from './../config/BoundaryConfig';
 import State from './../config/OnState';
@@ -22,21 +22,55 @@ export class BoundaryOverlay extends Parameter {
         this.initLegend();
     }
     initLegend() {
-        this.compileSplitList(this.styleConfig.colors, this.points);
+        this.compileSplitList(this.styleConfig.colors, this.getTransformData());
         this.patchSplitList();
         this.setlegend(this.legendConfig, this.styleConfig.splitList);
     }
+    /**
+     * 设置选中集合，但不会触发绘画
+     * 
+     * @memberof Parameter
+     */
+    setSelectedList(list) {
+        clearPushArray(this.selectItem, list);
+    }
+    clearSelectedList() {
+        clearPushArray(this.selectItem);
+    }
+    getSelectedList() {
+        return this.selectItem;
+    }
+    translation(distanceX, distanceY) {
+        for (let i = 0; i < this.workerData.length; i++) {
+            let pixels = this.workerData[i].pixels;
+            for (let j = 0; j < pixels.length; j++) {
+                let pixel = pixels[j];
+                pixel[0] = pixel[0] + distanceX;
+                pixel[1] = pixel[1] + distanceY;
+            }
+            if (this.styleConfig.normal.label.show) {
+                let bestCell = this.workerData[i].bestCell;
+                bestCell.x = bestCell.x + distanceX;
+                bestCell.y = bestCell.y + distanceY;
+            }
+        }
 
+        this.refresh();
+
+    }
     setOptionStyle(ops) {
         this._setStyle(this.baseConfig, ops);
-        this.initLegend();
-        this.refresh();
     }
     setState(val) {
         this.state = val;
         this.eventConfig.onState(this.state);
     }
-
+    onOptionChange() {
+        this.map && this.initLegend();
+    }
+    onDataChange() {
+        this.map && this.initLegend();
+    }
     /**
      * 颜色等分策略
      * @param {} data 
@@ -99,6 +133,7 @@ export class BoundaryOverlay extends Parameter {
 
     }
     resize() {
+
         this.drawMap();
     }
     getGeoCenter(geo) {
@@ -127,6 +162,7 @@ export class BoundaryOverlay extends Parameter {
         }
         return maxX - minX;
     }
+
     findIndexSelectItem(item) {
         let index = -1;
         if (item) {
@@ -137,43 +173,39 @@ export class BoundaryOverlay extends Parameter {
         return index;
     }
     refresh() {
+
+        this.setState(State.drawBefore);
         this.clearCanvas();
-        this.drawLine(this.workerData);
+        this.drawLine(this.getData());
+        this.setState(State.drawAfter);
     }
     drawMap() {
         this.setState(State.computeBefore);
-        this.postMessage('BoundaryOverlay.calculatePixel', this.points, (pixels) => {
+        let parameter = {
+            data: this.getTransformData(),
+            labelShow: this.styleConfig.normal.label.show
+        };
+
+        this.postMessage('BoundaryOverlay.calculatePixel', parameter, (pixels) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
             this.setState(State.conputeAfter);
-            this.clearCanvas();
-            this.canvasResize();
-            this.overItem = null;
             this.setWorkerData(pixels);
-            this.setState(State.drawBefore);
-            this.drawLine(pixels);
-            this.setState(State.drawAfter);
+
+            this.refresh();
         });
     }
-    setPoints(points) {
-        if (!isArray(points)) {
-            throw new TypeError('inMap: data must be a Array');
-        }
-        this.points = points;
-        this.initLegend();
-        this.drawMap();
-    }
     getTarget(x, y) {
-        let data = this.workerData;
+        let data = this.getData();
         this.ctx.beginPath();
         for (let i = 0, len = data.length; i < len; i++) {
             let item = data[i];
-            let geo = item.pgeo;
+            let pixel = item.pixels;
             this.ctx.beginPath();
-            this.ctx.moveTo(geo[0][0], geo[0][1]);
-            for (let j = 1; j < geo.length; j++) {
-                this.ctx.lineTo(geo[j][0], geo[j][1]);
+            this.ctx.moveTo(pixel[0][0], pixel[0][1]);
+            for (let j = 1; j < pixel.length; j++) {
+                this.ctx.lineTo(pixel[j][0], pixel[j][1]);
             }
             this.ctx.closePath();
             if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
@@ -189,14 +221,13 @@ export class BoundaryOverlay extends Parameter {
         };
     }
     drawLine(data) {
-
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
         this.ctx.miterLimit = 4;
-         
         for (let i = 0, len = data.length; i < len; i++) {
             let item = data[i];
-            let geo = item.pgeo;
+            let pixel = item.pixels;
+
             let style = this.setDrawStyle(item);
             this.ctx.beginPath();
             this.ctx.shadowColor = style.shadowColor || 'transparent';
@@ -204,9 +235,9 @@ export class BoundaryOverlay extends Parameter {
             this.ctx.shadowOffsetX = 0;
             this.ctx.shadowOffsetY = 0;
             this.ctx.fillStyle = style.backgroundColor;
-            this.ctx.moveTo(geo[0][0], geo[0][1]);
-            for (let j = 1; j < geo.length; j++) {
-                this.ctx.lineTo(geo[j][0], geo[j][1]);
+            this.ctx.moveTo(pixel[0][0], pixel[0][1]);
+            for (let j = 1; j < pixel.length; j++) {
+                this.ctx.lineTo(pixel[j][0], pixel[j][1]);
             }
             this.ctx.closePath();
             this.ctx.fill();
@@ -215,11 +246,12 @@ export class BoundaryOverlay extends Parameter {
             this.ctx.lineWidth = style.borderWidth;
             this.ctx.stroke();
 
+
         }
 
         for (let i = 0, len = data.length; i < len; i++) {
             let item = data[i];
-            let geo = item.pgeo;
+            let pixel = item.pixels;
             let bestCell = item.bestCell;
             let label = this.setDrawStyle(item).label;
 
@@ -229,7 +261,7 @@ export class BoundaryOverlay extends Parameter {
                 this.ctx.font = label.font;
                 this.ctx.fillStyle = label.color;
                 let width = this.ctx.measureText(item.name).width;
-                if (this.getMaxWidth(geo) > width) {
+                if (this.getMaxWidth(pixel) > width) {
                     this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
                 }
             }

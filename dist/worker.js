@@ -103,6 +103,7 @@ exports.isPolyContains = isPolyContains;
 exports.isPolyContainsPt = isPolyContainsPt;
 exports.detectmob = detectmob;
 exports.merge = merge;
+exports.clearPushArray = clearPushArray;
 
 var _deepmerge = __webpack_require__(9);
 
@@ -245,6 +246,18 @@ function merge() {
             }
         }
     });
+}
+function clearPushArray(a, b) {
+    if (Array.isArray(b)) {
+        a.splice(0, a.length);
+        b.forEach(function (val) {
+            a.push(val);
+        });
+    } else if (b != null) {
+        a.splice(0, a.length, b);
+    } else {
+        a.splice(0, a.length);
+    }
 }
 
 /***/ }),
@@ -1510,8 +1523,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.BoundaryOverlay = undefined;
 
-var _util = __webpack_require__(0);
-
 var _pointToPixel = __webpack_require__(3);
 
 var _Point = __webpack_require__(6);
@@ -1524,24 +1535,29 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var BoundaryOverlay = exports.BoundaryOverlay = {
     calculatePixel: function calculatePixel(webObj) {
-        var data = webObj,
-            points = (0, _util.isArray)(data) ? data : data.request.data,
-            map = data.request.map;
-        for (var j = 0; j < points.length; j++) {
+        var _webObj$request$data = webObj.request.data,
+            data = _webObj$request$data.data,
+            labelShow = _webObj$request$data.labelShow;
 
-            if (points[j].geo) {
+        var map = webObj.request.map;
+
+        for (var j = 0; j < data.length; j++) {
+
+            if (data[j].geo) {
                 var tmp = [];
-                for (var i = 0; i < points[j].geo.length; i++) {
-                    var pixel = (0, _pointToPixel.pointToPixelWorker)(new _Point.Point(points[j].geo[i][0], points[j].geo[i][1]), map);
-                    tmp.push([pixel.x, pixel.y, parseFloat(points[j].geo[i][2])]);
+                for (var i = 0; i < data[j].geo.length; i++) {
+                    var pixel = (0, _pointToPixel.pointToPixelWorker)(new _Point.Point(data[j].geo[i][0], data[j].geo[i][1]), map);
+                    tmp.push([pixel.x, pixel.y]);
                 }
-                points[j].pgeo = tmp;
-                var bestCell = (0, _polylabel2.default)([tmp]);
-                points[j]['bestCell'] = bestCell;
+                data[j].pixels = tmp;
+                if (labelShow) {
+                    var bestCell = (0, _polylabel2.default)([tmp]);
+                    data[j]['bestCell'] = bestCell;
+                }
             }
         }
         return {
-            data: points,
+            data: data,
             client: webObj
         };
     }
@@ -1704,8 +1720,8 @@ var GriddingOverlay = exports.GriddingOverlay = {
             for (var j = 0; j < stockYA.length; j++) {
                 var name = stockXA[_i] + '_' + stockYA[j];
                 grids[name] = {
-                    x: stockXA[_i],
-                    y: stockYA[j],
+                    x: parseFloat(stockXA[_i]),
+                    y: parseFloat(stockYA[j]),
                     list: [],
                     count: 0
                 };
@@ -1734,8 +1750,16 @@ var GriddingOverlay = exports.GriddingOverlay = {
         if (type === 'avg') {
             grids = GriddingOverlay.valueToAvg(grids);
         }
+        var result = [];
+        for (var key in grids) {
+            var _item = grids[key];
+            if (_item.count > 0) {
+                result.push(_item);
+            }
+        }
+        grids = null;
         return {
-            grids: grids
+            grids: result
         };
     },
     valueToAvg: function valueToAvg(grids) {
@@ -1945,9 +1969,16 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
                 }
             }
         }
-
+        var result = [];
+        for (var key in grids) {
+            var _item2 = grids[key];
+            if (_item2.count > 0) {
+                result.push(_item2);
+            }
+        }
+        grids = null;
         return {
-            grids: grids
+            grids: result
         };
     }
 };
@@ -2248,7 +2279,10 @@ function polylabel(polygon) {
         cellQueue.push(new Cell(cell.x - h, cell.y + h, h, polygon));
         cellQueue.push(new Cell(cell.x + h, cell.y + h, h, polygon));
     }
-    return bestCell;
+    return {
+        x: bestCell.x,
+        y: bestCell.y
+    };
 }
 
 /***/ }),
