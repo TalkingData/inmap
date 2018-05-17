@@ -41,14 +41,10 @@ import {
   */
 export const HeatOverlay = {
     pointsToPixels: function (webObj) {
-        
         webObj.request.data.forEach((val) => {
             val['pixel'] = pointToPixelWorker(val, webObj.request.map);
         });
-        return {
-            data: webObj.request.data,
-            client: webObj
-        };
+        return webObj;
     }
 };
 export const HeatTileOverlay = {
@@ -56,10 +52,6 @@ export const HeatTileOverlay = {
         webObj.request.data.forEach((item) => {
             item.pixelData = pointsToPixelsWoker(item.data, webObj.request.map);
         });
-        return {
-            data: webObj.request.data,
-            client: webObj
-        };
-
+        return webObj;
     }
 };

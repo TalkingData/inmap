@@ -206,6 +206,7 @@ export class CanvasOverlay extends BaseClass {
 
         this.Tclear();
         this.Tdispose();
+        
         this.map.removeOverlay(this);
         let me = this;
         for (let key in me) {

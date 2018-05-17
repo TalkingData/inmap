@@ -19,11 +19,8 @@ export let HoneycombOverlay = {
         let map = webObj.request.map;
         HoneycombOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
         let gridsObj = HoneycombOverlay.honeycombGrid(points, map, nwMc, size, zoomUnit, mapSize, type);
-
-        return {
-            data: gridsObj,
-            client: webObj
-        };
+        webObj.request.data = gridsObj;
+        return webObj;
     },
     _calculatePixel: function (map, data, mapSize, mapCenter, zoom) {
 
@@ -132,22 +129,18 @@ export let HoneycombOverlay = {
                 grids[fixX + '|' + fixY].count += item.count;
             }
         }
-        if (type == 'avg') {
-            for (let o in grids) {
-                let item = grids[o];
-                if (item.count > 0) {
-                    item.count = item.count / item.list.length;
-                }
-            }
-        }
+       
         let result = [];
         for (let key in grids) {
             let item = grids[key];
+            if (type == 'avg' && item.count > 0) {
+                item.count = item.count / item.list.length;
+            }
             if (item.count > 0) {
                 result.push(item);
             }
         }
-        grids = null;
+        grids = null, data = null;
         return {
             grids: result,
         };

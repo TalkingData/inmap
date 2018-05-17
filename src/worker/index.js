@@ -63,9 +63,9 @@ let callbackFun = function (data) {
             //唯一生效队列控制
             handler[classPath] = hashCode + '_' + msgId;
             //查找到执行方法，并执行方法
-            let obj = callback(data);
-            TDpost(obj.data, obj.client);
-            return;
+            let result = callback(data);
+            TDpost(result);
+
         }
 
         if (!callback) {
@@ -79,21 +79,20 @@ let callbackFun = function (data) {
  * push到web消息
  * @param {Object} data
  */
-export let TDpost = function (data, client) {
-    let opts = client;
+export let TDpost = function (client) {
+
     let request = client.request;
     let classPath = request.classPath;
     let hashCode = request.hashCode;
     let msgId = request.msgId;
     let handler = callbackList[classPath];
-    //唯一生效队列判断
+
     if (handler && (handler != hashCode + '_' + msgId)) {
         return;
     }
-    opts.response = {
-        type: 'worker',
-        data: data
-    };
-    postMessage(opts);
+
+    postMessage(client);
+    client.request.data = [];
+    client = null;
 };
 export const boundaryOverlay = BoundaryOverlay;

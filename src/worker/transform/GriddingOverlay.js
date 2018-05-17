@@ -18,12 +18,8 @@ export let GriddingOverlay = {
         let map = webObj.request.map;
         GriddingOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
         let gridsObj = GriddingOverlay.recGrids(points, map, nwMc, size, zoomUnit, mapSize, type);
-
-        return {
-            data: gridsObj,
-            client: webObj
-
-        };
+        webObj.request.data = gridsObj;
+        return webObj;
     },
     _calculatePixel(map, data, mapSize, mapCenter, zoom) {
 
@@ -130,29 +126,21 @@ export let GriddingOverlay = {
                 }
             }
         }
-        if (type === 'avg') {
-            grids = GriddingOverlay.valueToAvg(grids);
-        }
+
         let result = [];
         for (let key in grids) {
             let item = grids[key];
+            if (type === 'avg' && item.list.length > 0) {
+                item.count = item.count / item.list.length;
+            }
             if (item.count > 0) {
                 result.push(item);
             }
         }
-        grids = null;
+        grids = null, stockXA = null, stockYA = null, data = null;
+
         return {
             grids: result
         };
-    },
-    valueToAvg(grids) {
-        for (let o in grids) {
-            let item = grids[o];
-            if (item.list.length > 0) {
-                item.count = item.count / item.list.length;
-            }
-        }
-        return grids;
-    },
-
+    }
 };

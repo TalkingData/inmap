@@ -1542,7 +1542,6 @@ var BoundaryOverlay = exports.BoundaryOverlay = {
         var map = webObj.request.map;
 
         for (var j = 0; j < data.length; j++) {
-
             if (data[j].geo) {
                 var tmp = [];
                 for (var i = 0; i < data[j].geo.length; i++) {
@@ -1556,10 +1555,8 @@ var BoundaryOverlay = exports.BoundaryOverlay = {
                 }
             }
         }
-        return {
-            data: data,
-            client: webObj
-        };
+        webObj.request.data = data;
+        return webObj;
     }
 };
 
@@ -1592,10 +1589,9 @@ var CircuitOverlay = exports.CircuitOverlay = {
             var item = points[j];
             item['pixels'] = CircuitOverlay.transferCoordinate(item._coordinates, nwMc, zoomUnit);
         }
-        return {
-            data: points,
-            client: webObj
-        };
+
+        webObj.request.data = points;
+        return webObj;
     }
 };
 
@@ -1638,12 +1634,8 @@ var GriddingOverlay = exports.GriddingOverlay = {
         var map = webObj.request.map;
         GriddingOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
         var gridsObj = GriddingOverlay.recGrids(points, map, nwMc, size, zoomUnit, mapSize, type);
-
-        return {
-            data: gridsObj,
-            client: webObj
-
-        };
+        webObj.request.data = gridsObj;
+        return webObj;
     },
     _calculatePixel: function _calculatePixel(map, data, mapSize, mapCenter, zoom) {
 
@@ -1747,29 +1739,22 @@ var GriddingOverlay = exports.GriddingOverlay = {
                 }
             }
         }
-        if (type === 'avg') {
-            grids = GriddingOverlay.valueToAvg(grids);
-        }
+
         var result = [];
         for (var key in grids) {
             var _item = grids[key];
+            if (type === 'avg' && _item.list.length > 0) {
+                _item.count = _item.count / _item.list.length;
+            }
             if (_item.count > 0) {
                 result.push(_item);
             }
         }
-        grids = null;
+        grids = null, stockXA = null, stockYA = null, data = null;
+
         return {
             grids: result
         };
-    },
-    valueToAvg: function valueToAvg(grids) {
-        for (var o in grids) {
-            var item = grids[o];
-            if (item.list.length > 0) {
-                item.count = item.count / item.list.length;
-            }
-        }
-        return grids;
     }
 };
 
@@ -1789,14 +1774,10 @@ var _pointToPixel = __webpack_require__(3);
 
 var HeatOverlay = exports.HeatOverlay = {
     pointsToPixels: function pointsToPixels(webObj) {
-
         webObj.request.data.forEach(function (val) {
             val['pixel'] = (0, _pointToPixel.pointToPixelWorker)(val, webObj.request.map);
         });
-        return {
-            data: webObj.request.data,
-            client: webObj
-        };
+        return webObj;
     }
 };
 var HeatTileOverlay = exports.HeatTileOverlay = {
@@ -1804,10 +1785,7 @@ var HeatTileOverlay = exports.HeatTileOverlay = {
         webObj.request.data.forEach(function (item) {
             item.pixelData = (0, _pointToPixel.pointsToPixelsWoker)(item.data, webObj.request.map);
         });
-        return {
-            data: webObj.request.data,
-            client: webObj
-        };
+        return webObj;
     }
 };
 
@@ -1850,11 +1828,8 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
         var map = webObj.request.map;
         HoneycombOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
         var gridsObj = HoneycombOverlay.honeycombGrid(points, map, nwMc, size, zoomUnit, mapSize, type);
-
-        return {
-            data: gridsObj,
-            client: webObj
-        };
+        webObj.request.data = gridsObj;
+        return webObj;
     },
     _calculatePixel: function _calculatePixel(map, data, mapSize, mapCenter, zoom) {
 
@@ -1961,22 +1936,18 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
                 grids[fixX + '|' + fixY].count += item.count;
             }
         }
-        if (type == 'avg') {
-            for (var o in grids) {
-                var _item = grids[o];
-                if (_item.count > 0) {
-                    _item.count = _item.count / _item.list.length;
-                }
-            }
-        }
+
         var result = [];
         for (var key in grids) {
-            var _item2 = grids[key];
-            if (_item2.count > 0) {
-                result.push(_item2);
+            var _item = grids[key];
+            if (type == 'avg' && _item.count > 0) {
+                _item.count = _item.count / _item.list.length;
+            }
+            if (_item.count > 0) {
+                result.push(_item);
             }
         }
-        grids = null;
+        grids = null, data = null;
         return {
             grids: result
         };
@@ -2456,9 +2427,8 @@ var callbackFun = function callbackFun(data) {
         if (index >= p.length) {
             handler[classPath] = hashCode + '_' + msgId;
 
-            var obj = callback(data);
-            TDpost(obj.data, obj.client);
-            return;
+            var result = callback(data);
+            TDpost(result);
         }
 
         if (!callback) {
@@ -2467,8 +2437,8 @@ var callbackFun = function callbackFun(data) {
     }
 };
 
-var TDpost = exports.TDpost = function TDpost(data, client) {
-    var opts = client;
+var TDpost = exports.TDpost = function TDpost(client) {
+
     var request = client.request;
     var classPath = request.classPath;
     var hashCode = request.hashCode;
@@ -2478,11 +2448,10 @@ var TDpost = exports.TDpost = function TDpost(data, client) {
     if (handler && handler != hashCode + '_' + msgId) {
         return;
     }
-    opts.response = {
-        type: 'worker',
-        data: data
-    };
-    postMessage(opts);
+
+    postMessage(client);
+    client.request.data = [];
+    client = null;
 };
 var boundaryOverlay = exports.boundaryOverlay = _BoundaryOverlay.BoundaryOverlay;
 

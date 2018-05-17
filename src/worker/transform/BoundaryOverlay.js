@@ -1,4 +1,3 @@
-
 import {
     pointToPixelWorker
 } from '../../lib/pointToPixel';
@@ -16,7 +15,6 @@ export let BoundaryOverlay = {
         let map = webObj.request.map;
 
         for (let j = 0; j < data.length; j++) {
-
             if (data[j].geo) {
                 let tmp = [];
                 for (let i = 0; i < data[j].geo.length; i++) {
@@ -30,9 +28,7 @@ export let BoundaryOverlay = {
                 }
             }
         }
-        return {
-            data: data,
-            client: webObj
-        };
+        webObj.request.data = data;
+        return webObj;
     }
 };

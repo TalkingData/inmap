@@ -27,16 +27,18 @@
          let hashCode = data.request.hashCode;
          let msgId = data.request.msgId;
          let classPath = data.request.classPath;
-         if (instances[classPath + '_' + hashCode] && instances[classPath + '_' + hashCode] == hashCode + '_' + msgId) {
-             instances[hashCode + '_' + msgId](data.response.data);
-         } else {
-             instances[hashCode + '_' + msgId] = null;
+         let key1 = classPath + '_' + hashCode,
+             key2 = hashCode + '_' + msgId;
+         if (instances[key1] && instances[key1] == key2) {
+             instances[key2](data.request.data);
          }
+         data = null, hashCode = null, msgId = null, classPath = null, instances[key2] = null;
+
      }
      removeMessage(hashCode) {
          for (let o in instances) {
              if (!o) continue;
-             
+
              let key = o.split('_');
              if (key[0] == hashCode || key[1] == hashCode) {
                  instances[o] = null;
@@ -56,9 +58,10 @@
          let hashCode = data.request.hashCode;
          let msgId = data.request.msgId;
          let classPath = data.request.classPath;
-         instances[hashCode + '_' + msgId] = callback;
+         let key = hashCode + '_' + msgId;
+         instances[key] = callback;
          //worker队列唯一性判断，
-         instances[classPath + '_' + hashCode] = hashCode + '_' + msgId;
+         instances[classPath + '_' + hashCode] = key;
          this.worker.postMessage(data);
      }
  }

@@ -190,6 +190,7 @@ export class BoundaryOverlay extends Parameter {
             if (this.eventType == 'onmoving') {
                 return;
             }
+    
             this.setState(State.conputeAfter);
             this.setWorkerData(pixels);
 

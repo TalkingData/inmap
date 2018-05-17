@@ -1,4 +1,3 @@
-
 export let CircuitOverlay = {
     transferCoordinate(_coordinates, nwMc, zoomUnit) {
         return _coordinates.map(function (item) {
@@ -17,9 +16,8 @@ export let CircuitOverlay = {
             let item = points[j];
             item['pixels'] = CircuitOverlay.transferCoordinate(item._coordinates, nwMc, zoomUnit);
         }
-        return {
-            data: points,
-            client: webObj
-        };
+        
+        webObj.request.data = points;
+        return webObj;
     }
 };

@@ -69,6 +69,9 @@
         el: '#app',
         methods: {
             addDot: function () {
+                if (overlay1)
+                    this.delDot();
+
                 overlay1 = new inMap.DotOverlay({
                     tooltip: {
                         show: true,
@@ -145,6 +148,9 @@
                 inmap.add(overlay1);
             },
             addHeat: function () {
+                if (overlay2)
+                    this.delHeat();
+
                 overlay2 = new inMap.HeatOverlay({
                     style: {
                         normal: {

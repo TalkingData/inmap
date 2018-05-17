@@ -524,6 +524,7 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
 
             this.Tclear();
             this.Tdispose();
+
             this.map.removeOverlay(this);
             var me = this;
             for (var key in me) {
@@ -2077,11 +2078,12 @@ var WorkerMrg = function () {
             var hashCode = data.request.hashCode;
             var msgId = data.request.msgId;
             var classPath = data.request.classPath;
-            if (instances[classPath + '_' + hashCode] && instances[classPath + '_' + hashCode] == hashCode + '_' + msgId) {
-                instances[hashCode + '_' + msgId](data.response.data);
-            } else {
-                instances[hashCode + '_' + msgId] = null;
+            var key1 = classPath + '_' + hashCode,
+                key2 = hashCode + '_' + msgId;
+            if (instances[key1] && instances[key1] == key2) {
+                instances[key2](data.request.data);
             }
+            data = null, hashCode = null, msgId = null, classPath = null, instances[key2] = null;
         }
     }, {
         key: 'removeMessage',
@@ -2104,9 +2106,10 @@ var WorkerMrg = function () {
             var hashCode = data.request.hashCode;
             var msgId = data.request.msgId;
             var classPath = data.request.classPath;
-            instances[hashCode + '_' + msgId] = callback;
+            var key = hashCode + '_' + msgId;
+            instances[key] = callback;
 
-            instances[classPath + '_' + hashCode] = hashCode + '_' + msgId;
+            instances[classPath + '_' + hashCode] = key;
             this.worker.postMessage(data);
         }
     }]);
@@ -2643,6 +2646,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
+
                 _this2.setState(_OnState2.default.conputeAfter);
                 _this2.setWorkerData(pixels);
 
@@ -3552,8 +3556,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Parameter2 = __webpack_require__(4);
 
-var _util = __webpack_require__(0);
-
 var _GriddingConfig = __webpack_require__(36);
 
 var _GriddingConfig2 = _interopRequireDefault(_GriddingConfig);
@@ -4125,8 +4127,6 @@ exports.HoneycombOverlay = undefined;
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _Parameter2 = __webpack_require__(4);
-
-var _util = __webpack_require__(0);
 
 var _HoneycombConfig = __webpack_require__(38);
 
