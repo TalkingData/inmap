@@ -31,26 +31,27 @@ export class ImgOverlay extends Parameter {
             pixel.x = pixel.x + distanceX;
             pixel.y = pixel.y + distanceY;
         }
-        
+
         this.refresh();
-    
+
     }
     drawMap() {
-       
+
         this.setState(State.computeBefore);
-        this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), (pixels) => {
+        this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), (pixels, margin) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
             this.setState(State.conputeAfter);
 
             this.setWorkerData(pixels);
-            this.refresh();
+            this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
+            margin = null;
             pixels = null;
 
         });
     }
-     
+
     _isMouseOver(x, y, imgX, imgY, imgW, imgH) {
         return !(x < imgX || x > imgX + imgW || y < imgY || y > imgY + imgH);
     }

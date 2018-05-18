@@ -81,7 +81,7 @@ export class DotOverlay extends Parameter {
         this.batchesData && this.batchesData.clear();
 
         this.setState(State.computeBefore);
-        this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), (pixels) => {
+        this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), (pixels, margin) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
@@ -89,7 +89,8 @@ export class DotOverlay extends Parameter {
             this.setState(State.conputeAfter);
             this.setWorkerData(pixels);
             this.updateOverClickItem();
-            this.refresh();
+            this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
+            margin = null;
             pixels = null;
 
         });

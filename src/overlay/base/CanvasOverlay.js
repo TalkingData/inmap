@@ -30,14 +30,19 @@ export class CanvasOverlay extends BaseClass {
         this.repaintEnd = opts && opts.repaintEnd; //重绘回调
         this.animationFlag = true;
         this.isDispose = false; //是否已销毁
-
+        this.margin = {
+            left: 0,
+            top: 0
+        };
     }
     initialize(map) {
         let me = this;
         this.map = map;
         this.container = document.createElement('canvas');
         this.ctx = this.container.getContext('2d');
-        this.container.style.cssText = `position:absolute;left:${-this.map.offsetX}px;top:${-this.map.offsetY}px;z-index:${zIndex++};`;
+        this.margin.left = -this.map.offsetX;
+        this.margin.top = -this.map.offsetY;
+        this.container.style.cssText = `position:absolute;left:${this.margin.left}px;top:${this.margin.top}px;z-index:${zIndex++};`;
         map.getPanes().mapPane.appendChild(this.container);
         this.setCanvasSize();
         map.addEventListener('resize', me.tOnResize);
@@ -132,7 +137,10 @@ export class CanvasOverlay extends BaseClass {
         let top = pixel.y - size.height / 2;
         let containerDomStyle = container.style;
 
-        this.translationIf(parseFloat(containerDomStyle.left), parseFloat(containerDomStyle.top), left, top);
+        this.translationIf(this.margin.left, this.margin.top, left, top);
+
+        this.margin.left = left;
+        this.margin.top = top;
         containerDomStyle.left = left + 'px';
         containerDomStyle.top = top + 'px';
 
@@ -142,7 +150,7 @@ export class CanvasOverlay extends BaseClass {
 
     }
     translationIf(oldLeft, oldTop, newLeft, newTop) {
-        debugger
+        // debugger
         if (oldLeft != newLeft || oldTop != newTop) {
             this.translation(oldLeft - newLeft, oldTop - newTop);
         }

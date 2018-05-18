@@ -129,7 +129,7 @@ export let HoneycombOverlay = {
                 grids[fixX + '|' + fixY].count += item.count;
             }
         }
-       
+
         let result = [];
         for (let key in grids) {
             let item = grids[key];

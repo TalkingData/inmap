@@ -98,7 +98,6 @@ BaseClass.prototype.postMessage = function (workerClassPath, data, callback) {
     let center = map.getCenter();
     let size = map.getSize();
     let msgId = this.setMsgId();
-
     let request = {
         'type': 'web',
         'data': data,

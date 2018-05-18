@@ -13,7 +13,7 @@ export class HoneycombOverlay extends Parameter {
     }
 
     setOptionStyle(ops) {
-        this._setStyle( this.baseConfig, ops);
+        this._setStyle(this.baseConfig, ops);
     }
     setState(val) {
         this.state = val;
@@ -104,7 +104,7 @@ export class HoneycombOverlay extends Parameter {
         };
         this.setState(State.computeBefore);
 
-        this.postMessage('HoneycombOverlay.toRecGrids', params, (gridsObj) => {
+        this.postMessage('HoneycombOverlay.toRecGrids', params, (gridsObj, margin) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
@@ -114,8 +114,9 @@ export class HoneycombOverlay extends Parameter {
             this._drawSize = size / zoomUnit;
 
             this.createColorSplit();
-            this.refresh();
+            this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
             gridsObj = null;
+            margin = null;
 
         });
     }

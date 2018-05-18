@@ -81,7 +81,7 @@ export class Parameter extends CanvasOverlay {
      * 清除悬浮引用
      */
     clearData() {
-        clearPushArray(this.workerData, []);
+        clearPushArray(this.workerData);
         this.overItem = null;
     }
     /**

@@ -30,7 +30,7 @@
          let key1 = classPath + '_' + hashCode,
              key2 = hashCode + '_' + msgId;
          if (instances[key1] && instances[key1] == key2) {
-             instances[key2](data.request.data);
+             instances[key2](data.request.data, data.request.map.margin);
          }
          data = null, hashCode = null, msgId = null, classPath = null, instances[key2] = null;
 

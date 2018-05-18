@@ -19,10 +19,9 @@ export class GriddingOverlay extends Parameter {
         this._setStyle(this.baseConfig, ops);
     }
     translation(distanceX, distanceY) {
-
+        if (this.workerData.length <= 0) return;
         for (let i = 0; i < this.workerData.length; i++) {
             let item = this.workerData[i];
-            
             item.x = item.x + distanceX;
             item.y = item.y + distanceY;
         }
@@ -108,7 +107,7 @@ export class GriddingOverlay extends Parameter {
             zoom: zoom
         };
         this.setState(State.computeBefore);
-        this.postMessage('GriddingOverlay.toRecGrids', params, (gridsObj) => {
+        this.postMessage('GriddingOverlay.toRecGrids', params, (gridsObj, margin) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
@@ -117,8 +116,9 @@ export class GriddingOverlay extends Parameter {
             this._drawSize = size / zoomUnit;
             this.setState(State.drawBefore);
             this.createColorSplit();
-            this.refresh();
+            this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
             gridsObj = null;
+            margin = null;
         });
     }
 

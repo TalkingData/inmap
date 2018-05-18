@@ -186,15 +186,15 @@ export class BoundaryOverlay extends Parameter {
             labelShow: this.styleConfig.normal.label.show
         };
 
-        this.postMessage('BoundaryOverlay.calculatePixel', parameter, (pixels) => {
+        this.postMessage('BoundaryOverlay.calculatePixel', parameter, (pixels, margin) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
-    
+
             this.setState(State.conputeAfter);
             this.setWorkerData(pixels);
-
-            this.refresh();
+            this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
+            pixels = null, margin = null;
         });
     }
     getTarget(x, y) {

@@ -335,7 +335,12 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
         _this.devicePixelRatio = window.devicePixelRatio;
         _this.repaintEnd = opts && opts.repaintEnd;
         _this.animationFlag = true;
-        _this.isDispose = false;return _this;
+        _this.isDispose = false;
+        _this.margin = {
+            left: 0,
+            top: 0
+        };
+        return _this;
     }
 
     _createClass(CanvasOverlay, [{
@@ -345,7 +350,9 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
             this.map = map;
             this.container = document.createElement('canvas');
             this.ctx = this.container.getContext('2d');
-            this.container.style.cssText = 'position:absolute;left:' + -this.map.offsetX + 'px;top:' + -this.map.offsetY + 'px;z-index:' + zIndex++ + ';';
+            this.margin.left = -this.map.offsetX;
+            this.margin.top = -this.map.offsetY;
+            this.container.style.cssText = 'position:absolute;left:' + this.margin.left + 'px;top:' + this.margin.top + 'px;z-index:' + zIndex++ + ';';
             map.getPanes().mapPane.appendChild(this.container);
             this.setCanvasSize();
             map.addEventListener('resize', me.tOnResize);
@@ -452,7 +459,10 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
             var top = pixel.y - size.height / 2;
             var containerDomStyle = container.style;
 
-            this.translationIf(parseFloat(containerDomStyle.left), parseFloat(containerDomStyle.top), left, top);
+            this.translationIf(this.margin.left, this.margin.top, left, top);
+
+            this.margin.left = left;
+            this.margin.top = top;
             containerDomStyle.left = left + 'px';
             containerDomStyle.top = top + 'px';
 
@@ -463,7 +473,6 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
     }, {
         key: 'translationIf',
         value: function translationIf(oldLeft, oldTop, newLeft, newTop) {
-            debugger;
             if (oldLeft != newLeft || oldTop != newTop) {
                 this.translation(oldLeft - newLeft, oldTop - newTop);
             }
@@ -649,7 +658,7 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
     }, {
         key: 'clearData',
         value: function clearData() {
-            (0, _util.clearPushArray)(this.workerData, []);
+            (0, _util.clearPushArray)(this.workerData);
             this.overItem = null;
         }
     }, {
@@ -2082,7 +2091,7 @@ var WorkerMrg = function () {
             var key1 = classPath + '_' + hashCode,
                 key2 = hashCode + '_' + msgId;
             if (instances[key1] && instances[key1] == key2) {
-                instances[key2](data.request.data);
+                instances[key2](data.request.data, data.request.map.margin);
             }
             data = null, hashCode = null, msgId = null, classPath = null, instances[key2] = null;
         }
@@ -2249,7 +2258,6 @@ BaseClass.prototype.postMessage = function (workerClassPath, data, callback) {
     var center = map.getCenter();
     var size = map.getSize();
     var msgId = this.setMsgId();
-
     var request = {
         'type': 'web',
         'data': data,
@@ -2643,15 +2651,15 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
                 labelShow: this.styleConfig.normal.label.show
             };
 
-            this.postMessage('BoundaryOverlay.calculatePixel', parameter, function (pixels) {
+            this.postMessage('BoundaryOverlay.calculatePixel', parameter, function (pixels, margin) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
 
                 _this2.setState(_OnState2.default.conputeAfter);
                 _this2.setWorkerData(pixels);
-
-                _this2.refresh();
+                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                pixels = null, margin = null;
             });
         }
     }, {
@@ -2860,16 +2868,16 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
                 this.coordinates(this.points);
             }
             this.setState(_OnState2.default.computeBefore);
-            this.postMessage('CircuitOverlay.calculatePixel', params, function (pixels) {
+            this.postMessage('CircuitOverlay.calculatePixel', params, function (pixels, margin) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
                 _this2.setState(_OnState2.default.conputeAfter);
                 _this2.clearCanvas();
                 (0, _util.clearPushArray)(_this2.workerData, pixels);
-                _this2.setState(_OnState2.default.drawBefore);
-                _this2.drawLine(_this2.workerData);
-                _this2.setState(_OnState2.default.drawAfter);
+                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                params = null;
+                margin = null;
             });
         }
     }, {
@@ -3074,7 +3082,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             this.batchesData && this.batchesData.clear();
 
             this.setState(_OnState2.default.computeBefore);
-            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels) {
+            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
@@ -3082,7 +3090,8 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
                 _this2.setState(_OnState2.default.conputeAfter);
                 _this2.setWorkerData(pixels);
                 _this2.updateOverClickItem();
-                _this2.refresh();
+                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                margin = null;
                 pixels = null;
             });
         }
@@ -3600,10 +3609,9 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
     }, {
         key: 'translation',
         value: function translation(distanceX, distanceY) {
-
+            if (this.workerData.length <= 0) return;
             for (var i = 0; i < this.workerData.length; i++) {
                 var item = this.workerData[i];
-
                 item.x = item.x + distanceX;
                 item.y = item.y + distanceY;
             }
@@ -3702,7 +3710,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                 zoom: zoom
             };
             this.setState(_OnState2.default.computeBefore);
-            this.postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj) {
+            this.postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj, margin) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
@@ -3711,8 +3719,9 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                 _this2._drawSize = size / zoomUnit;
                 _this2.setState(_OnState2.default.drawBefore);
                 _this2.createColorSplit();
-                _this2.refresh();
+                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
                 gridsObj = null;
+                margin = null;
             });
         }
     }, {
@@ -4001,7 +4010,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
 
             this.setState(_OnState2.default.computeBefore);
 
-            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels) {
+            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin) {
 
                 if (_this2.eventType == 'onmoving') {
                     return;
@@ -4009,11 +4018,9 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
                 _this2.setState(_OnState2.default.conputeAfter);
 
                 _this2.setWorkerData(pixels);
+                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
 
-                _this2.setState(_OnState2.default.drawBefore);
-                _this2.refresh();
-                _this2.setState(_OnState2.default.drawAfter);
-
+                margin = null;
                 pixels = null;
             });
         }
@@ -4270,7 +4277,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             };
             this.setState(_OnState2.default.computeBefore);
 
-            this.postMessage('HoneycombOverlay.toRecGrids', params, function (gridsObj) {
+            this.postMessage('HoneycombOverlay.toRecGrids', params, function (gridsObj, margin) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
@@ -4280,8 +4287,9 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
                 _this2._drawSize = size / zoomUnit;
 
                 _this2.createColorSplit();
-                _this2.refresh();
+                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
                 gridsObj = null;
+                margin = null;
             });
         }
     }, {
@@ -4518,14 +4526,15 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
             var _this2 = this;
 
             this.setState(_OnState2.default.computeBefore);
-            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels) {
+            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
                 _this2.setState(_OnState2.default.conputeAfter);
 
                 _this2.setWorkerData(pixels);
-                _this2.refresh();
+                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                margin = null;
                 pixels = null;
             });
         }

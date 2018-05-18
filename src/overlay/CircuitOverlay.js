@@ -83,17 +83,16 @@ export class CircuitOverlay extends CanvasOverlay {
             this.coordinates(this.points);
         }
         this.setState(State.computeBefore);
-        this.postMessage('CircuitOverlay.calculatePixel', params, (pixels) => {
+        this.postMessage('CircuitOverlay.calculatePixel', params, (pixels, margin) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
             this.setState(State.conputeAfter);
             this.clearCanvas();
             clearPushArray(this.workerData, pixels);
-            this.setState(State.drawBefore);
-            this.drawLine(this.workerData);
-            this.setState(State.drawAfter);
-
+            this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
+            params = null;
+            margin = null;
         });
     }
 

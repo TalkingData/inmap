@@ -93,7 +93,7 @@ export class HeatOverlay extends CanvasOverlay {
     drawMap() {
         this.setState(State.computeBefore);
 
-        this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), (pixels) => {
+        this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), (pixels,margin) => {
 
             if (this.eventType == 'onmoving') {
                 return;
@@ -101,13 +101,11 @@ export class HeatOverlay extends CanvasOverlay {
             this.setState(State.conputeAfter);
 
             this.setWorkerData(pixels);
-
-            this.setState(State.drawBefore);
-            this.refresh();
-            this.setState(State.drawAfter);
-
+            this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
+            
+            margin = null;
             pixels = null;
-
+ 
         });
     }
     refresh() {
