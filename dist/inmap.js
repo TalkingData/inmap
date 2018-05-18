@@ -345,7 +345,7 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
             this.map = map;
             this.container = document.createElement('canvas');
             this.ctx = this.container.getContext('2d');
-            this.container.style.cssText = 'position:absolute;left:0;top:0;z-index:' + zIndex++ + ';';
+            this.container.style.cssText = 'position:absolute;left:' + -this.map.offsetX + 'px;top:' + -this.map.offsetY + 'px;z-index:' + zIndex++ + ';';
             map.getPanes().mapPane.appendChild(this.container);
             this.setCanvasSize();
             map.addEventListener('resize', me.tOnResize);
@@ -463,6 +463,7 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
     }, {
         key: 'translationIf',
         value: function translationIf(oldLeft, oldTop, newLeft, newTop) {
+            debugger;
             if (oldLeft != newLeft || oldTop != newTop) {
                 this.translation(oldLeft - newLeft, oldTop - newTop);
             }
@@ -3309,6 +3310,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
     }, {
         key: 'Tdispose',
         value: function Tdispose() {
+            this.batchesData && this.batchesData.clear();
             this.map.removeOverlay(this.mouseLayer);
             this.mouseLayer.dispose();
         }

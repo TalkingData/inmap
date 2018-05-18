@@ -37,7 +37,7 @@ export class CanvasOverlay extends BaseClass {
         this.map = map;
         this.container = document.createElement('canvas');
         this.ctx = this.container.getContext('2d');
-        this.container.style.cssText = 'position:absolute;left:0;top:0;z-index:' + (zIndex++) + ';';
+        this.container.style.cssText = `position:absolute;left:${-this.map.offsetX}px;top:${-this.map.offsetY}px;z-index:${zIndex++};`;
         map.getPanes().mapPane.appendChild(this.container);
         this.setCanvasSize();
         map.addEventListener('resize', me.tOnResize);
@@ -142,6 +142,7 @@ export class CanvasOverlay extends BaseClass {
 
     }
     translationIf(oldLeft, oldTop, newLeft, newTop) {
+        debugger
         if (oldLeft != newLeft || oldTop != newTop) {
             this.translation(oldLeft - newLeft, oldTop - newTop);
         }
@@ -206,7 +207,7 @@ export class CanvasOverlay extends BaseClass {
 
         this.Tclear();
         this.Tdispose();
-        
+
         this.map.removeOverlay(this);
         let me = this;
         for (let key in me) {
