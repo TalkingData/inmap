@@ -3797,16 +3797,22 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                     sign = parseInt(colorMod[i] / sunMod * length) + sign;
                     end = data[sign].count;
                 }
-
                 split.push({
                     start: star,
                     end: end,
-                    backgroundColor: colors[i]
-
+                    backgroundColor: null
                 });
             }
-
-            this.styleConfig.splitList = split;
+            var result = [];
+            for (var _i = 0; _i < split.length; _i++) {
+                var item = split[_i];
+                if (item.start != item.end) {
+                    item.backgroundColor = colors[result.length];
+                    result.push(item);
+                }
+            }
+            split = [];
+            this.styleConfig.splitList = result;
             this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
     }, {
@@ -5606,7 +5612,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.5.6";
+var version = "1.5.7";
 console.log('inMap v' + version);
 
 var inMap = {

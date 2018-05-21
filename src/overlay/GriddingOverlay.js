@@ -189,17 +189,22 @@ export class GriddingOverlay extends Parameter {
                 sign = parseInt((colorMod[i] / sunMod) * length) + sign;
                 end = data[sign].count;
             }
-
             split.push({
                 start: star,
                 end: end,
-                backgroundColor: colors[i],
-
+                backgroundColor: null,
             });
-
         }
-
-        this.styleConfig.splitList = split;
+        let result = [];
+        for (let i = 0; i < split.length; i++) {
+            let item = split[i];
+            if (item.start != item.end) {
+                item.backgroundColor = colors[result.length];
+                result.push(item);
+            }
+        }
+        split = [];
+        this.styleConfig.splitList = result;
         this.setlegend(this.legendConfig, this.styleConfig.splitList);
     }
     createColorSplit() {
