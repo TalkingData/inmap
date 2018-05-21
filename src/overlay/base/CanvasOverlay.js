@@ -1,4 +1,5 @@
 import BaseClass from './BaseClass';
+import Legend from './../../map/Legend';
 import {
     setDevicePixelRatio,
     isString,
@@ -55,9 +56,10 @@ export class CanvasOverlay extends BaseClass {
         if (!map.inmapToolBar) {
             map.inmapToolBar = new Toolbar(map.Va);
         }
-        this.legend = map.inmapToolBar.legend;
+        let legendContainer = map.inmapToolBar.legendContainer;
+        this.legend = new Legend(legendContainer);
         this.toolTip = map.inmapToolBar.toolTip;
-
+        legendContainer = null;
         this.canvasInit();
         return this.container;
 
@@ -205,7 +207,7 @@ export class CanvasOverlay extends BaseClass {
         this.map.removeEventListener('click', this.tMouseClick);
 
         if (this.legend) {
-            this.legend.hide();
+            this.legend.dispose(this.map.inmapToolBar.legendContainer);
             this.legend = null;
         }
         if (this.toolTip) {

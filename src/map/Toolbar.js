@@ -1,12 +1,11 @@
- import Legend from './Legend';
  import ToolTip from './ToolTip';
  export default class Toolbar {
      constructor(mapDom) {
          let toolDom = this.create(mapDom);
-         let legend = new Legend(toolDom);
          let toolTip = new ToolTip(toolDom);
+         let legendContainer = this.createLegendContainer(toolDom);
          return {
-             legend,
+             legendContainer,
              toolTip
          };
      }
@@ -14,6 +13,12 @@
          let div = document.createElement('div');
          div.classList.add('inmap-container');
          mapDom.appendChild(div);
+         return div;
+     }
+     createLegendContainer(parentDom) {
+         let div = document.createElement('div');
+         div.classList.add('inmap-legend-container');
+         parentDom.appendChild(div);
          return div;
      }
  }

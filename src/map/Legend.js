@@ -22,7 +22,7 @@ export default class Legend {
         return div;
     }
     show() {
-        this.dom.style.display = 'block';
+        this.dom.style.display = 'inline-block';
     }
     hide() {
         this.dom.style.display = 'none';
@@ -119,6 +119,12 @@ export default class Legend {
             this.hide();
         }
         this.dom.innerHTML = str;
+
+    }
+    dispose(parentDom) {
+        parentDom.removeChild(this.dom);
+        this.opts = null;
+        this.dom = null;
 
     }
 }

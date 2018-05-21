@@ -65,19 +65,22 @@
         background-color: rgba(50, 50, 50, 0.7);
         color: rgb(255, 255, 255);
     }
-    &-legend {
+    &-legend-container{
         position: absolute;
+        left: 35px;
+        bottom: 35px;
+        z-index: 9999;
+    }
+    &-legend {
         list-style: none;
         opacity: 1;
         height: auto;
         font-size: 12px;
-        left: 35px;
-        bottom: 35px;
         text-align: center;
         border: 10px solid rgba(255, 255, 255, 0.7);
         box-shadow: rgba(8, 16, 34, 0.3) 2px 0px 7px;
         border-radius: 5px;
-        z-index: 9999;
+        margin-right: 3px;
     }
     &-legend &-legend-title {
         background-color: rgba(255, 255, 255, 0.7);
