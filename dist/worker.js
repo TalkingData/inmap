@@ -1639,21 +1639,6 @@ var GriddingOverlay = exports.GriddingOverlay = {
 
         return webObj;
     },
-    _notMerge: function _notMerge(data) {
-        var result = [];
-        for (var i = 0; i < data.length; i++) {
-            var item = data[i];
-            result.push({
-                x: item.px,
-                y: item.py,
-                count: item.count,
-                list: [item]
-            });
-        }
-        return {
-            grids: result
-        };
-    },
     _calculatePixel: function _calculatePixel(map, data, mapSize, mapCenter, zoom) {
         var zoomUnit = Math.pow(2, 18 - zoom);
         var mcCenter = _pointToPixel.geo.projection.lngLatToPoint(mapCenter);

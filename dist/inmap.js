@@ -3820,14 +3820,14 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             }
             split = [];
             this.styleConfig.splitList = result;
-            this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
     }, {
         key: 'createColorSplit',
         value: function createColorSplit() {
-            if (this.styleConfig.colors.length > 0) {
-                this.compileSplitList(this.workerData);
+            if (this.styleConfig.splitList == null || this.styleConfig.splitList.length == 0) {
+                this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
             }
+            this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
     }, {
         key: 'setTooltip',
@@ -4304,9 +4304,10 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
     }, {
         key: 'createColorSplit',
         value: function createColorSplit() {
-            if (this.styleConfig.colors.length > 0) {
-                this.compileSplitList(this.workerData);
+            if (this.styleConfig.splitList == null || this.styleConfig.splitList.length == 0) {
+                this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
             }
+            this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
     }, {
         key: 'compileSplitList',
@@ -4359,7 +4360,6 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             split = [];
 
             this.styleConfig.splitList = result;
-            this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
     }, {
         key: 'findIndexSelectItem',

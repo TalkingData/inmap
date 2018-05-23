@@ -10,7 +10,7 @@ export class GriddingOverlay extends Parameter {
         this.state = null;
         this._drawSize = 0;
         this.mpp = {};
-       
+
     }
     parameterInit() {
 
@@ -21,7 +21,7 @@ export class GriddingOverlay extends Parameter {
     draw() {
         this.resize();
     }
-  
+
     setState(val) {
         this.state = val;
         this.eventConfig.onState(this.state);
@@ -98,7 +98,7 @@ export class GriddingOverlay extends Parameter {
             mapSize: mapSize,
             mapCenter: mapCenter,
             zoom: zoom
-          
+
         };
         this.setState(State.computeBefore);
         this.postMessage('GriddingOverlay.toRecGrids', params, (gridsObj) => {
@@ -114,7 +114,7 @@ export class GriddingOverlay extends Parameter {
 
             if (this.eventType != 'onmoveend' || this.styleConfig.splitList == null || this.styleConfig.splitList.length < this.styleConfig.colors.length) {
                 this.createColorSplit();
-            } 
+            }
             this.refresh();
             gridsObj = null;
         });
@@ -203,12 +203,13 @@ export class GriddingOverlay extends Parameter {
         }
         split = [];
         this.styleConfig.splitList = result;
-        this.setlegend(this.legendConfig, this.styleConfig.splitList);
+       
     }
     createColorSplit() {
-        if (this.styleConfig.colors.length > 0) {
-            this.compileSplitList(this.workerData);
+        if (this.styleConfig.splitList == null || this.styleConfig.splitList.length == 0) {
+            this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
         }
+        this.setlegend(this.legendConfig, this.styleConfig.splitList);
 
     }
     setTooltip(event) {

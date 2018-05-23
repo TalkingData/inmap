@@ -110,17 +110,17 @@ export class HoneycombOverlay extends Parameter {
 
             if (this.eventType != 'onmoveend' || this.styleConfig.splitList == null || this.styleConfig.splitList.length < this.styleConfig.colors.length) {
                 this.createColorSplit();
-            } 
+            }
             this.refresh();
             gridsObj = null;
 
         });
     }
     createColorSplit() {
-        if (this.styleConfig.colors.length > 0) {
-            this.compileSplitList(this.workerData);
+        if (this.styleConfig.splitList == null || this.styleConfig.splitList.length == 0) {
+            this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
         }
-
+        this.setlegend(this.legendConfig, this.styleConfig.splitList);
     }
     compileSplitList(data) {
 
@@ -173,7 +173,7 @@ export class HoneycombOverlay extends Parameter {
         split = [];
 
         this.styleConfig.splitList = result;
-        this.setlegend(this.legendConfig, this.styleConfig.splitList);
+
     }
     findIndexSelectItem(item) {
         let index = -1;
