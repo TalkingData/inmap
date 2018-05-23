@@ -10,7 +10,7 @@ export class GriddingOverlay extends Parameter {
         this.state = null;
         this._drawSize = 0;
         this.mpp = {};
-
+       
     }
     parameterInit() {
 
@@ -18,17 +18,10 @@ export class GriddingOverlay extends Parameter {
     setOptionStyle(ops) {
         this._setStyle(this.baseConfig, ops);
     }
-    translation(distanceX, distanceY) {
-        if (this.workerData.length <= 0) return;
-        for (let i = 0; i < this.workerData.length; i++) {
-            let item = this.workerData[i];
-            item.x = item.x + distanceX;
-            item.y = item.y + distanceY;
-        }
-
-        this.refresh();
-
+    draw() {
+        this.resize();
     }
+  
     setState(val) {
         this.state = val;
         this.eventConfig.onState(this.state);
@@ -105,20 +98,25 @@ export class GriddingOverlay extends Parameter {
             mapSize: mapSize,
             mapCenter: mapCenter,
             zoom: zoom
+          
         };
         this.setState(State.computeBefore);
-        this.postMessage('GriddingOverlay.toRecGrids', params, (gridsObj, margin) => {
+        this.postMessage('GriddingOverlay.toRecGrids', params, (gridsObj) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
+
+            this.canvasResize();
             this.setState(State.conputeAfter);
             this.workerData = gridsObj.grids;
             this._drawSize = size / zoomUnit;
             this.setState(State.drawBefore);
-            this.createColorSplit();
-            this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
+
+            if (this.eventType != 'onmoveend' || this.styleConfig.splitList == null || this.styleConfig.splitList.length < this.styleConfig.colors.length) {
+                this.createColorSplit();
+            } 
+            this.refresh();
             gridsObj = null;
-            margin = null;
         });
     }
 

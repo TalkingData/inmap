@@ -1632,13 +1632,29 @@ var GriddingOverlay = exports.GriddingOverlay = {
             type = _webObj$request$data.type;
 
         var map = webObj.request.map;
+
         GriddingOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
-        var gridsObj = GriddingOverlay.recGrids(points, map, nwMc, size, zoomUnit, mapSize, type);
-        webObj.request.data = gridsObj;
+        var result = GriddingOverlay.recGrids(points, map, nwMc, size, zoomUnit, mapSize, type);
+        webObj.request.data = result;
+
         return webObj;
     },
+    _notMerge: function _notMerge(data) {
+        var result = [];
+        for (var i = 0; i < data.length; i++) {
+            var item = data[i];
+            result.push({
+                x: item.px,
+                y: item.py,
+                count: item.count,
+                list: [item]
+            });
+        }
+        return {
+            grids: result
+        };
+    },
     _calculatePixel: function _calculatePixel(map, data, mapSize, mapCenter, zoom) {
-
         var zoomUnit = Math.pow(2, 18 - zoom);
         var mcCenter = _pointToPixel.geo.projection.lngLatToPoint(mapCenter);
         var nwMc = new _Pixel2.default(mcCenter.x - mapSize.width / 2 * zoomUnit, mcCenter.y + mapSize.height / 2 * zoomUnit);
@@ -1652,12 +1668,21 @@ var GriddingOverlay = exports.GriddingOverlay = {
                 data[j].px = (data[j].x - nwMc.x) / zoomUnit;
                 data[j].py = (nwMc.y - data[j].y) / zoomUnit;
             }
+            if (data[j].count == null) {
+                throw new TypeError('inMap.GriddingOverlay: data is Invalid format ');
+            }
         }
         return data;
     },
     recGrids: function recGrids(data, map, nwMc, size, zoomUnit, mapSize, type) {
+        if (data.length <= 0) {
+            return {
+                grids: []
+            };
+        }
 
         var grids = {};
+
         var gridStep = size / zoomUnit;
         var startXMc = parseInt(nwMc.x / size, 10) * size;
         var startX = (startXMc - nwMc.x) / zoomUnit;
@@ -1666,32 +1691,6 @@ var GriddingOverlay = exports.GriddingOverlay = {
         var startY = (nwMc.y - startYMc) / zoomUnit;
         var endY = mapSize.height;
 
-        if (data.length > 0) {
-            var temp = data[0];
-            var minPointX = temp.px,
-                minPointY = temp.py,
-                maxPointX = temp.px,
-                maxPointY = temp.py;
-            for (var i = 0; i < data.length - 1; i++) {
-                var row = data[i];
-                if (minPointX > row.px) {
-                    minPointX = row.px;
-                }
-                if (minPointY > row.py) {
-                    minPointY = row.py;
-                }
-                if (maxPointX < row.px) {
-                    maxPointX = row.px;
-                }
-                if (maxPointY < row.py) {
-                    maxPointY = row.py;
-                }
-            }
-            startX = minPointX - 2;
-            startY = minPointY - 2;
-            endX = maxPointX + 2;
-            endY = maxPointY + 2;
-        }
         var stockXA = [];
         var stickXAIndex = 0;
         while (startX + stickXAIndex * gridStep < endX) {
@@ -1708,11 +1707,11 @@ var GriddingOverlay = exports.GriddingOverlay = {
             stickYAIndex++;
         }
 
-        for (var _i = 0; _i < stockXA.length; _i++) {
+        for (var i = 0; i < stockXA.length; i++) {
             for (var j = 0; j < stockYA.length; j++) {
-                var name = stockXA[_i] + '_' + stockYA[j];
+                var name = stockXA[i] + '_' + stockYA[j];
                 grids[name] = {
-                    x: parseFloat(stockXA[_i]),
+                    x: parseFloat(stockXA[i]),
                     y: parseFloat(stockYA[j]),
                     list: [],
                     count: 0
@@ -1720,10 +1719,10 @@ var GriddingOverlay = exports.GriddingOverlay = {
             }
         }
 
-        for (var _i2 = 0; _i2 < data.length; _i2++) {
-            var x = data[_i2].px;
-            var y = data[_i2].py;
-            var item = data[_i2];
+        for (var _i = 0; _i < data.length; _i++) {
+            var x = data[_i].px;
+            var y = data[_i].py;
+            var item = data[_i];
 
             for (var _j = 0; _j < stockXA.length; _j++) {
                 var dataX = Number(stockXA[_j]);
@@ -1847,10 +1846,19 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
                 data[j].px = (data[j].x - nwMc.x) / zoomUnit;
                 data[j].py = (nwMc.y - data[j].y) / zoomUnit;
             }
+            if (data[j].count == null) {
+                throw new TypeError('inMap.HoneycombOverlay: data is Invalid format ');
+            }
         }
         return data;
     },
     honeycombGrid: function honeycombGrid(data, map, nwMc, size, zoomUnit, mapSize, type) {
+        if (data.length <= 0) {
+            return {
+                grids: []
+            };
+        }
+
         var grids = {};
         var gridStep = Math.round(size / zoomUnit);
         var depthX = gridStep;
@@ -1865,33 +1873,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
 
         var endX = parseInt(mapSize.width + depthX, 10);
         var endY = parseInt(mapSize.height + depthY, 10);
-        if (data.length > 0) {
-            var temp = data[0];
-            var minPointX = temp.px,
-                minPointY = temp.py,
-                maxPointX = temp.px,
-                maxPointY = temp.py;
-            for (var i = 0; i < data.length - 1; i++) {
-                var row = data[i];
-                if (minPointX > row.px) {
-                    minPointX = row.px;
-                }
-                if (minPointY > row.py) {
-                    minPointY = row.py;
-                }
-                if (maxPointX < row.px) {
-                    maxPointX = row.px;
-                }
-                if (maxPointY < row.py) {
-                    maxPointY = row.py;
-                }
-            }
 
-            startX = parseInt(minPointX, 10);
-            startY = parseInt(minPointY, 10);
-            endX = parseInt(maxPointX, 10);
-            endY = parseInt(maxPointY, 10);
-        }
         var pointX = startX;
         var pointY = startY;
 
@@ -1916,8 +1898,8 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
             pointY += depthY;
         }
 
-        for (var _i in data) {
-            var item = data[_i];
+        for (var i in data) {
+            var item = data[i];
             var pX = item.px;
             var pY = item.py;
             var fixYIndex = Math.round((pY - startY) / depthY);

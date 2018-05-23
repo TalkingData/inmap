@@ -3616,16 +3616,9 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             this._setStyle(this.baseConfig, ops);
         }
     }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            if (this.workerData.length <= 0) return;
-            for (var i = 0; i < this.workerData.length; i++) {
-                var item = this.workerData[i];
-                item.x = item.x + distanceX;
-                item.y = item.y + distanceY;
-            }
-
-            this.refresh();
+        key: 'draw',
+        value: function draw() {
+            this.resize();
         }
     }, {
         key: 'setState',
@@ -3717,20 +3710,25 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                 mapSize: mapSize,
                 mapCenter: mapCenter,
                 zoom: zoom
+
             };
             this.setState(_OnState2.default.computeBefore);
-            this.postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj, margin) {
+            this.postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
+
+                _this2.canvasResize();
                 _this2.setState(_OnState2.default.conputeAfter);
                 _this2.workerData = gridsObj.grids;
                 _this2._drawSize = size / zoomUnit;
                 _this2.setState(_OnState2.default.drawBefore);
-                _this2.createColorSplit();
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+
+                if (_this2.eventType != 'onmoveend' || _this2.styleConfig.splitList == null || _this2.styleConfig.splitList.length < _this2.styleConfig.colors.length) {
+                    _this2.createColorSplit();
+                }
+                _this2.refresh();
                 gridsObj = null;
-                margin = null;
             });
         }
     }, {
@@ -4194,15 +4192,9 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             this.eventConfig.onState(this.state);
         }
     }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-
-            for (var i = 0; i < this.workerData.length; i++) {
-                var item = this.workerData[i];
-                item.x = item.x + distanceX;
-                item.y = item.y + distanceY;
-            }
-            this.refresh();
+        key: 'draw',
+        value: function draw() {
+            this.resize();
         }
     }, {
         key: 'refresh',
@@ -4292,19 +4284,21 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             };
             this.setState(_OnState2.default.computeBefore);
 
-            this.postMessage('HoneycombOverlay.toRecGrids', params, function (gridsObj, margin) {
+            this.postMessage('HoneycombOverlay.toRecGrids', params, function (gridsObj) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
+                _this2.canvasResize();
                 _this2.setState(_OnState2.default.conputeAfter);
 
                 _this2.workerData = gridsObj.grids;
                 _this2._drawSize = size / zoomUnit;
 
-                _this2.createColorSplit();
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                if (_this2.eventType != 'onmoveend' || _this2.styleConfig.splitList == null || _this2.styleConfig.splitList.length < _this2.styleConfig.colors.length) {
+                    _this2.createColorSplit();
+                }
+                _this2.refresh();
                 gridsObj = null;
-                margin = null;
             });
         }
     }, {
@@ -4354,8 +4348,17 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
                     backgroundColor: colors[i]
                 });
             }
+            var result = [];
+            for (var _i = 0; _i < split.length; _i++) {
+                var item = split[_i];
+                if (item.start != item.end) {
+                    item.backgroundColor = colors[result.length];
+                    result.push(item);
+                }
+            }
+            split = [];
 
-            this.styleConfig.splitList = split;
+            this.styleConfig.splitList = result;
             this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
     }, {

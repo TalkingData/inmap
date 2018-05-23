@@ -19,14 +19,8 @@ export class HoneycombOverlay extends Parameter {
         this.state = val;
         this.eventConfig.onState(this.state);
     }
-    translation(distanceX, distanceY) {
-
-        for (let i = 0; i < this.workerData.length; i++) {
-            let item = this.workerData[i];
-            item.x = item.x + distanceX;
-            item.y = item.y + distanceY;
-        }
-        this.refresh();
+    draw() {
+        this.resize();
     }
     refresh() {
         this.setState(State.drawBefore);
@@ -104,19 +98,21 @@ export class HoneycombOverlay extends Parameter {
         };
         this.setState(State.computeBefore);
 
-        this.postMessage('HoneycombOverlay.toRecGrids', params, (gridsObj, margin) => {
+        this.postMessage('HoneycombOverlay.toRecGrids', params, (gridsObj) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
+            this.canvasResize();
             this.setState(State.conputeAfter);
 
             this.workerData = gridsObj.grids;
             this._drawSize = size / zoomUnit;
 
-            this.createColorSplit();
-            this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
+            if (this.eventType != 'onmoveend' || this.styleConfig.splitList == null || this.styleConfig.splitList.length < this.styleConfig.colors.length) {
+                this.createColorSplit();
+            } 
+            this.refresh();
             gridsObj = null;
-            margin = null;
 
         });
     }
@@ -166,8 +162,17 @@ export class HoneycombOverlay extends Parameter {
             });
 
         }
+        let result = [];
+        for (let i = 0; i < split.length; i++) {
+            let item = split[i];
+            if (item.start != item.end) {
+                item.backgroundColor = colors[result.length];
+                result.push(item);
+            }
+        }
+        split = [];
 
-        this.styleConfig.splitList = split;
+        this.styleConfig.splitList = result;
         this.setlegend(this.legendConfig, this.styleConfig.splitList);
     }
     findIndexSelectItem(item) {
