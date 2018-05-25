@@ -3827,7 +3827,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             if (this.styleConfig.splitList == null || this.styleConfig.splitList.length == 0) {
                 this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
             }
-            this.setlegend(this.legendConfig, this.styleConfig.splitList);
+            this.setlegend(this.legendConfig, this.styleConfig.splitList || []);
         }
     }, {
         key: 'setTooltip',
@@ -4307,7 +4307,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             if (this.styleConfig.splitList == null || this.styleConfig.splitList.length == 0) {
                 this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
             }
-            this.setlegend(this.legendConfig, this.styleConfig.splitList);
+            this.setlegend(this.legendConfig, this.styleConfig.splitList || []);
         }
     }, {
         key: 'compileSplitList',
@@ -5624,7 +5624,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.5.7";
+var version = "1.5.8";
 console.log('inMap v' + version);
 
 var inMap = {

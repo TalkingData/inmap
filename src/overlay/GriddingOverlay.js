@@ -203,13 +203,13 @@ export class GriddingOverlay extends Parameter {
         }
         split = [];
         this.styleConfig.splitList = result;
-       
+
     }
     createColorSplit() {
         if (this.styleConfig.splitList == null || this.styleConfig.splitList.length == 0) {
             this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
         }
-        this.setlegend(this.legendConfig, this.styleConfig.splitList);
+        this.setlegend(this.legendConfig, this.styleConfig.splitList || []);
 
     }
     setTooltip(event) {

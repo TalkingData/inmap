@@ -120,7 +120,7 @@ export class HoneycombOverlay extends Parameter {
         if (this.styleConfig.splitList == null || this.styleConfig.splitList.length == 0) {
             this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
         }
-        this.setlegend(this.legendConfig, this.styleConfig.splitList);
+        this.setlegend(this.legendConfig, this.styleConfig.splitList || []);
     }
     compileSplitList(data) {
 
