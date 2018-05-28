@@ -48,14 +48,16 @@
             max: 22
         }
     });
+     
     var overlay = new inMap.CircuitOverlay({
         style: {
             normal: {
+                globalCompositeOperation: 'lighter',
                 borderColor: 'rgba(50, 50, 255, 0.8)',
                 borderWidth: 0.05,
             },
         },
-        data: [],
+        data: data,
         event: {
             onState(state) {
                 console.log(state);
@@ -63,5 +65,5 @@
         }
     });
     map.add(overlay);
-    overlay.setData(data);
+ 
 </script>
