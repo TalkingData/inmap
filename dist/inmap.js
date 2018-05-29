@@ -5624,7 +5624,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.5.8";
+var version = "1.5.9";
 console.log('inMap v' + version);
 
 var inMap = {
@@ -5724,6 +5724,7 @@ var Legend = function () {
         key: 'setOption',
         value: function setOption(opts) {
             this.opts = (0, _util.merge)(_Legend2.default, this.opts, opts);
+            this.opts.list = this.opts.list || [];
             this.render();
         }
     }, {
