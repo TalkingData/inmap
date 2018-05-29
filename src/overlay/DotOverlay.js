@@ -180,12 +180,12 @@ export class DotOverlay extends Parameter {
         let mapSize = this.map.getSize();
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
+            let style = this.setDrawStyle(item);
             let {
                 x,
                 y,
-                radius
             } = item.pixel;
-            let r = radius + this.styleConfig.normal.borderWidth;
+            let r =style.size + this.styleConfig.normal.borderWidth;
             if (x > -r && y > -r && x < mapSize.width + r && y < mapSize.height + r) {
                 ctx.beginPath();
                 ctx.arc(x, y, r, 0, 2 * Math.PI, true);

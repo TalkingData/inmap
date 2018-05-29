@@ -3138,12 +3138,12 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             var mapSize = this.map.getSize();
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var _item = pixels[i];
+                var style = this.setDrawStyle(_item);
                 var _item$pixel = _item.pixel,
                     x = _item$pixel.x,
-                    y = _item$pixel.y,
-                    radius = _item$pixel.radius;
+                    y = _item$pixel.y;
 
-                var r = radius + this.styleConfig.normal.borderWidth;
+                var r = style.size + this.styleConfig.normal.borderWidth;
                 if (x > -r && y > -r && x < mapSize.width + r && y < mapSize.height + r) {
                     ctx.beginPath();
                     ctx.arc(x, y, r, 0, 2 * Math.PI, true);
