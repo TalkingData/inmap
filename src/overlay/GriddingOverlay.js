@@ -238,7 +238,6 @@ export class GriddingOverlay extends Parameter {
             let x = item.x;
             let y = item.y;
             if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
-                this.ctx.beginPath();
                 let drawStyle = this.getStyle(item);
                 if (drawStyle.shadowColor) {
                     this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';

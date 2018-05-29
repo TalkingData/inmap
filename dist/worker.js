@@ -1570,10 +1570,6 @@ var BoundaryOverlay = exports.BoundaryOverlay = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.CircuitOverlay = undefined;
-
-var _pointToPixel = __webpack_require__(3);
-
 var CircuitOverlay = exports.CircuitOverlay = {
     transferCoordinate: function transferCoordinate(_coordinates, nwMc, zoomUnit) {
         return _coordinates.map(function (item) {
@@ -1588,23 +1584,12 @@ var CircuitOverlay = exports.CircuitOverlay = {
             points = data.request.data.points,
             zoomUnit = data.request.data.zoomUnit,
             nwMc = data.request.data.nwMc;
+
         for (var j = 0; j < points.length; j++) {
             var item = points[j];
-            if (!item.geometry.medianCoordinates) {
-                item.geometry['medianCoordinates'] = item.geometry.coordinates.map(function (item) {
-                    var pixel = _pointToPixel.geo.projection.lngLatToPoint({
-                        lng: item[0],
-                        lat: item[1]
-                    });
-                    return [pixel.x, pixel.y];
-                });
-            }
-            item.geometry['pixels'] = item.geometry['medianCoordinates'].map(function (item) {
-                var x = (item[0] - nwMc.x) / zoomUnit;
-                var y = (nwMc.y - item[1]) / zoomUnit;
-                return [x, y];
-            });
+            item['pixels'] = CircuitOverlay.transferCoordinate(item._coordinates, nwMc, zoomUnit);
         }
+
         webObj.request.data = points;
         return webObj;
     }

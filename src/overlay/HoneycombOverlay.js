@@ -229,11 +229,11 @@ export class HoneycombOverlay extends Parameter {
         this.clearCanvas();
         let mapSize = this.map.getSize();
         let gridsW = this._drawSize;
+
         let style = this.styleConfig.normal;
         this.ctx.shadowOffsetX = 0;
         this.ctx.shadowOffsetY = 0;
         for (let i = 0; i < this.workerData.length; i++) {
-            this.ctx.beginPath();
             let item = this.workerData[i];
             let x = item.x;
             let y = item.y;
