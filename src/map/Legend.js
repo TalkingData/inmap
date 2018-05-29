@@ -36,6 +36,7 @@ export default class Legend {
     }
     setOption(opts) {
         this.opts = merge(config, this.opts, opts);
+        this.opts.list = this.opts.list || [];
         this.render();
     }
     setItems(list) {

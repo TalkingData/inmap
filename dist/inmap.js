@@ -5724,6 +5724,7 @@ var Legend = function () {
         key: 'setOption',
         value: function setOption(opts) {
             this.opts = (0, _util.merge)(_Legend2.default, this.opts, opts);
+            this.opts.list = this.opts.list || [];
             this.render();
         }
     }, {
