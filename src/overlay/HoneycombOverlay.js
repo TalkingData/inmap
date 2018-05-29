@@ -120,7 +120,7 @@ export class HoneycombOverlay extends Parameter {
         if (this.styleConfig.splitList == null || this.styleConfig.splitList.length == 0) {
             this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
         }
-        this.setlegend(this.legendConfig, this.styleConfig.splitList || []);
+        this.setlegend(this.legendConfig, this.styleConfig.splitList);
     }
     compileSplitList(data) {
 
@@ -229,11 +229,11 @@ export class HoneycombOverlay extends Parameter {
         this.clearCanvas();
         let mapSize = this.map.getSize();
         let gridsW = this._drawSize;
+
         let style = this.styleConfig.normal;
         this.ctx.shadowOffsetX = 0;
         this.ctx.shadowOffsetY = 0;
         for (let i = 0; i < this.workerData.length; i++) {
-            this.ctx.beginPath();
             let item = this.workerData[i];
             let x = item.x;
             let y = item.y;

@@ -247,6 +247,7 @@ export class BoundaryOverlay extends Parameter {
             this.ctx.lineWidth = style.borderWidth;
             this.ctx.stroke();
 
+
         }
 
         for (let i = 0, len = data.length; i < len; i++) {
@@ -260,7 +261,6 @@ export class BoundaryOverlay extends Parameter {
                 this.ctx.lineWidth = label.lineWidth;
                 this.ctx.font = label.font;
                 this.ctx.fillStyle = label.color;
-                this.ctx.beginPath();
                 let width = this.ctx.measureText(item.name).width;
                 if (this.getMaxWidth(pixel) > width) {
                     this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);

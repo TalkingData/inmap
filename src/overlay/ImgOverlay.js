@@ -199,7 +199,6 @@ export class ImgOverlay extends Parameter {
     }
     _loopDraw(ctx, pixels) {
         for (let i = 0, len = pixels.length; i < len; i++) {
-            this.ctx.beginPath();
             let item = pixels[i];
             let pixel = item.pixel;
             let style = this.setDrawStyle(item);

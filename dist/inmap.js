@@ -2737,7 +2737,6 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
                     this.ctx.lineWidth = label.lineWidth;
                     this.ctx.font = label.font;
                     this.ctx.fillStyle = label.color;
-                    this.ctx.beginPath();
                     var width = this.ctx.measureText(_item.name).width;
                     if (this.getMaxWidth(_pixel) > width) {
                         this.ctx.fillText(_item.name, bestCell.x - width / 2, bestCell.y);
@@ -2796,6 +2795,7 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
         _this.points = [];
         _this.styleConfig = {};
         _this._setStyle(_CircuitConfig2.default, ops);
+        _this._isCoordinates = false;
         _this.state = null;
         _this.workerData = [];
         return _this;
@@ -2805,20 +2805,10 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
         key: '_setStyle',
         value: function _setStyle(config, ops) {
             var option = (0, _util.merge)(config, ops);
-            if (ops.data) {
-                this.setData(ops.data);
-            } else {
-                this.map && this.refresh();
-            }
+            this.points = ops.data ? option.data : this.points;
             this.styleConfig = option.style;
             this.eventConfig = option.event;
             this.tMapStyle(option.skin);
-        }
-    }, {
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-            this._setStyle(_CircuitConfig2.default, ops);
-            this.map && this.drawMap();
         }
     }, {
         key: 'setState',
@@ -2830,27 +2820,13 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
         key: 'translation',
         value: function translation(distanceX, distanceY) {
             for (var i = 0; i < this.workerData.length; i++) {
-                var pixels = this.workerData[i].geometry.pixels;
+                var pixels = this.workerData[i].pixels;
                 for (var j = 0; j < pixels.length; j++) {
                     var pixel = pixels[j];
                     pixel[0] = pixel[0] + distanceX;
                     pixel[1] = pixel[1] + distanceY;
                 }
             }
-            this.refresh();
-        }
-    }, {
-        key: 'setData',
-        value: function setData(points) {
-            if (!(0, _util.isArray)(points)) {
-                throw new TypeError('inMap: data must be a Array');
-            }
-            this.points = points;
-            this.map && this.drawMap();
-        }
-    }, {
-        key: 'refresh',
-        value: function refresh() {
             this.setState(_OnState2.default.drawBefore);
             this.drawLine(this.workerData);
             this.setState(_OnState2.default.drawAfter);
@@ -2858,6 +2834,29 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
     }, {
         key: 'resize',
         value: function resize() {
+            this.drawMap();
+        }
+    }, {
+        key: 'setOptionStyle',
+        value: function setOptionStyle(ops) {
+            this._setStyle(_CircuitConfig2.default, ops);
+            this.coordinates(this.points);
+            this.drawMap();
+        }
+    }, {
+        key: 'setData',
+        value: function setData(points) {
+            this.setPoints(points);
+        }
+    }, {
+        key: 'setPoints',
+        value: function setPoints(points) {
+            if (!(0, _util.isArray)(points)) {
+                throw new TypeError('inMap: data must be a Array');
+            }
+            this.points = points;
+
+            this.coordinates(this.points);
             this.drawMap();
         }
     }, {
@@ -2874,13 +2873,16 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
                 nwMc: nwMc,
                 zoomUnit: zoomUnit
             };
-
+            if (!this._isCoordinates) {
+                this.coordinates(this.points);
+            }
             this.setState(_OnState2.default.computeBefore);
             this.postMessage('CircuitOverlay.calculatePixel', params, function (pixels, margin) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
                 _this2.setState(_OnState2.default.conputeAfter);
+                _this2.clearCanvas();
                 (0, _util.clearPushArray)(_this2.workerData, pixels);
                 _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
                 params = null;
@@ -2888,31 +2890,67 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
             });
         }
     }, {
+        key: 'coordinates',
+        value: function coordinates(data) {
+            this._isCoordinates = true;
+            var projection = this.map.getMapType().getProjection();
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                item['_coordinates'] = item.geo.map(function (item) {
+
+                    var pixel = projection.lngLatToPoint({
+                        lng: item[0],
+                        lat: item[1]
+                    });
+                    return [pixel.x, pixel.y];
+                });
+            }
+        }
+    }, {
+        key: 'transferCoordinate',
+        value: function transferCoordinate(_coordinates, nwMc, zoomUnit) {
+
+            return _coordinates.map(function (item) {
+
+                var x = (item[0] - nwMc.x) / zoomUnit;
+                var y = (nwMc.y - item[1]) / zoomUnit;
+                return [x, y];
+            });
+        }
+    }, {
+        key: 'lngLatToPoints',
+        value: function lngLatToPoints(data, nwMc, zoomUnit) {
+            if (data.length > 0) {
+                return this.transferCoordinate(data, nwMc, zoomUnit);
+            } else {
+                return [];
+            }
+        }
+    }, {
         key: 'drawLine',
-        value: function drawLine() {
+        value: function drawLine(data) {
             this.clearCanvas();
             var normal = this.styleConfig.normal;
-            var ctx = this.ctx;
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
+            this.ctx.shadowBlur = 0;
+            this.ctx.shadowOffsetX = 0;
+            this.ctx.shadowOffsetY = 0;
+            this.ctx.lineCap = 'butt';
+            this.ctx.lineJoin = 'miter';
+            this.ctx.globalCompositeOperation = 'lighter';
+            this.ctx.miterLimit = 10;
+            this.ctx.strokeStyle = normal.borderColor;
+            this.ctx.lineWidth = normal.borderWidth;
+            this.ctx.beginPath();
 
-            if (normal.globalCompositeOperation) {
-                ctx.globalCompositeOperation = normal.globalCompositeOperation;
-            }
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
 
-            for (var i = 0; i < this.workerData.length; i++) {
-                var item = this.workerData[i];
-                this.ctx.strokeStyle = normal.borderColor;
-                var pixels = item.geometry.pixels;
-                ctx.beginPath();
-                ctx.moveTo(pixels[0][0], pixels[0][1]);
+                var pixels = item.pixels;
+                this.ctx.moveTo(pixels[0][0], pixels[0][1]);
                 for (var j = 1; j < pixels.length; j++) {
-                    ctx.lineTo(pixels[j][0], pixels[j][1]);
+                    this.ctx.lineTo(pixels[j][0], pixels[j][1]);
                 }
-                ctx.lineWidth = normal.borderWidth;
-                pixels = null;
-                ctx.stroke();
+                this.ctx.stroke();
             }
         }
     }]);
@@ -3789,7 +3827,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
             if (this.styleConfig.splitList == null || this.styleConfig.splitList.length == 0) {
                 this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
             }
-            this.setlegend(this.legendConfig, this.styleConfig.splitList || []);
+            this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
     }, {
         key: 'setTooltip',
@@ -3822,7 +3860,6 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                 var x = item.x;
                 var y = item.y;
                 if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
-                    this.ctx.beginPath();
                     var drawStyle = this.getStyle(item);
                     if (drawStyle.shadowColor) {
                         this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
@@ -4270,7 +4307,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             if (this.styleConfig.splitList == null || this.styleConfig.splitList.length == 0) {
                 this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
             }
-            this.setlegend(this.legendConfig, this.styleConfig.splitList || []);
+            this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
     }, {
         key: 'compileSplitList',
@@ -4385,11 +4422,11 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
             this.clearCanvas();
             var mapSize = this.map.getSize();
             var gridsW = this._drawSize;
+
             var style = this.styleConfig.normal;
             this.ctx.shadowOffsetX = 0;
             this.ctx.shadowOffsetY = 0;
             for (var i = 0; i < this.workerData.length; i++) {
-                this.ctx.beginPath();
                 var item = this.workerData[i];
                 var x = item.x;
                 var y = item.y;
@@ -4672,7 +4709,6 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
             var _this3 = this;
 
             var _loop = function _loop(i, len) {
-                _this3.ctx.beginPath();
                 var item = pixels[i];
                 var pixel = item.pixel;
                 var style = _this3.setDrawStyle(item);
@@ -5588,7 +5624,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.5.8";
+var version = "1.5.9";
 console.log('inMap v' + version);
 
 var inMap = {

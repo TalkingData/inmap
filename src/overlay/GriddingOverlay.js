@@ -203,13 +203,13 @@ export class GriddingOverlay extends Parameter {
         }
         split = [];
         this.styleConfig.splitList = result;
-
+       
     }
     createColorSplit() {
         if (this.styleConfig.splitList == null || this.styleConfig.splitList.length == 0) {
             this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
         }
-        this.setlegend(this.legendConfig, this.styleConfig.splitList || []);
+        this.setlegend(this.legendConfig, this.styleConfig.splitList);
 
     }
     setTooltip(event) {
@@ -238,7 +238,6 @@ export class GriddingOverlay extends Parameter {
             let x = item.x;
             let y = item.y;
             if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
-                this.ctx.beginPath();
                 let drawStyle = this.getStyle(item);
                 if (drawStyle.shadowColor) {
                     this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
