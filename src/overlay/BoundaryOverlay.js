@@ -48,8 +48,8 @@ export class BoundaryOverlay extends Parameter {
                 pixel[0] = pixel[0] + distanceX;
                 pixel[1] = pixel[1] + distanceY;
             }
-            if (this.styleConfig.normal.label.show) {
-                let bestCell = this.workerData[i].bestCell;
+            let bestCell = this.workerData[i].bestCell;
+            if (this.styleConfig.normal.label.show && bestCell) {
                 bestCell.x = bestCell.x + distanceX;
                 bestCell.y = bestCell.y + distanceY;
             }
@@ -183,7 +183,7 @@ export class BoundaryOverlay extends Parameter {
         this.setState(State.computeBefore);
         let parameter = {
             data: this.getTransformData(),
-            labelShow: this.styleConfig.normal.label.show
+            labelShow: true
         };
 
         this.postMessage('BoundaryOverlay.calculatePixel', parameter, (pixels, margin) => {

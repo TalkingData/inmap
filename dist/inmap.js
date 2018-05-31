@@ -2505,8 +2505,8 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
                     pixel[0] = pixel[0] + distanceX;
                     pixel[1] = pixel[1] + distanceY;
                 }
-                if (this.styleConfig.normal.label.show) {
-                    var bestCell = this.workerData[i].bestCell;
+                var bestCell = this.workerData[i].bestCell;
+                if (this.styleConfig.normal.label.show && bestCell) {
                     bestCell.x = bestCell.x + distanceX;
                     bestCell.y = bestCell.y + distanceY;
                 }
@@ -2657,7 +2657,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
             this.setState(_OnState2.default.computeBefore);
             var parameter = {
                 data: this.getTransformData(),
-                labelShow: this.styleConfig.normal.label.show
+                labelShow: true
             };
 
             this.postMessage('BoundaryOverlay.calculatePixel', parameter, function (pixels, margin) {
@@ -5624,7 +5624,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.5.9";
+var version = "1.6.0";
 console.log('inMap v' + version);
 
 var inMap = {
