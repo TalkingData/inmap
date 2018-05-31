@@ -1,7 +1,7 @@
 import {
     geo
 } from '../../lib/pointToPixel';
-export let CircuitOverlay = {
+export let LineStringOverlay = {
     transferCoordinate(_coordinates, nwMc, zoomUnit) {
         return _coordinates.map(function (item) {
             let x = (item[0] - nwMc.x) / zoomUnit;

@@ -13,7 +13,7 @@ import {
 import CircuitConfig from './../config/CircuitConfig';
 import State from './../config/OnState';
 
-export class CircuitOverlay extends CanvasOverlay {
+export class LineStringOverlay extends CanvasOverlay {
     constructor(ops) {
         super(ops);
         this.points = [];
@@ -80,7 +80,7 @@ export class CircuitOverlay extends CanvasOverlay {
         };
 
         this.setState(State.computeBefore);
-        this.postMessage('CircuitOverlay.calculatePixel', params, (pixels, margin) => {
+        this.postMessage('LineStringOverlay.calculatePixel', params, (pixels, margin) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
@@ -101,6 +101,13 @@ export class CircuitOverlay extends CanvasOverlay {
 
         if (normal.globalCompositeOperation) {
             ctx.globalCompositeOperation = normal.globalCompositeOperation;
+        }
+        if (normal.shadowColor) {
+            ctx.shadowColor = normal.shadowColor;
+
+        }
+        if (normal.shadowBlur) {
+            ctx.shadowBlur = normal.shadowBlur;
         }
 
         for (let i = 0; i < this.workerData.length; i++) {

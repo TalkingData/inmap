@@ -13,8 +13,8 @@ import {
     HeatOverlay
 } from './overlay/HeatOverlay';
 import {
-    CircuitOverlay
-} from './overlay/CircuitOverlay';
+    LineStringOverlay
+} from './overlay/LineStringOverlay';
 
 import {
     HoneycombOverlay
@@ -43,7 +43,7 @@ const inMap = {
     GriddingOverlay,
     BoundaryOverlay,
     HeatOverlay,
-    CircuitOverlay,
+    LineStringOverlay,
     HoneycombOverlay,
     ImgOverlay,
     MoveLineOverlay,
@@ -58,7 +58,7 @@ export {
     GriddingOverlay,
     BoundaryOverlay,
     HeatOverlay,
-    CircuitOverlay,
+    LineStringOverlay,
     HoneycombOverlay,
     ImgOverlay,
     MoveLineOverlay,

@@ -262,8 +262,7 @@ function clearPushArray(a, b) {
 
 /***/ }),
 /* 1 */,
-/* 2 */,
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1129,6 +1128,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)(module)))
 
 /***/ }),
+/* 3 */,
 /* 4 */,
 /* 5 */,
 /* 6 */
@@ -1523,7 +1523,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.BoundaryOverlay = undefined;
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
 var _Point = __webpack_require__(6);
 
@@ -1570,59 +1570,9 @@ var BoundaryOverlay = exports.BoundaryOverlay = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.CircuitOverlay = undefined;
-
-var _pointToPixel = __webpack_require__(3);
-
-var CircuitOverlay = exports.CircuitOverlay = {
-    transferCoordinate: function transferCoordinate(_coordinates, nwMc, zoomUnit) {
-        return _coordinates.map(function (item) {
-            var x = (item[0] - nwMc.x) / zoomUnit;
-            var y = (nwMc.y - item[1]) / zoomUnit;
-            return [x, y];
-        });
-    },
-
-    calculatePixel: function calculatePixel(webObj) {
-        var data = webObj,
-            points = data.request.data.points,
-            zoomUnit = data.request.data.zoomUnit,
-            nwMc = data.request.data.nwMc;
-        for (var j = 0; j < points.length; j++) {
-            var item = points[j];
-            if (!item.geometry.medianCoordinates) {
-                item.geometry['medianCoordinates'] = item.geometry.coordinates.map(function (item) {
-                    var pixel = _pointToPixel.geo.projection.lngLatToPoint({
-                        lng: item[0],
-                        lat: item[1]
-                    });
-                    return [pixel.x, pixel.y];
-                });
-            }
-            item.geometry['pixels'] = item.geometry['medianCoordinates'].map(function (item) {
-                var x = (item[0] - nwMc.x) / zoomUnit;
-                var y = (nwMc.y - item[1]) / zoomUnit;
-                return [x, y];
-            });
-        }
-        webObj.request.data = points;
-        return webObj;
-    }
-};
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 exports.GriddingOverlay = undefined;
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
 var _Pixel = __webpack_require__(11);
 
@@ -1758,7 +1708,7 @@ var GriddingOverlay = exports.GriddingOverlay = {
 };
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1769,7 +1719,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.HeatTileOverlay = exports.HeatOverlay = undefined;
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
 var HeatOverlay = exports.HeatOverlay = {
     pointsToPixels: function pointsToPixels(webObj) {
@@ -1789,7 +1739,7 @@ var HeatTileOverlay = exports.HeatTileOverlay = {
 };
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1800,7 +1750,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.HoneycombOverlay = undefined;
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
 var _Pixel = __webpack_require__(11);
 
@@ -1937,7 +1887,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
 };
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2001,6 +1951,56 @@ var LablEvading = exports.LablEvading = {
 };
 
 /***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.LineStringOverlay = undefined;
+
+var _pointToPixel = __webpack_require__(2);
+
+var LineStringOverlay = exports.LineStringOverlay = {
+    transferCoordinate: function transferCoordinate(_coordinates, nwMc, zoomUnit) {
+        return _coordinates.map(function (item) {
+            var x = (item[0] - nwMc.x) / zoomUnit;
+            var y = (nwMc.y - item[1]) / zoomUnit;
+            return [x, y];
+        });
+    },
+
+    calculatePixel: function calculatePixel(webObj) {
+        var data = webObj,
+            points = data.request.data.points,
+            zoomUnit = data.request.data.zoomUnit,
+            nwMc = data.request.data.nwMc;
+        for (var j = 0; j < points.length; j++) {
+            var item = points[j];
+            if (!item.geometry.medianCoordinates) {
+                item.geometry['medianCoordinates'] = item.geometry.coordinates.map(function (item) {
+                    var pixel = _pointToPixel.geo.projection.lngLatToPoint({
+                        lng: item[0],
+                        lat: item[1]
+                    });
+                    return [pixel.x, pixel.y];
+                });
+            }
+            item.geometry['pixels'] = item.geometry['medianCoordinates'].map(function (item) {
+                var x = (item[0] - nwMc.x) / zoomUnit;
+                var y = (nwMc.y - item[1]) / zoomUnit;
+                return [x, y];
+            });
+        }
+        webObj.request.data = points;
+        return webObj;
+    }
+};
+
+/***/ }),
 /* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -2012,7 +2012,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PolymeOverlay = undefined;
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
 var PolymeOverlay = exports.PolymeOverlay = {
     mergeCount: 0,
@@ -2363,26 +2363,26 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.boundaryOverlay = exports.TDpost = undefined;
 
-var _HeatOverlay = __webpack_require__(27);
+var _HeatOverlay = __webpack_require__(26);
 
-var _GriddingOverlay = __webpack_require__(26);
+var _GriddingOverlay = __webpack_require__(25);
 
 var _BoundaryOverlay = __webpack_require__(24);
 
-var _CircuitOverlay = __webpack_require__(25);
+var _LineStringOverlay = __webpack_require__(29);
 
-var _HoneycombOverlay = __webpack_require__(28);
+var _HoneycombOverlay = __webpack_require__(27);
 
 var _PolymeOverlay = __webpack_require__(30);
 
-var _LablEvading = __webpack_require__(29);
+var _LablEvading = __webpack_require__(28);
 
 var callbackList = {
     'HeatOverlay': _HeatOverlay.HeatOverlay,
     'HeatTileOverlay': _HeatOverlay.HeatTileOverlay,
     'GriddingOverlay': _GriddingOverlay.GriddingOverlay,
     'BoundaryOverlay': _BoundaryOverlay.BoundaryOverlay,
-    'CircuitOverlay': _CircuitOverlay.CircuitOverlay,
+    'LineStringOverlay': _LineStringOverlay.LineStringOverlay,
     'HoneycombOverlay': _HoneycombOverlay.HoneycombOverlay,
     'PolymeOverlay': _PolymeOverlay.PolymeOverlay,
     'LablEvading': _LablEvading.LablEvading

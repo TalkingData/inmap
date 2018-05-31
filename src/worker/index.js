@@ -9,8 +9,8 @@ import {
     BoundaryOverlay
 } from './transform/BoundaryOverlay';
 import {
-    CircuitOverlay
-} from './transform/CircuitOverlay';
+    LineStringOverlay
+} from './transform/LineStringOverlay';
 import {
     HoneycombOverlay
 } from './transform/HoneycombOverlay';
@@ -25,7 +25,7 @@ let callbackList = {
     'HeatTileOverlay': HeatTileOverlay,
     'GriddingOverlay': GriddingOverlay,
     'BoundaryOverlay': BoundaryOverlay,
-    'CircuitOverlay': CircuitOverlay,
+    'LineStringOverlay': LineStringOverlay,
     'HoneycombOverlay': HoneycombOverlay,
     'PolymeOverlay': PolymeOverlay,
     'LablEvading': LablEvading

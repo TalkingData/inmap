@@ -278,7 +278,8 @@ exports.default = {
 };
 
 /***/ }),
-/* 2 */
+/* 2 */,
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -556,7 +557,6 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
 }(_BaseClass3.default);
 
 /***/ }),
-/* 3 */,
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -572,7 +572,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __webpack_require__(0);
 
-var _CanvasOverlay2 = __webpack_require__(2);
+var _CanvasOverlay2 = __webpack_require__(3);
 
 var _Color = __webpack_require__(5);
 
@@ -2761,180 +2761,11 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.CircuitOverlay = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _util = __webpack_require__(0);
-
-var _CanvasOverlay2 = __webpack_require__(2);
-
-var _CircuitConfig = __webpack_require__(33);
-
-var _CircuitConfig2 = _interopRequireDefault(_CircuitConfig);
-
-var _OnState = __webpack_require__(1);
-
-var _OnState2 = _interopRequireDefault(_OnState);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
-    _inherits(CircuitOverlay, _CanvasOverlay);
-
-    function CircuitOverlay(ops) {
-        _classCallCheck(this, CircuitOverlay);
-
-        var _this = _possibleConstructorReturn(this, (CircuitOverlay.__proto__ || Object.getPrototypeOf(CircuitOverlay)).call(this, ops));
-
-        _this.points = [];
-        _this.styleConfig = {};
-        _this._setStyle(_CircuitConfig2.default, ops);
-        _this.state = null;
-        _this.workerData = [];
-        return _this;
-    }
-
-    _createClass(CircuitOverlay, [{
-        key: '_setStyle',
-        value: function _setStyle(config, ops) {
-            var option = (0, _util.merge)(config, ops);
-            if (ops.data) {
-                this.setData(ops.data);
-            } else {
-                this.map && this.refresh();
-            }
-            this.styleConfig = option.style;
-            this.eventConfig = option.event;
-            this.tMapStyle(option.skin);
-        }
-    }, {
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-            this._setStyle(_CircuitConfig2.default, ops);
-            this.map && this.drawMap();
-        }
-    }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState(this.state);
-        }
-    }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            for (var i = 0; i < this.workerData.length; i++) {
-                var pixels = this.workerData[i].geometry.pixels;
-                for (var j = 0; j < pixels.length; j++) {
-                    var pixel = pixels[j];
-                    pixel[0] = pixel[0] + distanceX;
-                    pixel[1] = pixel[1] + distanceY;
-                }
-            }
-            this.refresh();
-        }
-    }, {
-        key: 'setData',
-        value: function setData(points) {
-            if (!(0, _util.isArray)(points)) {
-                throw new TypeError('inMap: data must be a Array');
-            }
-            this.points = points;
-            this.map && this.drawMap();
-        }
-    }, {
-        key: 'refresh',
-        value: function refresh() {
-            this.setState(_OnState2.default.drawBefore);
-            this.drawLine(this.workerData);
-            this.setState(_OnState2.default.drawAfter);
-        }
-    }, {
-        key: 'resize',
-        value: function resize() {
-            this.drawMap();
-        }
-    }, {
-        key: 'drawMap',
-        value: function drawMap() {
-            var _this2 = this;
-
-            var zoomUnit = Math.pow(2, 18 - this.map.getZoom());
-            var projection = this.map.getMapType().getProjection();
-            var mcCenter = projection.lngLatToPoint(this.map.getCenter());
-            var nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
-            var params = {
-                points: this.points,
-                nwMc: nwMc,
-                zoomUnit: zoomUnit
-            };
-
-            this.setState(_OnState2.default.computeBefore);
-            this.postMessage('CircuitOverlay.calculatePixel', params, function (pixels, margin) {
-                if (_this2.eventType == 'onmoving') {
-                    return;
-                }
-                _this2.setState(_OnState2.default.conputeAfter);
-                (0, _util.clearPushArray)(_this2.workerData, pixels);
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
-                params = null;
-                margin = null;
-            });
-        }
-    }, {
-        key: 'drawLine',
-        value: function drawLine() {
-            this.clearCanvas();
-            var normal = this.styleConfig.normal;
-            var ctx = this.ctx;
-            ctx.shadowBlur = 0;
-            ctx.shadowOffsetX = 0;
-            ctx.shadowOffsetY = 0;
-
-            if (normal.globalCompositeOperation) {
-                ctx.globalCompositeOperation = normal.globalCompositeOperation;
-            }
-
-            for (var i = 0; i < this.workerData.length; i++) {
-                var item = this.workerData[i];
-                this.ctx.strokeStyle = normal.borderColor;
-                var pixels = item.geometry.pixels;
-                ctx.beginPath();
-                ctx.moveTo(pixels[0][0], pixels[0][1]);
-                for (var j = 1; j < pixels.length; j++) {
-                    ctx.lineTo(pixels[j][0], pixels[j][1]);
-                }
-                ctx.lineWidth = normal.borderWidth;
-                pixels = null;
-                ctx.stroke();
-            }
-        }
-    }]);
-
-    return CircuitOverlay;
-}(_CanvasOverlay2.CanvasOverlay);
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
 exports.DotOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay = __webpack_require__(2);
+var _CanvasOverlay = __webpack_require__(3);
 
 var _Label = __webpack_require__(8);
 
@@ -3358,7 +3189,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3370,7 +3201,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay2 = __webpack_require__(2);
+var _CanvasOverlay2 = __webpack_require__(3);
 
 var _util = __webpack_require__(0);
 
@@ -3523,7 +3354,7 @@ var FlashDotOverlay = function (_CanvasOverlay) {
 exports.default = FlashDotOverlay;
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3842,7 +3673,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3855,7 +3686,7 @@ exports.HeatOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay2 = __webpack_require__(2);
+var _CanvasOverlay2 = __webpack_require__(3);
 
 var _util = __webpack_require__(0);
 
@@ -4098,7 +3929,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4428,7 +4259,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4702,6 +4533,181 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.LineStringOverlay = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(0);
+
+var _CanvasOverlay2 = __webpack_require__(3);
+
+var _CircuitConfig = __webpack_require__(33);
+
+var _CircuitConfig2 = _interopRequireDefault(_CircuitConfig);
+
+var _OnState = __webpack_require__(1);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LineStringOverlay = exports.LineStringOverlay = function (_CanvasOverlay) {
+    _inherits(LineStringOverlay, _CanvasOverlay);
+
+    function LineStringOverlay(ops) {
+        _classCallCheck(this, LineStringOverlay);
+
+        var _this = _possibleConstructorReturn(this, (LineStringOverlay.__proto__ || Object.getPrototypeOf(LineStringOverlay)).call(this, ops));
+
+        _this.points = [];
+        _this.styleConfig = {};
+        _this._setStyle(_CircuitConfig2.default, ops);
+        _this.state = null;
+        _this.workerData = [];
+        return _this;
+    }
+
+    _createClass(LineStringOverlay, [{
+        key: '_setStyle',
+        value: function _setStyle(config, ops) {
+            var option = (0, _util.merge)(config, ops);
+            if (ops.data) {
+                this.setData(ops.data);
+            } else {
+                this.map && this.refresh();
+            }
+            this.styleConfig = option.style;
+            this.eventConfig = option.event;
+            this.tMapStyle(option.skin);
+        }
+    }, {
+        key: 'setOptionStyle',
+        value: function setOptionStyle(ops) {
+            this._setStyle(_CircuitConfig2.default, ops);
+            this.map && this.drawMap();
+        }
+    }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.eventConfig.onState(this.state);
+        }
+    }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+            for (var i = 0; i < this.workerData.length; i++) {
+                var pixels = this.workerData[i].geometry.pixels;
+                for (var j = 0; j < pixels.length; j++) {
+                    var pixel = pixels[j];
+                    pixel[0] = pixel[0] + distanceX;
+                    pixel[1] = pixel[1] + distanceY;
+                }
+            }
+            this.refresh();
+        }
+    }, {
+        key: 'setData',
+        value: function setData(points) {
+            if (!(0, _util.isArray)(points)) {
+                throw new TypeError('inMap: data must be a Array');
+            }
+            this.points = points;
+            this.map && this.drawMap();
+        }
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+            this.setState(_OnState2.default.drawBefore);
+            this.drawLine(this.workerData);
+            this.setState(_OnState2.default.drawAfter);
+        }
+    }, {
+        key: 'resize',
+        value: function resize() {
+            this.drawMap();
+        }
+    }, {
+        key: 'drawMap',
+        value: function drawMap() {
+            var _this2 = this;
+
+            var zoomUnit = Math.pow(2, 18 - this.map.getZoom());
+            var projection = this.map.getMapType().getProjection();
+            var mcCenter = projection.lngLatToPoint(this.map.getCenter());
+            var nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
+            var params = {
+                points: this.points,
+                nwMc: nwMc,
+                zoomUnit: zoomUnit
+            };
+
+            this.setState(_OnState2.default.computeBefore);
+            this.postMessage('LineStringOverlay.calculatePixel', params, function (pixels, margin) {
+                if (_this2.eventType == 'onmoving') {
+                    return;
+                }
+                _this2.setState(_OnState2.default.conputeAfter);
+                (0, _util.clearPushArray)(_this2.workerData, pixels);
+                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                params = null;
+                margin = null;
+            });
+        }
+    }, {
+        key: 'drawLine',
+        value: function drawLine() {
+            this.clearCanvas();
+            var normal = this.styleConfig.normal;
+            var ctx = this.ctx;
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+
+            if (normal.globalCompositeOperation) {
+                ctx.globalCompositeOperation = normal.globalCompositeOperation;
+            }
+            if (normal.shadowColor) {
+                ctx.shadowColor = normal.shadowColor;
+            }
+            if (normal.shadowBlur) {
+                ctx.shadowBlur = normal.shadowBlur;
+            }
+
+            for (var i = 0; i < this.workerData.length; i++) {
+                var item = this.workerData[i];
+                this.ctx.strokeStyle = normal.borderColor;
+                var pixels = item.geometry.pixels;
+                ctx.beginPath();
+                ctx.moveTo(pixels[0][0], pixels[0][1]);
+                for (var j = 1; j < pixels.length; j++) {
+                    ctx.lineTo(pixels[j][0], pixels[j][1]);
+                }
+                ctx.lineWidth = normal.borderWidth;
+                pixels = null;
+                ctx.stroke();
+            }
+        }
+    }]);
+
+    return LineStringOverlay;
+}(_CanvasOverlay2.CanvasOverlay);
+
+/***/ }),
 /* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4715,7 +4721,7 @@ exports.MoveLineOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay = __webpack_require__(2);
+var _CanvasOverlay = __webpack_require__(3);
 
 var _util = __webpack_require__(0);
 
@@ -5554,25 +5560,25 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.workerMrg = exports.FlashDotOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.CircuitOverlay = exports.HeatOverlay = exports.BoundaryOverlay = exports.GriddingOverlay = exports.DotOverlay = exports.Map = exports.utils = exports.version = undefined;
+exports.workerMrg = exports.FlashDotOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.LineStringOverlay = exports.HeatOverlay = exports.BoundaryOverlay = exports.GriddingOverlay = exports.DotOverlay = exports.Map = exports.utils = exports.version = undefined;
 
-var _DotOverlay = __webpack_require__(17);
+var _DotOverlay = __webpack_require__(16);
 
-var _GriddingOverlay = __webpack_require__(19);
+var _GriddingOverlay = __webpack_require__(18);
 
 var _BoundaryOverlay = __webpack_require__(15);
 
-var _HeatOverlay = __webpack_require__(20);
+var _HeatOverlay = __webpack_require__(19);
 
-var _CircuitOverlay = __webpack_require__(16);
+var _LineStringOverlay = __webpack_require__(22);
 
-var _HoneycombOverlay = __webpack_require__(21);
+var _HoneycombOverlay = __webpack_require__(20);
 
-var _ImgOverlay = __webpack_require__(22);
+var _ImgOverlay = __webpack_require__(21);
 
 var _MoveLineOverlay = __webpack_require__(23);
 
-var _FlashDotOverlay = __webpack_require__(18);
+var _FlashDotOverlay = __webpack_require__(17);
 
 var _FlashDotOverlay2 = _interopRequireDefault(_FlashDotOverlay);
 
@@ -5588,7 +5594,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.5.9";
+var version = "1.5.8";
 console.log('inMap v' + version);
 
 var inMap = {
@@ -5599,7 +5605,7 @@ var inMap = {
     GriddingOverlay: _GriddingOverlay.GriddingOverlay,
     BoundaryOverlay: _BoundaryOverlay.BoundaryOverlay,
     HeatOverlay: _HeatOverlay.HeatOverlay,
-    CircuitOverlay: _CircuitOverlay.CircuitOverlay,
+    LineStringOverlay: _LineStringOverlay.LineStringOverlay,
     HoneycombOverlay: _HoneycombOverlay.HoneycombOverlay,
     ImgOverlay: _ImgOverlay.ImgOverlay,
     MoveLineOverlay: _MoveLineOverlay.MoveLineOverlay,
@@ -5613,7 +5619,7 @@ exports.DotOverlay = _DotOverlay.DotOverlay;
 exports.GriddingOverlay = _GriddingOverlay.GriddingOverlay;
 exports.BoundaryOverlay = _BoundaryOverlay.BoundaryOverlay;
 exports.HeatOverlay = _HeatOverlay.HeatOverlay;
-exports.CircuitOverlay = _CircuitOverlay.CircuitOverlay;
+exports.LineStringOverlay = _LineStringOverlay.LineStringOverlay;
 exports.HoneycombOverlay = _HoneycombOverlay.HoneycombOverlay;
 exports.ImgOverlay = _ImgOverlay.ImgOverlay;
 exports.MoveLineOverlay = _MoveLineOverlay.MoveLineOverlay;

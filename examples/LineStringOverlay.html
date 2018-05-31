@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>LineStringOverlay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+    <script>
+    </script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="./data/car.js"></script>
+    <script src="../dist/inmap.js"></script>
+
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    var map = new inMap.Map({
+        id: 'allmap',
+        skin: 'Blueness',
+        center: [106.563777, 29.578285],
+        zoom: {
+            value: 12,
+            show: true,
+            max: 22
+        }
+    });
+     
+    var overlay = new inMap.LineStringOverlay({
+        style: {
+            normal: {
+                globalCompositeOperation: 'lighter',
+                borderColor: 'rgba(50, 50, 255, 0.8)',
+                borderWidth: 0.05,
+            },
+        },
+        data: data,
+        event: {
+            onState(state) {
+                console.log(state);
+            }
+        }
+    });
+    map.add(overlay);
+ 
+</script>

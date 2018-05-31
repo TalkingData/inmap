@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>CircuitOverlay</title>
+    <title>LineStringOverlay</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
@@ -48,22 +48,27 @@
             max: 22
         }
     });
-     
-    var overlay = new inMap.CircuitOverlay({
+    var overlay = new inMap.LineStringOverlay({
         style: {
             normal: {
-                globalCompositeOperation: 'lighter',
                 borderColor: 'rgba(50, 50, 255, 0.8)',
                 borderWidth: 0.05,
             },
         },
-        data: data,
-        event: {
-            onState(state) {
-                console.log(state);
-            }
-        }
+        data: [],
+
     });
     map.add(overlay);
- 
+    overlay.setData(data);
+   
+    setTimeout(() => {
+        overlay.setOptionStyle({
+            style: {
+                normal: {
+                    borderColor: 'rgba(255, 50, 255, 0.8)',
+                    borderWidth: 0.05,
+                },
+            },
+        })
+    }, 2000);
 </script>
