@@ -152,7 +152,6 @@ export class CanvasOverlay extends BaseClass {
 
     }
     translationIf(oldLeft, oldTop, newLeft, newTop) {
-        // debugger
         if (oldLeft != newLeft || oldTop != newTop) {
             this.translation(oldLeft - newLeft, oldTop - newTop);
         }

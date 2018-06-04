@@ -2836,7 +2836,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
         key: 'initLegend',
         value: function initLegend() {
             if (this.styleConfig.colors.length > 0) {
-                this.compileSplitList(this.getData());
+                this.compileSplitList(this.getTransformData());
             } else {
                 this.setlegend(this.legendConfig, this.styleConfig.splitList);
             }
@@ -2883,7 +2883,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
         value: function translation(distanceX, distanceY) {
             this.batchesData && this.batchesData.clear();
             for (var i = 0; i < this.workerData.length; i++) {
-                var pixel = this.workerData[i].pixel;
+                var pixel = this.workerData[i].geometry.pixel;
                 pixel.x = pixel.x + distanceX;
                 pixel.y = pixel.y + distanceY;
             }
@@ -2928,9 +2928,11 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             var _loop = function _loop(i) {
                 var item = allItems[i];
                 var ret = _this3.workerData.find(function (val) {
-                    return val && val.lat == item.lat && val.lng == item.lng && val.count == item.count;
+                    var itemCoordinates = item.geometry.coordinates;
+                    var valCoordinates = val.geometry.coordinates;
+                    return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
                 });
-                item.pixel = ret.pixel;
+                item.geometry.pixel = ret.geometry.pixel;
             };
 
             for (var i = 0; i < allItems.length; i++) {
@@ -2990,9 +2992,9 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var _item = pixels[i];
                 var style = this.setDrawStyle(_item);
-                var _item$pixel = _item.pixel,
-                    x = _item$pixel.x,
-                    y = _item$pixel.y;
+                var _item$geometry$pixel = _item.geometry.pixel,
+                    x = _item$geometry$pixel.x,
+                    y = _item$geometry$pixel.y;
 
                 var r = style.size + this.styleConfig.normal.borderWidth;
                 if (x > -r && y > -r && x < mapSize.width + r && y < mapSize.height + r) {
@@ -3017,7 +3019,9 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             var index = -1;
             if (item) {
                 index = this.selectItem.findIndex(function (val) {
-                    return val && val.lat == item.lat && val.lng == item.lng && val.count == item.count;
+                    var itemCoordinates = item.geometry.coordinates;
+                    var valCoordinates = val.geometry.coordinates;
+                    return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
                 });
             }
             return index;
@@ -3054,10 +3058,9 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             var mapSize = this.map.getSize();
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var _item2 = pixels[i];
-                var pixel = _item2.pixel;
+                var pixel = _item2.geometry.pixel;
                 var x = pixel.x,
                     y = pixel.y;
-
 
                 var style = this.setDrawStyle(_item2);
                 var size = style.size;
@@ -3092,8 +3095,13 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
             var byteWidth = ctx.measureText('a').width;
 
             var labels = pixels.map(function (val) {
-                var radius = val.pixel.radius + _this4.styleConfig.normal.borderWidth;
-                return new _Label.Label(val.pixel.x, val.pixel.y, radius, fontSize, byteWidth, val.name);
+                var _val$geometry$pixel = val.geometry.pixel,
+                    radius = _val$geometry$pixel.radius,
+                    x = _val$geometry$pixel.x,
+                    y = _val$geometry$pixel.y;
+
+                var r = radius + _this4.styleConfig.normal.borderWidth;
+                return new _Label.Label(x, y, r, fontSize, byteWidth, val.name);
             });
 
             labels.sort(function (a, b) {

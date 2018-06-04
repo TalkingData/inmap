@@ -52,7 +52,16 @@
         },
         skin: 'Blueness'
     });
-
+    data = data.map((function (item) {
+        return {
+            name: item.name,
+            count: item.count,
+            geometry: {
+                "type": "Point",
+                "coordinates": [item.lng, item.lat]
+            }
+        };
+    }));
 
     map.getMap().centerAndZoom(new BMap.Point(105.403119, 38.028658), 6)
     var overlay = new inMap.DotOverlay({

@@ -1718,22 +1718,19 @@ var GriddingOverlay = exports.GriddingOverlay = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.HeatTileOverlay = exports.HeatOverlay = undefined;
+exports.HeatOverlay = undefined;
 
 var _pointToPixel = __webpack_require__(2);
 
 var HeatOverlay = exports.HeatOverlay = {
     pointsToPixels: function pointsToPixels(webObj) {
         webObj.request.data.forEach(function (val) {
-            val['pixel'] = (0, _pointToPixel.pointToPixelWorker)(val, webObj.request.map);
-        });
-        return webObj;
-    }
-};
-var HeatTileOverlay = exports.HeatTileOverlay = {
-    pointsToPixels: function pointsToPixels(webObj) {
-        webObj.request.data.forEach(function (item) {
-            item.pixelData = (0, _pointToPixel.pointsToPixelsWoker)(item.data, webObj.request.map);
+            var point = val.geometry.coordinates;
+            val.geometry['pixel'] = (0, _pointToPixel.pointToPixelWorker)({
+                lng: point[0],
+                lat: point[1]
+            }, webObj.request.map);
+            point = null;
         });
         return webObj;
     }
