@@ -5,8 +5,6 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>获取地区围栏数据</title>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
-    <script type="text/javascript" src="/coordtransform.js"></script>
-
     <style type="text/css">
         body {
             font-size: 13px;
@@ -64,7 +62,13 @@
                 }
 
                 //alert(rs.boundaries[0]);
-                let result = [];
+                let result = {
+                    geometry: {
+                        type: 'Polygon',
+                        coordinates: []
+                    },
+                    count: 1
+                };
                 for (let i = 0; i < rs.boundaries.length; i++) {
                     var pointArr = rs.boundaries[i].split(";");
                     var geos = [];
@@ -73,13 +77,8 @@
                         var lng = tempArr[0];
                         var lat = tempArr[1];
                         geos.push([parseFloat(lng), parseFloat(lat)])
-
                     });
-                    result.push({
-                        count: 1,
-                        name: name,
-                        geo: geos
-                    });
+                    result.geometry.coordinates.push(geos);
                 }
                 console.log(JSON.stringify(result, null, 0))
             });
