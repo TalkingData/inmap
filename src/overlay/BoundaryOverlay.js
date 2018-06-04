@@ -42,21 +42,29 @@ export class BoundaryOverlay extends Parameter {
     }
     translation(distanceX, distanceY) {
         for (let i = 0; i < this.workerData.length; i++) {
-            let pixels = this.workerData[i].pixels;
+            let geometry = this.workerData[i].geometry;
+            let pixels = geometry.pixels;
             for (let j = 0; j < pixels.length; j++) {
-                let pixel = pixels[j];
-                pixel[0] = pixel[0] + distanceX;
-                pixel[1] = pixel[1] + distanceY;
+                let pixelItem = pixels[j];
+                for (let k = 0, len = pixelItem.length; k < len; k++) {
+                    let pixel = pixelItem[k];
+                    pixel[0] = pixel[0] + distanceX;
+                    pixel[1] = pixel[1] + distanceY;
+                }
             }
             if (this.styleConfig.normal.label.show) {
-                let bestCell = this.workerData[i].bestCell;
-                bestCell.x = bestCell.x + distanceX;
-                bestCell.y = bestCell.y + distanceY;
+                let labelPixels = geometry.labelPixels;
+                for (let j = 0; j < labelPixels.length; j++) {
+                    let bestCell = labelPixels[j];
+                    if (bestCell) {
+                        bestCell.x = bestCell.x + distanceX;
+                        bestCell.y = bestCell.y + distanceY;
+                    }
+
+                }
             }
         }
-
         this.refresh();
-
     }
     setOptionStyle(ops) {
         this._setStyle(this.baseConfig, ops);
@@ -199,23 +207,31 @@ export class BoundaryOverlay extends Parameter {
     }
     getTarget(x, y) {
         let data = this.getData();
-        this.ctx.beginPath();
-        for (let i = 0, len = data.length; i < len; i++) {
+        for (let i = 0; i < data.length; i++) {
             let item = data[i];
-            let pixel = item.pixels;
+            let geometry = item.geometry;
+            let pixels = geometry.pixels;
+
             this.ctx.beginPath();
-            this.ctx.moveTo(pixel[0][0], pixel[0][1]);
-            for (let j = 1; j < pixel.length; j++) {
-                this.ctx.lineTo(pixel[j][0], pixel[j][1]);
+            for (let j = 0; j < pixels.length; j++) {
+                let pixelItem = pixels[j];
+                this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
+                for (let k = 1, len = pixelItem.length; k < len; k++) {
+                    this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+                }
+                this.ctx.closePath();
+                if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
+                    return {
+                        index: i,
+                        item: item
+                    };
+                }
+                pixelItem = null;
             }
-            this.ctx.closePath();
-            if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
-                return {
-                    index: i,
-                    item: item
-                };
-            }
+
+            pixels = null, geometry = null, item = null;
         }
+
         return {
             index: -1,
             item: null
@@ -225,10 +241,10 @@ export class BoundaryOverlay extends Parameter {
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
         this.ctx.miterLimit = 4;
-        for (let i = 0, len = data.length; i < len; i++) {
+        for (let i = 0; i < data.length; i++) {
             let item = data[i];
-            let pixel = item.pixels;
-
+            let geometry = item.geometry;
+            let pixels = geometry.pixels;
             let style = this.setDrawStyle(item);
             this.ctx.beginPath();
             this.ctx.shadowColor = style.shadowColor || 'transparent';
@@ -236,36 +252,39 @@ export class BoundaryOverlay extends Parameter {
             this.ctx.shadowOffsetX = 0;
             this.ctx.shadowOffsetY = 0;
             this.ctx.fillStyle = style.backgroundColor;
-            this.ctx.moveTo(pixel[0][0], pixel[0][1]);
-            for (let j = 1; j < pixel.length; j++) {
-                this.ctx.lineTo(pixel[j][0], pixel[j][1]);
-            }
-            this.ctx.closePath();
-            this.ctx.fill();
 
+            for (let j = 0; j < pixels.length; j++) {
+                let pixelItem = pixels[j];
+                this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
+                for (let k = 1, len = pixelItem.length; k < len; k++) {
+                    this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+                }
+                pixelItem = null;
+                this.ctx.closePath();
+                this.ctx.fill();
+            }
             this.ctx.strokeStyle = style.borderColor;
             this.ctx.lineWidth = style.borderWidth;
             this.ctx.stroke();
 
-        }
-
-        for (let i = 0, len = data.length; i < len; i++) {
-            let item = data[i];
-            let pixel = item.pixels;
-            let bestCell = item.bestCell;
-            let label = this.setDrawStyle(item).label;
-
-            if (bestCell && label.show) {
+            if (this.styleConfig.normal.label.show) {
+                let labelPixels = geometry.labelPixels;
                 this.ctx.shadowBlur = 0;
-                this.ctx.lineWidth = label.lineWidth;
-                this.ctx.font = label.font;
-                this.ctx.fillStyle = label.color;
-                this.ctx.beginPath();
-                let width = this.ctx.measureText(item.name).width;
-                if (this.getMaxWidth(pixel) > width) {
-                    this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
+                this.ctx.lineWidth = style.label.lineWidth;
+                this.ctx.font = style.label.font;
+                this.ctx.fillStyle = style.label.color;
+                for (let j = 0; j < labelPixels.length; j++) {
+                    let bestCell = labelPixels[j];
+                    this.ctx.beginPath();
+                    let width = this.ctx.measureText(item.name).width;
+                    if (bestCell && item.name && this.getMaxWidth(pixels[j]) > width) {
+                        this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
+                    }
+                    bestCell = null, width = null;
                 }
+                labelPixels = null;
             }
+            style = null, pixels = null, geometry = null, item = null;
         }
         this.ctx.closePath();
     }

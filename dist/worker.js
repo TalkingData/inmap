@@ -1535,25 +1535,26 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var BoundaryOverlay = exports.BoundaryOverlay = {
     calculatePixel: function calculatePixel(webObj) {
-        var _webObj$request$data = webObj.request.data,
-            data = _webObj$request$data.data,
-            labelShow = _webObj$request$data.labelShow;
+        var data = webObj.request.data.data;
 
         var map = webObj.request.map;
-
         for (var j = 0; j < data.length; j++) {
-            if (data[j].geo) {
+            var coordinates = data[j].geometry.coordinates;
+            var pixels = [],
+                labelPixels = [];
+            for (var i = 0; i < coordinates.length; i++) {
+                var geo = coordinates[i];
                 var tmp = [];
-                for (var i = 0; i < data[j].geo.length; i++) {
-                    var pixel = (0, _pointToPixel.pointToPixelWorker)(new _Point.Point(data[j].geo[i][0], data[j].geo[i][1]), map);
+                for (var k = 0; k < geo.length; k++) {
+                    var pixel = (0, _pointToPixel.pointToPixelWorker)(new _Point.Point(geo[k][0], geo[k][1]), map);
                     tmp.push([pixel.x, pixel.y]);
                 }
-                data[j].pixels = tmp;
-                if (labelShow) {
-                    var bestCell = (0, _polylabel2.default)([tmp]);
-                    data[j]['bestCell'] = bestCell;
-                }
+                pixels.push(tmp);
+                labelPixels.push((0, _polylabel2.default)([tmp]));
             }
+            data[j].geometry['pixels'] = pixels;
+
+            data[j].geometry['labelPixels'] = labelPixels;
         }
         webObj.request.data = data;
         return webObj;

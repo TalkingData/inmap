@@ -10,23 +10,27 @@ export let BoundaryOverlay = {
     calculatePixel: function (webObj) {
         let {
             data,
-            labelShow,
         } = webObj.request.data;
         let map = webObj.request.map;
-
         for (let j = 0; j < data.length; j++) {
-            if (data[j].geo) {
+            let coordinates = data[j].geometry.coordinates;
+            let pixels = [],
+                labelPixels = [];
+            for (let i = 0; i < coordinates.length; i++) {
+                let geo = coordinates[i];
                 let tmp = [];
-                for (let i = 0; i < data[j].geo.length; i++) {
-                    let pixel = pointToPixelWorker(new Point(data[j].geo[i][0], data[j].geo[i][1]), map);
+                for (let k = 0; k < geo.length; k++) {
+                    let pixel = pointToPixelWorker(new Point(geo[k][0], geo[k][1]), map);
                     tmp.push([pixel.x, pixel.y]);
                 }
-                data[j].pixels = tmp;
-                if (labelShow) {
-                    let bestCell = polylabel([tmp]);
-                    data[j]['bestCell'] = bestCell;
-                }
+                pixels.push(tmp);
+                labelPixels.push(polylabel([tmp]));
+
             }
+            data[j].geometry['pixels'] = pixels;
+
+            data[j].geometry['labelPixels'] = labelPixels;
+
         }
         webObj.request.data = data;
         return webObj;

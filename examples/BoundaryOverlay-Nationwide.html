@@ -25,7 +25,7 @@
         }
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
-    <script src="./data/shenzhen.js"></script>
+    <script src="./data/nationwide.js"></script>
     <script src="../dist/inmap.js"></script>
 
 </head>
@@ -39,25 +39,32 @@
     var inmap = new inMap.Map({
         id: 'allmap',
         skin: "Blueness",
-        center: ["114.16248337214269", "22.559515429553684"],
+        center: [105.403119, 38.028658],
         zoom: {
-            value: 11,
+            value: 5,
             show: true,
-            max: 22
-        }
+            max: 18,
+            min: 5
+        },
     });
+
     var overlay = new inMap.BoundaryOverlay({
         style: {
             normal: {
-                borderWidth: 1.5,
-                // borderColor: "rgba(18,65,114,1)",
-                backgroundColor: "rgba(252,196,95,0.71)",
+                borderWidth: 0.5,
                 label: {
                     show: true, // 是否显示
                     font: "13px bold ",
                     color: "rgba(224, 238, 251,1)"
                 }
             },
+            colors: [
+                "rgba(0, 184, 255,0.6)",
+                "rgba(72, 246, 217, 0.6)",
+                "rgba(252, 196, 95, 0.6)",
+                "rgba(255, 132, 84, 0.6)",
+                "rgba(219, 66, 90,0.6)"
+            ]
 
         },
         data: data,

@@ -2499,19 +2499,27 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
         key: 'translation',
         value: function translation(distanceX, distanceY) {
             for (var i = 0; i < this.workerData.length; i++) {
-                var pixels = this.workerData[i].pixels;
+                var geometry = this.workerData[i].geometry;
+                var pixels = geometry.pixels;
                 for (var j = 0; j < pixels.length; j++) {
-                    var pixel = pixels[j];
-                    pixel[0] = pixel[0] + distanceX;
-                    pixel[1] = pixel[1] + distanceY;
+                    var pixelItem = pixels[j];
+                    for (var k = 0, len = pixelItem.length; k < len; k++) {
+                        var pixel = pixelItem[k];
+                        pixel[0] = pixel[0] + distanceX;
+                        pixel[1] = pixel[1] + distanceY;
+                    }
                 }
                 if (this.styleConfig.normal.label.show) {
-                    var bestCell = this.workerData[i].bestCell;
-                    bestCell.x = bestCell.x + distanceX;
-                    bestCell.y = bestCell.y + distanceY;
+                    var labelPixels = geometry.labelPixels;
+                    for (var _j = 0; _j < labelPixels.length; _j++) {
+                        var bestCell = labelPixels[_j];
+                        if (bestCell) {
+                            bestCell.x = bestCell.x + distanceX;
+                            bestCell.y = bestCell.y + distanceY;
+                        }
+                    }
                 }
             }
-
             this.refresh();
         }
     }, {
@@ -2675,23 +2683,31 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
         key: 'getTarget',
         value: function getTarget(x, y) {
             var data = this.getData();
-            this.ctx.beginPath();
-            for (var i = 0, len = data.length; i < len; i++) {
+            for (var i = 0; i < data.length; i++) {
                 var item = data[i];
-                var pixel = item.pixels;
+                var geometry = item.geometry;
+                var pixels = geometry.pixels;
+
                 this.ctx.beginPath();
-                this.ctx.moveTo(pixel[0][0], pixel[0][1]);
-                for (var j = 1; j < pixel.length; j++) {
-                    this.ctx.lineTo(pixel[j][0], pixel[j][1]);
+                for (var j = 0; j < pixels.length; j++) {
+                    var pixelItem = pixels[j];
+                    this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
+                    for (var k = 1, len = pixelItem.length; k < len; k++) {
+                        this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+                    }
+                    this.ctx.closePath();
+                    if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
+                        return {
+                            index: i,
+                            item: item
+                        };
+                    }
+                    pixelItem = null;
                 }
-                this.ctx.closePath();
-                if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
-                    return {
-                        index: i,
-                        item: item
-                    };
-                }
+
+                pixels = null, geometry = null, item = null;
             }
+
             return {
                 index: -1,
                 item: null
@@ -2703,10 +2719,10 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
             this.ctx.lineCap = 'round';
             this.ctx.lineJoin = 'round';
             this.ctx.miterLimit = 4;
-            for (var i = 0, len = data.length; i < len; i++) {
+            for (var i = 0; i < data.length; i++) {
                 var item = data[i];
-                var pixel = item.pixels;
-
+                var geometry = item.geometry;
+                var pixels = geometry.pixels;
                 var style = this.setDrawStyle(item);
                 this.ctx.beginPath();
                 this.ctx.shadowColor = style.shadowColor || 'transparent';
@@ -2714,35 +2730,39 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
                 this.ctx.shadowOffsetX = 0;
                 this.ctx.shadowOffsetY = 0;
                 this.ctx.fillStyle = style.backgroundColor;
-                this.ctx.moveTo(pixel[0][0], pixel[0][1]);
-                for (var j = 1; j < pixel.length; j++) {
-                    this.ctx.lineTo(pixel[j][0], pixel[j][1]);
-                }
-                this.ctx.closePath();
-                this.ctx.fill();
 
+                for (var j = 0; j < pixels.length; j++) {
+                    var pixelItem = pixels[j];
+                    this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
+                    for (var k = 1, len = pixelItem.length; k < len; k++) {
+                        this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+                    }
+                    pixelItem = null;
+                    this.ctx.closePath();
+                    this.ctx.fill();
+                }
                 this.ctx.strokeStyle = style.borderColor;
                 this.ctx.lineWidth = style.borderWidth;
                 this.ctx.stroke();
-            }
 
-            for (var _i = 0, _len = data.length; _i < _len; _i++) {
-                var _item = data[_i];
-                var _pixel = _item.pixels;
-                var bestCell = _item.bestCell;
-                var label = this.setDrawStyle(_item).label;
-
-                if (bestCell && label.show) {
+                if (this.styleConfig.normal.label.show) {
+                    var labelPixels = geometry.labelPixels;
                     this.ctx.shadowBlur = 0;
-                    this.ctx.lineWidth = label.lineWidth;
-                    this.ctx.font = label.font;
-                    this.ctx.fillStyle = label.color;
-                    this.ctx.beginPath();
-                    var width = this.ctx.measureText(_item.name).width;
-                    if (this.getMaxWidth(_pixel) > width) {
-                        this.ctx.fillText(_item.name, bestCell.x - width / 2, bestCell.y);
+                    this.ctx.lineWidth = style.label.lineWidth;
+                    this.ctx.font = style.label.font;
+                    this.ctx.fillStyle = style.label.color;
+                    for (var _j2 = 0; _j2 < labelPixels.length; _j2++) {
+                        var bestCell = labelPixels[_j2];
+                        this.ctx.beginPath();
+                        var width = this.ctx.measureText(item.name).width;
+                        if (bestCell && item.name && this.getMaxWidth(pixels[_j2]) > width) {
+                            this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
+                        }
+                        bestCell = null, width = null;
                     }
+                    labelPixels = null;
                 }
+                style = null, pixels = null, geometry = null, item = null;
             }
             this.ctx.closePath();
         }
