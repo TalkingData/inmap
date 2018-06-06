@@ -24,13 +24,6 @@
             font-size: 14px;
         }
     </style>
-    <script>
-        window.TD = {
-            config: {
-                workerPath: '../dist/worker.js'
-            }
-        };
-    </script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
     <script src="data/data2.js"></script>
     <script src="../dist/inMap.js"></script>
@@ -52,17 +45,16 @@
         },
         skin: 'Blueness'
     });
-    data = data.map((function (item) {
-        return {
-            name: item.name,
-            count: item.count,
-            geometry: {
-                "type": "Point",
-                "coordinates": [item.lng, item.lat]
-            }
-        };
-    }));
-
+    // data = data.map((function (item) {
+    //     return {
+    //         name: item.name,
+    //         count: item.count,
+    //         geometry: {
+    //             "type": "Point",
+    //             "coordinates": [item.lng, item.lat]
+    //         }
+    //     };
+    // }));
     map.getMap().centerAndZoom(new BMap.Point(105.403119, 38.028658), 6)
     var overlay = new inMap.DotOverlay({
         tooltip: {
