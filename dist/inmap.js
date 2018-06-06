@@ -3824,7 +3824,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
         key: 'translation',
         value: function translation(distanceX, distanceY) {
             for (var i = 0; i < this.workerData.length; i++) {
-                var pixel = this.workerData[i].pixel;
+                var pixel = this.workerData[i].geometry.pixel;
                 pixel.x = pixel.x + distanceX;
                 pixel.y = pixel.y + distanceY;
             }
@@ -3850,9 +3850,9 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
+                _this2.setWorkerData(pixels);
                 _this2.setState(_OnState2.default.conputeAfter);
 
-                _this2.setWorkerData(pixels);
                 _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
 
                 margin = null;
@@ -3877,7 +3877,9 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
                 var item = this.workerData[i];
                 var opacity = (item.count - normal.minValue) / (normal.maxValue - normal.minValue);
                 opacity = opacity > 1 ? 1 : opacity;
-                this.drawPoint(item.pixel.x, item.pixel.y, normal.radius, opacity);
+                var pixel = item.geometry.pixel;
+                this.drawPoint(pixel.x, pixel.y, normal.radius, opacity);
+                item = null, opacity = null, pixel = null;
             }
 
             var palette = this.getColorPaint();
