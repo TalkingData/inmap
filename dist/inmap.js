@@ -4355,9 +4355,10 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
         key: 'translation',
         value: function translation(distanceX, distanceY) {
             for (var i = 0; i < this.workerData.length; i++) {
-                var pixel = this.workerData[i].pixel;
+                var pixel = this.workerData[i].geometry.pixel;
                 pixel.x = pixel.x + distanceX;
                 pixel.y = pixel.y + distanceY;
+                pixel = null;
             }
 
             this.refresh();
@@ -4392,7 +4393,7 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
 
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var item = pixels[i];
-                var pixel = item.pixel;
+                var pixel = item.geometry.pixel;
                 var style = this.setDrawStyle(item);
                 var img = void 0;
                 if ((0, _util.isString)(img)) {
@@ -4458,7 +4459,6 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
                     var _image = new Image();
                     _image.src = img;
                     _image.onload = function () {
-
                         me.cacheImg[img] = _image;
                         fun(_image);
                     };
@@ -4535,7 +4535,7 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
             var _loop = function _loop(i, len) {
                 _this3.ctx.beginPath();
                 var item = pixels[i];
-                var pixel = item.pixel;
+                var pixel = item.geometry.pixel;
                 var style = _this3.setDrawStyle(item);
                 _this3.loadImg(style.icon, function (img) {
                     if (style.width && style.height) {
