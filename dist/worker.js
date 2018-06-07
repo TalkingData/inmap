@@ -1697,16 +1697,6 @@ exports.HoneycombOverlay = undefined;
 
 var _pointToPixel = __webpack_require__(2);
 
-var _Pixel = __webpack_require__(30);
-
-var _Pixel2 = _interopRequireDefault(_Pixel);
-
-var _Point = __webpack_require__(10);
-
-var _Point2 = _interopRequireDefault(_Point);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var HoneycombOverlay = exports.HoneycombOverlay = {
     toRecGrids: function toRecGrids(webObj) {
         var _webObj$request$data = webObj.request.data,
@@ -1714,39 +1704,31 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
             zoomUnit = _webObj$request$data.zoomUnit,
             size = _webObj$request$data.size,
             mapSize = _webObj$request$data.mapSize,
-            mapCenter = _webObj$request$data.mapCenter,
             nwMc = _webObj$request$data.nwMc,
-            zoom = _webObj$request$data.zoom,
             type = _webObj$request$data.type;
 
         var map = webObj.request.map;
-        HoneycombOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
+        HoneycombOverlay._calculatePixel(map, points);
         var gridsObj = HoneycombOverlay.honeycombGrid(points, map, nwMc, size, zoomUnit, mapSize, type);
         webObj.request.data = gridsObj;
         return webObj;
     },
-    _calculatePixel: function _calculatePixel(map, data, mapSize, mapCenter, zoom) {
+    _calculatePixel: function _calculatePixel(map, data) {
+        for (var j = 0, len = data.length; j < len; j++) {
+            var geometry = data[j].geometry;
+            var coordinates = geometry.coordinates;
+            geometry['pixel'] = (0, _pointToPixel.pointToPixelWorker)({
+                lng: coordinates[0],
+                lat: coordinates[1]
+            }, map);
 
-        var zoomUnit = Math.pow(2, 18 - zoom);
-        var mcCenter = _pointToPixel.geo.projection.lngLatToPoint(mapCenter);
-
-        var nwMc = new _Pixel2.default(mcCenter.x - mapSize.width / 2 * zoomUnit, mcCenter.y + mapSize.height / 2 * zoomUnit);
-        for (var j = 0; j < data.length; j++) {
-            if (data[j].lng && data[j].lat && !data[j].x && !data[j].y) {
-                var pixel = _pointToPixel.geo.projection.lngLatToPoint(new _Point2.default(data[j].lng, data[j].lat), map);
-                data[j].x = pixel.x;
-                data[j].y = pixel.y;
-            }
-            if (data[j].x && data[j].y) {
-                data[j].px = (data[j].x - nwMc.x) / zoomUnit;
-                data[j].py = (nwMc.y - data[j].y) / zoomUnit;
-            }
             if (data[j].count == null) {
-                throw new TypeError('inMap.HoneycombOverlay: data is Invalid format ');
+                throw new TypeError('inMap.GriddingOverlay: data is Invalid format ');
             }
         }
         return data;
     },
+
     honeycombGrid: function honeycombGrid(data, map, nwMc, size, zoomUnit, mapSize, type) {
         if (data.length <= 0) {
             return {
@@ -1795,8 +1777,8 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
 
         for (var i in data) {
             var item = data[i];
-            var pX = item.px;
-            var pY = item.py;
+            var pX = item.geometry.pixel.x;
+            var pY = item.geometry.pixel.y;
             var fixYIndex = Math.round((pY - startY) / depthY);
             var fixY = fixYIndex * depthY + startY;
             var fixXIndex = Math.round((pX - startX) / depthX);
@@ -2036,41 +2018,7 @@ var PolymeOverlay = exports.PolymeOverlay = {
 };
 
 /***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Pixel = function () {
-    function Pixel(x, y) {
-        _classCallCheck(this, Pixel);
-
-        this.x = x || 0;
-        this.y = y || 0;
-    }
-
-    _createClass(Pixel, [{
-        key: "Pixel",
-        value: function Pixel(other) {
-            return other && other.x == this.x && other.y == this.y;
-        }
-    }]);
-
-    return Pixel;
-}();
-
-exports.default = Pixel;
-
-/***/ }),
+/* 30 */,
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
