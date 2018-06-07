@@ -105,7 +105,7 @@ exports.detectmob = detectmob;
 exports.merge = merge;
 exports.clearPushArray = clearPushArray;
 
-var _deepmerge = __webpack_require__(9);
+var _deepmerge = __webpack_require__(8);
 
 var _deepmerge2 = _interopRequireDefault(_deepmerge);
 
@@ -1131,48 +1131,8 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 /* 3 */,
 /* 4 */,
 /* 5 */,
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Point = Point;
-
-var _util = __webpack_require__(0);
-
-function Point(lng, lat) {
-    if (isNaN(lng)) {
-
-        lng = isNaN(lng) ? 0 : lng;
-    }
-    if ((0, _util.isString)(lng)) {
-        lng = parseFloat(lng);
-    }
-    if (isNaN(lat)) {
-
-        lat = isNaN(lat) ? 0 : lat;
-    }
-    if ((0, _util.isString)(lat)) {
-        lat = parseFloat(lat);
-    }
-    this.lng = lng;
-    this.lat = lat;
-}
-Point.isInRange = function (pt) {
-    return pt && pt.lng <= 180 && pt.lng >= -180 && pt.lat <= 74 && pt.lat >= -74;
-};
-Point.prototype.equals = function (other) {
-    return other && this.lat == other.lat && this.lng == other.lng;
-};
-exports.default = Point;
-
-/***/ }),
-/* 7 */,
-/* 8 */
+/* 6 */,
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1360,7 +1320,7 @@ var Label = exports.Label = function () {
 }();
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1464,8 +1424,8 @@ module.exports = deepmerge_1;
 
 
 /***/ }),
-/* 10 */,
-/* 11 */
+/* 9 */,
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1474,32 +1434,38 @@ module.exports = deepmerge_1;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.Point = Point;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _util = __webpack_require__(0);
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function Point(lng, lat) {
+    if (isNaN(lng)) {
 
-var Pixel = function () {
-    function Pixel(x, y) {
-        _classCallCheck(this, Pixel);
-
-        this.x = x || 0;
-        this.y = y || 0;
+        lng = isNaN(lng) ? 0 : lng;
     }
+    if ((0, _util.isString)(lng)) {
+        lng = parseFloat(lng);
+    }
+    if (isNaN(lat)) {
 
-    _createClass(Pixel, [{
-        key: "Pixel",
-        value: function Pixel(other) {
-            return other && other.x == this.x && other.y == this.y;
-        }
-    }]);
-
-    return Pixel;
-}();
-
-exports.default = Pixel;
+        lat = isNaN(lat) ? 0 : lat;
+    }
+    if ((0, _util.isString)(lat)) {
+        lat = parseFloat(lat);
+    }
+    this.lng = lng;
+    this.lat = lat;
+}
+Point.isInRange = function (pt) {
+    return pt && pt.lng <= 180 && pt.lng >= -180 && pt.lat <= 74 && pt.lat >= -74;
+};
+Point.prototype.equals = function (other) {
+    return other && this.lat == other.lat && this.lng == other.lng;
+};
+exports.default = Point;
 
 /***/ }),
+/* 11 */,
 /* 12 */,
 /* 13 */,
 /* 14 */,
@@ -1511,8 +1477,7 @@ exports.default = Pixel;
 /* 20 */,
 /* 21 */,
 /* 22 */,
-/* 23 */,
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1525,7 +1490,7 @@ exports.BoundaryOverlay = undefined;
 
 var _pointToPixel = __webpack_require__(2);
 
-var _Point = __webpack_require__(6);
+var _Point = __webpack_require__(10);
 
 var _polylabel = __webpack_require__(31);
 
@@ -1562,7 +1527,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = {
 };
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1575,16 +1540,6 @@ exports.GriddingOverlay = undefined;
 
 var _pointToPixel = __webpack_require__(2);
 
-var _Pixel = __webpack_require__(11);
-
-var _Pixel2 = _interopRequireDefault(_Pixel);
-
-var _Point = __webpack_require__(6);
-
-var _Point2 = _interopRequireDefault(_Point);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var GriddingOverlay = exports.GriddingOverlay = {
     toRecGrids: function toRecGrids(webObj) {
         var _webObj$request$data = webObj.request.data,
@@ -1592,33 +1547,25 @@ var GriddingOverlay = exports.GriddingOverlay = {
             zoomUnit = _webObj$request$data.zoomUnit,
             size = _webObj$request$data.size,
             mapSize = _webObj$request$data.mapSize,
-            mapCenter = _webObj$request$data.mapCenter,
             nwMc = _webObj$request$data.nwMc,
-            zoom = _webObj$request$data.zoom,
             type = _webObj$request$data.type;
 
         var map = webObj.request.map;
 
-        GriddingOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
+        GriddingOverlay._calculatePixel(map, points);
         var result = GriddingOverlay.recGrids(points, map, nwMc, size, zoomUnit, mapSize, type);
         webObj.request.data = result;
-
         return webObj;
     },
-    _calculatePixel: function _calculatePixel(map, data, mapSize, mapCenter, zoom) {
-        var zoomUnit = Math.pow(2, 18 - zoom);
-        var mcCenter = _pointToPixel.geo.projection.lngLatToPoint(mapCenter);
-        var nwMc = new _Pixel2.default(mcCenter.x - mapSize.width / 2 * zoomUnit, mcCenter.y + mapSize.height / 2 * zoomUnit);
-        for (var j = 0; j < data.length; j++) {
-            if (data[j].lng && data[j].lat && !data[j].x && !data[j].y) {
-                var pixel = _pointToPixel.geo.projection.lngLatToPoint(new _Point2.default(data[j].lng, data[j].lat), map);
-                data[j].x = pixel.x;
-                data[j].y = pixel.y;
-            }
-            if (data[j].x && data[j].y) {
-                data[j].px = (data[j].x - nwMc.x) / zoomUnit;
-                data[j].py = (nwMc.y - data[j].y) / zoomUnit;
-            }
+    _calculatePixel: function _calculatePixel(map, data) {
+        for (var j = 0, len = data.length; j < len; j++) {
+            var geometry = data[j].geometry;
+            var coordinates = geometry.coordinates;
+            geometry['pixel'] = (0, _pointToPixel.pointToPixelWorker)({
+                lng: coordinates[0],
+                lat: coordinates[1]
+            }, map);
+
             if (data[j].count == null) {
                 throw new TypeError('inMap.GriddingOverlay: data is Invalid format ');
             }
@@ -1671,9 +1618,9 @@ var GriddingOverlay = exports.GriddingOverlay = {
         }
 
         for (var _i = 0; _i < data.length; _i++) {
-            var x = data[_i].px;
-            var y = data[_i].py;
             var item = data[_i];
+            var x = item.geometry.pixel.x;
+            var y = item.geometry.pixel.y;
 
             for (var _j = 0; _j < stockXA.length; _j++) {
                 var dataX = Number(stockXA[_j]);
@@ -1709,7 +1656,7 @@ var GriddingOverlay = exports.GriddingOverlay = {
 };
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1737,7 +1684,7 @@ var HeatOverlay = exports.HeatOverlay = {
 };
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1750,11 +1697,11 @@ exports.HoneycombOverlay = undefined;
 
 var _pointToPixel = __webpack_require__(2);
 
-var _Pixel = __webpack_require__(11);
+var _Pixel = __webpack_require__(30);
 
 var _Pixel2 = _interopRequireDefault(_Pixel);
 
-var _Point = __webpack_require__(6);
+var _Point = __webpack_require__(10);
 
 var _Point2 = _interopRequireDefault(_Point);
 
@@ -1885,7 +1832,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
 };
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1896,7 +1843,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.LablEvading = undefined;
 
-var _Label = __webpack_require__(8);
+var _Label = __webpack_require__(7);
 
 var LablEvading = exports.LablEvading = {
     merge: function merge(webObj) {
@@ -1949,7 +1896,7 @@ var LablEvading = exports.LablEvading = {
 };
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1999,7 +1946,7 @@ var LineStringOverlay = exports.LineStringOverlay = {
 };
 
 /***/ }),
-/* 30 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2087,6 +2034,41 @@ var PolymeOverlay = exports.PolymeOverlay = {
         };
     }
 };
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Pixel = function () {
+    function Pixel(x, y) {
+        _classCallCheck(this, Pixel);
+
+        this.x = x || 0;
+        this.y = y || 0;
+    }
+
+    _createClass(Pixel, [{
+        key: "Pixel",
+        value: function Pixel(other) {
+            return other && other.x == this.x && other.y == this.y;
+        }
+    }]);
+
+    return Pixel;
+}();
+
+exports.default = Pixel;
 
 /***/ }),
 /* 31 */
@@ -2361,19 +2343,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.boundaryOverlay = exports.TDpost = undefined;
 
-var _HeatOverlay = __webpack_require__(26);
+var _HeatOverlay = __webpack_require__(25);
 
-var _GriddingOverlay = __webpack_require__(25);
+var _GriddingOverlay = __webpack_require__(24);
 
-var _BoundaryOverlay = __webpack_require__(24);
+var _BoundaryOverlay = __webpack_require__(23);
 
-var _LineStringOverlay = __webpack_require__(29);
+var _LineStringOverlay = __webpack_require__(28);
 
-var _HoneycombOverlay = __webpack_require__(27);
+var _HoneycombOverlay = __webpack_require__(26);
 
-var _PolymeOverlay = __webpack_require__(30);
+var _PolymeOverlay = __webpack_require__(29);
 
-var _LablEvading = __webpack_require__(28);
+var _LablEvading = __webpack_require__(27);
 
 var callbackList = {
     'HeatOverlay': _HeatOverlay.HeatOverlay,

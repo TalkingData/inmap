@@ -105,7 +105,7 @@ exports.detectmob = detectmob;
 exports.merge = merge;
 exports.clearPushArray = clearPushArray;
 
-var _deepmerge = __webpack_require__(9);
+var _deepmerge = __webpack_require__(8);
 
 var _deepmerge2 = _interopRequireDefault(_deepmerge);
 
@@ -292,7 +292,7 @@ exports.CanvasOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _BaseClass2 = __webpack_require__(13);
+var _BaseClass2 = __webpack_require__(12);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
@@ -302,9 +302,9 @@ var _Legend2 = _interopRequireDefault(_Legend);
 
 var _util = __webpack_require__(0);
 
-var _MapStyle = __webpack_require__(7);
+var _MapStyle = __webpack_require__(6);
 
-var _Toolbar = __webpack_require__(12);
+var _Toolbar = __webpack_require__(11);
 
 var _Toolbar2 = _interopRequireDefault(_Toolbar);
 
@@ -1472,8 +1472,7 @@ Colors.prototype = {
 var Color = exports.Color = Colors;
 
 /***/ }),
-/* 6 */,
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1752,7 +1751,7 @@ var Blueness = exports.Blueness = [{
 }];
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1940,7 +1939,7 @@ var Label = exports.Label = function () {
 }();
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2044,7 +2043,7 @@ module.exports = deepmerge_1;
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2135,8 +2134,8 @@ var WorkerMrg = function () {
 var workerMrg = exports.workerMrg = new WorkerMrg();
 
 /***/ }),
-/* 11 */,
-/* 12 */
+/* 10 */,
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2193,7 +2192,7 @@ var Toolbar = function () {
 exports.default = Toolbar;
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2203,7 +2202,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _workerMrg = __webpack_require__(10);
+var _workerMrg = __webpack_require__(9);
 
 var baseClassCounter = 0;
 var inmap_instances = {};
@@ -2305,7 +2304,7 @@ BaseClass.prototype.removeWorkerMessage = function () {
 exports.default = BaseClass;
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2320,11 +2319,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __webpack_require__(0);
 
-var _MapStyle = __webpack_require__(7);
+var _MapStyle = __webpack_require__(6);
 
 var _mapZoom = __webpack_require__(47);
 
-var _Toolbar = __webpack_require__(12);
+var _Toolbar = __webpack_require__(11);
 
 var _Toolbar2 = _interopRequireDefault(_Toolbar);
 
@@ -2420,7 +2419,7 @@ var Map = exports.Map = function () {
 }();
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2772,7 +2771,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2787,7 +2786,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _CanvasOverlay = __webpack_require__(3);
 
-var _Label = __webpack_require__(8);
+var _Label = __webpack_require__(7);
 
 var _Parameter2 = __webpack_require__(4);
 
@@ -3217,7 +3216,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3382,7 +3381,7 @@ var FlashDotOverlay = function (_CanvasOverlay) {
 exports.default = FlashDotOverlay;
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3538,10 +3537,10 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
-
                 _this2.canvasResize();
-                _this2.setState(_OnState2.default.conputeAfter);
                 _this2.workerData = gridsObj.grids;
+                _this2.setState(_OnState2.default.conputeAfter);
+
                 _this2._drawSize = size / zoomUnit;
                 _this2.setState(_OnState2.default.drawBefore);
 
@@ -3701,7 +3700,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3959,7 +3958,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4289,7 +4288,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4563,7 +4562,7 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4738,7 +4737,7 @@ var LineStringOverlay = exports.LineStringOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4755,13 +4754,13 @@ var _CanvasOverlay = __webpack_require__(3);
 
 var _util = __webpack_require__(0);
 
-var _MapStyle = __webpack_require__(7);
+var _MapStyle = __webpack_require__(6);
 
 var _MoveLineConfig = __webpack_require__(42);
 
 var _MoveLineConfig2 = _interopRequireDefault(_MoveLineConfig);
 
-var _BaseClass2 = __webpack_require__(13);
+var _BaseClass2 = __webpack_require__(12);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
@@ -5167,6 +5166,7 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
 }(_BaseClass3.default);
 
 /***/ }),
+/* 23 */,
 /* 24 */,
 /* 25 */,
 /* 26 */,
@@ -5592,33 +5592,33 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.workerMrg = exports.FlashDotOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.LineStringOverlay = exports.HeatOverlay = exports.BoundaryOverlay = exports.GriddingOverlay = exports.DotOverlay = exports.Map = exports.utils = exports.version = undefined;
 
-var _DotOverlay = __webpack_require__(16);
+var _DotOverlay = __webpack_require__(15);
 
-var _GriddingOverlay = __webpack_require__(18);
+var _GriddingOverlay = __webpack_require__(17);
 
-var _BoundaryOverlay = __webpack_require__(15);
+var _BoundaryOverlay = __webpack_require__(14);
 
-var _HeatOverlay = __webpack_require__(19);
+var _HeatOverlay = __webpack_require__(18);
 
-var _LineStringOverlay = __webpack_require__(22);
+var _LineStringOverlay = __webpack_require__(21);
 
-var _HoneycombOverlay = __webpack_require__(20);
+var _HoneycombOverlay = __webpack_require__(19);
 
-var _ImgOverlay = __webpack_require__(21);
+var _ImgOverlay = __webpack_require__(20);
 
-var _MoveLineOverlay = __webpack_require__(23);
+var _MoveLineOverlay = __webpack_require__(22);
 
-var _FlashDotOverlay = __webpack_require__(17);
+var _FlashDotOverlay = __webpack_require__(16);
 
 var _FlashDotOverlay2 = _interopRequireDefault(_FlashDotOverlay);
 
-var _index = __webpack_require__(14);
+var _index = __webpack_require__(13);
 
 var _util = __webpack_require__(0);
 
 var utils = _interopRequireWildcard(_util);
 
-var _workerMrg = __webpack_require__(10);
+var _workerMrg = __webpack_require__(9);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
