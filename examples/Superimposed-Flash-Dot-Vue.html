@@ -52,80 +52,150 @@
 <script>
     let data1 = [{
         name: '北京',
-        lng: "116.3",
-        lat: "39.9",
+        geometry: {
+            type: 'Point',
+            coordinates: ['116.3', '39.9']
+        },
         style: {
             size: 15,
         }
     }, {
         name: '上海',
-        lng: "121.29",
-        lat: "31.11",
+        geometry: {
+            type: 'Point',
+            coordinates: ['121.29', '31.11']
+        },
         style: {
             size: 10
         }
     }, {
         name: '福建',
-        lng: "117.984943",
-        lat: "26.050118",
+        geometry: {
+            type: 'Point',
+            coordinates: ['117.984943', '26.050118']
+        },
         style: {
             size: 6
         }
     }, {
         name: '广东',
-        lng: "113.394818",
-        lat: "23.408004",
+        geometry: {
+            type: 'Point',
+            coordinates: ['113.394818', '23.408004']
+        },
     }, {
         name: '广西',
-        lng: "108.924274",
-        lat: "23.552255",
+        geometry: {
+            type: 'Point',
+            coordinates: ['108.924274', '23.552255']
+        },
     }];
     let data2 = [{
         name: '北京',
-        lnglat: ['116.3', '39.9'],
-        speed: 1,
-        size: 28
-    }, {
-        name: '上海',
-        lnglat: ['121.29', '31.11'],
-        speed: 0.3,
-        radius: 40,
-    }, {
-        name: '福建',
-        lnglat: ['117.984943', '26.050118'],
-        speed: 0.45,
-        size: 12
-    }, {
-        name: '广东',
-        lnglat: ['113.394818', '23.408004'],
-        speed: 0.7,
-    }, {
-        name: '广西',
-        lnglat: ['108.924274', '23.552255'],
-        speed: 1,
-        radius: 50,
-    }];
-    let data3 = [{
-        name: '北京',
-        lnglat: ['116.3', '39.9'],
-        speed: 1,
+        geometry: {
+            type: 'Point',
+            coordinates: ['116.3', '39.9']
+        },
+        style: {
+            speed: 1,
+            size: 28
+        }
 
     }, {
         name: '上海',
-        lnglat: ['121.29', '31.11'],
-        speed: 0.4,
+        geometry: {
+            type: 'Point',
+            coordinates: ['121.29', '31.11']
+        },
+        style: {
+            speed: 0.3,
+            radius: 40,
+        }
+
     }, {
         name: '福建',
-        lnglat: ['117.984943', '26.050118'],
-        speed: 0.45
+        geometry: {
+            type: 'Point',
+            coordinates: ['117.984943', '26.050118']
+        },
+        style: {
+            speed: 0.45,
+            size: 12
+        }
+
     }, {
         name: '广东',
-        lnglat: ['113.394818', '23.408004'],
-        speed: 0.7,
+        geometry: {
+            type: 'Point',
+            coordinates: ['113.394818', '23.408004']
+        },
+        style: {
+            speed: 0.7,
+        }
+
     }, {
         name: '广西',
-        lnglat: ['108.924274', '23.552255'],
-        speed: 1
+        geometry: {
+            type: 'Point',
+            coordinates: ['108.924274', '23.552255']
+        },
+        style: {
+            speed: 1,
+            radius: 50,
+        }
+
+    }];
+    let data3 = [{
+        name: '北京',
+        geometry: {
+            type: 'Point',
+            coordinates: ['116.3', '39.9']
+        },
+        style: {
+            speed: 1,
+        }
+
+
+    }, {
+        name: '上海',
+        geometry: {
+            type: 'Point',
+            coordinates: ['121.29', '31.11']
+        },
+        style: {
+            speed: 0.4,
+        }
+
+    }, {
+        name: '福建',
+        geometry: {
+            type: 'Point',
+            coordinates: ['117.984943', '26.050118']
+        },
+        style: {
+            speed: 0.45
+        }
+
+    }, {
+        name: '广东',
+        geometry: {
+            type: 'Point',
+            coordinates: ['113.394818', '23.408004']
+        },
+        style: {
+            speed: 0.7,
+        }
+
+    }, {
+        name: '广西',
+        geometry: {
+            type: 'Point',
+            coordinates: ['108.924274', '23.552255']
+        },
+        style: {
+            speed: 1
+        }
+
     }];
     var inmap = new inMap.Map({
         id: 'allmap',

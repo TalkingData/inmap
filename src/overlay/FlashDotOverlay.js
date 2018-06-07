@@ -8,9 +8,9 @@ import config from './../config/FlashDotConfig';
 
 
 class Marker {
-    constructor(opts, map) {
+    constructor(opts, data, map) {
         this.city = opts.name;
-        this.location = new BMap.Point(opts.lnglat[0], opts.lnglat[1]);
+        this.location = new BMap.Point(data.geometry.coordinates[0], data.geometry.coordinates[1]);
         this.pixel = map.pointToPixel(this.location);
         this.color = opts.color;
         this.speed = opts.speed;
@@ -68,19 +68,19 @@ export default class FlashDotOverlay extends CanvasOverlay {
         this.map && this.addMarker();
     }
     translation(distanceX, distanceY) {
-        
+
         for (let i = 0; i < this.markers.length; i++) {
             let pixel = this.markers[i].pixel;
             pixel.x = pixel.x + distanceX;
             pixel.y = pixel.y + distanceY;
         }
-        
+
     }
     addMarker() {
         this.markers = [];
         for (let i = 0; i < this.data.length; i++) {
-            let item = merge(this.styleConfig,this.data[i]);
-            this.markers.push(new Marker(item, this.map));
+            let style = merge(this.styleConfig, this.data[i].style);
+            this.markers.push(new Marker(style, this.data[i], this.map));
         }
 
     }

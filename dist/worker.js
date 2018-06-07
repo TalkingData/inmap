@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 49);
+/******/ 	return __webpack_require__(__webpack_require__.s = 48);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1125,7 +1125,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
   }]);
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(54)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(53)(module)))
 
 /***/ }),
 /* 3 */,
@@ -1425,46 +1425,7 @@ module.exports = deepmerge_1;
 
 /***/ }),
 /* 9 */,
-/* 10 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.Point = Point;
-
-var _util = __webpack_require__(0);
-
-function Point(lng, lat) {
-    if (isNaN(lng)) {
-
-        lng = isNaN(lng) ? 0 : lng;
-    }
-    if ((0, _util.isString)(lng)) {
-        lng = parseFloat(lng);
-    }
-    if (isNaN(lat)) {
-
-        lat = isNaN(lat) ? 0 : lat;
-    }
-    if ((0, _util.isString)(lat)) {
-        lat = parseFloat(lat);
-    }
-    this.lng = lng;
-    this.lat = lat;
-}
-Point.isInRange = function (pt) {
-    return pt && pt.lng <= 180 && pt.lng >= -180 && pt.lat <= 74 && pt.lat >= -74;
-};
-Point.prototype.equals = function (other) {
-    return other && this.lat == other.lat && this.lng == other.lng;
-};
-exports.default = Point;
-
-/***/ }),
+/* 10 */,
 /* 11 */,
 /* 12 */,
 /* 13 */,
@@ -1476,8 +1437,7 @@ exports.default = Point;
 /* 19 */,
 /* 20 */,
 /* 21 */,
-/* 22 */,
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1490,9 +1450,9 @@ exports.BoundaryOverlay = undefined;
 
 var _pointToPixel = __webpack_require__(2);
 
-var _Point = __webpack_require__(10);
+var _Point = __webpack_require__(29);
 
-var _polylabel = __webpack_require__(31);
+var _polylabel = __webpack_require__(30);
 
 var _polylabel2 = _interopRequireDefault(_polylabel);
 
@@ -1527,7 +1487,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = {
 };
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1656,7 +1616,7 @@ var GriddingOverlay = exports.GriddingOverlay = {
 };
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1684,7 +1644,7 @@ var HeatOverlay = exports.HeatOverlay = {
 };
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1814,7 +1774,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
 };
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1878,7 +1838,7 @@ var LablEvading = exports.LablEvading = {
 };
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1928,7 +1888,7 @@ var LineStringOverlay = exports.LineStringOverlay = {
 };
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2018,8 +1978,47 @@ var PolymeOverlay = exports.PolymeOverlay = {
 };
 
 /***/ }),
-/* 30 */,
-/* 31 */
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.Point = Point;
+
+var _util = __webpack_require__(0);
+
+function Point(lng, lat) {
+    if (isNaN(lng)) {
+
+        lng = isNaN(lng) ? 0 : lng;
+    }
+    if ((0, _util.isString)(lng)) {
+        lng = parseFloat(lng);
+    }
+    if (isNaN(lat)) {
+
+        lat = isNaN(lat) ? 0 : lat;
+    }
+    if ((0, _util.isString)(lat)) {
+        lat = parseFloat(lat);
+    }
+    this.lng = lng;
+    this.lat = lat;
+}
+Point.isInRange = function (pt) {
+    return pt && pt.lng <= 180 && pt.lng >= -180 && pt.lat <= 74 && pt.lat >= -74;
+};
+Point.prototype.equals = function (other) {
+    return other && this.lat == other.lat && this.lng == other.lng;
+};
+exports.default = Point;
+
+/***/ }),
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2030,7 +2029,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = polylabel;
 
-var _tinyqueue = __webpack_require__(43);
+var _tinyqueue = __webpack_require__(42);
 
 var _tinyqueue2 = _interopRequireDefault(_tinyqueue);
 
@@ -2167,6 +2166,7 @@ function polylabel(polygon) {
 }
 
 /***/ }),
+/* 31 */,
 /* 32 */,
 /* 33 */,
 /* 34 */,
@@ -2177,8 +2177,7 @@ function polylabel(polygon) {
 /* 39 */,
 /* 40 */,
 /* 41 */,
-/* 42 */,
-/* 43 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2275,12 +2274,12 @@ TinyQueue.prototype = {
 };
 
 /***/ }),
+/* 43 */,
 /* 44 */,
 /* 45 */,
 /* 46 */,
 /* 47 */,
-/* 48 */,
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2291,19 +2290,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.boundaryOverlay = exports.TDpost = undefined;
 
-var _HeatOverlay = __webpack_require__(25);
+var _HeatOverlay = __webpack_require__(24);
 
-var _GriddingOverlay = __webpack_require__(24);
+var _GriddingOverlay = __webpack_require__(23);
 
-var _BoundaryOverlay = __webpack_require__(23);
+var _BoundaryOverlay = __webpack_require__(22);
 
-var _LineStringOverlay = __webpack_require__(28);
+var _LineStringOverlay = __webpack_require__(27);
 
-var _HoneycombOverlay = __webpack_require__(26);
+var _HoneycombOverlay = __webpack_require__(25);
 
-var _PolymeOverlay = __webpack_require__(29);
+var _PolymeOverlay = __webpack_require__(28);
 
-var _LablEvading = __webpack_require__(27);
+var _LablEvading = __webpack_require__(26);
 
 var callbackList = {
     'HeatOverlay': _HeatOverlay.HeatOverlay,
@@ -2366,11 +2365,11 @@ var TDpost = exports.TDpost = function TDpost(client) {
 var boundaryOverlay = exports.boundaryOverlay = _BoundaryOverlay.BoundaryOverlay;
 
 /***/ }),
+/* 49 */,
 /* 50 */,
 /* 51 */,
 /* 52 */,
-/* 53 */,
-/* 54 */
+/* 53 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
