@@ -3278,13 +3278,13 @@ var Marker = function () {
     return Marker;
 }();
 
-var FlashDotOverlay = function (_CanvasOverlay) {
-    _inherits(FlashDotOverlay, _CanvasOverlay);
+var DotOverlayAnimation = function (_CanvasOverlay) {
+    _inherits(DotOverlayAnimation, _CanvasOverlay);
 
-    function FlashDotOverlay(ops) {
-        _classCallCheck(this, FlashDotOverlay);
+    function DotOverlayAnimation(ops) {
+        _classCallCheck(this, DotOverlayAnimation);
 
-        var _this = _possibleConstructorReturn(this, (FlashDotOverlay.__proto__ || Object.getPrototypeOf(FlashDotOverlay)).call(this));
+        var _this = _possibleConstructorReturn(this, (DotOverlayAnimation.__proto__ || Object.getPrototypeOf(DotOverlayAnimation)).call(this));
 
         _this.data = [];
         _this.styleConfig = null;
@@ -3294,7 +3294,7 @@ var FlashDotOverlay = function (_CanvasOverlay) {
         return _this;
     }
 
-    _createClass(FlashDotOverlay, [{
+    _createClass(DotOverlayAnimation, [{
         key: 'canvasInit',
         value: function canvasInit() {
             this.addMarker();
@@ -3374,10 +3374,10 @@ var FlashDotOverlay = function (_CanvasOverlay) {
         }
     }]);
 
-    return FlashDotOverlay;
+    return DotOverlayAnimation;
 }(_CanvasOverlay2.CanvasOverlay);
 
-exports.default = FlashDotOverlay;
+exports.default = DotOverlayAnimation;
 
 /***/ }),
 /* 16 */
@@ -5589,7 +5589,7 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.workerMrg = exports.FlashDotOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.LineStringOverlay = exports.HeatOverlay = exports.BoundaryOverlay = exports.GriddingOverlay = exports.DotOverlay = exports.Map = exports.utils = exports.version = undefined;
+exports.workerMrg = exports.DotOverlayAnimation = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.LineStringOverlay = exports.HeatOverlay = exports.BoundaryOverlay = exports.GriddingOverlay = exports.DotOverlay = exports.Map = exports.utils = exports.version = undefined;
 
 var _DotOverlay = __webpack_require__(14);
 
@@ -5607,9 +5607,9 @@ var _ImgOverlay = __webpack_require__(19);
 
 var _MoveLineOverlay = __webpack_require__(21);
 
-var _FlashDotOverlay = __webpack_require__(15);
+var _DotOverlayAnimation = __webpack_require__(15);
 
-var _FlashDotOverlay2 = _interopRequireDefault(_FlashDotOverlay);
+var _DotOverlayAnimation2 = _interopRequireDefault(_DotOverlayAnimation);
 
 var _index = __webpack_require__(12);
 
@@ -5638,7 +5638,7 @@ var inMap = {
     HoneycombOverlay: _HoneycombOverlay.HoneycombOverlay,
     ImgOverlay: _ImgOverlay.ImgOverlay,
     MoveLineOverlay: _MoveLineOverlay.MoveLineOverlay,
-    FlashDotOverlay: _FlashDotOverlay2.default,
+    DotOverlayAnimation: _DotOverlayAnimation2.default,
     workerMrg: _workerMrg.workerMrg
 };
 exports.version = version;
@@ -5652,7 +5652,7 @@ exports.LineStringOverlay = _LineStringOverlay.LineStringOverlay;
 exports.HoneycombOverlay = _HoneycombOverlay.HoneycombOverlay;
 exports.ImgOverlay = _ImgOverlay.ImgOverlay;
 exports.MoveLineOverlay = _MoveLineOverlay.MoveLineOverlay;
-exports.FlashDotOverlay = _FlashDotOverlay2.default;
+exports.DotOverlayAnimation = _DotOverlayAnimation2.default;
 exports.workerMrg = _workerMrg.workerMrg;
 exports.default = inMap;
 

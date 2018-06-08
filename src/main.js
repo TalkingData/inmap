@@ -25,7 +25,7 @@ import {
 import {
     MoveLineOverlay
 } from './overlay/MoveLineOverlay';
-import FlashDotOverlay from './overlay/FlashDotOverlay';
+import DotOverlayAnimation from './overlay/DotOverlayAnimation';
 import {
     Map
 } from './map/index';
@@ -47,7 +47,7 @@ const inMap = {
     HoneycombOverlay,
     ImgOverlay,
     MoveLineOverlay,
-    FlashDotOverlay,
+    DotOverlayAnimation,
     workerMrg
 };
 export {
@@ -62,7 +62,7 @@ export {
     HoneycombOverlay,
     ImgOverlay,
     MoveLineOverlay,
-    FlashDotOverlay,
+    DotOverlayAnimation,
     workerMrg
 };
 export default inMap;
