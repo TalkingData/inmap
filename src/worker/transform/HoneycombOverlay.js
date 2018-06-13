@@ -1,8 +1,6 @@
 import {
-    geo
+    pointToPixelWorker
 } from '../../lib/pointToPixel';
-import Pixel from './../../common/Pixel';
-import Point from './../../common/Point';
 
 export let HoneycombOverlay = {
     toRecGrids: function (webObj) {
@@ -11,36 +9,26 @@ export let HoneycombOverlay = {
             zoomUnit,
             size,
             mapSize,
-            mapCenter,
             nwMc,
-            zoom,
             type
         } = webObj.request.data;
         let map = webObj.request.map;
-        HoneycombOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
+        HoneycombOverlay._calculatePixel(map, points);
         let gridsObj = HoneycombOverlay.honeycombGrid(points, map, nwMc, size, zoomUnit, mapSize, type);
         webObj.request.data = gridsObj;
         return webObj;
     },
-    _calculatePixel: function (map, data, mapSize, mapCenter, zoom) {
+    _calculatePixel(map, data) {
+        for (let j = 0, len = data.length; j < len; j++) {
+            let geometry = data[j].geometry;
+            let coordinates = geometry.coordinates;
+            geometry['pixel'] = pointToPixelWorker({
+                lng: coordinates[0],
+                lat: coordinates[1]
+            }, map);
 
-        let zoomUnit = Math.pow(2, 18 - zoom);
-        let mcCenter = geo.projection.lngLatToPoint(mapCenter);
-
-        let nwMc = new Pixel(mcCenter.x - mapSize.width / 2 * zoomUnit, mcCenter.y + mapSize.height / 2 * zoomUnit); //左上角墨卡托坐标
-        for (let j = 0; j < data.length; j++) {
-            if (data[j].lng && data[j].lat && !data[j].x && !data[j].y) {
-                let pixel = geo.projection.lngLatToPoint(new Point(data[j].lng, data[j].lat), map);
-                data[j].x = pixel.x;
-                data[j].y = pixel.y;
-
-            }
-            if (data[j].x && data[j].y) {
-                data[j].px = (data[j].x - nwMc.x) / zoomUnit;
-                data[j].py = (nwMc.y - data[j].y) / zoomUnit;
-            }
             if (data[j].count == null) {
-                throw new TypeError('inMap.HoneycombOverlay: data is Invalid format ');
+                throw new TypeError('inMap.GriddingOverlay: data is Invalid format ');
             }
 
         }
@@ -94,8 +82,8 @@ export let HoneycombOverlay = {
 
         for (let i in data) {
             let item = data[i];
-            let pX = item.px;
-            let pY = item.py;
+            let pX = item.geometry.pixel.x;
+            let pY = item.geometry.pixel.y;
             let fixYIndex = Math.round((pY - startY) / depthY);
             let fixY = fixYIndex * depthY + startY;
             let fixXIndex = Math.round((pX - startX) / depthX);

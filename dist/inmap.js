@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 44);
+/******/ 	return __webpack_require__(__webpack_require__.s = 43);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -105,7 +105,7 @@ exports.detectmob = detectmob;
 exports.merge = merge;
 exports.clearPushArray = clearPushArray;
 
-var _deepmerge = __webpack_require__(9);
+var _deepmerge = __webpack_require__(8);
 
 var _deepmerge2 = _interopRequireDefault(_deepmerge);
 
@@ -278,7 +278,8 @@ exports.default = {
 };
 
 /***/ }),
-/* 2 */
+/* 2 */,
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -291,19 +292,19 @@ exports.CanvasOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _BaseClass2 = __webpack_require__(13);
+var _BaseClass2 = __webpack_require__(11);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
-var _Legend = __webpack_require__(45);
+var _Legend = __webpack_require__(44);
 
 var _Legend2 = _interopRequireDefault(_Legend);
 
 var _util = __webpack_require__(0);
 
-var _MapStyle = __webpack_require__(7);
+var _MapStyle = __webpack_require__(6);
 
-var _Toolbar = __webpack_require__(12);
+var _Toolbar = __webpack_require__(10);
 
 var _Toolbar2 = _interopRequireDefault(_Toolbar);
 
@@ -556,7 +557,6 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
 }(_BaseClass3.default);
 
 /***/ }),
-/* 3 */,
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -572,7 +572,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __webpack_require__(0);
 
-var _CanvasOverlay2 = __webpack_require__(2);
+var _CanvasOverlay2 = __webpack_require__(3);
 
 var _Color = __webpack_require__(5);
 
@@ -1472,8 +1472,7 @@ Colors.prototype = {
 var Color = exports.Color = Colors;
 
 /***/ }),
-/* 6 */,
-/* 7 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1752,7 +1751,7 @@ var Blueness = exports.Blueness = [{
 }];
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1940,7 +1939,7 @@ var Label = exports.Label = function () {
 }();
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2044,7 +2043,7 @@ module.exports = deepmerge_1;
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2135,8 +2134,7 @@ var WorkerMrg = function () {
 var workerMrg = exports.workerMrg = new WorkerMrg();
 
 /***/ }),
-/* 11 */,
-/* 12 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2148,7 +2146,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ToolTip = __webpack_require__(46);
+var _ToolTip = __webpack_require__(45);
 
 var _ToolTip2 = _interopRequireDefault(_ToolTip);
 
@@ -2193,7 +2191,7 @@ var Toolbar = function () {
 exports.default = Toolbar;
 
 /***/ }),
-/* 13 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2203,7 +2201,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _workerMrg = __webpack_require__(10);
+var _workerMrg = __webpack_require__(9);
 
 var baseClassCounter = 0;
 var inmap_instances = {};
@@ -2305,7 +2303,7 @@ BaseClass.prototype.removeWorkerMessage = function () {
 exports.default = BaseClass;
 
 /***/ }),
-/* 14 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2320,19 +2318,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __webpack_require__(0);
 
-var _MapStyle = __webpack_require__(7);
+var _MapStyle = __webpack_require__(6);
 
-var _mapZoom = __webpack_require__(47);
+var _mapZoom = __webpack_require__(46);
 
-var _Toolbar = __webpack_require__(12);
+var _Toolbar = __webpack_require__(10);
 
 var _Toolbar2 = _interopRequireDefault(_Toolbar);
 
-var _InmapConfig = __webpack_require__(40);
+var _InmapConfig = __webpack_require__(39);
 
 var _InmapConfig2 = _interopRequireDefault(_InmapConfig);
 
-__webpack_require__(53);
+__webpack_require__(52);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2420,1148 +2418,7 @@ var Map = exports.Map = function () {
 }();
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.BoundaryOverlay = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Parameter2 = __webpack_require__(4);
-
-var _Color = __webpack_require__(5);
-
-var _util = __webpack_require__(0);
-
-var _BoundaryConfig = __webpack_require__(32);
-
-var _BoundaryConfig2 = _interopRequireDefault(_BoundaryConfig);
-
-var _OnState = __webpack_require__(1);
-
-var _OnState2 = _interopRequireDefault(_OnState);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
-    _inherits(BoundaryOverlay, _Parameter);
-
-    function BoundaryOverlay(ops) {
-        _classCallCheck(this, BoundaryOverlay);
-
-        var _this = _possibleConstructorReturn(this, (BoundaryOverlay.__proto__ || Object.getPrototypeOf(BoundaryOverlay)).call(this, _BoundaryConfig2.default, ops));
-
-        _this.patchSplitList();
-        _this.state = null;
-        return _this;
-    }
-
-    _createClass(BoundaryOverlay, [{
-        key: 'parameterInit',
-        value: function parameterInit() {
-            this.initLegend();
-        }
-    }, {
-        key: 'initLegend',
-        value: function initLegend() {
-            this.compileSplitList(this.styleConfig.colors, this.getTransformData());
-            this.patchSplitList();
-            this.setlegend(this.legendConfig, this.styleConfig.splitList);
-        }
-    }, {
-        key: 'setSelectedList',
-        value: function setSelectedList(list) {
-            (0, _util.clearPushArray)(this.selectItem, list);
-        }
-    }, {
-        key: 'clearSelectedList',
-        value: function clearSelectedList() {
-            (0, _util.clearPushArray)(this.selectItem);
-        }
-    }, {
-        key: 'getSelectedList',
-        value: function getSelectedList() {
-            return this.selectItem;
-        }
-    }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            for (var i = 0; i < this.workerData.length; i++) {
-                var pixels = this.workerData[i].pixels;
-                for (var j = 0; j < pixels.length; j++) {
-                    var pixel = pixels[j];
-                    pixel[0] = pixel[0] + distanceX;
-                    pixel[1] = pixel[1] + distanceY;
-                }
-                if (this.styleConfig.normal.label.show) {
-                    var bestCell = this.workerData[i].bestCell;
-                    bestCell.x = bestCell.x + distanceX;
-                    bestCell.y = bestCell.y + distanceY;
-                }
-            }
-
-            this.refresh();
-        }
-    }, {
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-            this._setStyle(this.baseConfig, ops);
-        }
-    }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState(this.state);
-        }
-    }, {
-        key: 'onOptionChange',
-        value: function onOptionChange() {
-            this.map && this.initLegend();
-        }
-    }, {
-        key: 'onDataChange',
-        value: function onDataChange() {
-            this.map && this.initLegend();
-        }
-    }, {
-        key: 'compileSplitList',
-        value: function compileSplitList(colors, data) {
-
-            if (colors.length <= 0) return;
-            data = data.sort(function (a, b) {
-                return parseFloat(a.count) - parseFloat(b.count);
-            });
-            var splitCount = data.length / colors.length;
-            var colorIndex = 0;
-            var split = [];
-            var star = 0,
-                end = 0;
-
-            for (var i = 0; i < data.length; i++) {
-
-                if (i > splitCount * (colorIndex + 1)) {
-                    if (split.length == 0) {
-                        star = data[0].count;
-                    }
-
-                    end = data[i].count;
-
-                    split.push({
-                        start: star,
-                        end: end,
-                        backgroundColor: colors[colorIndex]
-                    });
-                    colorIndex++;
-                    star = data[i].count;
-                }
-            }
-
-            if (split.length > 0) {
-                split.push({
-                    start: star,
-                    end: null,
-                    backgroundColor: colors[colorIndex]
-                });
-            }
-
-            this.styleConfig.splitList = split;
-        }
-    }, {
-        key: 'patchSplitList',
-        value: function patchSplitList() {
-            var normal = this.styleConfig.normal;
-            if (normal.borderWidth != null && normal.borderColor == null) {
-                normal.borderColor = new _Color.Color(normal.backgroundColor).getRgbaStyle();
-            }
-            var splitList = this.styleConfig.splitList;
-            for (var i = 0; i < splitList.length; i++) {
-                var condition = splitList[i];
-                if ((condition.borderWidth != null || normal.borderColor != null) && condition.borderColor == null) {
-                    condition.borderColor = new _Color.Color(condition.backgroundColor).getRgbaStyle();
-                }
-            }
-        }
-    }, {
-        key: 'resize',
-        value: function resize() {
-
-            this.drawMap();
-        }
-    }, {
-        key: 'getGeoCenter',
-        value: function getGeoCenter(geo) {
-            var minX = geo[0][0];
-            var minY = geo[0][1];
-            var maxX = geo[0][0];
-            var maxY = geo[0][1];
-            for (var i = 1; i < geo.length; i++) {
-                minX = Math.min(minX, geo[i][0]);
-                maxX = Math.max(maxX, geo[i][0]);
-                minY = Math.min(minY, geo[i][1]);
-                maxY = Math.max(maxY, geo[i][1]);
-            }
-            return [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
-        }
-    }, {
-        key: 'getMaxWidth',
-        value: function getMaxWidth(geo) {
-            var minX = geo[0][0];
-            var minY = geo[0][1];
-            var maxX = geo[0][0];
-            var maxY = geo[0][1];
-            for (var i = 1; i < geo.length; i++) {
-                minX = Math.min(minX, geo[i][0]);
-                maxX = Math.max(maxX, geo[i][0]);
-                minY = Math.min(minY, geo[i][1]);
-                maxY = Math.max(maxY, geo[i][1]);
-            }
-            return maxX - minX;
-        }
-    }, {
-        key: 'findIndexSelectItem',
-        value: function findIndexSelectItem(item) {
-            var index = -1;
-            if (item) {
-                index = this.selectItem.findIndex(function (val) {
-                    return val && val.name == item.name;
-                });
-            }
-            return index;
-        }
-    }, {
-        key: 'refresh',
-        value: function refresh() {
-
-            this.setState(_OnState2.default.drawBefore);
-            this.clearCanvas();
-            this.drawLine(this.getData());
-            this.setState(_OnState2.default.drawAfter);
-        }
-    }, {
-        key: 'drawMap',
-        value: function drawMap() {
-            var _this2 = this;
-
-            this.setState(_OnState2.default.computeBefore);
-            var parameter = {
-                data: this.getTransformData(),
-                labelShow: this.styleConfig.normal.label.show
-            };
-
-            this.postMessage('BoundaryOverlay.calculatePixel', parameter, function (pixels, margin) {
-                if (_this2.eventType == 'onmoving') {
-                    return;
-                }
-
-                _this2.setState(_OnState2.default.conputeAfter);
-                _this2.setWorkerData(pixels);
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
-                pixels = null, margin = null;
-            });
-        }
-    }, {
-        key: 'getTarget',
-        value: function getTarget(x, y) {
-            var data = this.getData();
-            this.ctx.beginPath();
-            for (var i = 0, len = data.length; i < len; i++) {
-                var item = data[i];
-                var pixel = item.pixels;
-                this.ctx.beginPath();
-                this.ctx.moveTo(pixel[0][0], pixel[0][1]);
-                for (var j = 1; j < pixel.length; j++) {
-                    this.ctx.lineTo(pixel[j][0], pixel[j][1]);
-                }
-                this.ctx.closePath();
-                if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
-                    return {
-                        index: i,
-                        item: item
-                    };
-                }
-            }
-            return {
-                index: -1,
-                item: null
-            };
-        }
-    }, {
-        key: 'drawLine',
-        value: function drawLine(data) {
-            this.ctx.lineCap = 'round';
-            this.ctx.lineJoin = 'round';
-            this.ctx.miterLimit = 4;
-            for (var i = 0, len = data.length; i < len; i++) {
-                var item = data[i];
-                var pixel = item.pixels;
-
-                var style = this.setDrawStyle(item);
-                this.ctx.beginPath();
-                this.ctx.shadowColor = style.shadowColor || 'transparent';
-                this.ctx.shadowBlur = style.shadowBlur || 10;
-                this.ctx.shadowOffsetX = 0;
-                this.ctx.shadowOffsetY = 0;
-                this.ctx.fillStyle = style.backgroundColor;
-                this.ctx.moveTo(pixel[0][0], pixel[0][1]);
-                for (var j = 1; j < pixel.length; j++) {
-                    this.ctx.lineTo(pixel[j][0], pixel[j][1]);
-                }
-                this.ctx.closePath();
-                this.ctx.fill();
-
-                this.ctx.strokeStyle = style.borderColor;
-                this.ctx.lineWidth = style.borderWidth;
-                this.ctx.stroke();
-            }
-
-            for (var _i = 0, _len = data.length; _i < _len; _i++) {
-                var _item = data[_i];
-                var _pixel = _item.pixels;
-                var bestCell = _item.bestCell;
-                var label = this.setDrawStyle(_item).label;
-
-                if (bestCell && label.show) {
-                    this.ctx.shadowBlur = 0;
-                    this.ctx.lineWidth = label.lineWidth;
-                    this.ctx.font = label.font;
-                    this.ctx.fillStyle = label.color;
-                    var width = this.ctx.measureText(_item.name).width;
-                    if (this.getMaxWidth(_pixel) > width) {
-                        this.ctx.fillText(_item.name, bestCell.x - width / 2, bestCell.y);
-                    }
-                }
-            }
-            this.ctx.closePath();
-        }
-    }]);
-
-    return BoundaryOverlay;
-}(_Parameter2.Parameter);
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.CircuitOverlay = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _util = __webpack_require__(0);
-
-var _CanvasOverlay2 = __webpack_require__(2);
-
-var _CircuitConfig = __webpack_require__(33);
-
-var _CircuitConfig2 = _interopRequireDefault(_CircuitConfig);
-
-var _OnState = __webpack_require__(1);
-
-var _OnState2 = _interopRequireDefault(_OnState);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
-    _inherits(CircuitOverlay, _CanvasOverlay);
-
-    function CircuitOverlay(ops) {
-        _classCallCheck(this, CircuitOverlay);
-
-        var _this = _possibleConstructorReturn(this, (CircuitOverlay.__proto__ || Object.getPrototypeOf(CircuitOverlay)).call(this, ops));
-
-        _this.points = [];
-        _this.styleConfig = {};
-        _this._setStyle(_CircuitConfig2.default, ops);
-        _this._isCoordinates = false;
-        _this.state = null;
-        _this.workerData = [];
-        return _this;
-    }
-
-    _createClass(CircuitOverlay, [{
-        key: '_setStyle',
-        value: function _setStyle(config, ops) {
-            var option = (0, _util.merge)(config, ops);
-            this.points = ops.data ? option.data : this.points;
-            this.styleConfig = option.style;
-            this.eventConfig = option.event;
-            this.tMapStyle(option.skin);
-        }
-    }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState(this.state);
-        }
-    }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            for (var i = 0; i < this.workerData.length; i++) {
-                var pixels = this.workerData[i].pixels;
-                for (var j = 0; j < pixels.length; j++) {
-                    var pixel = pixels[j];
-                    pixel[0] = pixel[0] + distanceX;
-                    pixel[1] = pixel[1] + distanceY;
-                }
-            }
-            this.setState(_OnState2.default.drawBefore);
-            this.drawLine(this.workerData);
-            this.setState(_OnState2.default.drawAfter);
-        }
-    }, {
-        key: 'resize',
-        value: function resize() {
-            this.drawMap();
-        }
-    }, {
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-            this._setStyle(_CircuitConfig2.default, ops);
-            this.coordinates(this.points);
-            this.drawMap();
-        }
-    }, {
-        key: 'setData',
-        value: function setData(points) {
-            this.setPoints(points);
-        }
-    }, {
-        key: 'setPoints',
-        value: function setPoints(points) {
-            if (!(0, _util.isArray)(points)) {
-                throw new TypeError('inMap: data must be a Array');
-            }
-            this.points = points;
-
-            this.coordinates(this.points);
-            this.drawMap();
-        }
-    }, {
-        key: 'drawMap',
-        value: function drawMap() {
-            var _this2 = this;
-
-            var zoomUnit = Math.pow(2, 18 - this.map.getZoom());
-            var projection = this.map.getMapType().getProjection();
-            var mcCenter = projection.lngLatToPoint(this.map.getCenter());
-            var nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
-            var params = {
-                points: this.points,
-                nwMc: nwMc,
-                zoomUnit: zoomUnit
-            };
-            if (!this._isCoordinates) {
-                this.coordinates(this.points);
-            }
-            this.setState(_OnState2.default.computeBefore);
-            this.postMessage('CircuitOverlay.calculatePixel', params, function (pixels, margin) {
-                if (_this2.eventType == 'onmoving') {
-                    return;
-                }
-                _this2.setState(_OnState2.default.conputeAfter);
-                _this2.clearCanvas();
-                (0, _util.clearPushArray)(_this2.workerData, pixels);
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
-                params = null;
-                margin = null;
-            });
-        }
-    }, {
-        key: 'coordinates',
-        value: function coordinates(data) {
-            this._isCoordinates = true;
-            var projection = this.map.getMapType().getProjection();
-            for (var i = 0; i < data.length; i++) {
-                var item = data[i];
-                item['_coordinates'] = item.geo.map(function (item) {
-
-                    var pixel = projection.lngLatToPoint({
-                        lng: item[0],
-                        lat: item[1]
-                    });
-                    return [pixel.x, pixel.y];
-                });
-            }
-        }
-    }, {
-        key: 'transferCoordinate',
-        value: function transferCoordinate(_coordinates, nwMc, zoomUnit) {
-
-            return _coordinates.map(function (item) {
-
-                var x = (item[0] - nwMc.x) / zoomUnit;
-                var y = (nwMc.y - item[1]) / zoomUnit;
-                return [x, y];
-            });
-        }
-    }, {
-        key: 'lngLatToPoints',
-        value: function lngLatToPoints(data, nwMc, zoomUnit) {
-            if (data.length > 0) {
-                return this.transferCoordinate(data, nwMc, zoomUnit);
-            } else {
-                return [];
-            }
-        }
-    }, {
-        key: 'drawLine',
-        value: function drawLine(data) {
-            this.clearCanvas();
-            var normal = this.styleConfig.normal;
-            this.ctx.shadowBlur = 0;
-            this.ctx.shadowOffsetX = 0;
-            this.ctx.shadowOffsetY = 0;
-            this.ctx.lineCap = 'butt';
-            this.ctx.lineJoin = 'miter';
-            this.ctx.globalCompositeOperation = 'lighter';
-            this.ctx.miterLimit = 10;
-            this.ctx.strokeStyle = normal.borderColor;
-            this.ctx.lineWidth = normal.borderWidth;
-            this.ctx.beginPath();
-
-            for (var i = 0; i < data.length; i++) {
-                var item = data[i];
-
-                var pixels = item.pixels;
-                this.ctx.moveTo(pixels[0][0], pixels[0][1]);
-                for (var j = 1; j < pixels.length; j++) {
-                    this.ctx.lineTo(pixels[j][0], pixels[j][1]);
-                }
-                this.ctx.stroke();
-            }
-        }
-    }]);
-
-    return CircuitOverlay;
-}(_CanvasOverlay2.CanvasOverlay);
-
-/***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.DotOverlay = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _CanvasOverlay = __webpack_require__(2);
-
-var _Label = __webpack_require__(8);
-
-var _Parameter2 = __webpack_require__(4);
-
-var _util = __webpack_require__(0);
-
-var _BatchesData = __webpack_require__(48);
-
-var _BatchesData2 = _interopRequireDefault(_BatchesData);
-
-var _DotConfig = __webpack_require__(34);
-
-var _DotConfig2 = _interopRequireDefault(_DotConfig);
-
-var _OnState = __webpack_require__(1);
-
-var _OnState2 = _interopRequireDefault(_OnState);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var isMobile = (0, _util.detectmob)();
-
-var DotOverlay = exports.DotOverlay = function (_Parameter) {
-    _inherits(DotOverlay, _Parameter);
-
-    function DotOverlay(opts) {
-        _classCallCheck(this, DotOverlay);
-
-        var _this = _possibleConstructorReturn(this, (DotOverlay.__proto__ || Object.getPrototypeOf(DotOverlay)).call(this, _DotConfig2.default, opts));
-
-        _this._loopDraw = _this._loopDraw.bind(_this);
-        if (!(0, _util.isEmpty)(_this._option.draw)) {
-            _this.batchesData = new _BatchesData2.default(_this._option.draw);
-        }
-        _this.mouseLayer = new _CanvasOverlay.CanvasOverlay();
-        _this.state = null;
-        return _this;
-    }
-
-    _createClass(DotOverlay, [{
-        key: 'initLegend',
-        value: function initLegend() {
-            if (this.styleConfig.colors.length > 0) {
-                this.compileSplitList(this.getData());
-            } else {
-                this.setlegend(this.legendConfig, this.styleConfig.splitList);
-            }
-        }
-    }, {
-        key: 'onOptionChange',
-        value: function onOptionChange() {
-            this.map && this.initLegend();
-        }
-    }, {
-        key: 'onDataChange',
-        value: function onDataChange() {
-            this.map && this.initLegend();
-        }
-    }, {
-        key: 'parameterInit',
-        value: function parameterInit() {
-            this.map.addOverlay(this.mouseLayer);
-            this.initLegend();
-        }
-    }, {
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-            this._setStyle(this.baseConfig, ops);
-            if (!(0, _util.isEmpty)(this._option.draw)) {
-                this.batchesData = new _BatchesData2.default(this._option.draw);
-            } else {
-                this.batchesData = null;
-            }
-        }
-    }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState(this.state);
-        }
-    }, {
-        key: 'resize',
-        value: function resize() {
-            this.drawMap();
-        }
-    }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            this.batchesData && this.batchesData.clear();
-            for (var i = 0; i < this.workerData.length; i++) {
-                var pixel = this.workerData[i].pixel;
-                pixel.x = pixel.x + distanceX;
-                pixel.y = pixel.y + distanceY;
-            }
-            this.refresh();
-        }
-    }, {
-        key: 'drawMouseLayer',
-        value: function drawMouseLayer() {
-            var overArr = this.overItem ? [this.overItem] : [];
-            this.mouseLayer.clearCanvas();
-            this._loopDraw(this.mouseLayer.ctx, this.selectItem.concat(overArr));
-        }
-    }, {
-        key: 'drawMap',
-        value: function drawMap() {
-            var _this2 = this;
-
-            this.batchesData && this.batchesData.clear();
-
-            this.setState(_OnState2.default.computeBefore);
-            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin) {
-                if (_this2.eventType == 'onmoving') {
-                    return;
-                }
-
-                _this2.setState(_OnState2.default.conputeAfter);
-                _this2.setWorkerData(pixels);
-                _this2.updateOverClickItem();
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
-                margin = null;
-                pixels = null;
-            });
-        }
-    }, {
-        key: 'updateOverClickItem',
-        value: function updateOverClickItem() {
-            var _this3 = this;
-
-            var overArr = this.overItem ? [this.overItem] : [];
-            var allItems = this.selectItem.concat(overArr);
-
-            var _loop = function _loop(i) {
-                var item = allItems[i];
-                var ret = _this3.workerData.find(function (val) {
-                    return val && val.lat == item.lat && val.lng == item.lng && val.count == item.count;
-                });
-                item.pixel = ret.pixel;
-            };
-
-            for (var i = 0; i < allItems.length; i++) {
-                _loop(i);
-            }
-        }
-    }, {
-        key: 'compileSplitList',
-        value: function compileSplitList(data) {
-            var colors = this.styleConfig.colors;
-            if (colors.length <= 0) return;
-            data = data.sort(function (a, b) {
-                return parseFloat(a.count) - parseFloat(b.count);
-            });
-            var splitCount = data.length / colors.length;
-            var colorIndex = 0;
-            var split = [];
-            var star = 0,
-                end = 0;
-
-            for (var i = 0; i < data.length; i++) {
-
-                if (i > splitCount * (colorIndex + 1)) {
-                    if (split.length == 0) {
-                        star = data[0].count;
-                    }
-
-                    end = data[i].count;
-
-                    split.push({
-                        start: star,
-                        end: end,
-                        backgroundColor: colors[colorIndex]
-                    });
-                    colorIndex++;
-                    star = data[i].count;
-                }
-            }
-
-            if (split.length > 0) {
-                split.push({
-                    start: star,
-                    end: null,
-                    backgroundColor: colors[colorIndex]
-                });
-            }
-
-            this.styleConfig.splitList = split;
-            this.setlegend(this.legendConfig, this.styleConfig.splitList);
-        }
-    }, {
-        key: 'getTarget',
-        value: function getTarget(mouseX, mouseY) {
-            var pixels = this.workerData,
-                ctx = this.ctx;
-            var mapSize = this.map.getSize();
-            for (var i = 0, len = pixels.length; i < len; i++) {
-                var _item = pixels[i];
-                var style = this.setDrawStyle(_item);
-                var _item$pixel = _item.pixel,
-                    x = _item$pixel.x,
-                    y = _item$pixel.y;
-
-                var r = style.size + this.styleConfig.normal.borderWidth;
-                if (x > -r && y > -r && x < mapSize.width + r && y < mapSize.height + r) {
-                    ctx.beginPath();
-                    ctx.arc(x, y, r, 0, 2 * Math.PI, true);
-                    if (ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
-                        return {
-                            index: i,
-                            item: _item
-                        };
-                    }
-                }
-            }
-            return {
-                index: -1,
-                item: null
-            };
-        }
-    }, {
-        key: 'findIndexSelectItem',
-        value: function findIndexSelectItem(item) {
-            var index = -1;
-            if (item) {
-                index = this.selectItem.findIndex(function (val) {
-                    return val && val.lat == item.lat && val.lng == item.lng && val.count == item.count;
-                });
-            }
-            return index;
-        }
-    }, {
-        key: 'refresh',
-        value: function refresh() {
-            this.setState(_OnState2.default.drawBefore);
-            this.clearCanvas();
-            this.mouseLayer.canvasResize();
-            if (this.batchesData) {
-                this.batchesData.clear();
-                this.batchesData.action(this.workerData, this._loopDraw, this.ctx);
-            } else {
-                this._loopDraw(this.ctx, this.workerData);
-            }
-            if (this.styleConfig.normal.label.show) {
-                this._drawLabel(this.ctx, this.workerData);
-            }
-            this.drawMouseLayer();
-            this.setState(_OnState2.default.drawAfter);
-        }
-    }, {
-        key: 'swopData',
-        value: function swopData(index, item) {
-            if (index > -1 && !this.styleConfig.normal.label.show) {
-                this.workerData[index] = this.workerData[this.workerData.length - 1];
-                this.workerData[this.workerData.length - 1] = item;
-            }
-        }
-    }, {
-        key: '_loopDraw',
-        value: function _loopDraw(ctx, pixels) {
-            var mapSize = this.map.getSize();
-            for (var i = 0, len = pixels.length; i < len; i++) {
-                var _item2 = pixels[i];
-                var pixel = _item2.pixel;
-                var x = pixel.x,
-                    y = pixel.y;
-
-
-                var style = this.setDrawStyle(_item2);
-                var size = style.size;
-                if (this.styleConfig.normal.label.show) {
-                    pixel['radius'] = size;
-                }
-                if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
-                    if (style.shadowColor) {
-                        ctx.shadowColor = style.shadowColor || 'transparent';
-                        ctx.shadowBlur = style.shadowBlur || 10;
-                    } else {
-                        ctx.shadowColor = 'transparent';
-                        ctx.shadowBlur = 0;
-                    }
-                    if (style.globalCompositeOperation) {
-                        ctx.globalCompositeOperation = style.globalCompositeOperation;
-                    }
-                    this._drawCircle(ctx, x, y, size, style.backgroundColor, style.borderWidth, style.borderColor);
-                }
-            }
-        }
-    }, {
-        key: '_drawLabel',
-        value: function _drawLabel(ctx, pixels) {
-            var _this4 = this;
-
-            var fontStyle = this.styleConfig.normal.label;
-            var fontSize = parseInt(fontStyle.font);
-            ctx.font = fontStyle.font;
-            ctx.textBaseline = 'top';
-            ctx.fillStyle = fontStyle.color;
-            var byteWidth = ctx.measureText('a').width;
-
-            var labels = pixels.map(function (val) {
-                var radius = val.pixel.radius + _this4.styleConfig.normal.borderWidth;
-                return new _Label.Label(val.pixel.x, val.pixel.y, radius, fontSize, byteWidth, val.name);
-            });
-
-            labels.sort(function (a, b) {
-                return b.x - a.x;
-            });
-            var meet = void 0;
-            do {
-                meet = false;
-                for (var i = 0; i < labels.length; i++) {
-                    var temp = labels[i];
-                    for (var j = 0; j < labels.length; j++) {
-                        if (i != j && temp.show && temp.isAnchorMeet(labels[j])) {
-                            temp.next();
-                            meet = true;
-                            break;
-                        }
-                    }
-                }
-            } while (meet);
-
-            labels.forEach(function (item) {
-                if (item.show) {
-                    var pixel = item.getCurrentRect();
-                    ctx.beginPath();
-                    ctx.fillText(item.text, pixel.x, pixel.y);
-                    ctx.fill();
-                }
-            });
-        }
-    }, {
-        key: '_drawCircle',
-        value: function _drawCircle(ctx, x, y, radius, color, lineWidth, strokeStyle) {
-            ctx.beginPath();
-            ctx.fillStyle = color;
-            ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
-            ctx.fill();
-            if (lineWidth) {
-                ctx.lineWidth = lineWidth;
-                if (strokeStyle) {
-                    ctx.strokeStyle = strokeStyle;
-                }
-                ctx.stroke();
-            }
-        }
-    }, {
-        key: 'Tdispose',
-        value: function Tdispose() {
-            this.batchesData && this.batchesData.clear();
-            this.map.removeOverlay(this.mouseLayer);
-            this.mouseLayer.dispose();
-        }
-    }, {
-        key: 'tMousemove',
-        value: function tMousemove(event) {
-
-            if (this.eventType == 'onmoving') {
-                return;
-            }
-            if (!this.tooltipConfig.show && (0, _util.isEmpty)(this.styleConfig.mouseOver)) {
-                return;
-            }
-            var result = this.getTarget(event.pixel.x, event.pixel.y);
-            var temp = result.item;
-
-            if (temp != this.overItem) {
-                this.overItem = temp;
-                this.eventType = 'mousemove';
-                if (!(0, _util.isEmpty)(this.styleConfig.mouseOver)) {
-                    this.drawMouseLayer();
-                }
-            }
-            if (temp) {
-                this.map.setDefaultCursor('pointer');
-            } else {
-                this.map.setDefaultCursor('default');
-            }
-
-            this.setTooltip(event);
-        }
-    }, {
-        key: 'tMouseClick',
-        value: function tMouseClick(event) {
-            if (this.eventType == 'onmoving') return;
-            var multiSelect = this.eventConfig.multiSelect;
-
-            var result = this.getTarget(event.pixel.x, event.pixel.y);
-            if (result.index == -1) {
-                return;
-            }
-
-            var item = result.item;
-            if (multiSelect) {
-                if (this.selectItemContains(item)) {
-                    this.deleteSelectItem(item);
-                } else {
-                    this.selectItem.push(result.item);
-                }
-            } else {
-                this.selectItem = [result.item];
-            }
-
-            this.eventConfig.onMouseClick(this.selectItem, event);
-
-            if (isMobile) {
-                this.overItem = [item];
-                this.setTooltip(event);
-            }
-            this.drawMouseLayer();
-        }
-    }]);
-
-    return DotOverlay;
-}(_Parameter2.Parameter);
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _CanvasOverlay2 = __webpack_require__(2);
-
-var _util = __webpack_require__(0);
-
-var _FlashDotConfig = __webpack_require__(35);
-
-var _FlashDotConfig2 = _interopRequireDefault(_FlashDotConfig);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Marker = function () {
-    function Marker(opts, map) {
-        _classCallCheck(this, Marker);
-
-        this.city = opts.name;
-        this.location = new BMap.Point(opts.lnglat[0], opts.lnglat[1]);
-        this.pixel = map.pointToPixel(this.location);
-        this.color = opts.color;
-        this.speed = opts.speed;
-        this.radius = 0;
-        this.size = opts.size;
-    }
-
-    _createClass(Marker, [{
-        key: 'draw',
-        value: function draw(context) {
-            var pixel = this.pixel;
-            context.save();
-            context.beginPath();
-            context.strokeStyle = this.color;
-            context.moveTo(pixel.x + pixel.radius, pixel.y);
-            context.arc(pixel.x, pixel.y, this.radius, 0, Math.PI * 2);
-            context.stroke();
-            context.closePath();
-            context.restore();
-            this.radius += this.speed;
-            if (this.radius > this.size) {
-                this.radius = 0;
-            }
-        }
-    }]);
-
-    return Marker;
-}();
-
-var FlashDotOverlay = function (_CanvasOverlay) {
-    _inherits(FlashDotOverlay, _CanvasOverlay);
-
-    function FlashDotOverlay(ops) {
-        _classCallCheck(this, FlashDotOverlay);
-
-        var _this = _possibleConstructorReturn(this, (FlashDotOverlay.__proto__ || Object.getPrototypeOf(FlashDotOverlay)).call(this));
-
-        _this.data = [];
-        _this.styleConfig = null;
-        _this.markers = [];
-        _this.render = _this.render.bind(_this);
-        _this.setOptionStyle(ops);
-        return _this;
-    }
-
-    _createClass(FlashDotOverlay, [{
-        key: 'canvasInit',
-        value: function canvasInit() {
-            this.addMarker();
-            var now = void 0;
-            var then = Date.now();
-            var interval = 1000 / 25;
-            var delta = void 0;
-            var render = this.render;
-            (function drawFrame() {
-                requestAnimationFrame(drawFrame);
-                now = Date.now();
-                delta = now - then;
-                if (delta > interval) {
-                    then = now - delta % interval;
-                    render();
-                }
-            })();
-        }
-    }, {
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-            var option = (0, _util.merge)(_FlashDotConfig2.default, ops);
-            this.styleConfig = option.style.normal;
-            this.data = ops.data ? option.data : this.data;
-            this.tMapStyle(option.skin);
-            this.map && this.addMarker();
-        }
-    }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-
-            for (var i = 0; i < this.markers.length; i++) {
-                var pixel = this.markers[i].pixel;
-                pixel.x = pixel.x + distanceX;
-                pixel.y = pixel.y + distanceY;
-            }
-        }
-    }, {
-        key: 'addMarker',
-        value: function addMarker() {
-            this.markers = [];
-            for (var i = 0; i < this.data.length; i++) {
-                var item = (0, _util.merge)(this.styleConfig, this.data[i]);
-                this.markers.push(new Marker(item, this.map));
-            }
-        }
-    }, {
-        key: 'resize',
-        value: function resize() {
-            this.addMarker();
-            this.canvasResize();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var ctx = this.ctx;
-            if (!ctx) {
-                return;
-            }
-            if (!this.animationFlag) {
-                this.clearCanvas();
-                return;
-            }
-
-            var size = this.map.getSize();
-            ctx.fillStyle = 'rgba(0,0,0,.95)';
-            var prev = ctx.globalCompositeOperation;
-            ctx.globalCompositeOperation = 'destination-in';
-
-            ctx.fillRect(0, 0, size.width, size.height);
-            ctx.globalCompositeOperation = prev;
-
-            for (var i = 0; i < this.markers.length; i++) {
-                var marker = this.markers[i];
-                marker.draw(ctx);
-            }
-        }
-    }]);
-
-    return FlashDotOverlay;
-}(_CanvasOverlay2.CanvasOverlay);
-
-exports.default = FlashDotOverlay;
-
-/***/ }),
-/* 19 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3576,7 +2433,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Parameter2 = __webpack_require__(4);
 
-var _GriddingConfig = __webpack_require__(36);
+var _GriddingConfig = __webpack_require__(35);
 
 var _GriddingConfig2 = _interopRequireDefault(_GriddingConfig);
 
@@ -3717,10 +2574,10 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
-
                 _this2.canvasResize();
-                _this2.setState(_OnState2.default.conputeAfter);
                 _this2.workerData = gridsObj.grids;
+                _this2.setState(_OnState2.default.conputeAfter);
+
                 _this2._drawSize = size / zoomUnit;
                 _this2.setState(_OnState2.default.drawBefore);
 
@@ -3879,7 +2736,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 20 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3892,11 +2749,11 @@ exports.HeatOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay2 = __webpack_require__(2);
+var _CanvasOverlay2 = __webpack_require__(3);
 
 var _util = __webpack_require__(0);
 
-var _HeatConfig = __webpack_require__(37);
+var _HeatConfig = __webpack_require__(36);
 
 var _HeatConfig2 = _interopRequireDefault(_HeatConfig);
 
@@ -4002,7 +2859,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
         key: 'translation',
         value: function translation(distanceX, distanceY) {
             for (var i = 0; i < this.workerData.length; i++) {
-                var pixel = this.workerData[i].pixel;
+                var pixel = this.workerData[i].geometry.pixel;
                 pixel.x = pixel.x + distanceX;
                 pixel.y = pixel.y + distanceY;
             }
@@ -4028,9 +2885,9 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
+                _this2.setWorkerData(pixels);
                 _this2.setState(_OnState2.default.conputeAfter);
 
-                _this2.setWorkerData(pixels);
                 _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
 
                 margin = null;
@@ -4055,7 +2912,9 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
                 var item = this.workerData[i];
                 var opacity = (item.count - normal.minValue) / (normal.maxValue - normal.minValue);
                 opacity = opacity > 1 ? 1 : opacity;
-                this.drawPoint(item.pixel.x, item.pixel.y, normal.radius, opacity);
+                var pixel = item.geometry.pixel;
+                this.drawPoint(pixel.x, pixel.y, normal.radius, opacity);
+                item = null, opacity = null, pixel = null;
             }
 
             var palette = this.getColorPaint();
@@ -4135,7 +2994,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 21 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4150,7 +3009,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Parameter2 = __webpack_require__(4);
 
-var _HoneycombConfig = __webpack_require__(38);
+var _HoneycombConfig = __webpack_require__(37);
 
 var _HoneycombConfig2 = _interopRequireDefault(_HoneycombConfig);
 
@@ -4465,7 +3324,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 22 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4480,7 +3339,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Parameter2 = __webpack_require__(4);
 
-var _ImgConfig = __webpack_require__(39);
+var _ImgConfig = __webpack_require__(38);
 
 var _ImgConfig2 = _interopRequireDefault(_ImgConfig);
 
@@ -4531,9 +3390,10 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
         key: 'translation',
         value: function translation(distanceX, distanceY) {
             for (var i = 0; i < this.workerData.length; i++) {
-                var pixel = this.workerData[i].pixel;
+                var pixel = this.workerData[i].geometry.pixel;
                 pixel.x = pixel.x + distanceX;
                 pixel.y = pixel.y + distanceY;
+                pixel = null;
             }
 
             this.refresh();
@@ -4568,7 +3428,7 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
 
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var item = pixels[i];
-                var pixel = item.pixel;
+                var pixel = item.geometry.pixel;
                 var style = this.setDrawStyle(item);
                 var img = void 0;
                 if ((0, _util.isString)(img)) {
@@ -4634,7 +3494,6 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
                     var _image = new Image();
                     _image.src = img;
                     _image.onload = function () {
-
                         me.cacheImg[img] = _image;
                         fun(_image);
                     };
@@ -4710,7 +3569,7 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
 
             var _loop = function _loop(i, len) {
                 var item = pixels[i];
-                var pixel = item.pixel;
+                var pixel = item.geometry.pixel;
                 var style = _this3.setDrawStyle(item);
                 _this3.loadImg(style.icon, function (img) {
                     if (style.width && style.height) {
@@ -4738,7 +3597,182 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 23 */
+/* 17 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.LineStringOverlay = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(0);
+
+var _CanvasOverlay2 = __webpack_require__(3);
+
+var _CircuitConfig = __webpack_require__(32);
+
+var _CircuitConfig2 = _interopRequireDefault(_CircuitConfig);
+
+var _OnState = __webpack_require__(1);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var LineStringOverlay = exports.LineStringOverlay = function (_CanvasOverlay) {
+    _inherits(LineStringOverlay, _CanvasOverlay);
+
+    function LineStringOverlay(ops) {
+        _classCallCheck(this, LineStringOverlay);
+
+        var _this = _possibleConstructorReturn(this, (LineStringOverlay.__proto__ || Object.getPrototypeOf(LineStringOverlay)).call(this, ops));
+
+        _this.points = [];
+        _this.styleConfig = {};
+        _this._setStyle(_CircuitConfig2.default, ops);
+        _this.state = null;
+        _this.workerData = [];
+        return _this;
+    }
+
+    _createClass(LineStringOverlay, [{
+        key: '_setStyle',
+        value: function _setStyle(config, ops) {
+            var option = (0, _util.merge)(config, ops);
+            if (ops.data) {
+                this.setData(ops.data);
+            } else {
+                this.map && this.refresh();
+            }
+            this.styleConfig = option.style;
+            this.eventConfig = option.event;
+            this.tMapStyle(option.skin);
+        }
+    }, {
+        key: 'setOptionStyle',
+        value: function setOptionStyle(ops) {
+            this._setStyle(_CircuitConfig2.default, ops);
+            this.map && this.drawMap();
+        }
+    }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.eventConfig.onState(this.state);
+        }
+    }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+            for (var i = 0; i < this.workerData.length; i++) {
+                var pixels = this.workerData[i].geometry.pixels;
+                for (var j = 0; j < pixels.length; j++) {
+                    var pixel = pixels[j];
+                    pixel[0] = pixel[0] + distanceX;
+                    pixel[1] = pixel[1] + distanceY;
+                }
+            }
+            this.refresh();
+        }
+    }, {
+        key: 'setData',
+        value: function setData(points) {
+            if (!(0, _util.isArray)(points)) {
+                throw new TypeError('inMap: data must be a Array');
+            }
+            this.points = points;
+            this.map && this.drawMap();
+        }
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+            this.setState(_OnState2.default.drawBefore);
+            this.drawLine(this.workerData);
+            this.setState(_OnState2.default.drawAfter);
+        }
+    }, {
+        key: 'resize',
+        value: function resize() {
+            this.drawMap();
+        }
+    }, {
+        key: 'drawMap',
+        value: function drawMap() {
+            var _this2 = this;
+
+            var zoomUnit = Math.pow(2, 18 - this.map.getZoom());
+            var projection = this.map.getMapType().getProjection();
+            var mcCenter = projection.lngLatToPoint(this.map.getCenter());
+            var nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
+            var params = {
+                points: this.points,
+                nwMc: nwMc,
+                zoomUnit: zoomUnit
+            };
+
+            this.setState(_OnState2.default.computeBefore);
+            this.postMessage('LineStringOverlay.calculatePixel', params, function (pixels, margin) {
+                if (_this2.eventType == 'onmoving') {
+                    return;
+                }
+                _this2.setState(_OnState2.default.conputeAfter);
+                (0, _util.clearPushArray)(_this2.workerData, pixels);
+                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                params = null;
+                margin = null;
+            });
+        }
+    }, {
+        key: 'drawLine',
+        value: function drawLine() {
+            this.clearCanvas();
+            var normal = this.styleConfig.normal;
+            var ctx = this.ctx;
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+
+            if (normal.globalCompositeOperation) {
+                ctx.globalCompositeOperation = normal.globalCompositeOperation;
+            }
+            if (normal.shadowColor) {
+                ctx.shadowColor = normal.shadowColor;
+            }
+            if (normal.shadowBlur) {
+                ctx.shadowBlur = normal.shadowBlur;
+            }
+
+            for (var i = 0; i < this.workerData.length; i++) {
+                var item = this.workerData[i];
+                this.ctx.strokeStyle = normal.borderColor;
+                var pixels = item.geometry.pixels;
+                ctx.beginPath();
+                ctx.moveTo(pixels[0][0], pixels[0][1]);
+                for (var j = 1; j < pixels.length; j++) {
+                    ctx.lineTo(pixels[j][0], pixels[j][1]);
+                }
+                ctx.lineWidth = normal.borderWidth;
+                pixels = null;
+                ctx.stroke();
+            }
+        }
+    }]);
+
+    return LineStringOverlay;
+}(_CanvasOverlay2.CanvasOverlay);
+
+/***/ }),
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4751,17 +3785,17 @@ exports.MoveLineOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay = __webpack_require__(2);
+var _CanvasOverlay = __webpack_require__(3);
 
 var _util = __webpack_require__(0);
 
-var _MapStyle = __webpack_require__(7);
+var _MapStyle = __webpack_require__(6);
 
-var _MoveLineConfig = __webpack_require__(42);
+var _MoveLineConfig = __webpack_require__(41);
 
 var _MoveLineConfig2 = _interopRequireDefault(_MoveLineConfig);
 
-var _BaseClass2 = __webpack_require__(13);
+var _BaseClass2 = __webpack_require__(11);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
@@ -5167,6 +4201,969 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
 }(_BaseClass3.default);
 
 /***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _CanvasOverlay2 = __webpack_require__(3);
+
+var _util = __webpack_require__(0);
+
+var _FlashDotConfig = __webpack_require__(34);
+
+var _FlashDotConfig2 = _interopRequireDefault(_FlashDotConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Marker = function () {
+    function Marker(opts, data, map) {
+        _classCallCheck(this, Marker);
+
+        this.city = opts.name;
+        this.location = new BMap.Point(data.geometry.coordinates[0], data.geometry.coordinates[1]);
+        this.pixel = map.pointToPixel(this.location);
+        this.color = opts.color;
+        this.speed = opts.speed;
+        this.radius = 0;
+        this.size = opts.size;
+    }
+
+    _createClass(Marker, [{
+        key: 'draw',
+        value: function draw(context) {
+            var pixel = this.pixel;
+            context.save();
+            context.beginPath();
+            context.strokeStyle = this.color;
+            context.moveTo(pixel.x + pixel.radius, pixel.y);
+            context.arc(pixel.x, pixel.y, this.radius, 0, Math.PI * 2);
+            context.stroke();
+            context.closePath();
+            context.restore();
+            this.radius += this.speed;
+            if (this.radius > this.size) {
+                this.radius = 0;
+            }
+        }
+    }]);
+
+    return Marker;
+}();
+
+var PointAnimationOverlay = function (_CanvasOverlay) {
+    _inherits(PointAnimationOverlay, _CanvasOverlay);
+
+    function PointAnimationOverlay(ops) {
+        _classCallCheck(this, PointAnimationOverlay);
+
+        var _this = _possibleConstructorReturn(this, (PointAnimationOverlay.__proto__ || Object.getPrototypeOf(PointAnimationOverlay)).call(this));
+
+        _this.data = [];
+        _this.styleConfig = null;
+        _this.markers = [];
+        _this.render = _this.render.bind(_this);
+        _this.setOptionStyle(ops);
+        return _this;
+    }
+
+    _createClass(PointAnimationOverlay, [{
+        key: 'canvasInit',
+        value: function canvasInit() {
+            this.addMarker();
+            var now = void 0;
+            var then = Date.now();
+            var interval = 1000 / 25;
+            var delta = void 0;
+            var render = this.render;
+            (function drawFrame() {
+                requestAnimationFrame(drawFrame);
+                now = Date.now();
+                delta = now - then;
+                if (delta > interval) {
+                    then = now - delta % interval;
+                    render();
+                }
+            })();
+        }
+    }, {
+        key: 'setOptionStyle',
+        value: function setOptionStyle(ops) {
+            var option = (0, _util.merge)(_FlashDotConfig2.default, ops);
+            this.styleConfig = option.style.normal;
+            this.data = ops.data ? option.data : this.data;
+            this.tMapStyle(option.skin);
+            this.map && this.addMarker();
+        }
+    }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+
+            for (var i = 0; i < this.markers.length; i++) {
+                var pixel = this.markers[i].pixel;
+                pixel.x = pixel.x + distanceX;
+                pixel.y = pixel.y + distanceY;
+            }
+        }
+    }, {
+        key: 'addMarker',
+        value: function addMarker() {
+            this.markers = [];
+            for (var i = 0; i < this.data.length; i++) {
+                var style = (0, _util.merge)(this.styleConfig, this.data[i].style);
+                this.markers.push(new Marker(style, this.data[i], this.map));
+            }
+        }
+    }, {
+        key: 'resize',
+        value: function resize() {
+            this.addMarker();
+            this.canvasResize();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var ctx = this.ctx;
+            if (!ctx) {
+                return;
+            }
+            if (!this.animationFlag) {
+                this.clearCanvas();
+                return;
+            }
+
+            var size = this.map.getSize();
+            ctx.fillStyle = 'rgba(0,0,0,.95)';
+            var prev = ctx.globalCompositeOperation;
+            ctx.globalCompositeOperation = 'destination-in';
+
+            ctx.fillRect(0, 0, size.width, size.height);
+            ctx.globalCompositeOperation = prev;
+
+            for (var i = 0; i < this.markers.length; i++) {
+                var marker = this.markers[i];
+                marker.draw(ctx);
+            }
+        }
+    }]);
+
+    return PointAnimationOverlay;
+}(_CanvasOverlay2.CanvasOverlay);
+
+exports.default = PointAnimationOverlay;
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.PointOverlay = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _CanvasOverlay = __webpack_require__(3);
+
+var _Label = __webpack_require__(7);
+
+var _Parameter2 = __webpack_require__(4);
+
+var _util = __webpack_require__(0);
+
+var _BatchesData = __webpack_require__(47);
+
+var _BatchesData2 = _interopRequireDefault(_BatchesData);
+
+var _DotConfig = __webpack_require__(33);
+
+var _DotConfig2 = _interopRequireDefault(_DotConfig);
+
+var _OnState = __webpack_require__(1);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var isMobile = (0, _util.detectmob)();
+
+var PointOverlay = exports.PointOverlay = function (_Parameter) {
+    _inherits(PointOverlay, _Parameter);
+
+    function PointOverlay(opts) {
+        _classCallCheck(this, PointOverlay);
+
+        var _this = _possibleConstructorReturn(this, (PointOverlay.__proto__ || Object.getPrototypeOf(PointOverlay)).call(this, _DotConfig2.default, opts));
+
+        _this._loopDraw = _this._loopDraw.bind(_this);
+        if (!(0, _util.isEmpty)(_this._option.draw)) {
+            _this.batchesData = new _BatchesData2.default(_this._option.draw);
+        }
+        _this.mouseLayer = new _CanvasOverlay.CanvasOverlay();
+        _this.state = null;
+        return _this;
+    }
+
+    _createClass(PointOverlay, [{
+        key: 'initLegend',
+        value: function initLegend() {
+            if (this.styleConfig.colors.length > 0) {
+                this.compileSplitList(this.getTransformData());
+            } else {
+                this.setlegend(this.legendConfig, this.styleConfig.splitList);
+            }
+        }
+    }, {
+        key: 'onOptionChange',
+        value: function onOptionChange() {
+            this.map && this.initLegend();
+        }
+    }, {
+        key: 'onDataChange',
+        value: function onDataChange() {
+            this.map && this.initLegend();
+        }
+    }, {
+        key: 'parameterInit',
+        value: function parameterInit() {
+            this.map.addOverlay(this.mouseLayer);
+            this.initLegend();
+        }
+    }, {
+        key: 'setOptionStyle',
+        value: function setOptionStyle(ops) {
+            this._setStyle(this.baseConfig, ops);
+            if (!(0, _util.isEmpty)(this._option.draw)) {
+                this.batchesData = new _BatchesData2.default(this._option.draw);
+            } else {
+                this.batchesData = null;
+            }
+        }
+    }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.eventConfig.onState(this.state);
+        }
+    }, {
+        key: 'resize',
+        value: function resize() {
+            this.drawMap();
+        }
+    }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+            this.batchesData && this.batchesData.clear();
+            for (var i = 0; i < this.workerData.length; i++) {
+                var pixel = this.workerData[i].geometry.pixel;
+                pixel.x = pixel.x + distanceX;
+                pixel.y = pixel.y + distanceY;
+            }
+            this.refresh();
+        }
+    }, {
+        key: 'drawMouseLayer',
+        value: function drawMouseLayer() {
+            var overArr = this.overItem ? [this.overItem] : [];
+            this.mouseLayer.clearCanvas();
+            this._loopDraw(this.mouseLayer.ctx, this.selectItem.concat(overArr));
+        }
+    }, {
+        key: 'drawMap',
+        value: function drawMap() {
+            var _this2 = this;
+
+            this.batchesData && this.batchesData.clear();
+
+            this.setState(_OnState2.default.computeBefore);
+            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin) {
+                if (_this2.eventType == 'onmoving') {
+                    return;
+                }
+
+                _this2.setState(_OnState2.default.conputeAfter);
+                _this2.setWorkerData(pixels);
+                _this2.updateOverClickItem();
+                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                margin = null;
+                pixels = null;
+            });
+        }
+    }, {
+        key: 'updateOverClickItem',
+        value: function updateOverClickItem() {
+            var _this3 = this;
+
+            var overArr = this.overItem ? [this.overItem] : [];
+            var allItems = this.selectItem.concat(overArr);
+
+            var _loop = function _loop(i) {
+                var item = allItems[i];
+                var ret = _this3.workerData.find(function (val) {
+                    var itemCoordinates = item.geometry.coordinates;
+                    var valCoordinates = val.geometry.coordinates;
+                    return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
+                });
+                item.geometry.pixel = ret.geometry.pixel;
+            };
+
+            for (var i = 0; i < allItems.length; i++) {
+                _loop(i);
+            }
+        }
+    }, {
+        key: 'compileSplitList',
+        value: function compileSplitList(data) {
+            var colors = this.styleConfig.colors;
+            if (colors.length <= 0) return;
+            data = data.sort(function (a, b) {
+                return parseFloat(a.count) - parseFloat(b.count);
+            });
+            var splitCount = data.length / colors.length;
+            var colorIndex = 0;
+            var split = [];
+            var star = 0,
+                end = 0;
+
+            for (var i = 0; i < data.length; i++) {
+
+                if (i > splitCount * (colorIndex + 1)) {
+                    if (split.length == 0) {
+                        star = data[0].count;
+                    }
+
+                    end = data[i].count;
+
+                    split.push({
+                        start: star,
+                        end: end,
+                        backgroundColor: colors[colorIndex]
+                    });
+                    colorIndex++;
+                    star = data[i].count;
+                }
+            }
+
+            if (split.length > 0) {
+                split.push({
+                    start: star,
+                    end: null,
+                    backgroundColor: colors[colorIndex]
+                });
+            }
+
+            this.styleConfig.splitList = split;
+            this.setlegend(this.legendConfig, this.styleConfig.splitList);
+        }
+    }, {
+        key: 'getTarget',
+        value: function getTarget(mouseX, mouseY) {
+            var pixels = this.workerData,
+                ctx = this.ctx;
+            var mapSize = this.map.getSize();
+            for (var i = 0, len = pixels.length; i < len; i++) {
+                var _item = pixels[i];
+                var style = this.setDrawStyle(_item);
+                var _item$geometry$pixel = _item.geometry.pixel,
+                    x = _item$geometry$pixel.x,
+                    y = _item$geometry$pixel.y;
+
+                var r = style.size + this.styleConfig.normal.borderWidth;
+                if (x > -r && y > -r && x < mapSize.width + r && y < mapSize.height + r) {
+                    ctx.beginPath();
+                    ctx.arc(x, y, r, 0, 2 * Math.PI, true);
+                    if (ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
+                        return {
+                            index: i,
+                            item: _item
+                        };
+                    }
+                }
+            }
+            return {
+                index: -1,
+                item: null
+            };
+        }
+    }, {
+        key: 'findIndexSelectItem',
+        value: function findIndexSelectItem(item) {
+            var index = -1;
+            if (item) {
+                index = this.selectItem.findIndex(function (val) {
+                    var itemCoordinates = item.geometry.coordinates;
+                    var valCoordinates = val.geometry.coordinates;
+                    return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
+                });
+            }
+            return index;
+        }
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+            this.setState(_OnState2.default.drawBefore);
+            this.clearCanvas();
+            this.mouseLayer.canvasResize();
+            if (this.batchesData) {
+                this.batchesData.clear();
+                this.batchesData.action(this.workerData, this._loopDraw, this.ctx);
+            } else {
+                this._loopDraw(this.ctx, this.workerData);
+            }
+            if (this.styleConfig.normal.label.show) {
+                this._drawLabel(this.ctx, this.workerData);
+            }
+            this.drawMouseLayer();
+            this.setState(_OnState2.default.drawAfter);
+        }
+    }, {
+        key: 'swopData',
+        value: function swopData(index, item) {
+            if (index > -1 && !this.styleConfig.normal.label.show) {
+                this.workerData[index] = this.workerData[this.workerData.length - 1];
+                this.workerData[this.workerData.length - 1] = item;
+            }
+        }
+    }, {
+        key: '_loopDraw',
+        value: function _loopDraw(ctx, pixels) {
+            var mapSize = this.map.getSize();
+            for (var i = 0, len = pixels.length; i < len; i++) {
+                var _item2 = pixels[i];
+                var pixel = _item2.geometry.pixel;
+                var x = pixel.x,
+                    y = pixel.y;
+
+                var style = this.setDrawStyle(_item2);
+                var size = style.size;
+                if (this.styleConfig.normal.label.show) {
+                    pixel['radius'] = size;
+                }
+                if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
+                    if (style.shadowColor) {
+                        ctx.shadowColor = style.shadowColor || 'transparent';
+                        ctx.shadowBlur = style.shadowBlur || 10;
+                    } else {
+                        ctx.shadowColor = 'transparent';
+                        ctx.shadowBlur = 0;
+                    }
+                    if (style.globalCompositeOperation) {
+                        ctx.globalCompositeOperation = style.globalCompositeOperation;
+                    }
+                    this._drawCircle(ctx, x, y, size, style.backgroundColor, style.borderWidth, style.borderColor);
+                }
+            }
+        }
+    }, {
+        key: '_drawLabel',
+        value: function _drawLabel(ctx, pixels) {
+            var _this4 = this;
+
+            var fontStyle = this.styleConfig.normal.label;
+            var fontSize = parseInt(fontStyle.font);
+            ctx.font = fontStyle.font;
+            ctx.textBaseline = 'top';
+            ctx.fillStyle = fontStyle.color;
+            var byteWidth = ctx.measureText('a').width;
+
+            var labels = pixels.map(function (val) {
+                var _val$geometry$pixel = val.geometry.pixel,
+                    radius = _val$geometry$pixel.radius,
+                    x = _val$geometry$pixel.x,
+                    y = _val$geometry$pixel.y;
+
+                var r = radius + _this4.styleConfig.normal.borderWidth;
+                return new _Label.Label(x, y, r, fontSize, byteWidth, val.name);
+            });
+
+            labels.sort(function (a, b) {
+                return b.x - a.x;
+            });
+            var meet = void 0;
+            do {
+                meet = false;
+                for (var i = 0; i < labels.length; i++) {
+                    var temp = labels[i];
+                    for (var j = 0; j < labels.length; j++) {
+                        if (i != j && temp.show && temp.isAnchorMeet(labels[j])) {
+                            temp.next();
+                            meet = true;
+                            break;
+                        }
+                    }
+                }
+            } while (meet);
+
+            labels.forEach(function (item) {
+                if (item.show) {
+                    var pixel = item.getCurrentRect();
+                    ctx.beginPath();
+                    ctx.fillText(item.text, pixel.x, pixel.y);
+                    ctx.fill();
+                }
+            });
+        }
+    }, {
+        key: '_drawCircle',
+        value: function _drawCircle(ctx, x, y, radius, color, lineWidth, strokeStyle) {
+            ctx.beginPath();
+            ctx.fillStyle = color;
+            ctx.arc(x, y, radius, 0, 2 * Math.PI, true);
+            ctx.fill();
+            if (lineWidth) {
+                ctx.lineWidth = lineWidth;
+                if (strokeStyle) {
+                    ctx.strokeStyle = strokeStyle;
+                }
+                ctx.stroke();
+            }
+        }
+    }, {
+        key: 'Tdispose',
+        value: function Tdispose() {
+            this.batchesData && this.batchesData.clear();
+            this.map.removeOverlay(this.mouseLayer);
+            this.mouseLayer.dispose();
+        }
+    }, {
+        key: 'tMousemove',
+        value: function tMousemove(event) {
+
+            if (this.eventType == 'onmoving') {
+                return;
+            }
+            if (!this.tooltipConfig.show && (0, _util.isEmpty)(this.styleConfig.mouseOver)) {
+                return;
+            }
+            var result = this.getTarget(event.pixel.x, event.pixel.y);
+            var temp = result.item;
+
+            if (temp != this.overItem) {
+                this.overItem = temp;
+                this.eventType = 'mousemove';
+                if (!(0, _util.isEmpty)(this.styleConfig.mouseOver)) {
+                    this.drawMouseLayer();
+                }
+            }
+            if (temp) {
+                this.map.setDefaultCursor('pointer');
+            } else {
+                this.map.setDefaultCursor('default');
+            }
+
+            this.setTooltip(event);
+        }
+    }, {
+        key: 'tMouseClick',
+        value: function tMouseClick(event) {
+            if (this.eventType == 'onmoving') return;
+            var multiSelect = this.eventConfig.multiSelect;
+
+            var result = this.getTarget(event.pixel.x, event.pixel.y);
+            if (result.index == -1) {
+                return;
+            }
+
+            var item = result.item;
+            if (multiSelect) {
+                if (this.selectItemContains(item)) {
+                    this.deleteSelectItem(item);
+                } else {
+                    this.selectItem.push(result.item);
+                }
+            } else {
+                this.selectItem = [result.item];
+            }
+
+            this.eventConfig.onMouseClick(this.selectItem, event);
+
+            if (isMobile) {
+                this.overItem = [item];
+                this.setTooltip(event);
+            }
+            this.drawMouseLayer();
+        }
+    }]);
+
+    return PointOverlay;
+}(_Parameter2.Parameter);
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.PolygonOverlay = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Parameter2 = __webpack_require__(4);
+
+var _Color = __webpack_require__(5);
+
+var _util = __webpack_require__(0);
+
+var _BoundaryConfig = __webpack_require__(31);
+
+var _BoundaryConfig2 = _interopRequireDefault(_BoundaryConfig);
+
+var _OnState = __webpack_require__(1);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PolygonOverlay = exports.PolygonOverlay = function (_Parameter) {
+    _inherits(PolygonOverlay, _Parameter);
+
+    function PolygonOverlay(ops) {
+        _classCallCheck(this, PolygonOverlay);
+
+        var _this = _possibleConstructorReturn(this, (PolygonOverlay.__proto__ || Object.getPrototypeOf(PolygonOverlay)).call(this, _BoundaryConfig2.default, ops));
+
+        _this.patchSplitList();
+        _this.state = null;
+        return _this;
+    }
+
+    _createClass(PolygonOverlay, [{
+        key: 'parameterInit',
+        value: function parameterInit() {
+            this.initLegend();
+        }
+    }, {
+        key: 'initLegend',
+        value: function initLegend() {
+            this.compileSplitList(this.styleConfig.colors, this.getTransformData());
+            this.patchSplitList();
+            this.setlegend(this.legendConfig, this.styleConfig.splitList);
+        }
+    }, {
+        key: 'setSelectedList',
+        value: function setSelectedList(list) {
+            (0, _util.clearPushArray)(this.selectItem, list);
+        }
+    }, {
+        key: 'clearSelectedList',
+        value: function clearSelectedList() {
+            (0, _util.clearPushArray)(this.selectItem);
+        }
+    }, {
+        key: 'getSelectedList',
+        value: function getSelectedList() {
+            return this.selectItem;
+        }
+    }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+            for (var i = 0; i < this.workerData.length; i++) {
+                var geometry = this.workerData[i].geometry;
+                var pixels = geometry.pixels;
+                for (var j = 0; j < pixels.length; j++) {
+                    var pixelItem = pixels[j];
+                    for (var k = 0, len = pixelItem.length; k < len; k++) {
+                        var pixel = pixelItem[k];
+                        pixel[0] = pixel[0] + distanceX;
+                        pixel[1] = pixel[1] + distanceY;
+                    }
+                }
+                if (this.styleConfig.normal.label.show) {
+                    var labelPixels = geometry.labelPixels;
+                    for (var _j = 0; _j < labelPixels.length; _j++) {
+                        var bestCell = labelPixels[_j];
+                        if (bestCell) {
+                            bestCell.x = bestCell.x + distanceX;
+                            bestCell.y = bestCell.y + distanceY;
+                        }
+                    }
+                }
+            }
+            this.refresh();
+        }
+    }, {
+        key: 'setOptionStyle',
+        value: function setOptionStyle(ops) {
+            this._setStyle(this.baseConfig, ops);
+        }
+    }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.eventConfig.onState(this.state);
+        }
+    }, {
+        key: 'onOptionChange',
+        value: function onOptionChange() {
+            this.map && this.initLegend();
+        }
+    }, {
+        key: 'onDataChange',
+        value: function onDataChange() {
+            this.map && this.initLegend();
+        }
+    }, {
+        key: 'compileSplitList',
+        value: function compileSplitList(colors, data) {
+
+            if (colors.length <= 0) return;
+            data = data.sort(function (a, b) {
+                return parseFloat(a.count) - parseFloat(b.count);
+            });
+            var splitCount = data.length / colors.length;
+            var colorIndex = 0;
+            var split = [];
+            var star = 0,
+                end = 0;
+
+            for (var i = 0; i < data.length; i++) {
+
+                if (i > splitCount * (colorIndex + 1)) {
+                    if (split.length == 0) {
+                        star = data[0].count;
+                    }
+
+                    end = data[i].count;
+
+                    split.push({
+                        start: star,
+                        end: end,
+                        backgroundColor: colors[colorIndex]
+                    });
+                    colorIndex++;
+                    star = data[i].count;
+                }
+            }
+
+            if (split.length > 0) {
+                split.push({
+                    start: star,
+                    end: null,
+                    backgroundColor: colors[colorIndex]
+                });
+            }
+
+            this.styleConfig.splitList = split;
+        }
+    }, {
+        key: 'patchSplitList',
+        value: function patchSplitList() {
+            var normal = this.styleConfig.normal;
+            if (normal.borderWidth != null && normal.borderColor == null) {
+                normal.borderColor = new _Color.Color(normal.backgroundColor).getRgbaStyle();
+            }
+            var splitList = this.styleConfig.splitList;
+            for (var i = 0; i < splitList.length; i++) {
+                var condition = splitList[i];
+                if ((condition.borderWidth != null || normal.borderColor != null) && condition.borderColor == null) {
+                    condition.borderColor = new _Color.Color(condition.backgroundColor).getRgbaStyle();
+                }
+            }
+        }
+    }, {
+        key: 'resize',
+        value: function resize() {
+
+            this.drawMap();
+        }
+    }, {
+        key: 'getGeoCenter',
+        value: function getGeoCenter(geo) {
+            var minX = geo[0][0];
+            var minY = geo[0][1];
+            var maxX = geo[0][0];
+            var maxY = geo[0][1];
+            for (var i = 1; i < geo.length; i++) {
+                minX = Math.min(minX, geo[i][0]);
+                maxX = Math.max(maxX, geo[i][0]);
+                minY = Math.min(minY, geo[i][1]);
+                maxY = Math.max(maxY, geo[i][1]);
+            }
+            return [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
+        }
+    }, {
+        key: 'getMaxWidth',
+        value: function getMaxWidth(geo) {
+            var minX = geo[0][0];
+            var minY = geo[0][1];
+            var maxX = geo[0][0];
+            var maxY = geo[0][1];
+            for (var i = 1; i < geo.length; i++) {
+                minX = Math.min(minX, geo[i][0]);
+                maxX = Math.max(maxX, geo[i][0]);
+                minY = Math.min(minY, geo[i][1]);
+                maxY = Math.max(maxY, geo[i][1]);
+            }
+            return maxX - minX;
+        }
+    }, {
+        key: 'findIndexSelectItem',
+        value: function findIndexSelectItem(item) {
+            var index = -1;
+            if (item) {
+                index = this.selectItem.findIndex(function (val) {
+                    return val && val.name == item.name;
+                });
+            }
+            return index;
+        }
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+
+            this.setState(_OnState2.default.drawBefore);
+            this.clearCanvas();
+            this.drawLine(this.getData());
+            this.setState(_OnState2.default.drawAfter);
+        }
+    }, {
+        key: 'drawMap',
+        value: function drawMap() {
+            var _this2 = this;
+
+            this.setState(_OnState2.default.computeBefore);
+            var parameter = {
+                data: this.getTransformData()
+            };
+
+            this.postMessage('PolygonOverlay.calculatePixel', parameter, function (pixels, margin) {
+                if (_this2.eventType == 'onmoving') {
+                    return;
+                }
+
+                _this2.setState(_OnState2.default.conputeAfter);
+                _this2.setWorkerData(pixels);
+                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                pixels = null, margin = null;
+            });
+        }
+    }, {
+        key: 'getTarget',
+        value: function getTarget(x, y) {
+            var data = this.getData();
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                var geometry = item.geometry;
+                var pixels = geometry.pixels;
+
+                this.ctx.beginPath();
+                for (var j = 0; j < pixels.length; j++) {
+                    var pixelItem = pixels[j];
+                    this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
+                    for (var k = 1, len = pixelItem.length; k < len; k++) {
+                        this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+                    }
+                    this.ctx.closePath();
+                    if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
+                        return {
+                            index: i,
+                            item: item
+                        };
+                    }
+                    pixelItem = null;
+                }
+
+                pixels = null, geometry = null, item = null;
+            }
+
+            return {
+                index: -1,
+                item: null
+            };
+        }
+    }, {
+        key: 'drawLine',
+        value: function drawLine(data) {
+            this.ctx.lineCap = 'round';
+            this.ctx.lineJoin = 'round';
+            this.ctx.miterLimit = 4;
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                var geometry = item.geometry;
+                var pixels = geometry.pixels;
+                var style = this.setDrawStyle(item);
+                this.ctx.beginPath();
+                this.ctx.shadowColor = style.shadowColor || 'transparent';
+                this.ctx.shadowBlur = style.shadowBlur || 10;
+                this.ctx.shadowOffsetX = 0;
+                this.ctx.shadowOffsetY = 0;
+                this.ctx.fillStyle = style.backgroundColor;
+
+                for (var j = 0; j < pixels.length; j++) {
+                    var pixelItem = pixels[j];
+                    this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
+                    for (var k = 1, len = pixelItem.length; k < len; k++) {
+                        this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+                    }
+                    pixelItem = null;
+                    this.ctx.closePath();
+                    this.ctx.fill();
+                }
+                this.ctx.strokeStyle = style.borderColor;
+                this.ctx.lineWidth = style.borderWidth;
+                this.ctx.stroke();
+
+                if (this.styleConfig.normal.label.show) {
+                    var labelPixels = geometry.labelPixels;
+                    this.ctx.shadowBlur = 0;
+                    this.ctx.lineWidth = style.label.lineWidth;
+                    this.ctx.font = style.label.font;
+                    this.ctx.fillStyle = style.label.color;
+                    for (var _j2 = 0; _j2 < labelPixels.length; _j2++) {
+                        var bestCell = labelPixels[_j2];
+                        this.ctx.beginPath();
+                        var width = this.ctx.measureText(item.name).width;
+                        if (bestCell && item.name && this.getMaxWidth(pixels[_j2]) > width) {
+                            this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
+                        }
+                        bestCell = null, width = null;
+                    }
+                    labelPixels = null;
+                }
+                style = null, pixels = null, geometry = null, item = null;
+            }
+            this.ctx.closePath();
+        }
+    }]);
+
+    return PolygonOverlay;
+}(_Parameter2.Parameter);
+
+/***/ }),
+/* 22 */,
+/* 23 */,
 /* 24 */,
 /* 25 */,
 /* 26 */,
@@ -5174,8 +5171,7 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
 /* 28 */,
 /* 29 */,
 /* 30 */,
-/* 31 */,
-/* 32 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5222,7 +5218,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 33 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5245,7 +5241,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 34 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5292,7 +5288,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 35 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5313,7 +5309,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 36 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5365,7 +5361,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 37 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5409,7 +5405,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 38 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5460,7 +5456,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5505,7 +5501,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 40 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5527,7 +5523,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 41 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5544,7 +5540,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 42 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5580,8 +5576,8 @@ exports.default = {
 };
 
 /***/ }),
-/* 43 */,
-/* 44 */
+/* 42 */,
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5590,35 +5586,35 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.workerMrg = exports.FlashDotOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.CircuitOverlay = exports.HeatOverlay = exports.BoundaryOverlay = exports.GriddingOverlay = exports.DotOverlay = exports.Map = exports.utils = exports.version = undefined;
+exports.workerMrg = exports.PointAnimationOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.LineStringOverlay = exports.HeatOverlay = exports.PolygonOverlay = exports.GriddingOverlay = exports.PointOverlay = exports.Map = exports.utils = exports.version = undefined;
 
-var _DotOverlay = __webpack_require__(17);
+var _PointOverlay = __webpack_require__(20);
 
-var _GriddingOverlay = __webpack_require__(19);
+var _GriddingOverlay = __webpack_require__(13);
 
-var _BoundaryOverlay = __webpack_require__(15);
+var _PolygonOverlay = __webpack_require__(21);
 
-var _HeatOverlay = __webpack_require__(20);
+var _HeatOverlay = __webpack_require__(14);
 
-var _CircuitOverlay = __webpack_require__(16);
+var _LineStringOverlay = __webpack_require__(17);
 
-var _HoneycombOverlay = __webpack_require__(21);
+var _HoneycombOverlay = __webpack_require__(15);
 
-var _ImgOverlay = __webpack_require__(22);
+var _ImgOverlay = __webpack_require__(16);
 
-var _MoveLineOverlay = __webpack_require__(23);
+var _MoveLineOverlay = __webpack_require__(18);
 
-var _FlashDotOverlay = __webpack_require__(18);
+var _PointAnimationOverlay = __webpack_require__(19);
 
-var _FlashDotOverlay2 = _interopRequireDefault(_FlashDotOverlay);
+var _PointAnimationOverlay2 = _interopRequireDefault(_PointAnimationOverlay);
 
-var _index = __webpack_require__(14);
+var _index = __webpack_require__(12);
 
 var _util = __webpack_require__(0);
 
 var utils = _interopRequireWildcard(_util);
 
-var _workerMrg = __webpack_require__(10);
+var _workerMrg = __webpack_require__(9);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -5631,34 +5627,34 @@ var inMap = {
     version: version,
     utils: utils,
     Map: _index.Map,
-    DotOverlay: _DotOverlay.DotOverlay,
+    PointOverlay: _PointOverlay.PointOverlay,
     GriddingOverlay: _GriddingOverlay.GriddingOverlay,
-    BoundaryOverlay: _BoundaryOverlay.BoundaryOverlay,
+    PolygonOverlay: _PolygonOverlay.PolygonOverlay,
     HeatOverlay: _HeatOverlay.HeatOverlay,
-    CircuitOverlay: _CircuitOverlay.CircuitOverlay,
+    LineStringOverlay: _LineStringOverlay.LineStringOverlay,
     HoneycombOverlay: _HoneycombOverlay.HoneycombOverlay,
     ImgOverlay: _ImgOverlay.ImgOverlay,
     MoveLineOverlay: _MoveLineOverlay.MoveLineOverlay,
-    FlashDotOverlay: _FlashDotOverlay2.default,
+    PointAnimationOverlay: _PointAnimationOverlay2.default,
     workerMrg: _workerMrg.workerMrg
 };
 exports.version = version;
 exports.utils = utils;
 exports.Map = _index.Map;
-exports.DotOverlay = _DotOverlay.DotOverlay;
+exports.PointOverlay = _PointOverlay.PointOverlay;
 exports.GriddingOverlay = _GriddingOverlay.GriddingOverlay;
-exports.BoundaryOverlay = _BoundaryOverlay.BoundaryOverlay;
+exports.PolygonOverlay = _PolygonOverlay.PolygonOverlay;
 exports.HeatOverlay = _HeatOverlay.HeatOverlay;
-exports.CircuitOverlay = _CircuitOverlay.CircuitOverlay;
+exports.LineStringOverlay = _LineStringOverlay.LineStringOverlay;
 exports.HoneycombOverlay = _HoneycombOverlay.HoneycombOverlay;
 exports.ImgOverlay = _ImgOverlay.ImgOverlay;
 exports.MoveLineOverlay = _MoveLineOverlay.MoveLineOverlay;
-exports.FlashDotOverlay = _FlashDotOverlay2.default;
+exports.PointAnimationOverlay = _PointAnimationOverlay2.default;
 exports.workerMrg = _workerMrg.workerMrg;
 exports.default = inMap;
 
 /***/ }),
-/* 45 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5672,7 +5668,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Color = __webpack_require__(5);
 
-var _Legend = __webpack_require__(41);
+var _Legend = __webpack_require__(40);
 
 var _Legend2 = _interopRequireDefault(_Legend);
 
@@ -5823,7 +5819,7 @@ var Legend = function () {
 exports.default = Legend;
 
 /***/ }),
-/* 46 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5922,7 +5918,7 @@ var ToolTip = function () {
 exports.default = ToolTip;
 
 /***/ }),
-/* 47 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5996,7 +5992,7 @@ var MapZoom = exports.MapZoom = function () {
 }();
 
 /***/ }),
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6077,11 +6073,11 @@ var BatchesData = function () {
 exports.default = BatchesData;
 
 /***/ }),
-/* 49 */,
-/* 50 */
+/* 48 */,
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(51)();
+exports = module.exports = __webpack_require__(50)();
 // imports
 
 
@@ -6092,7 +6088,7 @@ exports.push([module.i, ".inmap-container {\n  opacity: 1;\n  font-family: Helve
 
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports) {
 
 /*
@@ -6148,7 +6144,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports) {
 
 /*
@@ -6400,16 +6396,16 @@ function updateLink(linkElement, obj) {
 
 
 /***/ }),
-/* 53 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(50);
+var content = __webpack_require__(49);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(52)(content, {});
+var update = __webpack_require__(51)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {

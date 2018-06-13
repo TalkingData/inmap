@@ -1,56 +1,16 @@
 import {
-    pointsToPixelsWoker,
     pointToPixelWorker
 } from '../../lib/pointToPixel';
 
-/**
- * 数据集转换
-  
-  - - 转换前 - -
-[{
-        count: 1,
-        lat: "24.3067",
-        lng: "109.3949"
-    },
-    {
-        count: 10,
-        lat: "24.3219",
-        lng: "109.4160"
-    }
-]
-  - - 转换后 - -
-  [{
-        count: 1,
-        lat: "24.3067",
-        lng: "109.3949",
-        pixel: {
-            x: 23,
-            y: 34
-        }
-    },
-    {
-        count: 10,
-        lat: "24.3219",
-        lng: "109.4160",
-        pixel: {
-            x: 23,
-            y: 34
-        }
-    }
-]
-  */
 export const HeatOverlay = {
     pointsToPixels: function (webObj) {
         webObj.request.data.forEach((val) => {
-            val['pixel'] = pointToPixelWorker(val, webObj.request.map);
-        });
-        return webObj;
-    }
-};
-export const HeatTileOverlay = {
-    pointsToPixels: function (webObj) {
-        webObj.request.data.forEach((item) => {
-            item.pixelData = pointsToPixelsWoker(item.data, webObj.request.map);
+            let point = val.geometry.coordinates;
+            val.geometry['pixel'] = pointToPixelWorker({
+                lng: point[0],
+                lat: point[1]
+            }, webObj.request.map);
+            point = null;
         });
         return webObj;
     }

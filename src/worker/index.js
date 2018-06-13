@@ -6,11 +6,11 @@ import {
     GriddingOverlay
 } from './transform/GriddingOverlay';
 import {
-    BoundaryOverlay
-} from './transform/BoundaryOverlay';
+    PolygonOverlay
+} from './transform/PolygonOverlay';
 import {
-    CircuitOverlay
-} from './transform/CircuitOverlay';
+    LineStringOverlay
+} from './transform/LineStringOverlay';
 import {
     HoneycombOverlay
 } from './transform/HoneycombOverlay';
@@ -24,8 +24,8 @@ let callbackList = {
     'HeatOverlay': HeatOverlay,
     'HeatTileOverlay': HeatTileOverlay,
     'GriddingOverlay': GriddingOverlay,
-    'BoundaryOverlay': BoundaryOverlay,
-    'CircuitOverlay': CircuitOverlay,
+    'PolygonOverlay': PolygonOverlay,
+    'LineStringOverlay': LineStringOverlay,
     'HoneycombOverlay': HoneycombOverlay,
     'PolymeOverlay': PolymeOverlay,
     'LablEvading': LablEvading
@@ -95,4 +95,3 @@ export let TDpost = function (client) {
     client.request.data = [];
     client = null;
 };
-export const boundaryOverlay = BoundaryOverlay;

@@ -105,10 +105,10 @@ export class GriddingOverlay extends Parameter {
             if (this.eventType == 'onmoving') {
                 return;
             }
-
             this.canvasResize();
-            this.setState(State.conputeAfter);
             this.workerData = gridsObj.grids;
+            this.setState(State.conputeAfter);
+
             this._drawSize = size / zoomUnit;
             this.setState(State.drawBefore);
 

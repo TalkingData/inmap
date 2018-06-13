@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>DotOverlay-shadow</title>
+    <title>PointOverlay</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
@@ -23,19 +24,21 @@
             font-size: 14px;
         }
     </style>
-
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
-    <script src="data/data.js"></script>
+    <script src="./data/nationwide.js"></script>
     <script src="../dist/inmap.js"></script>
+
 </head>
 
 <body>
     <div id="allmap"></div>
 </body>
+
 </html>
 <script>
-  
-    var map = new inMap.Map({
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        skin: "Blueness",
         center: [105.403119, 38.028658],
         zoom: {
             value: 5,
@@ -43,36 +46,33 @@
             max: 18,
             min: 5
         },
-        id: 'allmap',
-        skin: 'Blueness',
-        zoom: {
-            show: true
-        }
-    })
-    var overlay = new inMap.DotOverlay({
-        tooltip: {
-            show: true,
-            formatter: "{count}"
-        },
-        legend: {
-            show: true,
-            itle: "标题",
-        },
+    });
+
+    var overlay = new inMap.PolygonOverlay({
         style: {
             normal: {
-                backgroundColor: 'rgba(200, 200, 50, 1)', // 填充颜色
-                shadowColor: 'rgba(255, 255, 255, 1)', // 投影颜色
-                shadowBlur: 35, // 投影模糊级数
-                globalCompositeOperation: 'lighter', // 颜色叠加方式
-                size: 5 // 半径
-            }
+                borderWidth: 0.5,
+                label: {
+                    show: true, // 是否显示
+                    font: "13px bold ",
+                    color: "rgba(224, 238, 251,1)"
+                }
+            },
+            colors: [
+                "rgba(0, 184, 255,0.6)",
+                "rgba(72, 246, 217, 0.6)",
+                "rgba(252, 196, 95, 0.6)",
+                "rgba(255, 132, 84, 0.6)",
+                "rgba(219, 66, 90,0.6)"
+            ]
+
         },
         data: data,
         event: {
-            onMouseClick: function (item, event) {
-                //能获取当前点的信息
+            onState(state) {
+                console.log(state);
             }
         }
     });
-    map.add(overlay);
+    inmap.add(overlay);
 </script>

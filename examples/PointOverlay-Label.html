@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>DotOverlay</title>
+    <title>LabelOverlay</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
@@ -24,10 +24,9 @@
             font-size: 14px;
         }
     </style>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
-    <script src="data/data.js"></script>
-    <script src="../dist/inmap.js"></script>
-
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
+    <script src="data/data2.js"></script>
+    <script src="../dist/inMap.js"></script>
 </head>
 
 <body>
@@ -36,34 +35,46 @@
 
 </html>
 <script>
-    var inmap = new inMap.Map({
+    var map = new inMap.Map({
         id: 'allmap',
-        skin: "Blueness",
-        center: [105.403119, 38.028658],
-        zoom: {
-            value: 5,
+        mpZoom: {
             show: true,
+            value: 16,
+            min: 4,
             max: 18,
-            min: 5
         },
-    })
-
-
-    var overlay = new inMap.DotOverlay({
+        skin: 'Blueness'
+    });
+    // data = data.map((function (item) {
+    //     return {
+    //         name: item.name,
+    //         count: item.count,
+    //         geometry: {
+    //             "type": "Point",
+    //             "coordinates": [item.lng, item.lat]
+    //         }
+    //     };
+    // }));
+    map.getMap().centerAndZoom(new BMap.Point(105.403119, 38.028658), 6)
+    var overlay = new inMap.PointOverlay({
         tooltip: {
             show: true,
-            formatter: "{count}",
-            offsets: {
-                top: 0,
-                left: 10,
-            }
+            // formatter: function (params) {
+            //     return params.count;
+            // }
+            formatter: "{count}~<br/>{count}"
         },
         style: {
             normal: {
                 backgroundColor: 'rgba(200, 200, 50, 1)',
                 borderWidth: 1,
                 borderColor: "rgba(255,255,255,1)",
-                size: 10,
+                size: 3,
+                label: {
+                    show: true,
+                    color: 'rgba(255,255,255,1)'
+
+                },
             },
             mouseOver: {
                 backgroundColor: 'rgba(200, 200, 200, 1)',
@@ -94,41 +105,15 @@
                     size: 12,
                 }
             ],
+
         },
         data: data,
         event: {
-            // onMouseClick: function (item, event) {
-            //     //能获取当前点的信息
-            // }
-        }
-    });
-    inmap.add(overlay);
-
-    setTimeout(() => {
-        overlay.setOptionStyle({
-            style: {
-                normal: {
-                    backgroundColor: 'rgba(200, 200, 200, 1)',
-                    borderWidth: 1,
-                    borderColor: "rgba(255,255,255,1)",
-                    size: 10,
-                },
-                mouseOver: {
-                    backgroundColor: 'rgba(200, 200, 200, 1)',
-                    borderColor: "rgba(255,255,255,1)",
-                    borderWidth: 4,
-                },
-                selected: {
-                    backgroundColor: 'rgba(184,0,0,1)',
-                    borderColor: "rgba(255,255,255,1)"
-                }
-            },
-            data: data,
-            event: {
-                onMouseClick: function (item, event) {
-                    console.log('setOptionStyle click')
-                }
+            onMouseClick: function (item) {
+                //能获取当前点的信息
             }
-        });
-    }, 2000);
+        }
+
+    });
+    map.add(overlay);
 </script>

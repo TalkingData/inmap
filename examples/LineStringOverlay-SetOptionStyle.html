@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>DotOverlay-shadow</title>
+    <title>LineStringOverlay</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
@@ -23,56 +24,51 @@
             font-size: 14px;
         }
     </style>
-
+    <script>
+    </script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
-    <script src="data/data.js"></script>
+    <script src="./data/car.js"></script>
     <script src="../dist/inmap.js"></script>
+
 </head>
 
 <body>
     <div id="allmap"></div>
 </body>
+
 </html>
 <script>
-  
     var map = new inMap.Map({
-        center: [105.403119, 38.028658],
-        zoom: {
-            value: 5,
-            show: true,
-            max: 18,
-            min: 5
-        },
         id: 'allmap',
         skin: 'Blueness',
+        center: [106.563777, 29.578285],
         zoom: {
-            show: true
-        }
-    })
-    var overlay = new inMap.DotOverlay({
-        tooltip: {
+            value: 12,
             show: true,
-            formatter: "{count}"
-        },
-        legend: {
-            show: true,
-            itle: "标题",
-        },
-        style: {
-            normal: {
-                backgroundColor: 'rgba(200, 200, 50, 1)', // 填充颜色
-                shadowColor: 'rgba(255, 255, 255, 1)', // 投影颜色
-                shadowBlur: 35, // 投影模糊级数
-                globalCompositeOperation: 'lighter', // 颜色叠加方式
-                size: 5 // 半径
-            }
-        },
-        data: data,
-        event: {
-            onMouseClick: function (item, event) {
-                //能获取当前点的信息
-            }
+            max: 22
         }
     });
+    var overlay = new inMap.LineStringOverlay({
+        style: {
+            normal: {
+                borderColor: 'rgba(50, 50, 255, 0.8)',
+                borderWidth: 0.05,
+            },
+        },
+        data: [],
+
+    });
     map.add(overlay);
+    overlay.setData(data);
+   
+    setTimeout(() => {
+        overlay.setOptionStyle({
+            style: {
+                normal: {
+                    borderColor: 'rgba(255, 50, 255, 0.8)',
+                    borderWidth: 0.05,
+                },
+            },
+        })
+    }, 2000);
 </script>

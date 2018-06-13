@@ -27,9 +27,10 @@ export class ImgOverlay extends Parameter {
     }
     translation(distanceX, distanceY) {
         for (let i = 0; i < this.workerData.length; i++) {
-            let pixel = this.workerData[i].pixel;
+            let pixel = this.workerData[i].geometry.pixel;
             pixel.x = pixel.x + distanceX;
             pixel.y = pixel.y + distanceY;
+            pixel = null;
         }
 
         this.refresh();
@@ -60,7 +61,7 @@ export class ImgOverlay extends Parameter {
 
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
-            let pixel = item.pixel;
+            let pixel = item.geometry.pixel;
             let style = this.setDrawStyle(item);
             let img;
             if (isString(img)) {
@@ -126,7 +127,6 @@ export class ImgOverlay extends Parameter {
                 let image = new Image();
                 image.src = img;
                 image.onload = function () {
-
                     me.cacheImg[img] = image;
                     fun(image);
                 };
@@ -200,7 +200,7 @@ export class ImgOverlay extends Parameter {
     _loopDraw(ctx, pixels) {
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
-            let pixel = item.pixel;
+            let pixel = item.geometry.pixel;
             let style = this.setDrawStyle(item);
             this.loadImg(style.icon, (img) => {
                 if (style.width && style.height) {
@@ -212,6 +212,7 @@ export class ImgOverlay extends Parameter {
                     this._drawImage(this.ctx, img, xy.x, xy.y, img.width, img.height);
                 }
             });
+
         }
     }
     _drawImage(ctx, img, x, y, width, height) {

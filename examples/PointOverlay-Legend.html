@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>LabelOverlay</title>
+    <title>PointOverlay</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
@@ -24,16 +24,10 @@
             font-size: 14px;
         }
     </style>
-    <script>
-        window.TD = {
-            config: {
-                workerPath: '../dist/worker.js'
-            }
-        };
-    </script>
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
-    <script src="data/data2.js"></script>
-    <script src="../dist/inMap.js"></script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="data/data.js"></script>
+    <script src="../dist/inmap.js"></script>
+
 </head>
 
 <body>
@@ -42,38 +36,37 @@
 
 </html>
 <script>
-    var map = new inMap.Map({
+    var inmap = new inMap.Map({
         id: 'allmap',
-        mpZoom: {
+        skin: "Blueness",
+        center: [105.403119, 38.028658],
+        zoom: {
+            value: 5,
             show: true,
-            value: 16,
-            min: 4,
             max: 18,
+            min: 5
         },
-        skin: 'Blueness'
     });
-
-
-    map.getMap().centerAndZoom(new BMap.Point(105.403119, 38.028658), 6)
-    var overlay = new inMap.DotOverlay({
+    
+    var overlay = new inMap.PointOverlay({
         tooltip: {
             show: true,
-            // formatter: function (params) {
-            //     return params.count;
-            // }
-            formatter: "{count}~<br/>{count}"
+            formatter: "{count}",
+            offsets: {
+                top: 5,
+                left: 12,
+            }
+        },
+        legend: {
+            show: true,
+            title: "标题"
         },
         style: {
             normal: {
                 backgroundColor: 'rgba(200, 200, 50, 1)',
                 borderWidth: 1,
                 borderColor: "rgba(255,255,255,1)",
-                size: 3,
-                label: {
-                    show: true,
-                    color: 'rgba(255,255,255,1)'
-
-                },
+                size: 10,
             },
             mouseOver: {
                 backgroundColor: 'rgba(200, 200, 200, 1)',
@@ -88,31 +81,32 @@
                     start: 0,
                     end: 2,
                     size: 3,
+                    text: "描述一",
+                    backgroundColor: 'rgba(156,200,249,0.7)',
                 },
                 {
                     start: 2,
                     end: 5,
                     size: 6,
+                    text: "描述二",
+                    backgroundColor: 'rgba(93,158,247,0.7)',
                 },
                 {
                     start: 5,
                     end: 7,
                     size: 9,
+                    text: "描述三",
+                    backgroundColor: 'rgba(134,207,55,0.7)',
                 },
                 {
                     start: 7,
                     size: 12,
+                    text: "描述四",
+                    backgroundColor: 'rgba(252,198,10,0.7)',
                 }
             ],
-
         },
-        data: data,
-        event: {
-            onMouseClick: function (item) {
-                //能获取当前点的信息
-            }
-        }
-
+        data: data
     });
-    map.add(overlay);
+    inmap.add(overlay);
 </script>

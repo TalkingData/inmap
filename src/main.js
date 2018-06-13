@@ -1,20 +1,20 @@
 import {
-    DotOverlay
-} from './overlay/DotOverlay';
+    PointOverlay
+} from './overlay/PointOverlay';
 
 import {
     GriddingOverlay
 } from './overlay/GriddingOverlay';
 import {
-    BoundaryOverlay
-} from './overlay/BoundaryOverlay';
+    PolygonOverlay
+} from './overlay/PolygonOverlay';
 
 import {
     HeatOverlay
 } from './overlay/HeatOverlay';
 import {
-    CircuitOverlay
-} from './overlay/CircuitOverlay';
+    LineStringOverlay
+} from './overlay/LineStringOverlay';
 
 import {
     HoneycombOverlay
@@ -25,7 +25,7 @@ import {
 import {
     MoveLineOverlay
 } from './overlay/MoveLineOverlay';
-import FlashDotOverlay from './overlay/FlashDotOverlay';
+import PointAnimationOverlay from './overlay/PointAnimationOverlay';
 import {
     Map
 } from './map/index';
@@ -39,30 +39,30 @@ const inMap = {
     version,
     utils,
     Map,
-    DotOverlay,
+    PointOverlay,
     GriddingOverlay,
-    BoundaryOverlay,
+    PolygonOverlay,
     HeatOverlay,
-    CircuitOverlay,
+    LineStringOverlay,
     HoneycombOverlay,
     ImgOverlay,
     MoveLineOverlay,
-    FlashDotOverlay,
+    PointAnimationOverlay,
     workerMrg
 };
 export {
     version,
     utils,
     Map,
-    DotOverlay,
+    PointOverlay,
     GriddingOverlay,
-    BoundaryOverlay,
+    PolygonOverlay,
     HeatOverlay,
-    CircuitOverlay,
+    LineStringOverlay,
     HoneycombOverlay,
     ImgOverlay,
     MoveLineOverlay,
-    FlashDotOverlay,
+    PointAnimationOverlay,
     workerMrg
 };
 export default inMap;

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>DotOverlay</title>
+    <title>PointOverlay-bubble</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
@@ -36,6 +36,12 @@
 
 </html>
 <script>
+    data.forEach(element => {
+        element["style"] = {
+            size: Math.random() * 10
+        }
+    });
+
     var inmap = new inMap.Map({
         id: 'allmap',
         skin: "Blueness",
@@ -43,27 +49,26 @@
         zoom: {
             value: 5,
             show: true,
-            max: 6,
+            max: 18,
             min: 5
         },
     })
 
-
-    var overlay = new inMap.DotOverlay({
+    var overlay = new inMap.PointOverlay({
         tooltip: {
             show: true,
             formatter: "{count}",
             offsets: {
-                top: 5,
-                left: 12,
+                top: 0,
+                left: 10,
             }
         },
         legend: {
             show: true,
             title: "标题",
-            formatter: function (start, end, index,item) {
+            formatter: function (start, end,index) {
                 return start + "万~" + (end || "max") + "万";
-            },
+            }
         },
         style: {
             normal: {
@@ -81,33 +86,10 @@
                 backgroundColor: 'rgba(184,0,0,1)',
                 borderColor: "rgba(255,255,255,1)"
             },
-            splitList: [{ //设置区间颜色
-                    start: 0,
-                    end: 2,
-                    size: 3,
-                },
-                {
-                    start: 2,
-                    end: 5,
-                    size: 6,
-                },
-                {
-                    start: 5,
-                    end: 7,
-                    size: 9,
-                },
-                {
-                    start: 7,
-                    size: 12,
-                }
-            ],
+
         },
         data: data,
         event: {
-            onState(state) {
-                console.log(state);
-            }
-            // multiSelect: true,
             // onMouseClick: function (item, event) {
             //     //能获取当前点的信息
             // }

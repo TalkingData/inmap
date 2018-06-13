@@ -18,7 +18,7 @@ import BatchesData from './base/BatchesData';
 import DotConfig from './../config/DotConfig';
 import State from './../config/OnState';
 let isMobile = detectmob();
-export class DotOverlay extends Parameter {
+export class PointOverlay extends Parameter {
     constructor(opts) {
         super(DotConfig, opts);
 
@@ -31,7 +31,7 @@ export class DotOverlay extends Parameter {
     }
     initLegend() {
         if (this.styleConfig.colors.length > 0) {
-            this.compileSplitList(this.getData());
+            this.compileSplitList(this.getTransformData());
         } else {
             this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
@@ -65,7 +65,7 @@ export class DotOverlay extends Parameter {
     translation(distanceX, distanceY) {
         this.batchesData && this.batchesData.clear();
         for (let i = 0; i < this.workerData.length; i++) {
-            let pixel = this.workerData[i].pixel;
+            let pixel = this.workerData[i].geometry.pixel;
             pixel.x = pixel.x + distanceX;
             pixel.y = pixel.y + distanceY;
         }
@@ -98,34 +98,17 @@ export class DotOverlay extends Parameter {
     updateOverClickItem() {
         let overArr = this.overItem ? [this.overItem] : [];
         let allItems = this.selectItem.concat(overArr);
+
         for (let i = 0; i < allItems.length; i++) {
             let item = allItems[i];
             let ret = this.workerData.find(function (val) {
-                return val && val.lat == item.lat && val.lng == item.lng && val.count == item.count;
+                let itemCoordinates = item.geometry.coordinates;
+                let valCoordinates = val.geometry.coordinates;
+                return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
             });
-            item.pixel = ret.pixel;
+            item.geometry.pixel = ret.geometry.pixel;
         }
     }
-
-    // cancerSelectd() {
-    //     this.selectItem = [];
-    // }
-    // setData(points) {
-    //     this.setPoints(points);
-    // }
-    // setPoints(points) {
-    //     if (!isArray(points)) {
-    //         throw new TypeError('inMap: data must be a Array');
-    //     }
-    //     this.points = points;
-    //     this.clearData();
-    //     this.cancerSelectd();
-
-    //     if (this.styleConfig.colors.length > 0) {
-    //         this.compileSplitList(this.getTransformData());
-    //     }
-    //     this.drawMap();
-    // }
     /**
      * 颜色等分策略
      * @param {} data 
@@ -184,8 +167,8 @@ export class DotOverlay extends Parameter {
             let {
                 x,
                 y,
-            } = item.pixel;
-            let r =style.size + this.styleConfig.normal.borderWidth;
+            } = item.geometry.pixel;
+            let r = style.size + this.styleConfig.normal.borderWidth;
             if (x > -r && y > -r && x < mapSize.width + r && y < mapSize.height + r) {
                 ctx.beginPath();
                 ctx.arc(x, y, r, 0, 2 * Math.PI, true);
@@ -208,7 +191,9 @@ export class DotOverlay extends Parameter {
         let index = -1;
         if (item) {
             index = this.selectItem.findIndex(function (val) {
-                return val && val.lat == item.lat && val.lng == item.lng && val.count == item.count;
+                let itemCoordinates = item.geometry.coordinates;
+                let valCoordinates = val.geometry.coordinates;
+                return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
             });
         }
         return index;
@@ -239,12 +224,11 @@ export class DotOverlay extends Parameter {
         let mapSize = this.map.getSize();
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
-            let pixel = item.pixel;
+            let pixel = item.geometry.pixel;
             let {
                 x,
                 y
             } = pixel;
-
             let style = this.setDrawStyle(item);
             let size = style.size;
             if (this.styleConfig.normal.label.show) {
@@ -291,8 +275,13 @@ export class DotOverlay extends Parameter {
         // });
 
         let labels = pixels.map((val) => {
-            let radius = val.pixel.radius + this.styleConfig.normal.borderWidth;
-            return new Label(val.pixel.x, val.pixel.y, radius, fontSize, byteWidth, val.name);
+            let {
+                radius,
+                x,
+                y
+            } = val.geometry.pixel;
+            let r = radius + this.styleConfig.normal.borderWidth;
+            return new Label(x, y, r, fontSize, byteWidth, val.name);
         });
         //x排序从小到大
         labels.sort((a, b) => {

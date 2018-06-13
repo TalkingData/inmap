@@ -1,8 +1,7 @@
 import {
-    geo
+    pointToPixelWorker
 } from '../../lib/pointToPixel';
-import Pixel from './../../common/Pixel';
-import Point from './../../common/Point';
+
 export let GriddingOverlay = {
     toRecGrids(webObj) {
         let {
@@ -10,36 +9,26 @@ export let GriddingOverlay = {
             zoomUnit,
             size,
             mapSize,
-            mapCenter,
             nwMc,
-            zoom,
             type,
 
         } = webObj.request.data;
         let map = webObj.request.map;
 
-        GriddingOverlay._calculatePixel(map, points, mapSize, mapCenter, zoom);
+        GriddingOverlay._calculatePixel(map, points);
         let result = GriddingOverlay.recGrids(points, map, nwMc, size, zoomUnit, mapSize, type);
         webObj.request.data = result;
-
-
         return webObj;
     },
-    _calculatePixel(map, data, mapSize, mapCenter, zoom) {
-        let zoomUnit = Math.pow(2, 18 - zoom);
-        let mcCenter = geo.projection.lngLatToPoint(mapCenter);
-        let nwMc = new Pixel(mcCenter.x - mapSize.width / 2 * zoomUnit, mcCenter.y + mapSize.height / 2 * zoomUnit); //左上角墨卡托坐标
-        for (let j = 0; j < data.length; j++) {
-            if (data[j].lng && data[j].lat && !data[j].x && !data[j].y) {
-                let pixel = geo.projection.lngLatToPoint(new Point(data[j].lng, data[j].lat), map);
-                data[j].x = pixel.x;
-                data[j].y = pixel.y;
+    _calculatePixel(map, data) {
+        for (let j = 0, len = data.length; j < len; j++) {
+            let geometry = data[j].geometry;
+            let coordinates = geometry.coordinates;
+            geometry['pixel'] = pointToPixelWorker({
+                lng: coordinates[0],
+                lat: coordinates[1]
+            }, map);
 
-            }
-            if (data[j].x && data[j].y) {
-                data[j].px = (data[j].x - nwMc.x) / zoomUnit;
-                data[j].py = (nwMc.y - data[j].y) / zoomUnit;
-            }
             if (data[j].count == null) {
                 throw new TypeError('inMap.GriddingOverlay: data is Invalid format ');
             }
@@ -65,7 +54,7 @@ export let GriddingOverlay = {
         let startY = (nwMc.y - startYMc) / zoomUnit;
         let endY = mapSize.height;
 
-        
+
         let stockXA = [];
         let stickXAIndex = 0;
         while (startX + stickXAIndex * gridStep < endX) {
@@ -95,9 +84,9 @@ export let GriddingOverlay = {
         }
 
         for (let i = 0; i < data.length; i++) {
-            let x = data[i].px;
-            let y = data[i].py;
             let item = data[i];
+            let x = item.geometry.pixel.x;
+            let y = item.geometry.pixel.y;
 
             for (let j = 0; j < stockXA.length; j++) {
                 let dataX = Number(stockXA[j]);

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>CircuitOverlay</title>
+    <title>FlowTrack</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
@@ -27,7 +27,7 @@
     <script>
     </script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
-    <script src="./data/car.js"></script>
+    <script src="./data/flowTrack.js"></script>
     <script src="../dist/inmap.js"></script>
 
 </head>
@@ -41,34 +41,29 @@
     var map = new inMap.Map({
         id: 'allmap',
         skin: 'Blueness',
-        center: [106.563777, 29.578285],
+        center: [105.403119, 38.028658],
         zoom: {
-            value: 12,
+            value: 5,
             show: true,
             max: 22
         }
     });
-    var overlay = new inMap.CircuitOverlay({
+
+    var overlay = new inMap.LineStringOverlay({
         style: {
             normal: {
-                borderColor: 'rgba(50, 50, 255, 0.8)',
-                borderWidth: 0.05,
+                borderColor: 'rgba(255, 250, 50, 0.3)',
+                borderWidth: 0.7,
+                shadowColor: 'rgba(255, 250, 50, 1)',
+                shadowBlur: 20,
             },
         },
-        data: [],
-
+        data: data,
+        event: {
+            onState(state) {
+                console.log(state);
+            }
+        }
     });
     map.add(overlay);
-    overlay.setData(data);
-   
-    setTimeout(() => {
-        overlay.setOptionStyle({
-            style: {
-                normal: {
-                    borderColor: 'rgba(255, 50, 255, 0.8)',
-                    borderWidth: 0.05,
-                },
-            },
-        })
-    }, 2000);
 </script>

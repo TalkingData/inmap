@@ -48,7 +48,16 @@
             min: 8
         }
     })
-
+    // data = data.map((function (item) {
+    //     return {
+    //         count: item.count,
+    //         geometry: {
+    //             "type": "Point",
+    //             "coordinates": [item.lng, item.lat]
+    //         }
+    //     };
+    // }));
+    // console.log(JSON.stringify(data));
     var overlay = new inMap.GriddingOverlay({
         tooltip: {
             show: true,
