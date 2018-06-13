@@ -221,7 +221,7 @@
                 });
             },
             addDot: function () {
-                var overlay = new inMap.DotOverlay({
+                var overlay = new inMap.PointOverlay({
                     tooltip: {
                         show: true,
                         formatter: "{name}"
@@ -248,7 +248,7 @@
             },
             addFlashDot: function () {
                 this.clear();
-                var overlay = new inMap.DotOverlayAnimation({
+                var overlay = new inMap.PointAnimationOverlay({
                     style: {
                         normal: {
                             fps: 25, //动画帧数
@@ -265,7 +265,7 @@
             },
             addFlashDot2: function () {
                 this.clear();
-                var overlay = new inMap.DotOverlayAnimation({
+                var overlay = new inMap.PointAnimationOverlay({
                     style: {
                         normal: {
                             fps: 25, //动画帧数

@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>DotOverlay-shadow</title>
+    <title>PointOverlay</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
@@ -23,56 +24,51 @@
             font-size: 14px;
         }
     </style>
-
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
-    <script src="data/data.js"></script>
+    <script src="data/bigdata.js"></script>
     <script src="../dist/inmap.js"></script>
+
 </head>
 
 <body>
     <div id="allmap"></div>
 </body>
+
 </html>
 <script>
-  
-    var map = new inMap.Map({
-        center: [105.403119, 38.028658],
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        skin: "Blueness",
+        center: [116.579477, 40.131411],
         zoom: {
-            value: 5,
+            value: 11,
             show: true,
             max: 18,
             min: 5
         },
-        id: 'allmap',
-        skin: 'Blueness',
-        zoom: {
-            show: true
-        }
-    })
-    var overlay = new inMap.DotOverlay({
-        tooltip: {
-            show: true,
-            formatter: "{count}"
-        },
-        legend: {
-            show: true,
-            itle: "标题",
+    });
+    data = JSON.parse(JSON.stringify(data.concat(data).concat(data).concat(data)));
+    var overlay = new inMap.PointOverlay({
+        draw: {
+            // interval: 400,
+            splitCount: 1900
         },
         style: {
             normal: {
-                backgroundColor: 'rgba(200, 200, 50, 1)', // 填充颜色
-                shadowColor: 'rgba(255, 255, 255, 1)', // 投影颜色
-                shadowBlur: 35, // 投影模糊级数
-                globalCompositeOperation: 'lighter', // 颜色叠加方式
-                size: 5 // 半径
+                backgroundColor: "green", // 填充颜色
+                shadowColor: "rgba(255, 255, 255, 1)", // 投影颜色
+                shadowBlur: 1, // 投影模糊级数
+                globalCompositeOperation: "lighter", // 颜色叠加方式
+                size: 1 // 半径
             }
         },
         data: data,
         event: {
-            onMouseClick: function (item, event) {
-                //能获取当前点的信息
+            onState(val) {
+                console.log(val);
+
             }
         }
     });
-    map.add(overlay);
+    inmap.add(overlay);
 </script>

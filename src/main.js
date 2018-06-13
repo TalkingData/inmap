@@ -1,6 +1,6 @@
 import {
-    DotOverlay
-} from './overlay/DotOverlay';
+    PointOverlay
+} from './overlay/PointOverlay';
 
 import {
     GriddingOverlay
@@ -25,7 +25,7 @@ import {
 import {
     MoveLineOverlay
 } from './overlay/MoveLineOverlay';
-import DotOverlayAnimation from './overlay/DotOverlayAnimation';
+import PointAnimationOverlay from './overlay/PointAnimationOverlay';
 import {
     Map
 } from './map/index';
@@ -39,7 +39,7 @@ const inMap = {
     version,
     utils,
     Map,
-    DotOverlay,
+    PointOverlay,
     GriddingOverlay,
     BoundaryOverlay,
     HeatOverlay,
@@ -47,14 +47,14 @@ const inMap = {
     HoneycombOverlay,
     ImgOverlay,
     MoveLineOverlay,
-    DotOverlayAnimation,
+    PointAnimationOverlay,
     workerMrg
 };
 export {
     version,
     utils,
     Map,
-    DotOverlay,
+    PointOverlay,
     GriddingOverlay,
     BoundaryOverlay,
     HeatOverlay,
@@ -62,7 +62,7 @@ export {
     HoneycombOverlay,
     ImgOverlay,
     MoveLineOverlay,
-    DotOverlayAnimation,
+    PointAnimationOverlay,
     workerMrg
 };
 export default inMap;

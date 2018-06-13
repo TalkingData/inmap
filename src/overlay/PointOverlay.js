@@ -18,7 +18,7 @@ import BatchesData from './base/BatchesData';
 import DotConfig from './../config/DotConfig';
 import State from './../config/OnState';
 let isMobile = detectmob();
-export class DotOverlay extends Parameter {
+export class PointOverlay extends Parameter {
     constructor(opts) {
         super(DotConfig, opts);
 

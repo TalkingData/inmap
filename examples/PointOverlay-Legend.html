@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>DotOverlay</title>
+    <title>PointOverlay</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <style type="text/css">
@@ -27,6 +27,7 @@
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="data/data.js"></script>
     <script src="../dist/inmap.js"></script>
+
 </head>
 
 <body>
@@ -42,13 +43,12 @@
         zoom: {
             value: 5,
             show: true,
-            max: 6,
+            max: 18,
             min: 5
         },
-    })
-
-
-    var overlay = new inMap.DotOverlay({
+    });
+    
+    var overlay = new inMap.PointOverlay({
         tooltip: {
             show: true,
             formatter: "{count}",
@@ -59,10 +59,7 @@
         },
         legend: {
             show: true,
-            title: "标题",
-            formatter: function (start, end, index, item) {
-                return start + "万~" + (end || "max") + "万";
-            },
+            title: "标题"
         },
         style: {
             normal: {
@@ -84,33 +81,32 @@
                     start: 0,
                     end: 2,
                     size: 3,
+                    text: "描述一",
+                    backgroundColor: 'rgba(156,200,249,0.7)',
                 },
                 {
                     start: 2,
                     end: 5,
                     size: 6,
+                    text: "描述二",
+                    backgroundColor: 'rgba(93,158,247,0.7)',
                 },
                 {
                     start: 5,
                     end: 7,
                     size: 9,
+                    text: "描述三",
+                    backgroundColor: 'rgba(134,207,55,0.7)',
                 },
                 {
                     start: 7,
                     size: 12,
+                    text: "描述四",
+                    backgroundColor: 'rgba(252,198,10,0.7)',
                 }
             ],
         },
-        data: data,
-        event: {
-            onState(state) {
-                console.log(state);
-            }
-            // multiSelect: true,
-            // onMouseClick: function (item, event) {
-            //     //能获取当前点的信息
-            // }
-        }
+        data: data
     });
     inmap.add(overlay);
 </script>

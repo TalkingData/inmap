@@ -34,7 +34,7 @@ class Marker {
     }
 
 }
-export default class DotOverlayAnimation extends CanvasOverlay {
+export default class PointAnimationOverlay extends CanvasOverlay {
     constructor(ops) {
         super();
         this.data = [];
