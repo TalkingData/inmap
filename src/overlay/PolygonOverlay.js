@@ -190,8 +190,7 @@ export class PolygonOverlay extends Parameter {
     drawMap() {
         this.setState(State.computeBefore);
         let parameter = {
-            data: this.getTransformData(),
-            labelShow: this.styleConfig.normal.label.show
+            data: this.getTransformData()
         };
 
         this.postMessage('PolygonOverlay.calculatePixel', parameter, (pixels, margin) => {

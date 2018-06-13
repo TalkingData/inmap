@@ -4764,8 +4764,7 @@ var PolygonOverlay = exports.PolygonOverlay = function (_Parameter) {
 
             this.setState(_OnState2.default.computeBefore);
             var parameter = {
-                data: this.getTransformData(),
-                labelShow: this.styleConfig.normal.label.show
+                data: this.getTransformData()
             };
 
             this.postMessage('PolygonOverlay.calculatePixel', parameter, function (pixels, margin) {
@@ -5420,6 +5419,7 @@ var Legend = function () {
         key: 'setOption',
         value: function setOption(opts) {
             this.opts = (0, _util.merge)(_Legend2.default, this.opts, opts);
+            this.opts.list = this.opts.list || [];
             this.render();
         }
     }, {
