@@ -12,7 +12,7 @@ import BoundaryConfig from './../config/BoundaryConfig';
 import State from './../config/OnState';
 
 
-export class BoundaryOverlay extends Parameter {
+export class PolygonOverlay extends Parameter {
     constructor(ops) {
         super(BoundaryConfig, ops);
         this.patchSplitList();
@@ -194,7 +194,7 @@ export class BoundaryOverlay extends Parameter {
             labelShow: this.styleConfig.normal.label.show
         };
 
-        this.postMessage('BoundaryOverlay.calculatePixel', parameter, (pixels, margin) => {
+        this.postMessage('PolygonOverlay.calculatePixel', parameter, (pixels, margin) => {
             if (this.eventType == 'onmoving') {
                 return;
             }

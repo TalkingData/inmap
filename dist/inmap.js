@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 43);
+/******/ 	return __webpack_require__(__webpack_require__.s = 30);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -105,7 +105,7 @@ exports.detectmob = detectmob;
 exports.merge = merge;
 exports.clearPushArray = clearPushArray;
 
-var _deepmerge = __webpack_require__(8);
+var _deepmerge = __webpack_require__(39);
 
 var _deepmerge2 = _interopRequireDefault(_deepmerge);
 
@@ -278,8 +278,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 2 */,
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -292,19 +291,19 @@ exports.CanvasOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _BaseClass2 = __webpack_require__(11);
+var _BaseClass2 = __webpack_require__(8);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
-var _Legend = __webpack_require__(44);
+var _Legend = __webpack_require__(31);
 
 var _Legend2 = _interopRequireDefault(_Legend);
 
 var _util = __webpack_require__(0);
 
-var _MapStyle = __webpack_require__(6);
+var _MapStyle = __webpack_require__(5);
 
-var _Toolbar = __webpack_require__(10);
+var _Toolbar = __webpack_require__(7);
 
 var _Toolbar2 = _interopRequireDefault(_Toolbar);
 
@@ -557,7 +556,7 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
 }(_BaseClass3.default);
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -572,9 +571,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __webpack_require__(0);
 
-var _CanvasOverlay2 = __webpack_require__(3);
+var _CanvasOverlay2 = __webpack_require__(2);
 
-var _Color = __webpack_require__(5);
+var _Color = __webpack_require__(4);
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -914,7 +913,7 @@ var Parameter = exports.Parameter = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1472,7 +1471,7 @@ Colors.prototype = {
 var Color = exports.Color = Colors;
 
 /***/ }),
-/* 6 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1751,299 +1750,7 @@ var Blueness = exports.Blueness = [{
 }];
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Label = exports.Label = function () {
-    function Label(x, y, radius, height, byteWidth, name) {
-        _classCallCheck(this, Label);
-
-        this.center = {
-            x: x,
-            y: y
-        };
-        this.virtualReact = {
-            maxX: 0,
-            maxY: 0,
-            minX: 0,
-            minY: 0,
-            width: 0,
-            height: 0
-        };
-        this.show = true;
-        this.text = name;
-        this.textReact = {
-            width: 0,
-            height: 0
-        };
-        this.radius = radius + 2;
-        this.padding = 0;
-        this.aIndex = 0;
-        this._getRectangle(height * 1.1, byteWidth - 0.6);
-    }
-
-    _createClass(Label, [{
-        key: 'getCurrentRect',
-        value: function getCurrentRect() {
-            var result = null;
-            switch (this.aIndex.toString()) {
-                case '0':
-                    result = this._getRightAnchor();
-                    break;
-                case '1':
-                    result = this._getBottomAnchor();
-                    break;
-                case '2':
-                    result = this._getLeftAnchor();
-                    break;
-                case '3':
-                    result = this._getTopAnchor();
-                    break;
-                default:
-                    result = this._getCenterRectange();
-                    break;
-
-            }
-            return result;
-        }
-    }, {
-        key: 'next',
-        value: function next() {
-            this.aIndex++;
-            if (this.aIndex > 3) {
-                this.show = false;
-            }
-            return this.getCurrentRect();
-        }
-    }, {
-        key: '_getTrueLength',
-        value: function _getTrueLength(str) {
-            var len = str.length,
-                truelen = 0;
-            for (var x = 0; x < len; x++) {
-                if (str.charCodeAt(x) > 128) {
-                    truelen += 2;
-                } else {
-                    truelen += 1;
-                }
-            }
-            return truelen;
-        }
-    }, {
-        key: 'isAnchorMeet',
-        value: function isAnchorMeet(target) {
-            var react = this.getCurrentRect(),
-                targetReact = target.getCurrentRect();
-            if (react.minX < targetReact.maxX && targetReact.minX < react.maxX && react.minY < targetReact.maxY && targetReact.minY < react.maxY) {
-                return true;
-            }
-            return false;
-        }
-    }, {
-        key: '_getCenterRectange',
-        value: function _getCenterRectange() {
-            return {
-                minX: this.center.x - this.radius,
-                maxX: this.center.x + this.radius,
-                minY: this.center.y - this.radius,
-                maxY: this.center.y + this.radius
-            };
-        }
-    }, {
-        key: '_getRectangle',
-        value: function _getRectangle(height, byteWidth) {
-            var width = this._getTrueLength(this.text) * byteWidth;
-            this.textReact = {
-                width: width + this.padding * 2,
-                height: height
-            };
-        }
-    }, {
-        key: '_getLeftAnchor',
-        value: function _getLeftAnchor() {
-
-            var x = this.center.x - this.radius - this.textReact.width,
-                y = this.center.y - this.textReact.height / 2,
-                diam = this.radius * 2,
-                maxH = diam > this.textReact.height ? diam : this.textReact.height;
-            return {
-                x: x,
-                y: y,
-                minX: x,
-                maxX: this.center.x + this.radius,
-                minY: this.center.y - maxH / 2,
-                maxY: this.center.y + maxH / 2
-            };
-        }
-    }, {
-        key: '_getRightAnchor',
-        value: function _getRightAnchor() {
-            var x = this.center.x + this.radius,
-                y = this.center.y - this.textReact.height / 2,
-                diam = this.radius * 2,
-                maxH = diam > this.textReact.height ? diam : this.textReact.height;
-            return {
-                x: x,
-                y: y,
-                minX: this.center.x - this.radius,
-                maxX: this.center.x + this.radius + this.textReact.width,
-                minY: this.center.y - maxH / 2,
-                maxY: this.center.y + maxH / 2
-            };
-        }
-    }, {
-        key: '_getTopAnchor',
-        value: function _getTopAnchor() {
-            var x = this.center.x - this.textReact.width / 2,
-                y = this.center.y - this.radius - this.textReact.height,
-                diam = this.radius * 2,
-                maxW = diam > this.textReact.width ? diam : this.textReact.width;
-            return {
-                x: x,
-                y: y,
-                minX: this.center.x - maxW / 2,
-                maxX: this.center.x + maxW / 2,
-                minY: this.center.y - this.radius - this.textReact.height,
-                maxY: this.center.y + this.radius
-            };
-        }
-    }, {
-        key: '_getBottomAnchor',
-        value: function _getBottomAnchor() {
-            var x = this.center.x - this.textReact.width / 2,
-                y = this.center.y + this.radius,
-                maxW = this.radius > this.textReact.width ? this.radius : this.textReact.width;
-            return {
-                x: x,
-                y: y,
-                minX: this.center.x - maxW / 2,
-                maxX: this.center.x + maxW / 2,
-                minY: this.center.y - this.radius,
-                maxY: this.center.y + this.radius + this.textReact.height
-            };
-        }
-    }]);
-
-    return Label;
-}();
-
-/***/ }),
-/* 8 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var isMergeableObject = function isMergeableObject(value) {
-	return isNonNullObject(value)
-		&& !isSpecial(value)
-};
-
-function isNonNullObject(value) {
-	return !!value && typeof value === 'object'
-}
-
-function isSpecial(value) {
-	var stringValue = Object.prototype.toString.call(value);
-
-	return stringValue === '[object RegExp]'
-		|| stringValue === '[object Date]'
-		|| isReactElement(value)
-}
-
-// see https://github.com/facebook/react/blob/b5ac963fb791d1298e7f396236383bc955f916c1/src/isomorphic/classic/element/ReactElement.js#L21-L25
-var canUseSymbol = typeof Symbol === 'function' && Symbol.for;
-var REACT_ELEMENT_TYPE = canUseSymbol ? Symbol.for('react.element') : 0xeac7;
-
-function isReactElement(value) {
-	return value.$$typeof === REACT_ELEMENT_TYPE
-}
-
-function emptyTarget(val) {
-    return Array.isArray(val) ? [] : {}
-}
-
-function cloneIfNecessary(value, optionsArgument) {
-    var clone = optionsArgument && optionsArgument.clone === true;
-    return (clone && isMergeableObject(value)) ? deepmerge(emptyTarget(value), value, optionsArgument) : value
-}
-
-function defaultArrayMerge(target, source, optionsArgument) {
-    var destination = target.slice();
-    source.forEach(function(e, i) {
-        if (typeof destination[i] === 'undefined') {
-            destination[i] = cloneIfNecessary(e, optionsArgument);
-        } else if (isMergeableObject(e)) {
-            destination[i] = deepmerge(target[i], e, optionsArgument);
-        } else if (target.indexOf(e) === -1) {
-            destination.push(cloneIfNecessary(e, optionsArgument));
-        }
-    });
-    return destination
-}
-
-function mergeObject(target, source, optionsArgument) {
-    var destination = {};
-    if (isMergeableObject(target)) {
-        Object.keys(target).forEach(function(key) {
-            destination[key] = cloneIfNecessary(target[key], optionsArgument);
-        });
-    }
-    Object.keys(source).forEach(function(key) {
-        if (!isMergeableObject(source[key]) || !target[key]) {
-            destination[key] = cloneIfNecessary(source[key], optionsArgument);
-        } else {
-            destination[key] = deepmerge(target[key], source[key], optionsArgument);
-        }
-    });
-    return destination
-}
-
-function deepmerge(target, source, optionsArgument) {
-    var sourceIsArray = Array.isArray(source);
-    var targetIsArray = Array.isArray(target);
-    var options = optionsArgument || { arrayMerge: defaultArrayMerge };
-    var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray;
-
-    if (!sourceAndTargetTypesMatch) {
-        return cloneIfNecessary(source, optionsArgument)
-    } else if (sourceIsArray) {
-        var arrayMerge = options.arrayMerge || defaultArrayMerge;
-        return arrayMerge(target, source, optionsArgument)
-    } else {
-        return mergeObject(target, source, optionsArgument)
-    }
-}
-
-deepmerge.all = function deepmergeAll(array, optionsArgument) {
-    if (!Array.isArray(array) || array.length < 2) {
-        throw new Error('first argument should be an array with at least two elements')
-    }
-
-    // we are sure there are at least 2 values, so it is safe to have no initial value
-    return array.reduce(function(prev, next) {
-        return deepmerge(prev, next, optionsArgument)
-    })
-};
-
-var deepmerge_1 = deepmerge;
-
-module.exports = deepmerge_1;
-
-
-/***/ }),
-/* 9 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2134,7 +1841,7 @@ var WorkerMrg = function () {
 var workerMrg = exports.workerMrg = new WorkerMrg();
 
 /***/ }),
-/* 10 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2146,7 +1853,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ToolTip = __webpack_require__(45);
+var _ToolTip = __webpack_require__(32);
 
 var _ToolTip2 = _interopRequireDefault(_ToolTip);
 
@@ -2191,7 +1898,7 @@ var Toolbar = function () {
 exports.default = Toolbar;
 
 /***/ }),
-/* 11 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2201,7 +1908,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _workerMrg = __webpack_require__(9);
+var _workerMrg = __webpack_require__(6);
 
 var baseClassCounter = 0;
 var inmap_instances = {};
@@ -2303,7 +2010,7 @@ BaseClass.prototype.removeWorkerMessage = function () {
 exports.default = BaseClass;
 
 /***/ }),
-/* 12 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2318,19 +2025,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __webpack_require__(0);
 
-var _MapStyle = __webpack_require__(6);
+var _MapStyle = __webpack_require__(5);
 
-var _mapZoom = __webpack_require__(46);
+var _mapZoom = __webpack_require__(33);
 
-var _Toolbar = __webpack_require__(10);
+var _Toolbar = __webpack_require__(7);
 
 var _Toolbar2 = _interopRequireDefault(_Toolbar);
 
-var _InmapConfig = __webpack_require__(39);
+var _InmapConfig = __webpack_require__(27);
 
 var _InmapConfig2 = _interopRequireDefault(_InmapConfig);
 
-__webpack_require__(52);
+__webpack_require__(41);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2418,361 +2125,7 @@ var Map = exports.Map = function () {
 }();
 
 /***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.BoundaryOverlay = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Parameter2 = __webpack_require__(4);
-
-var _Color = __webpack_require__(5);
-
-var _util = __webpack_require__(0);
-
-var _BoundaryConfig = __webpack_require__(31);
-
-var _BoundaryConfig2 = _interopRequireDefault(_BoundaryConfig);
-
-var _OnState = __webpack_require__(1);
-
-var _OnState2 = _interopRequireDefault(_OnState);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
-    _inherits(BoundaryOverlay, _Parameter);
-
-    function BoundaryOverlay(ops) {
-        _classCallCheck(this, BoundaryOverlay);
-
-        var _this = _possibleConstructorReturn(this, (BoundaryOverlay.__proto__ || Object.getPrototypeOf(BoundaryOverlay)).call(this, _BoundaryConfig2.default, ops));
-
-        _this.patchSplitList();
-        _this.state = null;
-        return _this;
-    }
-
-    _createClass(BoundaryOverlay, [{
-        key: 'parameterInit',
-        value: function parameterInit() {
-            this.initLegend();
-        }
-    }, {
-        key: 'initLegend',
-        value: function initLegend() {
-            this.compileSplitList(this.styleConfig.colors, this.getTransformData());
-            this.patchSplitList();
-            this.setlegend(this.legendConfig, this.styleConfig.splitList);
-        }
-    }, {
-        key: 'setSelectedList',
-        value: function setSelectedList(list) {
-            (0, _util.clearPushArray)(this.selectItem, list);
-        }
-    }, {
-        key: 'clearSelectedList',
-        value: function clearSelectedList() {
-            (0, _util.clearPushArray)(this.selectItem);
-        }
-    }, {
-        key: 'getSelectedList',
-        value: function getSelectedList() {
-            return this.selectItem;
-        }
-    }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            for (var i = 0; i < this.workerData.length; i++) {
-                var geometry = this.workerData[i].geometry;
-                var pixels = geometry.pixels;
-                for (var j = 0; j < pixels.length; j++) {
-                    var pixelItem = pixels[j];
-                    for (var k = 0, len = pixelItem.length; k < len; k++) {
-                        var pixel = pixelItem[k];
-                        pixel[0] = pixel[0] + distanceX;
-                        pixel[1] = pixel[1] + distanceY;
-                    }
-                }
-                if (this.styleConfig.normal.label.show) {
-                    var labelPixels = geometry.labelPixels;
-                    for (var _j = 0; _j < labelPixels.length; _j++) {
-                        var bestCell = labelPixels[_j];
-                        if (bestCell) {
-                            bestCell.x = bestCell.x + distanceX;
-                            bestCell.y = bestCell.y + distanceY;
-                        }
-                    }
-                }
-            }
-            this.refresh();
-        }
-    }, {
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-            this._setStyle(this.baseConfig, ops);
-        }
-    }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState(this.state);
-        }
-    }, {
-        key: 'onOptionChange',
-        value: function onOptionChange() {
-            this.map && this.initLegend();
-        }
-    }, {
-        key: 'onDataChange',
-        value: function onDataChange() {
-            this.map && this.initLegend();
-        }
-    }, {
-        key: 'compileSplitList',
-        value: function compileSplitList(colors, data) {
-
-            if (colors.length <= 0) return;
-            data = data.sort(function (a, b) {
-                return parseFloat(a.count) - parseFloat(b.count);
-            });
-            var splitCount = data.length / colors.length;
-            var colorIndex = 0;
-            var split = [];
-            var star = 0,
-                end = 0;
-
-            for (var i = 0; i < data.length; i++) {
-
-                if (i > splitCount * (colorIndex + 1)) {
-                    if (split.length == 0) {
-                        star = data[0].count;
-                    }
-
-                    end = data[i].count;
-
-                    split.push({
-                        start: star,
-                        end: end,
-                        backgroundColor: colors[colorIndex]
-                    });
-                    colorIndex++;
-                    star = data[i].count;
-                }
-            }
-
-            if (split.length > 0) {
-                split.push({
-                    start: star,
-                    end: null,
-                    backgroundColor: colors[colorIndex]
-                });
-            }
-
-            this.styleConfig.splitList = split;
-        }
-    }, {
-        key: 'patchSplitList',
-        value: function patchSplitList() {
-            var normal = this.styleConfig.normal;
-            if (normal.borderWidth != null && normal.borderColor == null) {
-                normal.borderColor = new _Color.Color(normal.backgroundColor).getRgbaStyle();
-            }
-            var splitList = this.styleConfig.splitList;
-            for (var i = 0; i < splitList.length; i++) {
-                var condition = splitList[i];
-                if ((condition.borderWidth != null || normal.borderColor != null) && condition.borderColor == null) {
-                    condition.borderColor = new _Color.Color(condition.backgroundColor).getRgbaStyle();
-                }
-            }
-        }
-    }, {
-        key: 'resize',
-        value: function resize() {
-
-            this.drawMap();
-        }
-    }, {
-        key: 'getGeoCenter',
-        value: function getGeoCenter(geo) {
-            var minX = geo[0][0];
-            var minY = geo[0][1];
-            var maxX = geo[0][0];
-            var maxY = geo[0][1];
-            for (var i = 1; i < geo.length; i++) {
-                minX = Math.min(minX, geo[i][0]);
-                maxX = Math.max(maxX, geo[i][0]);
-                minY = Math.min(minY, geo[i][1]);
-                maxY = Math.max(maxY, geo[i][1]);
-            }
-            return [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
-        }
-    }, {
-        key: 'getMaxWidth',
-        value: function getMaxWidth(geo) {
-            var minX = geo[0][0];
-            var minY = geo[0][1];
-            var maxX = geo[0][0];
-            var maxY = geo[0][1];
-            for (var i = 1; i < geo.length; i++) {
-                minX = Math.min(minX, geo[i][0]);
-                maxX = Math.max(maxX, geo[i][0]);
-                minY = Math.min(minY, geo[i][1]);
-                maxY = Math.max(maxY, geo[i][1]);
-            }
-            return maxX - minX;
-        }
-    }, {
-        key: 'findIndexSelectItem',
-        value: function findIndexSelectItem(item) {
-            var index = -1;
-            if (item) {
-                index = this.selectItem.findIndex(function (val) {
-                    return val && val.name == item.name;
-                });
-            }
-            return index;
-        }
-    }, {
-        key: 'refresh',
-        value: function refresh() {
-
-            this.setState(_OnState2.default.drawBefore);
-            this.clearCanvas();
-            this.drawLine(this.getData());
-            this.setState(_OnState2.default.drawAfter);
-        }
-    }, {
-        key: 'drawMap',
-        value: function drawMap() {
-            var _this2 = this;
-
-            this.setState(_OnState2.default.computeBefore);
-            var parameter = {
-                data: this.getTransformData(),
-                labelShow: this.styleConfig.normal.label.show
-            };
-
-            this.postMessage('BoundaryOverlay.calculatePixel', parameter, function (pixels, margin) {
-                if (_this2.eventType == 'onmoving') {
-                    return;
-                }
-
-                _this2.setState(_OnState2.default.conputeAfter);
-                _this2.setWorkerData(pixels);
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
-                pixels = null, margin = null;
-            });
-        }
-    }, {
-        key: 'getTarget',
-        value: function getTarget(x, y) {
-            var data = this.getData();
-            for (var i = 0; i < data.length; i++) {
-                var item = data[i];
-                var geometry = item.geometry;
-                var pixels = geometry.pixels;
-
-                this.ctx.beginPath();
-                for (var j = 0; j < pixels.length; j++) {
-                    var pixelItem = pixels[j];
-                    this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
-                    for (var k = 1, len = pixelItem.length; k < len; k++) {
-                        this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
-                    }
-                    this.ctx.closePath();
-                    if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
-                        return {
-                            index: i,
-                            item: item
-                        };
-                    }
-                    pixelItem = null;
-                }
-
-                pixels = null, geometry = null, item = null;
-            }
-
-            return {
-                index: -1,
-                item: null
-            };
-        }
-    }, {
-        key: 'drawLine',
-        value: function drawLine(data) {
-            this.ctx.lineCap = 'round';
-            this.ctx.lineJoin = 'round';
-            this.ctx.miterLimit = 4;
-            for (var i = 0; i < data.length; i++) {
-                var item = data[i];
-                var geometry = item.geometry;
-                var pixels = geometry.pixels;
-                var style = this.setDrawStyle(item);
-                this.ctx.beginPath();
-                this.ctx.shadowColor = style.shadowColor || 'transparent';
-                this.ctx.shadowBlur = style.shadowBlur || 10;
-                this.ctx.shadowOffsetX = 0;
-                this.ctx.shadowOffsetY = 0;
-                this.ctx.fillStyle = style.backgroundColor;
-
-                for (var j = 0; j < pixels.length; j++) {
-                    var pixelItem = pixels[j];
-                    this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
-                    for (var k = 1, len = pixelItem.length; k < len; k++) {
-                        this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
-                    }
-                    pixelItem = null;
-                    this.ctx.closePath();
-                    this.ctx.fill();
-                }
-                this.ctx.strokeStyle = style.borderColor;
-                this.ctx.lineWidth = style.borderWidth;
-                this.ctx.stroke();
-
-                if (this.styleConfig.normal.label.show) {
-                    var labelPixels = geometry.labelPixels;
-                    this.ctx.shadowBlur = 0;
-                    this.ctx.lineWidth = style.label.lineWidth;
-                    this.ctx.font = style.label.font;
-                    this.ctx.fillStyle = style.label.color;
-                    for (var _j2 = 0; _j2 < labelPixels.length; _j2++) {
-                        var bestCell = labelPixels[_j2];
-                        this.ctx.beginPath();
-                        var width = this.ctx.measureText(item.name).width;
-                        if (bestCell && item.name && this.getMaxWidth(pixels[_j2]) > width) {
-                            this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
-                        }
-                        bestCell = null, width = null;
-                    }
-                    labelPixels = null;
-                }
-                style = null, pixels = null, geometry = null, item = null;
-            }
-            this.ctx.closePath();
-        }
-    }]);
-
-    return BoundaryOverlay;
-}(_Parameter2.Parameter);
-
-/***/ }),
-/* 14 */,
-/* 15 */,
-/* 16 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2785,9 +2138,9 @@ exports.GriddingOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Parameter2 = __webpack_require__(4);
+var _Parameter2 = __webpack_require__(3);
 
-var _GriddingConfig = __webpack_require__(35);
+var _GriddingConfig = __webpack_require__(23);
 
 var _GriddingConfig2 = _interopRequireDefault(_GriddingConfig);
 
@@ -3091,7 +2444,7 @@ var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 17 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3104,11 +2457,11 @@ exports.HeatOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay2 = __webpack_require__(3);
+var _CanvasOverlay2 = __webpack_require__(2);
 
 var _util = __webpack_require__(0);
 
-var _HeatConfig = __webpack_require__(36);
+var _HeatConfig = __webpack_require__(24);
 
 var _HeatConfig2 = _interopRequireDefault(_HeatConfig);
 
@@ -3349,7 +2702,7 @@ var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 18 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3362,9 +2715,9 @@ exports.HoneycombOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Parameter2 = __webpack_require__(4);
+var _Parameter2 = __webpack_require__(3);
 
-var _HoneycombConfig = __webpack_require__(37);
+var _HoneycombConfig = __webpack_require__(25);
 
 var _HoneycombConfig2 = _interopRequireDefault(_HoneycombConfig);
 
@@ -3679,7 +3032,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 19 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3692,9 +3045,9 @@ exports.ImgOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Parameter2 = __webpack_require__(4);
+var _Parameter2 = __webpack_require__(3);
 
-var _ImgConfig = __webpack_require__(38);
+var _ImgConfig = __webpack_require__(26);
 
 var _ImgConfig2 = _interopRequireDefault(_ImgConfig);
 
@@ -3953,7 +3306,7 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 20 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3968,9 +3321,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __webpack_require__(0);
 
-var _CanvasOverlay2 = __webpack_require__(3);
+var _CanvasOverlay2 = __webpack_require__(2);
 
-var _CircuitConfig = __webpack_require__(32);
+var _CircuitConfig = __webpack_require__(20);
 
 var _CircuitConfig2 = _interopRequireDefault(_CircuitConfig);
 
@@ -4128,7 +3481,7 @@ var LineStringOverlay = exports.LineStringOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 21 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4141,17 +3494,17 @@ exports.MoveLineOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay = __webpack_require__(3);
+var _CanvasOverlay = __webpack_require__(2);
 
 var _util = __webpack_require__(0);
 
-var _MapStyle = __webpack_require__(6);
+var _MapStyle = __webpack_require__(5);
 
-var _MoveLineConfig = __webpack_require__(41);
+var _MoveLineConfig = __webpack_require__(29);
 
 var _MoveLineConfig2 = _interopRequireDefault(_MoveLineConfig);
 
-var _BaseClass2 = __webpack_require__(11);
+var _BaseClass2 = __webpack_require__(8);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
@@ -4557,499 +3910,7 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
 }(_BaseClass3.default);
 
 /***/ }),
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    tooltip: {
-        show: false,
-        customClass: 'inmap-tooltip-black',
-        offsets: {
-            top: 5,
-            left: 12
-        }
-
-    },
-    legend: {
-        show: false,
-        toFixed: 2 },
-
-    style: {
-        normal: {
-            borderWidth: 0.1,
-            backgroundColor: 'rgba(200, 200, 200, 0.5)',
-            mergeCount: 1.5,
-            label: {
-                show: false,
-                color: 'rgba(0,0,0,1)',
-                font: '13px Arial'
-            }
-        },
-
-        colors: [],
-        splitList: []
-
-    },
-    data: [],
-    event: {
-        multiSelect: false, onMouseClick: function onMouseClick() {},
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    style: {
-        normal: {
-            borderColor: 'rgba(50, 50, 255, 0.8)',
-            borderWidth: 0.05
-        }
-    },
-    data: [],
-    event: {
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    tooltip: {
-        show: false,
-        customClass: 'inmap-tooltip-black',
-        offsets: {
-            top: 5,
-            left: 12
-        }
-
-    },
-    legend: {
-        show: false,
-        toFixed: 2 },
-    draw: {},
-    style: {
-        normal: {
-            borderWidth: 0.1,
-            backgroundColor: 'rgba(200, 200, 200, 0.5)',
-            mergeCount: 1.5,
-            label: {
-                show: false,
-                color: 'rgba(0,0,0,1)',
-                font: '13px Arial'
-            }
-        },
-
-        colors: [],
-        splitList: []
-
-    },
-    data: [],
-    event: {
-        multiSelect: false, onMouseClick: function onMouseClick() {},
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    style: {
-        normal: {
-            fps: 25,
-            color: '#FAFA32',
-            radius: 20,
-            speed: 0.15 }
-    },
-    data: []
-};
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    tooltip: {
-        show: true,
-        customClass: 'inmap-tooltip-black',
-        formatter: '{count}',
-        offsets: {
-            top: 5,
-            left: 12
-        }
-    },
-    legend: {
-        show: true,
-        title: '图例'
-    },
-    style: {
-        type: 'sum',
-        colors: ['rgba(31,98,1,1)', 'rgba(95,154,4,1)', 'rgba(139,227,7,1)', 'rgba(218,134,9,1)', 'rgba(220,54,6,1)', 'rgba(218,2,8,1)', 'rgba(148,1,2,1)', 'rgba(92,1,0,1)'],
-        normal: {
-            backgroundColor: 'rgba(200, 200, 200, 0.5)',
-            padding: 1,
-            size: 50,
-            unit: 'px',
-            label: {
-                show: false,
-                font: '12px sans-serif',
-                shadowBlur: 0,
-                lineWidth: 1,
-                color: 'rgba(75,80,86,1)'
-            }
-        },
-        mouseOver: {},
-        selected: {}
-
-    },
-    data: [],
-    event: {
-        multiSelect: false,
-        onMouseClick: function onMouseClick() {},
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    tooltip: {
-        show: false,
-        offsets: {
-            top: 5,
-            left: 12
-        }
-    },
-    legend: {
-        show: false
-    },
-    style: {
-        gradient: {
-            0.25: 'rgb(0,0,255)',
-            0.55: 'rgb(0,255,0)',
-            0.85: 'rgb(255,255,0)',
-            1.0: 'rgb(255,0,0)'
-        },
-        normal: {
-            radius: 15,
-            minOpacity: 0,
-            maxOpacity: 1,
-            minValue: 0,
-            maxValue: 0,
-            minScope: 0,
-            maxScope: 1 }
-    },
-    data: [],
-    event: {
-        multiSelect: false,
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    tooltip: {
-        show: true,
-        customClass: 'inmap-tooltip-black',
-        formatter: '{count}',
-        offsets: {
-            top: 5,
-            left: 12
-        }
-    },
-    legend: {
-        show: true,
-        title: '图例'
-    },
-    style: {
-        colors: ['rgba(31,98,1,1)', 'rgba(95,154,4,1)', 'rgba(139,227,7,1)', 'rgba(218,134,9,1)', 'rgba(220,54,6,1)', 'rgba(218,2,8,1)', 'rgba(148,1,2,1)', 'rgba(92,1,0,1)'],
-        normal: {
-            backgroundColor: 'rgba(200, 200, 200, 0.5)',
-            padding: 1,
-            size: 50,
-            unit: 'px',
-            label: {
-                show: false,
-                font: '12px sans-serif',
-                shadowBlur: 0,
-                lineWidth: 1,
-                color: 'rgba(75,80,86,1)'
-            }
-        },
-        mouseOver: {},
-        selected: {}
-
-    },
-    data: [],
-    event: {
-        multiSelect: false,
-        onMouseClick: function onMouseClick() {},
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    tooltip: {
-        show: true,
-        customClass: 'inmap-tooltip-black',
-        offsets: {
-            top: 5,
-            left: 12
-        },
-        formatter: '{count}'
-    },
-    legend: {
-        show: false
-    },
-    style: {
-        normal: {
-            icon: null,
-            width: 0,
-            height: 0,
-            offsets: {
-                top: 0,
-                left: 0
-            }
-        },
-        mouseOver: {},
-        selected: {},
-        colors: [],
-        splitList: []
-    },
-    data: [],
-    event: {
-        multiSelect: false, onMouseClick: function onMouseClick() {},
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    center: [],
-    id: null,
-    skin: null,
-    zoom: {
-        value: 5,
-        show: true,
-        max: 18,
-        min: 5
-    }
-};
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    show: false,
-    title: null,
-    formatter: null,
-    list: []
-};
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    style: {
-        normal: {
-            markerRadius: 3,
-
-            markerColor: '#fff',
-
-            lineType: 'solid',
-
-            lineWidth: 1,
-
-            colors: ['#F9815C', '#F8AB60', '#EDCC72', '#E2F194', '#94E08A', '#4ECDA5'],
-
-            moveRadius: 2,
-
-            fillColor: '#fff',
-
-            shadowColor: '#fff',
-
-            shadowBlur: 5,
-            fps: 30,
-            skin: null }
-    },
-    data: []
-};
-
-/***/ }),
-/* 42 */,
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.workerMrg = exports.PointAnimationOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.LineStringOverlay = exports.HeatOverlay = exports.BoundaryOverlay = exports.GriddingOverlay = exports.PointOverlay = exports.Map = exports.utils = exports.version = undefined;
-
-var _PointOverlay = __webpack_require__(54);
-
-var _GriddingOverlay = __webpack_require__(16);
-
-var _BoundaryOverlay = __webpack_require__(13);
-
-var _HeatOverlay = __webpack_require__(17);
-
-var _LineStringOverlay = __webpack_require__(20);
-
-var _HoneycombOverlay = __webpack_require__(18);
-
-var _ImgOverlay = __webpack_require__(19);
-
-var _MoveLineOverlay = __webpack_require__(21);
-
-var _PointAnimationOverlay = __webpack_require__(55);
-
-var _PointAnimationOverlay2 = _interopRequireDefault(_PointAnimationOverlay);
-
-var _index = __webpack_require__(12);
-
-var _util = __webpack_require__(0);
-
-var utils = _interopRequireWildcard(_util);
-
-var _workerMrg = __webpack_require__(9);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var version = "1.5.8";
-console.log('inMap v' + version);
-
-var inMap = {
-    version: version,
-    utils: utils,
-    Map: _index.Map,
-    PointOverlay: _PointOverlay.PointOverlay,
-    GriddingOverlay: _GriddingOverlay.GriddingOverlay,
-    BoundaryOverlay: _BoundaryOverlay.BoundaryOverlay,
-    HeatOverlay: _HeatOverlay.HeatOverlay,
-    LineStringOverlay: _LineStringOverlay.LineStringOverlay,
-    HoneycombOverlay: _HoneycombOverlay.HoneycombOverlay,
-    ImgOverlay: _ImgOverlay.ImgOverlay,
-    MoveLineOverlay: _MoveLineOverlay.MoveLineOverlay,
-    PointAnimationOverlay: _PointAnimationOverlay2.default,
-    workerMrg: _workerMrg.workerMrg
-};
-exports.version = version;
-exports.utils = utils;
-exports.Map = _index.Map;
-exports.PointOverlay = _PointOverlay.PointOverlay;
-exports.GriddingOverlay = _GriddingOverlay.GriddingOverlay;
-exports.BoundaryOverlay = _BoundaryOverlay.BoundaryOverlay;
-exports.HeatOverlay = _HeatOverlay.HeatOverlay;
-exports.LineStringOverlay = _LineStringOverlay.LineStringOverlay;
-exports.HoneycombOverlay = _HoneycombOverlay.HoneycombOverlay;
-exports.ImgOverlay = _ImgOverlay.ImgOverlay;
-exports.MoveLineOverlay = _MoveLineOverlay.MoveLineOverlay;
-exports.PointAnimationOverlay = _PointAnimationOverlay2.default;
-exports.workerMrg = _workerMrg.workerMrg;
-exports.default = inMap;
-
-/***/ }),
-/* 44 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5061,763 +3922,160 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _Color = __webpack_require__(5);
-
-var _Legend = __webpack_require__(40);
-
-var _Legend2 = _interopRequireDefault(_Legend);
+var _CanvasOverlay2 = __webpack_require__(2);
 
 var _util = __webpack_require__(0);
 
+var _FlashDotConfig = __webpack_require__(22);
+
+var _FlashDotConfig2 = _interopRequireDefault(_FlashDotConfig);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Legend = function () {
-    function Legend(toolDom, opts) {
-        _classCallCheck(this, Legend);
+var Marker = function () {
+    function Marker(opts, data, map) {
+        _classCallCheck(this, Marker);
 
-        this.opts = opts || _Legend2.default;
-        this.dom = this.crateDom(toolDom);
-        this.hide();
+        this.city = opts.name;
+        this.location = new BMap.Point(data.geometry.coordinates[0], data.geometry.coordinates[1]);
+        this.pixel = map.pointToPixel(this.location);
+        this.color = opts.color;
+        this.speed = opts.speed;
+        this.radius = 0;
+        this.size = opts.size;
     }
 
-    _createClass(Legend, [{
-        key: 'crateDom',
-        value: function crateDom(toolDom) {
-            var div = document.createElement('div');
-            div.classList.add('inmap-legend');
-            toolDom.appendChild(div);
-            return div;
+    _createClass(Marker, [{
+        key: 'draw',
+        value: function draw(context) {
+            var pixel = this.pixel;
+            context.save();
+            context.beginPath();
+            context.strokeStyle = this.color;
+            context.moveTo(pixel.x + pixel.radius, pixel.y);
+            context.arc(pixel.x, pixel.y, this.radius, 0, Math.PI * 2);
+            context.stroke();
+            context.closePath();
+            context.restore();
+            this.radius += this.speed;
+            if (this.radius > this.size) {
+                this.radius = 0;
+            }
         }
-    }, {
-        key: 'show',
-        value: function show() {
-            this.dom.style.display = 'inline-block';
-        }
-    }, {
-        key: 'hide',
-        value: function hide() {
-            this.dom.style.display = 'none';
-        }
-    }, {
-        key: 'toFixed',
-        value: function toFixed(num) {
-            return isNaN(num) ? num : parseFloat(num).toFixed(this.opts.toFixed);
-        }
-    }, {
-        key: 'setTitle',
-        value: function setTitle(title) {
-            this.opts.title = title;
-            this.render();
-        }
-    }, {
-        key: 'setOption',
-        value: function setOption(opts) {
-            this.opts = (0, _util.merge)(_Legend2.default, this.opts, opts);
-            this.render();
-        }
-    }, {
-        key: 'setItems',
-        value: function setItems(list) {
-            this.opts.list = list;
-            this.render();
-        }
-    }, {
-        key: '_verify',
-        value: function _verify() {
-            var _opts = this.opts,
-                show = _opts.show,
-                title = _opts.title,
-                list = _opts.list;
+    }]);
 
-            if (!(0, _util.isBoolean)(show)) {
-                throw new TypeError('inMap: legend options show must be a Boolean');
+    return Marker;
+}();
+
+var PointAnimationOverlay = function (_CanvasOverlay) {
+    _inherits(PointAnimationOverlay, _CanvasOverlay);
+
+    function PointAnimationOverlay(ops) {
+        _classCallCheck(this, PointAnimationOverlay);
+
+        var _this = _possibleConstructorReturn(this, (PointAnimationOverlay.__proto__ || Object.getPrototypeOf(PointAnimationOverlay)).call(this));
+
+        _this.data = [];
+        _this.styleConfig = null;
+        _this.markers = [];
+        _this.render = _this.render.bind(_this);
+        _this.setOptionStyle(ops);
+        return _this;
+    }
+
+    _createClass(PointAnimationOverlay, [{
+        key: 'canvasInit',
+        value: function canvasInit() {
+            this.addMarker();
+            var now = void 0;
+            var then = Date.now();
+            var interval = 1000 / 25;
+            var delta = void 0;
+            var render = this.render;
+            (function drawFrame() {
+                requestAnimationFrame(drawFrame);
+                now = Date.now();
+                delta = now - then;
+                if (delta > interval) {
+                    then = now - delta % interval;
+                    render();
+                }
+            })();
+        }
+    }, {
+        key: 'setOptionStyle',
+        value: function setOptionStyle(ops) {
+            var option = (0, _util.merge)(_FlashDotConfig2.default, ops);
+            this.styleConfig = option.style.normal;
+            this.data = ops.data ? option.data : this.data;
+            this.tMapStyle(option.skin);
+            this.map && this.addMarker();
+        }
+    }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+
+            for (var i = 0; i < this.markers.length; i++) {
+                var pixel = this.markers[i].pixel;
+                pixel.x = pixel.x + distanceX;
+                pixel.y = pixel.y + distanceY;
             }
-            if (!(0, _util.isEmpty)(title) && !(0, _util.isString)(title)) {
-                throw new TypeError('inMap: legend options title must be a String');
+        }
+    }, {
+        key: 'addMarker',
+        value: function addMarker() {
+            this.markers = [];
+            for (var i = 0; i < this.data.length; i++) {
+                var style = (0, _util.merge)(this.styleConfig, this.data[i].style);
+                this.markers.push(new Marker(style, this.data[i], this.map));
             }
-            if (!(0, _util.isArray)(list)) {
-                throw new TypeError('inMap: legend options list must be a Array');
-            }
+        }
+    }, {
+        key: 'resize',
+        value: function resize() {
+            this.addMarker();
+            this.canvasResize();
         }
     }, {
         key: 'render',
         value: function render() {
-            var _this = this;
-
-            this._verify();
-            var _opts2 = this.opts,
-                show = _opts2.show,
-                title = _opts2.title,
-                list = _opts2.list;
-
-            if (show) {
-                this.show();
-            } else {
-                this.hide();
+            var ctx = this.ctx;
+            if (!ctx) {
+                return;
+            }
+            if (!this.animationFlag) {
+                this.clearCanvas();
                 return;
             }
 
-            var str = '';
-            if (title) {
-                str = '<div class="inmap-legend-title">' + title + ' </div>';
-            }
+            var size = this.map.getSize();
+            ctx.fillStyle = 'rgba(0,0,0,.95)';
+            var prev = ctx.globalCompositeOperation;
+            ctx.globalCompositeOperation = 'destination-in';
 
-            str += '<table cellpadding="0" cellspacing="0">';
-            list.forEach(function (val, index) {
-                var text = null,
-                    backgroundColor = val.backgroundColor;
-                var isShow = backgroundColor != null;
-                var legendBg = new _Color.Color(backgroundColor),
-                    difference = 0.2;
+            ctx.fillRect(0, 0, size.width, size.height);
+            ctx.globalCompositeOperation = prev;
 
-                var opacity = val.opacity;
-                if (opacity) {
-                    opacity += difference;
-                }
-                if (legendBg.a) {
-                    opacity = legendBg.a + difference;
-                } else {
-                    opacity = 1;
-                }
-                backgroundColor = legendBg.getRgbaStyle(opacity);
-                if (val.text) {
-                    text = val.text;
-                } else if (_this.opts.formatter) {
-                    text = _this.opts.formatter(_this.toFixed(val.start), _this.toFixed(val.end), index, val);
-                } else {
-                    text = _this.toFixed(val.start) + ' ~ ' + (val.end == null ? '<span class="inmap-infinity"></span>' : _this.toFixed(val.end));
-                }
-                var td = isShow ? ' <td style="background:' + backgroundColor + '; width:17px;"></td>' : '';
-                str += '\n                <tr>\n                   ' + td + '\n                    <td class="inmap-legend-text">\n                       ' + text + '\n                    </td>\n                </tr>\n                ';
-            });
-            str += '</table>';
-            if (list.length <= 0) {
-                this.hide();
-            }
-            this.dom.innerHTML = str;
-        }
-    }, {
-        key: 'dispose',
-        value: function dispose(parentDom) {
-            parentDom.removeChild(this.dom);
-            this.opts = null;
-            this.dom = null;
-        }
-    }]);
-
-    return Legend;
-}();
-
-exports.default = Legend;
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _util = __webpack_require__(0);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ToolTip = function () {
-    function ToolTip(toolDom) {
-        _classCallCheck(this, ToolTip);
-
-        this.dom = this.create(toolDom);
-        this.tooltipTemplate = null;
-        this.opts = {};
-        this.hide();
-    }
-
-    _createClass(ToolTip, [{
-        key: 'create',
-        value: function create(toolDom) {
-            var dom = document.createElement('div');
-            dom.classList.add('inmap-tooltip');
-            toolDom.appendChild(dom);
-            return dom;
-        }
-    }, {
-        key: 'compileTooltipTemplate',
-        value: function compileTooltipTemplate(formatter) {
-            formatter = '`' + formatter.replace(/\{/g, '${overItem.') + '`';
-            this.tooltipTemplate = new Function('overItem', 'return ' + formatter);
-        }
-    }, {
-        key: 'show',
-        value: function show(x, y) {
-            var _opts$offsets = this.opts.offsets,
-                left = _opts$offsets.left,
-                top = _opts$offsets.top;
-
-            this.dom.style.left = x + left + 'px';
-            this.dom.style.top = y + top + 'px';
-            this.dom.style.display = 'block';
-        }
-    }, {
-        key: 'hide',
-        value: function hide() {
-            this.dom.style.display = 'none';
-        }
-    }, {
-        key: 'setOption',
-        value: function setOption(opts) {
-            var result = (0, _util.merge)(this.opts, opts);
-            var formatter = result.formatter,
-                customClass = result.customClass;
-
-
-            if ((0, _util.isString)(formatter)) {
-                this.compileTooltipTemplate(result.formatter);
-            }
-
-            if (this.opts.customClass) {
-                this.dom.classList.remove(this.opts.customClass);
-            }
-
-            this.dom.classList.add(customClass);
-            this.opts = result;
-        }
-    }, {
-        key: 'render',
-        value: function render(event, overItem) {
-            if (!this.opts.show) return;
-            if (overItem) {
-                var formatter = this.opts.formatter;
-                if ((0, _util.isFunction)(formatter)) {
-                    this.dom.innerHTML = formatter(overItem);
-                } else if ((0, _util.isString)(formatter)) {
-                    this.dom.innerHTML = this.tooltipTemplate(overItem);
-                }
-                this.show(event.offsetX, event.offsetY);
-            } else {
-                this.hide();
+            for (var i = 0; i < this.markers.length; i++) {
+                var marker = this.markers[i];
+                marker.draw(ctx);
             }
         }
     }]);
 
-    return ToolTip;
-}();
+    return PointAnimationOverlay;
+}(_CanvasOverlay2.CanvasOverlay);
 
-exports.default = ToolTip;
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var MapZoom = exports.MapZoom = function () {
-    function MapZoom(map, mapDom, opts) {
-        _classCallCheck(this, MapZoom);
-
-        this.map = map;
-        this.mapDom = mapDom;
-        this.zoom = opts;
-        this.createDom();
-    }
-
-    _createClass(MapZoom, [{
-        key: 'createDom',
-        value: function createDom() {
-            var div = document.createElement('div');
-            div.classList.add('inmap-scale-group');
-            div.innerHTML = '<a>+</a > <a>-</a >';
-            this.mapDom.appendChild(div);
-            this.event(div);
-        }
-    }, {
-        key: 'setButtonState',
-        value: function setButtonState() {
-            var doms = this.mapDom.querySelectorAll('.inmap-scale-group a');
-            var zoom = this.map.getZoom();
-            if (zoom >= this.zoom.max) {
-                doms[0].setAttribute('disabled', 'true');
-            } else {
-                doms[0].removeAttribute('disabled');
-            }
-            if (zoom <= this.zoom.min) {
-                doms[1].setAttribute('disabled', 'true');
-            } else {
-                doms[1].removeAttribute('disabled');
-            }
-        }
-    }, {
-        key: 'event',
-        value: function event(div) {
-            var _this = this;
-
-            var doms = div.querySelectorAll('a');
-            doms[0].addEventListener('click', function () {
-                var zoom = _this.map.getZoom();
-                if (zoom < _this.zoom.max) {
-                    _this.map.zoomIn();
-                }
-            });
-            doms[1].addEventListener('click', function () {
-                var zoom = _this.map.getZoom();
-                if (zoom > _this.zoom.min) {
-                    _this.map.zoomOut();
-                }
-            });
-        }
-    }]);
-
-    return MapZoom;
-}();
+exports.default = PointAnimationOverlay;
 
 /***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _util = __webpack_require__(0);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var BatchesData = function () {
-    function BatchesData(option) {
-        _classCallCheck(this, BatchesData);
-
-        this.setOption(option);
-        this.intervalId = null;
-        this.splitArray = [];
-        this.index = 0;
-    }
-
-    _createClass(BatchesData, [{
-        key: 'setOption',
-        value: function setOption(_ref) {
-            var _ref$interval = _ref.interval,
-                interval = _ref$interval === undefined ? 400 : _ref$interval,
-                _ref$splitCount = _ref.splitCount,
-                splitCount = _ref$splitCount === undefined ? 1500 : _ref$splitCount;
-
-            this.clear();
-            this.interval = interval;
-            this.splitCount = splitCount;
-        }
-    }, {
-        key: 'clear',
-        value: function clear() {
-            this.splitArray = [];
-            this.index = 0;
-            if (this.intervalId) {
-                clearInterval(this.intervalId);
-            }
-        }
-    }, {
-        key: 'action',
-        value: function action(data, callback, ctx) {
-            var _this = this;
-
-            this.clear();
-            var splitCount = this.splitCount,
-                interval = this.interval;
-
-
-            this.splitArray = (0, _util.chunk)(data, splitCount);
-
-            var loop = function loop() {
-                var item = _this.splitArray[_this.index];
-                item && callback(ctx, item);
-
-                _this.index++;
-
-                if (_this.index >= _this.splitArray.length - 1) {
-                    _this.clear();
-                } else {
-                    _this.intervalId = setTimeout(loop, interval);
-                }
-            };
-            loop();
-        }
-    }]);
-
-    return BatchesData;
-}();
-
-exports.default = BatchesData;
-
-/***/ }),
-/* 48 */,
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(50)();
-// imports
-
-
-// module
-exports.push([module.i, ".inmap-container {\n  opacity: 1;\n  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;\n}\n.inmap-container,\n.inmap-container *:after,\n.inmap-container *:before {\n  display: -webkit-box;\n}\n.inmap-scale-group {\n  position: absolute;\n  right: 10px;\n  bottom: 35px;\n  z-index: 999999;\n  opacity: 1;\n}\n.inmap-scale-group > a {\n  display: block;\n  width: 24px;\n  height: 24px;\n  font-size: 17px;\n  line-height: 22px;\n  text-align: center;\n  background: #fff;\n  margin-top: 5px;\n  color: #666;\n  cursor: pointer;\n  text-decoration: none;\n}\n.inmap-scale-group > a[disabled] {\n  color: rgba(187, 190, 196, 0.6);\n  background-color: #f7f7f7;\n  border-color: #dddee1;\n}\n.inmap-tooltip {\n  position: absolute;\n  opacity: 1;\n  display: none;\n  pointer-events: none;\n  border-style: solid;\n  white-space: nowrap;\n  z-index: 9999999;\n  transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1), top 0.4s cubic-bezier(0.23, 1, 0.32, 1);\n  border-radius: 4px;\n  font-style: normal;\n  font-variant: normal;\n  font-weight: normal;\n  font-stretch: normal;\n  font-size: 14px;\n  font-family: sans-serif;\n  line-height: 21px;\n  padding: 5px;\n  left: 323px;\n  top: 451px;\n}\n.inmap-tooltip-black {\n  border-width: 0px;\n  border-color: #333333;\n  background-color: rgba(50, 50, 50, 0.7);\n  color: #ffffff;\n}\n.inmap-legend-container {\n  position: absolute;\n  left: 35px;\n  bottom: 35px;\n  z-index: 9999;\n}\n.inmap-legend {\n  list-style: none;\n  opacity: 1;\n  height: auto;\n  font-size: 12px;\n  text-align: center;\n  border: 10px solid rgba(255, 255, 255, 0.7);\n  box-shadow: rgba(8, 16, 34, 0.3) 2px 0px 7px;\n  border-radius: 5px;\n  margin-right: 3px;\n}\n.inmap-legend .inmap-legend-title {\n  background-color: rgba(255, 255, 255, 0.7);\n  padding-bottom: 3px;\n}\n.inmap-legend > table {\n  width: 100%;\n}\n.inmap-legend table,\n.inmap-legend table tbody,\n.inmap-legend table tr,\n.inmap-legend table tr td {\n  padding: 0;\n  border: 0;\n  margin: 0;\n}\n.inmap-legend .inmap-chunk {\n  display: inline-block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  width: 14px;\n}\n.inmap-legend .inmap-legend-text {\n  background-color: rgba(255, 255, 255, 0.7);\n  padding-left: 5px;\n  text-align: left;\n  font-size: 12px;\n}\n.inmap-legend .inmap-infinity {\n  top: 4px;\n  left: 7px;\n  position: relative;\n}\n.inmap-legend .inmap-infinity:before,\n.inmap-legend .inmap-infinity:after {\n  content: \"\";\n  box-sizing: border-box;\n  width: 6px;\n  height: 6px;\n  position: absolute;\n  top: 0;\n  left: 0;\n  border: 1px solid #495060;\n  -moz-border-radius: 50px 50px 0;\n  border-radius: 50px 50px 0 50px;\n  -webkit-transform: rotate(128deg);\n  -moz-transform: rotate(128deg);\n  -ms-transform: rotate(128deg);\n  -o-transform: rotate(128deg);\n  transform: rotate(128deg);\n}\n.inmap-legend .inmap-infinity:after {\n  left: auto;\n  right: 0;\n  -moz-border-radius: 50px 50px 50px 0;\n  border-radius: 50px 50px 50px 0;\n  -webkit-transform: rotate(-128deg);\n  -moz-transform: rotate(-128deg);\n  -ms-transform: rotate(-128deg);\n  -o-transform: rotate(-128deg);\n  transform: rotate(-128deg);\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function() {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		var result = [];
-		for(var i = 0; i < this.length; i++) {
-			var item = this[i];
-			if(item[2]) {
-				result.push("@media " + item[2] + "{" + item[1] + "}");
-			} else {
-				result.push(item[1]);
-			}
-		}
-		return result.join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-var stylesInDom = {},
-	memoize = function(fn) {
-		var memo;
-		return function () {
-			if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-			return memo;
-		};
-	},
-	isOldIE = memoize(function() {
-		return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
-	}),
-	getHeadElement = memoize(function () {
-		return document.head || document.getElementsByTagName("head")[0];
-	}),
-	singletonElement = null,
-	singletonCounter = 0,
-	styleElementsInsertedAtTop = [];
-
-module.exports = function(list, options) {
-	if(typeof DEBUG !== "undefined" && DEBUG) {
-		if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (typeof options.singleton === "undefined") options.singleton = isOldIE();
-
-	// By default, add <style> tags to the bottom of <head>.
-	if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
-
-	var styles = listToStyles(list);
-	addStylesToDom(styles, options);
-
-	return function update(newList) {
-		var mayRemove = [];
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-		if(newList) {
-			var newStyles = listToStyles(newList);
-			addStylesToDom(newStyles, options);
-		}
-		for(var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-			if(domStyle.refs === 0) {
-				for(var j = 0; j < domStyle.parts.length; j++)
-					domStyle.parts[j]();
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-}
-
-function addStylesToDom(styles, options) {
-	for(var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-		if(domStyle) {
-			domStyle.refs++;
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles(list) {
-	var styles = [];
-	var newStyles = {};
-	for(var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-		if(!newStyles[id])
-			styles.push(newStyles[id] = {id: id, parts: [part]});
-		else
-			newStyles[id].parts.push(part);
-	}
-	return styles;
-}
-
-function insertStyleElement(options, styleElement) {
-	var head = getHeadElement();
-	var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
-	if (options.insertAt === "top") {
-		if(!lastStyleElementInsertedAtTop) {
-			head.insertBefore(styleElement, head.firstChild);
-		} else if(lastStyleElementInsertedAtTop.nextSibling) {
-			head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			head.appendChild(styleElement);
-		}
-		styleElementsInsertedAtTop.push(styleElement);
-	} else if (options.insertAt === "bottom") {
-		head.appendChild(styleElement);
-	} else {
-		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-	}
-}
-
-function removeStyleElement(styleElement) {
-	styleElement.parentNode.removeChild(styleElement);
-	var idx = styleElementsInsertedAtTop.indexOf(styleElement);
-	if(idx >= 0) {
-		styleElementsInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement(options) {
-	var styleElement = document.createElement("style");
-	styleElement.type = "text/css";
-	insertStyleElement(options, styleElement);
-	return styleElement;
-}
-
-function createLinkElement(options) {
-	var linkElement = document.createElement("link");
-	linkElement.rel = "stylesheet";
-	insertStyleElement(options, linkElement);
-	return linkElement;
-}
-
-function addStyle(obj, options) {
-	var styleElement, update, remove;
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-		styleElement = singletonElement || (singletonElement = createStyleElement(options));
-		update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-	} else if(obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function") {
-		styleElement = createLinkElement(options);
-		update = updateLink.bind(null, styleElement);
-		remove = function() {
-			removeStyleElement(styleElement);
-			if(styleElement.href)
-				URL.revokeObjectURL(styleElement.href);
-		};
-	} else {
-		styleElement = createStyleElement(options);
-		update = applyToTag.bind(null, styleElement);
-		remove = function() {
-			removeStyleElement(styleElement);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle(newObj) {
-		if(newObj) {
-			if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-				return;
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag(styleElement, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (styleElement.styleSheet) {
-		styleElement.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = styleElement.childNodes;
-		if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-		if (childNodes.length) {
-			styleElement.insertBefore(cssNode, childNodes[index]);
-		} else {
-			styleElement.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag(styleElement, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		styleElement.setAttribute("media", media)
-	}
-
-	if(styleElement.styleSheet) {
-		styleElement.styleSheet.cssText = css;
-	} else {
-		while(styleElement.firstChild) {
-			styleElement.removeChild(styleElement.firstChild);
-		}
-		styleElement.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink(linkElement, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	if(sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = linkElement.href;
-
-	linkElement.href = URL.createObjectURL(blob);
-
-	if(oldSrc)
-		URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(49);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(51)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./map.less", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./map.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 53 */,
-/* 54 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5830,19 +4088,19 @@ exports.PointOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay = __webpack_require__(3);
+var _CanvasOverlay = __webpack_require__(2);
 
-var _Label = __webpack_require__(7);
+var _Label = __webpack_require__(35);
 
-var _Parameter2 = __webpack_require__(4);
+var _Parameter2 = __webpack_require__(3);
 
 var _util = __webpack_require__(0);
 
-var _BatchesData = __webpack_require__(47);
+var _BatchesData = __webpack_require__(34);
 
 var _BatchesData2 = _interopRequireDefault(_BatchesData);
 
-var _DotConfig = __webpack_require__(33);
+var _DotConfig = __webpack_require__(21);
 
 var _DotConfig2 = _interopRequireDefault(_DotConfig);
 
@@ -6262,7 +4520,841 @@ var PointOverlay = exports.PointOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 55 */
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.PolygonOverlay = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Parameter2 = __webpack_require__(3);
+
+var _Color = __webpack_require__(4);
+
+var _util = __webpack_require__(0);
+
+var _BoundaryConfig = __webpack_require__(19);
+
+var _BoundaryConfig2 = _interopRequireDefault(_BoundaryConfig);
+
+var _OnState = __webpack_require__(1);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PolygonOverlay = exports.PolygonOverlay = function (_Parameter) {
+    _inherits(PolygonOverlay, _Parameter);
+
+    function PolygonOverlay(ops) {
+        _classCallCheck(this, PolygonOverlay);
+
+        var _this = _possibleConstructorReturn(this, (PolygonOverlay.__proto__ || Object.getPrototypeOf(PolygonOverlay)).call(this, _BoundaryConfig2.default, ops));
+
+        _this.patchSplitList();
+        _this.state = null;
+        return _this;
+    }
+
+    _createClass(PolygonOverlay, [{
+        key: 'parameterInit',
+        value: function parameterInit() {
+            this.initLegend();
+        }
+    }, {
+        key: 'initLegend',
+        value: function initLegend() {
+            this.compileSplitList(this.styleConfig.colors, this.getTransformData());
+            this.patchSplitList();
+            this.setlegend(this.legendConfig, this.styleConfig.splitList);
+        }
+    }, {
+        key: 'setSelectedList',
+        value: function setSelectedList(list) {
+            (0, _util.clearPushArray)(this.selectItem, list);
+        }
+    }, {
+        key: 'clearSelectedList',
+        value: function clearSelectedList() {
+            (0, _util.clearPushArray)(this.selectItem);
+        }
+    }, {
+        key: 'getSelectedList',
+        value: function getSelectedList() {
+            return this.selectItem;
+        }
+    }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+            for (var i = 0; i < this.workerData.length; i++) {
+                var geometry = this.workerData[i].geometry;
+                var pixels = geometry.pixels;
+                for (var j = 0; j < pixels.length; j++) {
+                    var pixelItem = pixels[j];
+                    for (var k = 0, len = pixelItem.length; k < len; k++) {
+                        var pixel = pixelItem[k];
+                        pixel[0] = pixel[0] + distanceX;
+                        pixel[1] = pixel[1] + distanceY;
+                    }
+                }
+                if (this.styleConfig.normal.label.show) {
+                    var labelPixels = geometry.labelPixels;
+                    for (var _j = 0; _j < labelPixels.length; _j++) {
+                        var bestCell = labelPixels[_j];
+                        if (bestCell) {
+                            bestCell.x = bestCell.x + distanceX;
+                            bestCell.y = bestCell.y + distanceY;
+                        }
+                    }
+                }
+            }
+            this.refresh();
+        }
+    }, {
+        key: 'setOptionStyle',
+        value: function setOptionStyle(ops) {
+            this._setStyle(this.baseConfig, ops);
+        }
+    }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.eventConfig.onState(this.state);
+        }
+    }, {
+        key: 'onOptionChange',
+        value: function onOptionChange() {
+            this.map && this.initLegend();
+        }
+    }, {
+        key: 'onDataChange',
+        value: function onDataChange() {
+            this.map && this.initLegend();
+        }
+    }, {
+        key: 'compileSplitList',
+        value: function compileSplitList(colors, data) {
+
+            if (colors.length <= 0) return;
+            data = data.sort(function (a, b) {
+                return parseFloat(a.count) - parseFloat(b.count);
+            });
+            var splitCount = data.length / colors.length;
+            var colorIndex = 0;
+            var split = [];
+            var star = 0,
+                end = 0;
+
+            for (var i = 0; i < data.length; i++) {
+
+                if (i > splitCount * (colorIndex + 1)) {
+                    if (split.length == 0) {
+                        star = data[0].count;
+                    }
+
+                    end = data[i].count;
+
+                    split.push({
+                        start: star,
+                        end: end,
+                        backgroundColor: colors[colorIndex]
+                    });
+                    colorIndex++;
+                    star = data[i].count;
+                }
+            }
+
+            if (split.length > 0) {
+                split.push({
+                    start: star,
+                    end: null,
+                    backgroundColor: colors[colorIndex]
+                });
+            }
+
+            this.styleConfig.splitList = split;
+        }
+    }, {
+        key: 'patchSplitList',
+        value: function patchSplitList() {
+            var normal = this.styleConfig.normal;
+            if (normal.borderWidth != null && normal.borderColor == null) {
+                normal.borderColor = new _Color.Color(normal.backgroundColor).getRgbaStyle();
+            }
+            var splitList = this.styleConfig.splitList;
+            for (var i = 0; i < splitList.length; i++) {
+                var condition = splitList[i];
+                if ((condition.borderWidth != null || normal.borderColor != null) && condition.borderColor == null) {
+                    condition.borderColor = new _Color.Color(condition.backgroundColor).getRgbaStyle();
+                }
+            }
+        }
+    }, {
+        key: 'resize',
+        value: function resize() {
+
+            this.drawMap();
+        }
+    }, {
+        key: 'getGeoCenter',
+        value: function getGeoCenter(geo) {
+            var minX = geo[0][0];
+            var minY = geo[0][1];
+            var maxX = geo[0][0];
+            var maxY = geo[0][1];
+            for (var i = 1; i < geo.length; i++) {
+                minX = Math.min(minX, geo[i][0]);
+                maxX = Math.max(maxX, geo[i][0]);
+                minY = Math.min(minY, geo[i][1]);
+                maxY = Math.max(maxY, geo[i][1]);
+            }
+            return [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
+        }
+    }, {
+        key: 'getMaxWidth',
+        value: function getMaxWidth(geo) {
+            var minX = geo[0][0];
+            var minY = geo[0][1];
+            var maxX = geo[0][0];
+            var maxY = geo[0][1];
+            for (var i = 1; i < geo.length; i++) {
+                minX = Math.min(minX, geo[i][0]);
+                maxX = Math.max(maxX, geo[i][0]);
+                minY = Math.min(minY, geo[i][1]);
+                maxY = Math.max(maxY, geo[i][1]);
+            }
+            return maxX - minX;
+        }
+    }, {
+        key: 'findIndexSelectItem',
+        value: function findIndexSelectItem(item) {
+            var index = -1;
+            if (item) {
+                index = this.selectItem.findIndex(function (val) {
+                    return val && val.name == item.name;
+                });
+            }
+            return index;
+        }
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+
+            this.setState(_OnState2.default.drawBefore);
+            this.clearCanvas();
+            this.drawLine(this.getData());
+            this.setState(_OnState2.default.drawAfter);
+        }
+    }, {
+        key: 'drawMap',
+        value: function drawMap() {
+            var _this2 = this;
+
+            this.setState(_OnState2.default.computeBefore);
+            var parameter = {
+                data: this.getTransformData(),
+                labelShow: this.styleConfig.normal.label.show
+            };
+
+            this.postMessage('PolygonOverlay.calculatePixel', parameter, function (pixels, margin) {
+                if (_this2.eventType == 'onmoving') {
+                    return;
+                }
+
+                _this2.setState(_OnState2.default.conputeAfter);
+                _this2.setWorkerData(pixels);
+                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                pixels = null, margin = null;
+            });
+        }
+    }, {
+        key: 'getTarget',
+        value: function getTarget(x, y) {
+            var data = this.getData();
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                var geometry = item.geometry;
+                var pixels = geometry.pixels;
+
+                this.ctx.beginPath();
+                for (var j = 0; j < pixels.length; j++) {
+                    var pixelItem = pixels[j];
+                    this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
+                    for (var k = 1, len = pixelItem.length; k < len; k++) {
+                        this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+                    }
+                    this.ctx.closePath();
+                    if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
+                        return {
+                            index: i,
+                            item: item
+                        };
+                    }
+                    pixelItem = null;
+                }
+
+                pixels = null, geometry = null, item = null;
+            }
+
+            return {
+                index: -1,
+                item: null
+            };
+        }
+    }, {
+        key: 'drawLine',
+        value: function drawLine(data) {
+            this.ctx.lineCap = 'round';
+            this.ctx.lineJoin = 'round';
+            this.ctx.miterLimit = 4;
+            for (var i = 0; i < data.length; i++) {
+                var item = data[i];
+                var geometry = item.geometry;
+                var pixels = geometry.pixels;
+                var style = this.setDrawStyle(item);
+                this.ctx.beginPath();
+                this.ctx.shadowColor = style.shadowColor || 'transparent';
+                this.ctx.shadowBlur = style.shadowBlur || 10;
+                this.ctx.shadowOffsetX = 0;
+                this.ctx.shadowOffsetY = 0;
+                this.ctx.fillStyle = style.backgroundColor;
+
+                for (var j = 0; j < pixels.length; j++) {
+                    var pixelItem = pixels[j];
+                    this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
+                    for (var k = 1, len = pixelItem.length; k < len; k++) {
+                        this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+                    }
+                    pixelItem = null;
+                    this.ctx.closePath();
+                    this.ctx.fill();
+                }
+                this.ctx.strokeStyle = style.borderColor;
+                this.ctx.lineWidth = style.borderWidth;
+                this.ctx.stroke();
+
+                if (this.styleConfig.normal.label.show) {
+                    var labelPixels = geometry.labelPixels;
+                    this.ctx.shadowBlur = 0;
+                    this.ctx.lineWidth = style.label.lineWidth;
+                    this.ctx.font = style.label.font;
+                    this.ctx.fillStyle = style.label.color;
+                    for (var _j2 = 0; _j2 < labelPixels.length; _j2++) {
+                        var bestCell = labelPixels[_j2];
+                        this.ctx.beginPath();
+                        var width = this.ctx.measureText(item.name).width;
+                        if (bestCell && item.name && this.getMaxWidth(pixels[_j2]) > width) {
+                            this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
+                        }
+                        bestCell = null, width = null;
+                    }
+                    labelPixels = null;
+                }
+                style = null, pixels = null, geometry = null, item = null;
+            }
+            this.ctx.closePath();
+        }
+    }]);
+
+    return PolygonOverlay;
+}(_Parameter2.Parameter);
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    tooltip: {
+        show: false,
+        customClass: 'inmap-tooltip-black',
+        offsets: {
+            top: 5,
+            left: 12
+        }
+
+    },
+    legend: {
+        show: false,
+        toFixed: 2 },
+
+    style: {
+        normal: {
+            borderWidth: 0.1,
+            backgroundColor: 'rgba(200, 200, 200, 0.5)',
+            mergeCount: 1.5,
+            label: {
+                show: false,
+                color: 'rgba(0,0,0,1)',
+                font: '13px Arial'
+            }
+        },
+
+        colors: [],
+        splitList: []
+
+    },
+    data: [],
+    event: {
+        multiSelect: false, onMouseClick: function onMouseClick() {},
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    style: {
+        normal: {
+            borderColor: 'rgba(50, 50, 255, 0.8)',
+            borderWidth: 0.05
+        }
+    },
+    data: [],
+    event: {
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    tooltip: {
+        show: false,
+        customClass: 'inmap-tooltip-black',
+        offsets: {
+            top: 5,
+            left: 12
+        }
+
+    },
+    legend: {
+        show: false,
+        toFixed: 2 },
+    draw: {},
+    style: {
+        normal: {
+            borderWidth: 0.1,
+            backgroundColor: 'rgba(200, 200, 200, 0.5)',
+            mergeCount: 1.5,
+            label: {
+                show: false,
+                color: 'rgba(0,0,0,1)',
+                font: '13px Arial'
+            }
+        },
+
+        colors: [],
+        splitList: []
+
+    },
+    data: [],
+    event: {
+        multiSelect: false, onMouseClick: function onMouseClick() {},
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    style: {
+        normal: {
+            fps: 25,
+            color: '#FAFA32',
+            radius: 20,
+            speed: 0.15 }
+    },
+    data: []
+};
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    tooltip: {
+        show: true,
+        customClass: 'inmap-tooltip-black',
+        formatter: '{count}',
+        offsets: {
+            top: 5,
+            left: 12
+        }
+    },
+    legend: {
+        show: true,
+        title: '图例'
+    },
+    style: {
+        type: 'sum',
+        colors: ['rgba(31,98,1,1)', 'rgba(95,154,4,1)', 'rgba(139,227,7,1)', 'rgba(218,134,9,1)', 'rgba(220,54,6,1)', 'rgba(218,2,8,1)', 'rgba(148,1,2,1)', 'rgba(92,1,0,1)'],
+        normal: {
+            backgroundColor: 'rgba(200, 200, 200, 0.5)',
+            padding: 1,
+            size: 50,
+            unit: 'px',
+            label: {
+                show: false,
+                font: '12px sans-serif',
+                shadowBlur: 0,
+                lineWidth: 1,
+                color: 'rgba(75,80,86,1)'
+            }
+        },
+        mouseOver: {},
+        selected: {}
+
+    },
+    data: [],
+    event: {
+        multiSelect: false,
+        onMouseClick: function onMouseClick() {},
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    tooltip: {
+        show: false,
+        offsets: {
+            top: 5,
+            left: 12
+        }
+    },
+    legend: {
+        show: false
+    },
+    style: {
+        gradient: {
+            0.25: 'rgb(0,0,255)',
+            0.55: 'rgb(0,255,0)',
+            0.85: 'rgb(255,255,0)',
+            1.0: 'rgb(255,0,0)'
+        },
+        normal: {
+            radius: 15,
+            minOpacity: 0,
+            maxOpacity: 1,
+            minValue: 0,
+            maxValue: 0,
+            minScope: 0,
+            maxScope: 1 }
+    },
+    data: [],
+    event: {
+        multiSelect: false,
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    tooltip: {
+        show: true,
+        customClass: 'inmap-tooltip-black',
+        formatter: '{count}',
+        offsets: {
+            top: 5,
+            left: 12
+        }
+    },
+    legend: {
+        show: true,
+        title: '图例'
+    },
+    style: {
+        colors: ['rgba(31,98,1,1)', 'rgba(95,154,4,1)', 'rgba(139,227,7,1)', 'rgba(218,134,9,1)', 'rgba(220,54,6,1)', 'rgba(218,2,8,1)', 'rgba(148,1,2,1)', 'rgba(92,1,0,1)'],
+        normal: {
+            backgroundColor: 'rgba(200, 200, 200, 0.5)',
+            padding: 1,
+            size: 50,
+            unit: 'px',
+            label: {
+                show: false,
+                font: '12px sans-serif',
+                shadowBlur: 0,
+                lineWidth: 1,
+                color: 'rgba(75,80,86,1)'
+            }
+        },
+        mouseOver: {},
+        selected: {}
+
+    },
+    data: [],
+    event: {
+        multiSelect: false,
+        onMouseClick: function onMouseClick() {},
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    tooltip: {
+        show: true,
+        customClass: 'inmap-tooltip-black',
+        offsets: {
+            top: 5,
+            left: 12
+        },
+        formatter: '{count}'
+    },
+    legend: {
+        show: false
+    },
+    style: {
+        normal: {
+            icon: null,
+            width: 0,
+            height: 0,
+            offsets: {
+                top: 0,
+                left: 0
+            }
+        },
+        mouseOver: {},
+        selected: {},
+        colors: [],
+        splitList: []
+    },
+    data: [],
+    event: {
+        multiSelect: false, onMouseClick: function onMouseClick() {},
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    center: [],
+    id: null,
+    skin: null,
+    zoom: {
+        value: 5,
+        show: true,
+        max: 18,
+        min: 5
+    }
+};
+
+/***/ }),
+/* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    show: false,
+    title: null,
+    formatter: null,
+    list: []
+};
+
+/***/ }),
+/* 29 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    style: {
+        normal: {
+            markerRadius: 3,
+
+            markerColor: '#fff',
+
+            lineType: 'solid',
+
+            lineWidth: 1,
+
+            colors: ['#F9815C', '#F8AB60', '#EDCC72', '#E2F194', '#94E08A', '#4ECDA5'],
+
+            moveRadius: 2,
+
+            fillColor: '#fff',
+
+            shadowColor: '#fff',
+
+            shadowBlur: 5,
+            fps: 30,
+            skin: null }
+    },
+    data: []
+};
+
+/***/ }),
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.workerMrg = exports.PointAnimationOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.LineStringOverlay = exports.HeatOverlay = exports.PolygonOverlay = exports.GriddingOverlay = exports.PointOverlay = exports.Map = exports.utils = exports.version = undefined;
+
+var _PointOverlay = __webpack_require__(17);
+
+var _GriddingOverlay = __webpack_require__(10);
+
+var _PolygonOverlay = __webpack_require__(18);
+
+var _HeatOverlay = __webpack_require__(11);
+
+var _LineStringOverlay = __webpack_require__(14);
+
+var _HoneycombOverlay = __webpack_require__(12);
+
+var _ImgOverlay = __webpack_require__(13);
+
+var _MoveLineOverlay = __webpack_require__(15);
+
+var _PointAnimationOverlay = __webpack_require__(16);
+
+var _PointAnimationOverlay2 = _interopRequireDefault(_PointAnimationOverlay);
+
+var _index = __webpack_require__(9);
+
+var _util = __webpack_require__(0);
+
+var utils = _interopRequireWildcard(_util);
+
+var _workerMrg = __webpack_require__(6);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var version = "1.5.8";
+console.log('inMap v' + version);
+
+var inMap = {
+    version: version,
+    utils: utils,
+    Map: _index.Map,
+    PointOverlay: _PointOverlay.PointOverlay,
+    GriddingOverlay: _GriddingOverlay.GriddingOverlay,
+    PolygonOverlay: _PolygonOverlay.PolygonOverlay,
+    HeatOverlay: _HeatOverlay.HeatOverlay,
+    LineStringOverlay: _LineStringOverlay.LineStringOverlay,
+    HoneycombOverlay: _HoneycombOverlay.HoneycombOverlay,
+    ImgOverlay: _ImgOverlay.ImgOverlay,
+    MoveLineOverlay: _MoveLineOverlay.MoveLineOverlay,
+    PointAnimationOverlay: _PointAnimationOverlay2.default,
+    workerMrg: _workerMrg.workerMrg
+};
+exports.version = version;
+exports.utils = utils;
+exports.Map = _index.Map;
+exports.PointOverlay = _PointOverlay.PointOverlay;
+exports.GriddingOverlay = _GriddingOverlay.GriddingOverlay;
+exports.PolygonOverlay = _PolygonOverlay.PolygonOverlay;
+exports.HeatOverlay = _HeatOverlay.HeatOverlay;
+exports.LineStringOverlay = _LineStringOverlay.LineStringOverlay;
+exports.HoneycombOverlay = _HoneycombOverlay.HoneycombOverlay;
+exports.ImgOverlay = _ImgOverlay.ImgOverlay;
+exports.MoveLineOverlay = _MoveLineOverlay.MoveLineOverlay;
+exports.PointAnimationOverlay = _PointAnimationOverlay2.default;
+exports.workerMrg = _workerMrg.workerMrg;
+exports.default = inMap;
+
+/***/ }),
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6274,157 +5366,1051 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay2 = __webpack_require__(3);
+var _Color = __webpack_require__(4);
+
+var _Legend = __webpack_require__(28);
+
+var _Legend2 = _interopRequireDefault(_Legend);
 
 var _util = __webpack_require__(0);
 
-var _FlashDotConfig = __webpack_require__(34);
-
-var _FlashDotConfig2 = _interopRequireDefault(_FlashDotConfig);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Marker = function () {
-    function Marker(opts, data, map) {
-        _classCallCheck(this, Marker);
+var Legend = function () {
+    function Legend(toolDom, opts) {
+        _classCallCheck(this, Legend);
 
-        this.city = opts.name;
-        this.location = new BMap.Point(data.geometry.coordinates[0], data.geometry.coordinates[1]);
-        this.pixel = map.pointToPixel(this.location);
-        this.color = opts.color;
-        this.speed = opts.speed;
-        this.radius = 0;
-        this.size = opts.size;
+        this.opts = opts || _Legend2.default;
+        this.dom = this.crateDom(toolDom);
+        this.hide();
     }
 
-    _createClass(Marker, [{
-        key: 'draw',
-        value: function draw(context) {
-            var pixel = this.pixel;
-            context.save();
-            context.beginPath();
-            context.strokeStyle = this.color;
-            context.moveTo(pixel.x + pixel.radius, pixel.y);
-            context.arc(pixel.x, pixel.y, this.radius, 0, Math.PI * 2);
-            context.stroke();
-            context.closePath();
-            context.restore();
-            this.radius += this.speed;
-            if (this.radius > this.size) {
-                this.radius = 0;
+    _createClass(Legend, [{
+        key: 'crateDom',
+        value: function crateDom(toolDom) {
+            var div = document.createElement('div');
+            div.classList.add('inmap-legend');
+            toolDom.appendChild(div);
+            return div;
+        }
+    }, {
+        key: 'show',
+        value: function show() {
+            this.dom.style.display = 'inline-block';
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            this.dom.style.display = 'none';
+        }
+    }, {
+        key: 'toFixed',
+        value: function toFixed(num) {
+            return isNaN(num) ? num : parseFloat(num).toFixed(this.opts.toFixed);
+        }
+    }, {
+        key: 'setTitle',
+        value: function setTitle(title) {
+            this.opts.title = title;
+            this.render();
+        }
+    }, {
+        key: 'setOption',
+        value: function setOption(opts) {
+            this.opts = (0, _util.merge)(_Legend2.default, this.opts, opts);
+            this.render();
+        }
+    }, {
+        key: 'setItems',
+        value: function setItems(list) {
+            this.opts.list = list;
+            this.render();
+        }
+    }, {
+        key: '_verify',
+        value: function _verify() {
+            var _opts = this.opts,
+                show = _opts.show,
+                title = _opts.title,
+                list = _opts.list;
+
+            if (!(0, _util.isBoolean)(show)) {
+                throw new TypeError('inMap: legend options show must be a Boolean');
             }
-        }
-    }]);
-
-    return Marker;
-}();
-
-var PointAnimationOverlay = function (_CanvasOverlay) {
-    _inherits(PointAnimationOverlay, _CanvasOverlay);
-
-    function PointAnimationOverlay(ops) {
-        _classCallCheck(this, PointAnimationOverlay);
-
-        var _this = _possibleConstructorReturn(this, (PointAnimationOverlay.__proto__ || Object.getPrototypeOf(PointAnimationOverlay)).call(this));
-
-        _this.data = [];
-        _this.styleConfig = null;
-        _this.markers = [];
-        _this.render = _this.render.bind(_this);
-        _this.setOptionStyle(ops);
-        return _this;
-    }
-
-    _createClass(PointAnimationOverlay, [{
-        key: 'canvasInit',
-        value: function canvasInit() {
-            this.addMarker();
-            var now = void 0;
-            var then = Date.now();
-            var interval = 1000 / 25;
-            var delta = void 0;
-            var render = this.render;
-            (function drawFrame() {
-                requestAnimationFrame(drawFrame);
-                now = Date.now();
-                delta = now - then;
-                if (delta > interval) {
-                    then = now - delta % interval;
-                    render();
-                }
-            })();
-        }
-    }, {
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-            var option = (0, _util.merge)(_FlashDotConfig2.default, ops);
-            this.styleConfig = option.style.normal;
-            this.data = ops.data ? option.data : this.data;
-            this.tMapStyle(option.skin);
-            this.map && this.addMarker();
-        }
-    }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-
-            for (var i = 0; i < this.markers.length; i++) {
-                var pixel = this.markers[i].pixel;
-                pixel.x = pixel.x + distanceX;
-                pixel.y = pixel.y + distanceY;
+            if (!(0, _util.isEmpty)(title) && !(0, _util.isString)(title)) {
+                throw new TypeError('inMap: legend options title must be a String');
             }
-        }
-    }, {
-        key: 'addMarker',
-        value: function addMarker() {
-            this.markers = [];
-            for (var i = 0; i < this.data.length; i++) {
-                var style = (0, _util.merge)(this.styleConfig, this.data[i].style);
-                this.markers.push(new Marker(style, this.data[i], this.map));
+            if (!(0, _util.isArray)(list)) {
+                throw new TypeError('inMap: legend options list must be a Array');
             }
-        }
-    }, {
-        key: 'resize',
-        value: function resize() {
-            this.addMarker();
-            this.canvasResize();
         }
     }, {
         key: 'render',
         value: function render() {
-            var ctx = this.ctx;
-            if (!ctx) {
+            var _this = this;
+
+            this._verify();
+            var _opts2 = this.opts,
+                show = _opts2.show,
+                title = _opts2.title,
+                list = _opts2.list;
+
+            if (show) {
+                this.show();
+            } else {
+                this.hide();
                 return;
             }
-            if (!this.animationFlag) {
-                this.clearCanvas();
-                return;
+
+            var str = '';
+            if (title) {
+                str = '<div class="inmap-legend-title">' + title + ' </div>';
             }
 
-            var size = this.map.getSize();
-            ctx.fillStyle = 'rgba(0,0,0,.95)';
-            var prev = ctx.globalCompositeOperation;
-            ctx.globalCompositeOperation = 'destination-in';
+            str += '<table cellpadding="0" cellspacing="0">';
+            list.forEach(function (val, index) {
+                var text = null,
+                    backgroundColor = val.backgroundColor;
+                var isShow = backgroundColor != null;
+                var legendBg = new _Color.Color(backgroundColor),
+                    difference = 0.2;
 
-            ctx.fillRect(0, 0, size.width, size.height);
-            ctx.globalCompositeOperation = prev;
+                var opacity = val.opacity;
+                if (opacity) {
+                    opacity += difference;
+                }
+                if (legendBg.a) {
+                    opacity = legendBg.a + difference;
+                } else {
+                    opacity = 1;
+                }
+                backgroundColor = legendBg.getRgbaStyle(opacity);
+                if (val.text) {
+                    text = val.text;
+                } else if (_this.opts.formatter) {
+                    text = _this.opts.formatter(_this.toFixed(val.start), _this.toFixed(val.end), index, val);
+                } else {
+                    text = _this.toFixed(val.start) + ' ~ ' + (val.end == null ? '<span class="inmap-infinity"></span>' : _this.toFixed(val.end));
+                }
+                var td = isShow ? ' <td style="background:' + backgroundColor + '; width:17px;"></td>' : '';
+                str += '\n                <tr>\n                   ' + td + '\n                    <td class="inmap-legend-text">\n                       ' + text + '\n                    </td>\n                </tr>\n                ';
+            });
+            str += '</table>';
+            if (list.length <= 0) {
+                this.hide();
+            }
+            this.dom.innerHTML = str;
+        }
+    }, {
+        key: 'dispose',
+        value: function dispose(parentDom) {
+            parentDom.removeChild(this.dom);
+            this.opts = null;
+            this.dom = null;
+        }
+    }]);
 
-            for (var i = 0; i < this.markers.length; i++) {
-                var marker = this.markers[i];
-                marker.draw(ctx);
+    return Legend;
+}();
+
+exports.default = Legend;
+
+/***/ }),
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ToolTip = function () {
+    function ToolTip(toolDom) {
+        _classCallCheck(this, ToolTip);
+
+        this.dom = this.create(toolDom);
+        this.tooltipTemplate = null;
+        this.opts = {};
+        this.hide();
+    }
+
+    _createClass(ToolTip, [{
+        key: 'create',
+        value: function create(toolDom) {
+            var dom = document.createElement('div');
+            dom.classList.add('inmap-tooltip');
+            toolDom.appendChild(dom);
+            return dom;
+        }
+    }, {
+        key: 'compileTooltipTemplate',
+        value: function compileTooltipTemplate(formatter) {
+            formatter = '`' + formatter.replace(/\{/g, '${overItem.') + '`';
+            this.tooltipTemplate = new Function('overItem', 'return ' + formatter);
+        }
+    }, {
+        key: 'show',
+        value: function show(x, y) {
+            var _opts$offsets = this.opts.offsets,
+                left = _opts$offsets.left,
+                top = _opts$offsets.top;
+
+            this.dom.style.left = x + left + 'px';
+            this.dom.style.top = y + top + 'px';
+            this.dom.style.display = 'block';
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            this.dom.style.display = 'none';
+        }
+    }, {
+        key: 'setOption',
+        value: function setOption(opts) {
+            var result = (0, _util.merge)(this.opts, opts);
+            var formatter = result.formatter,
+                customClass = result.customClass;
+
+
+            if ((0, _util.isString)(formatter)) {
+                this.compileTooltipTemplate(result.formatter);
+            }
+
+            if (this.opts.customClass) {
+                this.dom.classList.remove(this.opts.customClass);
+            }
+
+            this.dom.classList.add(customClass);
+            this.opts = result;
+        }
+    }, {
+        key: 'render',
+        value: function render(event, overItem) {
+            if (!this.opts.show) return;
+            if (overItem) {
+                var formatter = this.opts.formatter;
+                if ((0, _util.isFunction)(formatter)) {
+                    this.dom.innerHTML = formatter(overItem);
+                } else if ((0, _util.isString)(formatter)) {
+                    this.dom.innerHTML = this.tooltipTemplate(overItem);
+                }
+                this.show(event.offsetX, event.offsetY);
+            } else {
+                this.hide();
             }
         }
     }]);
 
-    return PointAnimationOverlay;
-}(_CanvasOverlay2.CanvasOverlay);
+    return ToolTip;
+}();
 
-exports.default = PointAnimationOverlay;
+exports.default = ToolTip;
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MapZoom = exports.MapZoom = function () {
+    function MapZoom(map, mapDom, opts) {
+        _classCallCheck(this, MapZoom);
+
+        this.map = map;
+        this.mapDom = mapDom;
+        this.zoom = opts;
+        this.createDom();
+    }
+
+    _createClass(MapZoom, [{
+        key: 'createDom',
+        value: function createDom() {
+            var div = document.createElement('div');
+            div.classList.add('inmap-scale-group');
+            div.innerHTML = '<a>+</a > <a>-</a >';
+            this.mapDom.appendChild(div);
+            this.event(div);
+        }
+    }, {
+        key: 'setButtonState',
+        value: function setButtonState() {
+            var doms = this.mapDom.querySelectorAll('.inmap-scale-group a');
+            var zoom = this.map.getZoom();
+            if (zoom >= this.zoom.max) {
+                doms[0].setAttribute('disabled', 'true');
+            } else {
+                doms[0].removeAttribute('disabled');
+            }
+            if (zoom <= this.zoom.min) {
+                doms[1].setAttribute('disabled', 'true');
+            } else {
+                doms[1].removeAttribute('disabled');
+            }
+        }
+    }, {
+        key: 'event',
+        value: function event(div) {
+            var _this = this;
+
+            var doms = div.querySelectorAll('a');
+            doms[0].addEventListener('click', function () {
+                var zoom = _this.map.getZoom();
+                if (zoom < _this.zoom.max) {
+                    _this.map.zoomIn();
+                }
+            });
+            doms[1].addEventListener('click', function () {
+                var zoom = _this.map.getZoom();
+                if (zoom > _this.zoom.min) {
+                    _this.map.zoomOut();
+                }
+            });
+        }
+    }]);
+
+    return MapZoom;
+}();
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var BatchesData = function () {
+    function BatchesData(option) {
+        _classCallCheck(this, BatchesData);
+
+        this.setOption(option);
+        this.intervalId = null;
+        this.splitArray = [];
+        this.index = 0;
+    }
+
+    _createClass(BatchesData, [{
+        key: 'setOption',
+        value: function setOption(_ref) {
+            var _ref$interval = _ref.interval,
+                interval = _ref$interval === undefined ? 400 : _ref$interval,
+                _ref$splitCount = _ref.splitCount,
+                splitCount = _ref$splitCount === undefined ? 1500 : _ref$splitCount;
+
+            this.clear();
+            this.interval = interval;
+            this.splitCount = splitCount;
+        }
+    }, {
+        key: 'clear',
+        value: function clear() {
+            this.splitArray = [];
+            this.index = 0;
+            if (this.intervalId) {
+                clearInterval(this.intervalId);
+            }
+        }
+    }, {
+        key: 'action',
+        value: function action(data, callback, ctx) {
+            var _this = this;
+
+            this.clear();
+            var splitCount = this.splitCount,
+                interval = this.interval;
+
+
+            this.splitArray = (0, _util.chunk)(data, splitCount);
+
+            var loop = function loop() {
+                var item = _this.splitArray[_this.index];
+                item && callback(ctx, item);
+
+                _this.index++;
+
+                if (_this.index >= _this.splitArray.length - 1) {
+                    _this.clear();
+                } else {
+                    _this.intervalId = setTimeout(loop, interval);
+                }
+            };
+            loop();
+        }
+    }]);
+
+    return BatchesData;
+}();
+
+exports.default = BatchesData;
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Label = exports.Label = function () {
+    function Label(x, y, radius, height, byteWidth, name) {
+        _classCallCheck(this, Label);
+
+        this.center = {
+            x: x,
+            y: y
+        };
+        this.virtualReact = {
+            maxX: 0,
+            maxY: 0,
+            minX: 0,
+            minY: 0,
+            width: 0,
+            height: 0
+        };
+        this.show = true;
+        this.text = name;
+        this.textReact = {
+            width: 0,
+            height: 0
+        };
+        this.radius = radius + 2;
+        this.padding = 0;
+        this.aIndex = 0;
+        this._getRectangle(height * 1.1, byteWidth - 0.6);
+    }
+
+    _createClass(Label, [{
+        key: 'getCurrentRect',
+        value: function getCurrentRect() {
+            var result = null;
+            switch (this.aIndex.toString()) {
+                case '0':
+                    result = this._getRightAnchor();
+                    break;
+                case '1':
+                    result = this._getBottomAnchor();
+                    break;
+                case '2':
+                    result = this._getLeftAnchor();
+                    break;
+                case '3':
+                    result = this._getTopAnchor();
+                    break;
+                default:
+                    result = this._getCenterRectange();
+                    break;
+
+            }
+            return result;
+        }
+    }, {
+        key: 'next',
+        value: function next() {
+            this.aIndex++;
+            if (this.aIndex > 3) {
+                this.show = false;
+            }
+            return this.getCurrentRect();
+        }
+    }, {
+        key: '_getTrueLength',
+        value: function _getTrueLength(str) {
+            var len = str.length,
+                truelen = 0;
+            for (var x = 0; x < len; x++) {
+                if (str.charCodeAt(x) > 128) {
+                    truelen += 2;
+                } else {
+                    truelen += 1;
+                }
+            }
+            return truelen;
+        }
+    }, {
+        key: 'isAnchorMeet',
+        value: function isAnchorMeet(target) {
+            var react = this.getCurrentRect(),
+                targetReact = target.getCurrentRect();
+            if (react.minX < targetReact.maxX && targetReact.minX < react.maxX && react.minY < targetReact.maxY && targetReact.minY < react.maxY) {
+                return true;
+            }
+            return false;
+        }
+    }, {
+        key: '_getCenterRectange',
+        value: function _getCenterRectange() {
+            return {
+                minX: this.center.x - this.radius,
+                maxX: this.center.x + this.radius,
+                minY: this.center.y - this.radius,
+                maxY: this.center.y + this.radius
+            };
+        }
+    }, {
+        key: '_getRectangle',
+        value: function _getRectangle(height, byteWidth) {
+            var width = this._getTrueLength(this.text) * byteWidth;
+            this.textReact = {
+                width: width + this.padding * 2,
+                height: height
+            };
+        }
+    }, {
+        key: '_getLeftAnchor',
+        value: function _getLeftAnchor() {
+
+            var x = this.center.x - this.radius - this.textReact.width,
+                y = this.center.y - this.textReact.height / 2,
+                diam = this.radius * 2,
+                maxH = diam > this.textReact.height ? diam : this.textReact.height;
+            return {
+                x: x,
+                y: y,
+                minX: x,
+                maxX: this.center.x + this.radius,
+                minY: this.center.y - maxH / 2,
+                maxY: this.center.y + maxH / 2
+            };
+        }
+    }, {
+        key: '_getRightAnchor',
+        value: function _getRightAnchor() {
+            var x = this.center.x + this.radius,
+                y = this.center.y - this.textReact.height / 2,
+                diam = this.radius * 2,
+                maxH = diam > this.textReact.height ? diam : this.textReact.height;
+            return {
+                x: x,
+                y: y,
+                minX: this.center.x - this.radius,
+                maxX: this.center.x + this.radius + this.textReact.width,
+                minY: this.center.y - maxH / 2,
+                maxY: this.center.y + maxH / 2
+            };
+        }
+    }, {
+        key: '_getTopAnchor',
+        value: function _getTopAnchor() {
+            var x = this.center.x - this.textReact.width / 2,
+                y = this.center.y - this.radius - this.textReact.height,
+                diam = this.radius * 2,
+                maxW = diam > this.textReact.width ? diam : this.textReact.width;
+            return {
+                x: x,
+                y: y,
+                minX: this.center.x - maxW / 2,
+                maxX: this.center.x + maxW / 2,
+                minY: this.center.y - this.radius - this.textReact.height,
+                maxY: this.center.y + this.radius
+            };
+        }
+    }, {
+        key: '_getBottomAnchor',
+        value: function _getBottomAnchor() {
+            var x = this.center.x - this.textReact.width / 2,
+                y = this.center.y + this.radius,
+                maxW = this.radius > this.textReact.width ? this.radius : this.textReact.width;
+            return {
+                x: x,
+                y: y,
+                minX: this.center.x - maxW / 2,
+                maxX: this.center.x + maxW / 2,
+                minY: this.center.y - this.radius,
+                maxY: this.center.y + this.radius + this.textReact.height
+            };
+        }
+    }]);
+
+    return Label;
+}();
+
+/***/ }),
+/* 36 */,
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(38)();
+// imports
+
+
+// module
+exports.push([module.i, ".inmap-container {\n  opacity: 1;\n  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;\n}\n.inmap-container,\n.inmap-container *:after,\n.inmap-container *:before {\n  display: -webkit-box;\n}\n.inmap-scale-group {\n  position: absolute;\n  right: 10px;\n  bottom: 35px;\n  z-index: 999999;\n  opacity: 1;\n}\n.inmap-scale-group > a {\n  display: block;\n  width: 24px;\n  height: 24px;\n  font-size: 17px;\n  line-height: 22px;\n  text-align: center;\n  background: #fff;\n  margin-top: 5px;\n  color: #666;\n  cursor: pointer;\n  text-decoration: none;\n}\n.inmap-scale-group > a[disabled] {\n  color: rgba(187, 190, 196, 0.6);\n  background-color: #f7f7f7;\n  border-color: #dddee1;\n}\n.inmap-tooltip {\n  position: absolute;\n  opacity: 1;\n  display: none;\n  pointer-events: none;\n  border-style: solid;\n  white-space: nowrap;\n  z-index: 9999999;\n  transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1), top 0.4s cubic-bezier(0.23, 1, 0.32, 1);\n  border-radius: 4px;\n  font-style: normal;\n  font-variant: normal;\n  font-weight: normal;\n  font-stretch: normal;\n  font-size: 14px;\n  font-family: sans-serif;\n  line-height: 21px;\n  padding: 5px;\n  left: 323px;\n  top: 451px;\n}\n.inmap-tooltip-black {\n  border-width: 0px;\n  border-color: #333333;\n  background-color: rgba(50, 50, 50, 0.7);\n  color: #ffffff;\n}\n.inmap-legend-container {\n  position: absolute;\n  left: 35px;\n  bottom: 35px;\n  z-index: 9999;\n}\n.inmap-legend {\n  list-style: none;\n  opacity: 1;\n  height: auto;\n  font-size: 12px;\n  text-align: center;\n  border: 10px solid rgba(255, 255, 255, 0.7);\n  box-shadow: rgba(8, 16, 34, 0.3) 2px 0px 7px;\n  border-radius: 5px;\n  margin-right: 3px;\n}\n.inmap-legend .inmap-legend-title {\n  background-color: rgba(255, 255, 255, 0.7);\n  padding-bottom: 3px;\n}\n.inmap-legend > table {\n  width: 100%;\n}\n.inmap-legend table,\n.inmap-legend table tbody,\n.inmap-legend table tr,\n.inmap-legend table tr td {\n  padding: 0;\n  border: 0;\n  margin: 0;\n}\n.inmap-legend .inmap-chunk {\n  display: inline-block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  width: 14px;\n}\n.inmap-legend .inmap-legend-text {\n  background-color: rgba(255, 255, 255, 0.7);\n  padding-left: 5px;\n  text-align: left;\n  font-size: 12px;\n}\n.inmap-legend .inmap-infinity {\n  top: 4px;\n  left: 7px;\n  position: relative;\n}\n.inmap-legend .inmap-infinity:before,\n.inmap-legend .inmap-infinity:after {\n  content: \"\";\n  box-sizing: border-box;\n  width: 6px;\n  height: 6px;\n  position: absolute;\n  top: 0;\n  left: 0;\n  border: 1px solid #495060;\n  -moz-border-radius: 50px 50px 0;\n  border-radius: 50px 50px 0 50px;\n  -webkit-transform: rotate(128deg);\n  -moz-transform: rotate(128deg);\n  -ms-transform: rotate(128deg);\n  -o-transform: rotate(128deg);\n  transform: rotate(128deg);\n}\n.inmap-legend .inmap-infinity:after {\n  left: auto;\n  right: 0;\n  -moz-border-radius: 50px 50px 50px 0;\n  border-radius: 50px 50px 50px 0;\n  -webkit-transform: rotate(-128deg);\n  -moz-transform: rotate(-128deg);\n  -ms-transform: rotate(-128deg);\n  -o-transform: rotate(-128deg);\n  transform: rotate(-128deg);\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var isMergeableObject = function isMergeableObject(value) {
+	return isNonNullObject(value)
+		&& !isSpecial(value)
+};
+
+function isNonNullObject(value) {
+	return !!value && typeof value === 'object'
+}
+
+function isSpecial(value) {
+	var stringValue = Object.prototype.toString.call(value);
+
+	return stringValue === '[object RegExp]'
+		|| stringValue === '[object Date]'
+		|| isReactElement(value)
+}
+
+// see https://github.com/facebook/react/blob/b5ac963fb791d1298e7f396236383bc955f916c1/src/isomorphic/classic/element/ReactElement.js#L21-L25
+var canUseSymbol = typeof Symbol === 'function' && Symbol.for;
+var REACT_ELEMENT_TYPE = canUseSymbol ? Symbol.for('react.element') : 0xeac7;
+
+function isReactElement(value) {
+	return value.$$typeof === REACT_ELEMENT_TYPE
+}
+
+function emptyTarget(val) {
+    return Array.isArray(val) ? [] : {}
+}
+
+function cloneIfNecessary(value, optionsArgument) {
+    var clone = optionsArgument && optionsArgument.clone === true;
+    return (clone && isMergeableObject(value)) ? deepmerge(emptyTarget(value), value, optionsArgument) : value
+}
+
+function defaultArrayMerge(target, source, optionsArgument) {
+    var destination = target.slice();
+    source.forEach(function(e, i) {
+        if (typeof destination[i] === 'undefined') {
+            destination[i] = cloneIfNecessary(e, optionsArgument);
+        } else if (isMergeableObject(e)) {
+            destination[i] = deepmerge(target[i], e, optionsArgument);
+        } else if (target.indexOf(e) === -1) {
+            destination.push(cloneIfNecessary(e, optionsArgument));
+        }
+    });
+    return destination
+}
+
+function mergeObject(target, source, optionsArgument) {
+    var destination = {};
+    if (isMergeableObject(target)) {
+        Object.keys(target).forEach(function(key) {
+            destination[key] = cloneIfNecessary(target[key], optionsArgument);
+        });
+    }
+    Object.keys(source).forEach(function(key) {
+        if (!isMergeableObject(source[key]) || !target[key]) {
+            destination[key] = cloneIfNecessary(source[key], optionsArgument);
+        } else {
+            destination[key] = deepmerge(target[key], source[key], optionsArgument);
+        }
+    });
+    return destination
+}
+
+function deepmerge(target, source, optionsArgument) {
+    var sourceIsArray = Array.isArray(source);
+    var targetIsArray = Array.isArray(target);
+    var options = optionsArgument || { arrayMerge: defaultArrayMerge };
+    var sourceAndTargetTypesMatch = sourceIsArray === targetIsArray;
+
+    if (!sourceAndTargetTypesMatch) {
+        return cloneIfNecessary(source, optionsArgument)
+    } else if (sourceIsArray) {
+        var arrayMerge = options.arrayMerge || defaultArrayMerge;
+        return arrayMerge(target, source, optionsArgument)
+    } else {
+        return mergeObject(target, source, optionsArgument)
+    }
+}
+
+deepmerge.all = function deepmergeAll(array, optionsArgument) {
+    if (!Array.isArray(array) || array.length < 2) {
+        throw new Error('first argument should be an array with at least two elements')
+    }
+
+    // we are sure there are at least 2 values, so it is safe to have no initial value
+    return array.reduce(function(prev, next) {
+        return deepmerge(prev, next, optionsArgument)
+    })
+};
+
+var deepmerge_1 = deepmerge;
+
+module.exports = deepmerge_1;
+
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+var stylesInDom = {},
+	memoize = function(fn) {
+		var memo;
+		return function () {
+			if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+			return memo;
+		};
+	},
+	isOldIE = memoize(function() {
+		return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
+	}),
+	getHeadElement = memoize(function () {
+		return document.head || document.getElementsByTagName("head")[0];
+	}),
+	singletonElement = null,
+	singletonCounter = 0,
+	styleElementsInsertedAtTop = [];
+
+module.exports = function(list, options) {
+	if(typeof DEBUG !== "undefined" && DEBUG) {
+		if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+	// By default, add <style> tags to the bottom of <head>.
+	if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+	var styles = listToStyles(list);
+	addStylesToDom(styles, options);
+
+	return function update(newList) {
+		var mayRemove = [];
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+		if(newList) {
+			var newStyles = listToStyles(newList);
+			addStylesToDom(newStyles, options);
+		}
+		for(var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+			if(domStyle.refs === 0) {
+				for(var j = 0; j < domStyle.parts.length; j++)
+					domStyle.parts[j]();
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+}
+
+function addStylesToDom(styles, options) {
+	for(var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+		if(domStyle) {
+			domStyle.refs++;
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles(list) {
+	var styles = [];
+	var newStyles = {};
+	for(var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+		if(!newStyles[id])
+			styles.push(newStyles[id] = {id: id, parts: [part]});
+		else
+			newStyles[id].parts.push(part);
+	}
+	return styles;
+}
+
+function insertStyleElement(options, styleElement) {
+	var head = getHeadElement();
+	var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+	if (options.insertAt === "top") {
+		if(!lastStyleElementInsertedAtTop) {
+			head.insertBefore(styleElement, head.firstChild);
+		} else if(lastStyleElementInsertedAtTop.nextSibling) {
+			head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			head.appendChild(styleElement);
+		}
+		styleElementsInsertedAtTop.push(styleElement);
+	} else if (options.insertAt === "bottom") {
+		head.appendChild(styleElement);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement(styleElement) {
+	styleElement.parentNode.removeChild(styleElement);
+	var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+	if(idx >= 0) {
+		styleElementsInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement(options) {
+	var styleElement = document.createElement("style");
+	styleElement.type = "text/css";
+	insertStyleElement(options, styleElement);
+	return styleElement;
+}
+
+function createLinkElement(options) {
+	var linkElement = document.createElement("link");
+	linkElement.rel = "stylesheet";
+	insertStyleElement(options, linkElement);
+	return linkElement;
+}
+
+function addStyle(obj, options) {
+	var styleElement, update, remove;
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+		styleElement = singletonElement || (singletonElement = createStyleElement(options));
+		update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+	} else if(obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function") {
+		styleElement = createLinkElement(options);
+		update = updateLink.bind(null, styleElement);
+		remove = function() {
+			removeStyleElement(styleElement);
+			if(styleElement.href)
+				URL.revokeObjectURL(styleElement.href);
+		};
+	} else {
+		styleElement = createStyleElement(options);
+		update = applyToTag.bind(null, styleElement);
+		remove = function() {
+			removeStyleElement(styleElement);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle(newObj) {
+		if(newObj) {
+			if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+				return;
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag(styleElement, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (styleElement.styleSheet) {
+		styleElement.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = styleElement.childNodes;
+		if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+		if (childNodes.length) {
+			styleElement.insertBefore(cssNode, childNodes[index]);
+		} else {
+			styleElement.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag(styleElement, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		styleElement.setAttribute("media", media)
+	}
+
+	if(styleElement.styleSheet) {
+		styleElement.styleSheet.cssText = css;
+	} else {
+		while(styleElement.firstChild) {
+			styleElement.removeChild(styleElement.firstChild);
+		}
+		styleElement.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink(linkElement, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	if(sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = linkElement.href;
+
+	linkElement.href = URL.createObjectURL(blob);
+
+	if(oldSrc)
+		URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(37);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(40)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./map.less", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./map.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);

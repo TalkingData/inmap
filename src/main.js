@@ -6,8 +6,8 @@ import {
     GriddingOverlay
 } from './overlay/GriddingOverlay';
 import {
-    BoundaryOverlay
-} from './overlay/BoundaryOverlay';
+    PolygonOverlay
+} from './overlay/PolygonOverlay';
 
 import {
     HeatOverlay
@@ -41,7 +41,7 @@ const inMap = {
     Map,
     PointOverlay,
     GriddingOverlay,
-    BoundaryOverlay,
+    PolygonOverlay,
     HeatOverlay,
     LineStringOverlay,
     HoneycombOverlay,
@@ -56,7 +56,7 @@ export {
     Map,
     PointOverlay,
     GriddingOverlay,
-    BoundaryOverlay,
+    PolygonOverlay,
     HeatOverlay,
     LineStringOverlay,
     HoneycombOverlay,

@@ -6,7 +6,7 @@ import {
     Point
 } from './../../common/Point';
 import polylabel from './../../common/polylabel';
-export let BoundaryOverlay = {
+export let PolygonOverlay = {
     calculatePixel: function (webObj) {
         let {
             data,
