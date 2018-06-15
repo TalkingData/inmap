@@ -5378,7 +5378,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
                     pixel[1] = pixel[1] + distanceY;
                 }
                 var bestCell = this.workerData[i].bestCell;
-                if (this.styleConfig.normal.label.show && bestCell) {
+                if (bestCell) {
                     bestCell.x = bestCell.x + distanceX;
                     bestCell.y = bestCell.y + distanceY;
                 }
