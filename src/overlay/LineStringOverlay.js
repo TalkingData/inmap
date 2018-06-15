@@ -10,7 +10,7 @@ import {
 import {
     CanvasOverlay
 } from './base/CanvasOverlay';
-import CircuitConfig from './../config/CircuitConfig';
+import LineStringConfig from '../config/LineStringConfig';
 import State from './../config/OnState';
 
 export class LineStringOverlay extends CanvasOverlay {
@@ -18,7 +18,7 @@ export class LineStringOverlay extends CanvasOverlay {
         super(ops);
         this.points = [];
         this.styleConfig = {};
-        this._setStyle(CircuitConfig, ops);
+        this._setStyle(LineStringConfig, ops);
         this.state = null;
         this.workerData = [];
     }
@@ -34,7 +34,7 @@ export class LineStringOverlay extends CanvasOverlay {
         this.tMapStyle(option.skin);
     }
     setOptionStyle(ops) {
-        this._setStyle(CircuitConfig, ops);
+        this._setStyle(LineStringConfig, ops);
         this.map && this.drawMap();
     }
     setState(val) {

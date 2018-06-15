@@ -4,7 +4,7 @@ import {
 import {
     merge
 } from './../common/util';
-import config from './../config/FlashDotConfig';
+import config from '../config/PointAnimation';
 
 
 class Marker {

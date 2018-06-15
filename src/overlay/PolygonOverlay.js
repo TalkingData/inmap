@@ -8,13 +8,13 @@ import {
 import {
     clearPushArray
 } from './../common/util';
-import BoundaryConfig from './../config/BoundaryConfig';
+import PolygonConfig from '../config/PolygonConfig';
 import State from './../config/OnState';
 
 
 export class PolygonOverlay extends Parameter {
     constructor(ops) {
-        super(BoundaryConfig, ops);
+        super(PolygonConfig, ops);
         this.patchSplitList();
         this.state = null;
     }

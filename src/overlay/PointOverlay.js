@@ -15,12 +15,12 @@ import {
     detectmob,
 } from './../common/util';
 import BatchesData from './base/BatchesData';
-import DotConfig from './../config/DotConfig';
+import PointConfig from '../config/PointConfig';
 import State from './../config/OnState';
 let isMobile = detectmob();
 export class PointOverlay extends Parameter {
     constructor(opts) {
-        super(DotConfig, opts);
+        super(PointConfig, opts);
 
         this._loopDraw = this._loopDraw.bind(this);
         if (!isEmpty(this._option.draw)) {
