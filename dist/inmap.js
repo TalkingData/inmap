@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 43);
+/******/ 	return __webpack_require__(__webpack_require__.s = 44);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -105,7 +105,7 @@ exports.detectmob = detectmob;
 exports.merge = merge;
 exports.clearPushArray = clearPushArray;
 
-var _deepmerge = __webpack_require__(8);
+var _deepmerge = __webpack_require__(9);
 
 var _deepmerge2 = _interopRequireDefault(_deepmerge);
 
@@ -278,8 +278,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 2 */,
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -292,19 +291,19 @@ exports.CanvasOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _BaseClass2 = __webpack_require__(11);
+var _BaseClass2 = __webpack_require__(13);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
-var _Legend = __webpack_require__(44);
+var _Legend = __webpack_require__(45);
 
 var _Legend2 = _interopRequireDefault(_Legend);
 
 var _util = __webpack_require__(0);
 
-var _MapStyle = __webpack_require__(6);
+var _MapStyle = __webpack_require__(7);
 
-var _Toolbar = __webpack_require__(10);
+var _Toolbar = __webpack_require__(12);
 
 var _Toolbar2 = _interopRequireDefault(_Toolbar);
 
@@ -557,6 +556,7 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
 }(_BaseClass3.default);
 
 /***/ }),
+/* 3 */,
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -572,7 +572,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __webpack_require__(0);
 
-var _CanvasOverlay2 = __webpack_require__(3);
+var _CanvasOverlay2 = __webpack_require__(2);
 
 var _Color = __webpack_require__(5);
 
@@ -1472,7 +1472,8 @@ Colors.prototype = {
 var Color = exports.Color = Colors;
 
 /***/ }),
-/* 6 */
+/* 6 */,
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1751,7 +1752,7 @@ var Blueness = exports.Blueness = [{
 }];
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1939,7 +1940,7 @@ var Label = exports.Label = function () {
 }();
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2043,7 +2044,7 @@ module.exports = deepmerge_1;
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2134,7 +2135,8 @@ var WorkerMrg = function () {
 var workerMrg = exports.workerMrg = new WorkerMrg();
 
 /***/ }),
-/* 10 */
+/* 11 */,
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2146,7 +2148,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ToolTip = __webpack_require__(45);
+var _ToolTip = __webpack_require__(46);
 
 var _ToolTip2 = _interopRequireDefault(_ToolTip);
 
@@ -2191,7 +2193,7 @@ var Toolbar = function () {
 exports.default = Toolbar;
 
 /***/ }),
-/* 11 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2201,7 +2203,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _workerMrg = __webpack_require__(9);
+var _workerMrg = __webpack_require__(10);
 
 var baseClassCounter = 0;
 var inmap_instances = {};
@@ -2303,7 +2305,7 @@ BaseClass.prototype.removeWorkerMessage = function () {
 exports.default = BaseClass;
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2318,19 +2320,19 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __webpack_require__(0);
 
-var _MapStyle = __webpack_require__(6);
+var _MapStyle = __webpack_require__(7);
 
-var _mapZoom = __webpack_require__(46);
+var _mapZoom = __webpack_require__(47);
 
-var _Toolbar = __webpack_require__(10);
+var _Toolbar = __webpack_require__(12);
 
 var _Toolbar2 = _interopRequireDefault(_Toolbar);
 
-var _InmapConfig = __webpack_require__(39);
+var _InmapConfig = __webpack_require__(40);
 
 var _InmapConfig2 = _interopRequireDefault(_InmapConfig);
 
-__webpack_require__(52);
+__webpack_require__(53);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2418,2881 +2420,7 @@ var Map = exports.Map = function () {
 }();
 
 /***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.GriddingOverlay = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Parameter2 = __webpack_require__(4);
-
-var _GriddingConfig = __webpack_require__(35);
-
-var _GriddingConfig2 = _interopRequireDefault(_GriddingConfig);
-
-var _OnState = __webpack_require__(1);
-
-var _OnState2 = _interopRequireDefault(_OnState);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
-    _inherits(GriddingOverlay, _Parameter);
-
-    function GriddingOverlay(ops) {
-        _classCallCheck(this, GriddingOverlay);
-
-        var _this = _possibleConstructorReturn(this, (GriddingOverlay.__proto__ || Object.getPrototypeOf(GriddingOverlay)).call(this, _GriddingConfig2.default, ops));
-
-        _this.state = null;
-        _this._drawSize = 0;
-        _this.mpp = {};
-
-        return _this;
-    }
-
-    _createClass(GriddingOverlay, [{
-        key: 'parameterInit',
-        value: function parameterInit() {}
-    }, {
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-            this._setStyle(this.baseConfig, ops);
-        }
-    }, {
-        key: 'draw',
-        value: function draw() {
-            this.resize();
-        }
-    }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState(this.state);
-        }
-    }, {
-        key: 'refresh',
-        value: function refresh() {
-            this.setState(_OnState2.default.drawBefore);
-            this.drawRec();
-            this.setState(_OnState2.default.drawAfter);
-        }
-    }, {
-        key: 'resize',
-        value: function resize() {
-            this.drawMap();
-        }
-    }, {
-        key: 'onOptionChange',
-        value: function onOptionChange() {
-            this.map && this.createColorSplit();
-        }
-    }, {
-        key: 'onDataChange',
-        value: function onDataChange() {
-            this.map && this.createColorSplit();
-        }
-    }, {
-        key: '_calculateMpp',
-        value: function _calculateMpp() {
-            var zoom = this.map.getZoom();
-            if (this.mpp[zoom]) {
-                return this.mpp[zoom];
-            } else {
-                this.mpp[zoom] = this.getMpp();
-                return this.mpp[zoom];
-            }
-        }
-    }, {
-        key: 'getMpp',
-        value: function getMpp() {
-            var mapCenter = this.map.getCenter();
-            var assistValue = 10;
-            var cpt = new BMap.Point(mapCenter.lng, mapCenter.lat + assistValue);
-            var dpx = Math.abs(this.map.pointToPixel(mapCenter).y - this.map.pointToPixel(cpt).y);
-            return this.map.getDistance(mapCenter, cpt) / dpx;
-        }
-    }, {
-        key: 'drawMap',
-        value: function drawMap() {
-            var _this2 = this;
-
-            this.clearData();
-            var _styleConfig = this.styleConfig,
-                normal = _styleConfig.normal,
-                type = _styleConfig.type;
-
-            var zoom = this.map.getZoom();
-            var mapCenter = this.map.getCenter();
-            var mapSize = this.map.getSize();
-
-            var zoomUnit = Math.pow(2, 18 - zoom);
-            var mercatorProjection = this.map.getMapType().getProjection();
-            var mcCenter = mercatorProjection.lngLatToPoint(mapCenter);
-
-            var nwMcX = mcCenter.x - mapSize.width / 2 * zoomUnit;
-            var nwMc = new BMap.Pixel(nwMcX, mcCenter.y + mapSize.height / 2 * zoomUnit);
-            var size = 0;
-            if (normal.unit == 'px') {
-                size = normal.size * zoomUnit;
-            } else if (normal.unit == 'm') {
-                var mpp = this._calculateMpp();
-                if (mpp == 0 || isNaN(mpp)) {
-                    return;
-                }
-                size = normal.size / mpp * zoomUnit;
-            } else {
-                throw new TypeError('inMap: style.normal.unit must be is "meters" or "px" .');
-            }
-
-            var params = {
-                points: this.points,
-                size: size,
-                type: type,
-                nwMc: nwMc,
-                zoomUnit: zoomUnit,
-                mapSize: mapSize,
-                mapCenter: mapCenter,
-                zoom: zoom
-
-            };
-            this.setState(_OnState2.default.computeBefore);
-            this.postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj) {
-                if (_this2.eventType == 'onmoving') {
-                    return;
-                }
-
-                _this2.canvasResize();
-                _this2.setState(_OnState2.default.conputeAfter);
-                _this2.workerData = gridsObj.grids;
-                _this2._drawSize = size / zoomUnit;
-                _this2.setState(_OnState2.default.drawBefore);
-
-                if (_this2.eventType != 'onmoveend' || _this2.styleConfig.splitList == null || _this2.styleConfig.splitList.length < _this2.styleConfig.colors.length) {
-                    _this2.createColorSplit();
-                }
-                _this2.refresh();
-                gridsObj = null;
-            });
-        }
-    }, {
-        key: '_isMouseOver',
-        value: function _isMouseOver(mouseX, mouseY, x, y, w, h) {
-            return !(mouseX < x || mouseX > x + w || mouseY < y || mouseY > y + h);
-        }
-    }, {
-        key: 'findIndexSelectItem',
-        value: function findIndexSelectItem(item) {
-            var index = -1;
-            if (item) {
-                index = this.selectItem.findIndex(function (val) {
-                    return val && val.x == item.x && val.y == item.y;
-                });
-            }
-            return index;
-        }
-    }, {
-        key: 'getTarget',
-        value: function getTarget(x, y) {
-
-            var gridStep = this._drawSize;
-            var mapSize = this.map.getSize();
-            for (var i = 0; i < this.workerData.length; i++) {
-                var item = this.workerData[i];
-                var x1 = item.x;
-                var y1 = item.y;
-                if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
-                    if (this._isMouseOver(x, y, x1, y1, gridStep, gridStep)) {
-                        return {
-                            index: i,
-                            item: item
-                        };
-                    }
-                }
-            }
-            return {
-                index: -1,
-                item: null
-            };
-        }
-    }, {
-        key: 'compileSplitList',
-        value: function compileSplitList(data) {
-
-            var colors = this.styleConfig.colors;
-            if (colors.length < 0 || data.length <= 0) return;
-            data = data.sort(function (a, b) {
-                return parseFloat(a.count) - parseFloat(b.count);
-            });
-            var mod = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144];
-
-            var colorMod = mod.slice(0, colors.length).reverse();
-            var sunMod = colorMod.reduce(function (sum, val) {
-                return sum + val;
-            }, 0);
-            var split = [];
-            var star = 0,
-                end = 0,
-                sign = 0,
-                length = data.length;
-
-            for (var i = 0; i < colorMod.length; i++) {
-                if (split.length == 0) {
-                    star = data[0].count;
-                } else {
-                    star = split[i - 1].end;
-                }
-                if (i == colorMod.length - 1) {
-                    end = null;
-                } else {
-                    sign = parseInt(colorMod[i] / sunMod * length) + sign;
-                    end = data[sign].count;
-                }
-                split.push({
-                    start: star,
-                    end: end,
-                    backgroundColor: null
-                });
-            }
-            var result = [];
-            for (var _i = 0; _i < split.length; _i++) {
-                var item = split[_i];
-                if (item.start != item.end) {
-                    item.backgroundColor = colors[result.length];
-                    result.push(item);
-                }
-            }
-            split = [];
-            this.styleConfig.splitList = result;
-        }
-    }, {
-        key: 'createColorSplit',
-        value: function createColorSplit() {
-
-            this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
-
-            this.setlegend(this.legendConfig, this.styleConfig.splitList);
-        }
-    }, {
-        key: 'setTooltip',
-        value: function setTooltip(event) {
-            var item = this.overItem && this.overItem.list.length > 0 ? this.overItem : null;
-            this.toolTip.render(event, item);
-        }
-    }, {
-        key: 'getStyle',
-        value: function getStyle(item) {
-            if (item.count == 0) {
-                return {
-                    backgroundColor: 'rgba(255,255,255,0)'
-                };
-            } else {
-                return this.setDrawStyle(item);
-            }
-        }
-    }, {
-        key: 'drawRec',
-        value: function drawRec() {
-            this.clearCanvas();
-            var gridStep = this._drawSize;
-            var style = this.styleConfig.normal;
-            var mapSize = this.map.getSize();
-            this.ctx.shadowOffsetX = 0;
-            this.ctx.shadowOffsetY = 0;
-            for (var i = 0; i < this.workerData.length; i++) {
-                var item = this.workerData[i];
-                var x = item.x;
-                var y = item.y;
-                if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
-                    var drawStyle = this.getStyle(item);
-                    if (drawStyle.shadowColor) {
-                        this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
-                        this.ctx.shadowBlur = drawStyle.shadowBlur || 10;
-                    } else {
-                        this.ctx.shadowColor = 'transparent';
-                        this.ctx.shadowBlur = 0;
-                    }
-                    this.ctx.fillStyle = drawStyle.backgroundColor;
-                    this.ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
-                }
-            }
-        }
-    }]);
-
-    return GriddingOverlay;
-}(_Parameter2.Parameter);
-
-/***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.HeatOverlay = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _CanvasOverlay2 = __webpack_require__(3);
-
-var _util = __webpack_require__(0);
-
-var _HeatConfig = __webpack_require__(36);
-
-var _HeatConfig2 = _interopRequireDefault(_HeatConfig);
-
-var _OnState = __webpack_require__(1);
-
-var _OnState2 = _interopRequireDefault(_OnState);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
-    _inherits(HeatOverlay, _CanvasOverlay);
-
-    function HeatOverlay(ops) {
-        _classCallCheck(this, HeatOverlay);
-
-        var _this = _possibleConstructorReturn(this, (HeatOverlay.__proto__ || Object.getPrototypeOf(HeatOverlay)).call(this, ops));
-
-        _this.points = [];
-        _this.workerData = [];
-        _this._setStyle(_HeatConfig2.default, ops);
-        _this.delteOption();
-        _this.state = null;
-        return _this;
-    }
-
-    _createClass(HeatOverlay, [{
-        key: 'resize',
-        value: function resize() {
-            this.drawMap();
-        }
-    }, {
-        key: 'getTransformData',
-        value: function getTransformData() {
-            return this.workerData.length > 0 ? this.workerData : this.points;
-        }
-    }, {
-        key: '_setStyle',
-        value: function _setStyle(config, ops) {
-            ops = ops || {};
-            var option = (0, _util.merge)(config, ops);
-            this.styleConfig = option.style;
-            this.eventConfig = option.event;
-            this.gradient = option.style.gradient;
-            this.points = ops.data ? option.data : this.points;
-            this.tMapStyle(option.skin);
-        }
-    }, {
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-            this._setStyle(_HeatConfig2.default, ops);
-            this.delteOption();
-            (0, _util.clearPushArray)(this.workerData, []);
-            this.drawMap();
-        }
-    }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState(this.state);
-        }
-    }, {
-        key: 'delteOption',
-        value: function delteOption() {
-            this.tooltipConfig = {
-                show: false
-            };
-            this.legendConfig = {
-                show: false
-            };
-        }
-    }, {
-        key: 'setData',
-        value: function setData(points) {
-            this.setPoints(points);
-        }
-    }, {
-        key: 'setPoints',
-        value: function setPoints(points) {
-            if (!(0, _util.isArray)(points)) {
-                throw new TypeError('inMap :data must be a Array');
-            }
-            this.points = points;
-            this.drawMap();
-        }
-    }, {
-        key: 'getMax',
-        value: function getMax() {
-            var normal = this.styleConfig.normal;
-            normal.maxValue = 0;
-            for (var i = 0, len = this.points.length; i < len; i++) {
-                if (this.points[i].count > normal.maxValue) {
-                    normal.maxValue = this.points[i].count;
-                }
-            }
-        }
-    }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            for (var i = 0; i < this.workerData.length; i++) {
-                var pixel = this.workerData[i].pixel;
-                pixel.x = pixel.x + distanceX;
-                pixel.y = pixel.y + distanceY;
-            }
-            this.setState(_OnState2.default.drawBefore);
-            this.refresh();
-            this.setState(_OnState2.default.drawAfter);
-        }
-    }, {
-        key: 'setWorkerData',
-        value: function setWorkerData(val) {
-            this.points = [];
-            (0, _util.clearPushArray)(this.workerData, val);
-        }
-    }, {
-        key: 'drawMap',
-        value: function drawMap() {
-            var _this2 = this;
-
-            this.setState(_OnState2.default.computeBefore);
-
-            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin) {
-
-                if (_this2.eventType == 'onmoving') {
-                    return;
-                }
-                _this2.setState(_OnState2.default.conputeAfter);
-
-                _this2.setWorkerData(pixels);
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
-
-                margin = null;
-                pixels = null;
-            });
-        }
-    }, {
-        key: 'refresh',
-        value: function refresh() {
-            this.clearCanvas();
-            var normal = this.styleConfig.normal;
-            var container = this.container;
-            if (normal.maxValue == 0) {
-                this.getMax();
-            }
-            if (container.width <= 0) {
-                return;
-            }
-
-            var ctx = this.ctx;
-            for (var i = 0, _len = this.workerData.length; i < _len; i++) {
-                var item = this.workerData[i];
-                var opacity = (item.count - normal.minValue) / (normal.maxValue - normal.minValue);
-                opacity = opacity > 1 ? 1 : opacity;
-                this.drawPoint(item.pixel.x, item.pixel.y, normal.radius, opacity);
-            }
-
-            var palette = this.getColorPaint();
-
-            var img = ctx.getImageData(0, 0, container.width, container.height);
-            var imgData = img.data;
-
-            var max_opacity = normal.maxOpacity * 255;
-            var min_opacity = normal.minOpacity * 255;
-
-            var max_scope = (normal.maxScope > 1 ? 1 : normal.maxScope) * 255;
-            var min_scope = (normal.minScope < 0 ? 0 : normal.minScope) * 255;
-            var len = imgData.length;
-            for (var _i = 3; _i < len; _i += 4) {
-                var alpha = imgData[_i];
-                var offset = alpha * 4;
-                if (!offset) {
-                    continue;
-                }
-                imgData[_i - 3] = palette[offset];
-                imgData[_i - 2] = palette[offset + 1];
-                imgData[_i - 1] = palette[offset + 2];
-
-                if (imgData[_i] > max_scope) {
-                    imgData[_i] = 0;
-                }
-                if (imgData[_i] < min_scope) {
-                    imgData[_i] = 0;
-                }
-
-                if (imgData[_i] > max_opacity) {
-                    imgData[_i] = max_opacity;
-                }
-                if (imgData[_i] < min_opacity) {
-                    imgData[_i] = min_opacity;
-                }
-            }
-
-            ctx.putImageData(img, 0, 0, 0, 0, container.width, container.height);
-        }
-    }, {
-        key: 'drawPoint',
-        value: function drawPoint(x, y, radius, opacity) {
-            var ctx = this.ctx;
-            ctx.globalAlpha = opacity;
-            ctx.beginPath();
-            var gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
-            gradient.addColorStop(0, 'rgba(0,0,0,1)');
-            gradient.addColorStop(1, 'rgba(0,0,0,0)');
-            ctx.fillStyle = gradient;
-            ctx.arc(x, y, radius, 0, Math.PI * 2, true);
-            ctx.closePath();
-            ctx.fill();
-        }
-    }, {
-        key: 'getColorPaint',
-        value: function getColorPaint() {
-            var gradientConfig = this.gradient;
-            var paletteCanvas = document.createElement('canvas');
-            var paletteCtx = paletteCanvas.getContext('2d');
-
-            paletteCanvas.width = 256;
-            paletteCanvas.height = 1;
-
-            var gradient = paletteCtx.createLinearGradient(0, 0, 256, 1);
-            for (var key in gradientConfig) {
-                gradient.addColorStop(key, gradientConfig[key]);
-            }
-
-            paletteCtx.fillStyle = gradient;
-            paletteCtx.fillRect(0, 0, 256, 1);
-            return paletteCtx.getImageData(0, 0, 256, 1).data;
-        }
-    }]);
-
-    return HeatOverlay;
-}(_CanvasOverlay2.CanvasOverlay);
-
-/***/ }),
 /* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.HoneycombOverlay = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Parameter2 = __webpack_require__(4);
-
-var _HoneycombConfig = __webpack_require__(37);
-
-var _HoneycombConfig2 = _interopRequireDefault(_HoneycombConfig);
-
-var _OnState = __webpack_require__(1);
-
-var _OnState2 = _interopRequireDefault(_OnState);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
-    _inherits(HoneycombOverlay, _Parameter);
-
-    function HoneycombOverlay(ops) {
-        _classCallCheck(this, HoneycombOverlay);
-
-        var _this = _possibleConstructorReturn(this, (HoneycombOverlay.__proto__ || Object.getPrototypeOf(HoneycombOverlay)).call(this, _HoneycombConfig2.default, ops));
-
-        _this.state = null;
-        _this.mpp = {};
-        _this._drawSize = 0;
-        return _this;
-    }
-
-    _createClass(HoneycombOverlay, [{
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-            this._setStyle(this.baseConfig, ops);
-        }
-    }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState(this.state);
-        }
-    }, {
-        key: 'draw',
-        value: function draw() {
-            this.resize();
-        }
-    }, {
-        key: 'refresh',
-        value: function refresh() {
-            this.setState(_OnState2.default.drawBefore);
-            this.drawRec();
-            this.setState(_OnState2.default.drawAfter);
-        }
-    }, {
-        key: 'resize',
-        value: function resize() {
-            this.drawMap();
-        }
-    }, {
-        key: 'onOptionChange',
-        value: function onOptionChange() {
-            this.map && this.createColorSplit();
-        }
-    }, {
-        key: 'onDataChange',
-        value: function onDataChange() {
-            this.map && this.createColorSplit();
-        }
-    }, {
-        key: '_calculateMpp',
-        value: function _calculateMpp() {
-            var zoom = this.map.getZoom();
-            if (this.mpp[zoom]) {
-                return this.mpp[zoom];
-            } else {
-                this.mpp[zoom] = this.getMpp();
-                return this.mpp[zoom];
-            }
-        }
-    }, {
-        key: 'getMpp',
-        value: function getMpp() {
-            var mapCenter = this.map.getCenter();
-            var assistValue = 10;
-            var cpt = new BMap.Point(mapCenter.lng, mapCenter.lat + assistValue);
-            var dpx = Math.abs(this.map.pointToPixel(mapCenter).y - this.map.pointToPixel(cpt).y);
-            return this.map.getDistance(mapCenter, cpt) / dpx;
-        }
-    }, {
-        key: 'drawMap',
-        value: function drawMap() {
-            var _this2 = this;
-
-            this.clearData();
-            var _styleConfig = this.styleConfig,
-                normal = _styleConfig.normal,
-                type = _styleConfig.type;
-
-            var zoom = this.map.getZoom();
-            var mapCenter = this.map.getCenter();
-            var mapSize = this.map.getSize();
-
-            var zoomUnit = Math.pow(2, 18 - zoom);
-            var mercatorProjection = this.map.getMapType().getProjection();
-            var mcCenter = mercatorProjection.lngLatToPoint(mapCenter);
-
-            var nwMcX = mcCenter.x - mapSize.width / 2 * zoomUnit;
-            var nwMc = new BMap.Pixel(nwMcX, mcCenter.y + mapSize.height / 2 * zoomUnit);
-            var size = 0;
-
-            if (normal.unit == 'px') {
-                size = normal.size * zoomUnit;
-            } else if (normal.unit == 'm') {
-                var mpp = this._calculateMpp();
-                if (mpp == 0 || isNaN(mpp)) {
-                    return;
-                }
-                size = normal.size / mpp * zoomUnit;
-            } else {
-                throw new TypeError('inMap: style.normal.unit must be is "meters" or "px" .');
-            }
-
-            var params = {
-                points: this.points,
-                size: size,
-                type: type,
-                nwMc: nwMc,
-                zoomUnit: zoomUnit,
-                mapSize: mapSize,
-                mapCenter: mapCenter,
-                zoom: zoom
-            };
-            this.setState(_OnState2.default.computeBefore);
-
-            this.postMessage('HoneycombOverlay.toRecGrids', params, function (gridsObj) {
-                if (_this2.eventType == 'onmoving') {
-                    return;
-                }
-                _this2.canvasResize();
-                _this2.setState(_OnState2.default.conputeAfter);
-
-                _this2.workerData = gridsObj.grids;
-                _this2._drawSize = size / zoomUnit;
-
-                if (_this2.eventType != 'onmoveend' || _this2.styleConfig.splitList == null || _this2.styleConfig.splitList.length < _this2.styleConfig.colors.length) {
-                    _this2.createColorSplit();
-                }
-                _this2.refresh();
-                gridsObj = null;
-            });
-        }
-    }, {
-        key: 'createColorSplit',
-        value: function createColorSplit() {
-
-            this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
-
-            this.setlegend(this.legendConfig, this.styleConfig.splitList);
-        }
-    }, {
-        key: 'compileSplitList',
-        value: function compileSplitList(data) {
-
-            var colors = this.styleConfig.colors;
-            if (colors.length < 0 || data.length <= 0) return;
-            data = data.sort(function (a, b) {
-                return parseFloat(a.count) - parseFloat(b.count);
-            });
-            var mod = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144];
-
-            var colorMod = mod.slice(0, colors.length).reverse();
-            var sunMod = colorMod.reduce(function (sum, val) {
-                return sum + val;
-            }, 0);
-            var split = [];
-            var star = 0,
-                end = 0,
-                sign = 0,
-                length = data.length;
-
-            for (var i = 0; i < colorMod.length; i++) {
-                if (split.length == 0) {
-                    star = data[0].count;
-                } else {
-                    star = split[i - 1].end;
-                }
-                if (i == colorMod.length - 1) {
-                    end = null;
-                } else {
-                    sign = parseInt(colorMod[i] / sunMod * length) + sign;
-                    end = data[sign].count;
-                }
-
-                split.push({
-                    start: star,
-                    end: end,
-                    backgroundColor: colors[i]
-                });
-            }
-            var result = [];
-            for (var _i = 0; _i < split.length; _i++) {
-                var item = split[_i];
-                if (item.start != item.end) {
-                    item.backgroundColor = colors[result.length];
-                    result.push(item);
-                }
-            }
-            split = [];
-
-            this.styleConfig.splitList = result;
-        }
-    }, {
-        key: 'findIndexSelectItem',
-        value: function findIndexSelectItem(item) {
-            var index = -1;
-            if (item) {
-                index = this.selectItem.findIndex(function (val) {
-                    return val && val.x == item.x && val.y == item.y;
-                });
-            }
-            return index;
-        }
-    }, {
-        key: 'getStyle',
-        value: function getStyle(item) {
-            if (item.count == 0) {
-                return {
-                    backgroundColor: 'rgba(255,255,255,0)'
-                };
-            } else {
-                return this.setDrawStyle(item);
-            }
-        }
-    }, {
-        key: 'getTarget',
-        value: function getTarget(mouseX, mouseY) {
-            var gridStep = this._drawSize;
-            var mapSize = this.map.getSize();
-
-            for (var i = 0; i < this.workerData.length; i++) {
-                var item = this.workerData[i];
-                var x = item.x;
-                var y = item.y;
-                if (item.count > 0 && x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(x, y - gridStep / 2);
-                    this.ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
-                    this.ctx.lineTo(x + gridStep / 2, y + gridStep / 4);
-                    this.ctx.lineTo(x, y + gridStep / 2);
-                    this.ctx.lineTo(x - gridStep / 2, y + gridStep / 4);
-                    this.ctx.lineTo(x - gridStep / 2, y - gridStep / 4);
-                    this.ctx.closePath();
-
-                    if (this.ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
-                        return {
-                            index: i,
-                            item: item
-                        };
-                    }
-                }
-            }
-            return {
-                index: -1,
-                item: null
-            };
-        }
-    }, {
-        key: 'drawRec',
-        value: function drawRec() {
-            this.clearCanvas();
-            var mapSize = this.map.getSize();
-            var gridsW = this._drawSize;
-
-            var style = this.styleConfig.normal;
-            this.ctx.shadowOffsetX = 0;
-            this.ctx.shadowOffsetY = 0;
-            for (var i = 0; i < this.workerData.length; i++) {
-                var item = this.workerData[i];
-                var x = item.x;
-                var y = item.y;
-                var count = item.count;
-                if (count > 0 && x > -gridsW && y > -gridsW && x < mapSize.width + gridsW && y < mapSize.height + gridsW) {
-                    var drawStyle = this.getStyle(item);
-                    this.drawLine(x, y, gridsW - style.padding, drawStyle, this.ctx);
-                }
-            }
-        }
-    }, {
-        key: 'drawLine',
-        value: function drawLine(x, y, gridStep, drawStyle, ctx) {
-
-            ctx.beginPath();
-            if (drawStyle.shadowColor) {
-                this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
-                this.ctx.shadowBlur = drawStyle.shadowBlur || 10;
-            } else {
-                this.ctx.shadowColor = 'transparent';
-                this.ctx.shadowBlur = 0;
-            }
-            ctx.fillStyle = drawStyle.backgroundColor;
-            ctx.moveTo(x, y - gridStep / 2);
-            ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
-            ctx.lineTo(x + gridStep / 2, y + gridStep / 4);
-            ctx.lineTo(x, y + gridStep / 2);
-            ctx.lineTo(x - gridStep / 2, y + gridStep / 4);
-            ctx.lineTo(x - gridStep / 2, y - gridStep / 4);
-            ctx.fill();
-            ctx.closePath();
-        }
-    }]);
-
-    return HoneycombOverlay;
-}(_Parameter2.Parameter);
-
-/***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.ImgOverlay = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Parameter2 = __webpack_require__(4);
-
-var _ImgConfig = __webpack_require__(38);
-
-var _ImgConfig2 = _interopRequireDefault(_ImgConfig);
-
-var _util = __webpack_require__(0);
-
-var _OnState = __webpack_require__(1);
-
-var _OnState2 = _interopRequireDefault(_OnState);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
-    _inherits(ImgOverlay, _Parameter);
-
-    function ImgOverlay(opts) {
-        _classCallCheck(this, ImgOverlay);
-
-        var _this = _possibleConstructorReturn(this, (ImgOverlay.__proto__ || Object.getPrototypeOf(ImgOverlay)).call(this, _ImgConfig2.default, opts));
-
-        _this.cacheImg = {};
-        _this.state = null;
-        return _this;
-    }
-
-    _createClass(ImgOverlay, [{
-        key: 'resize',
-        value: function resize() {
-            this.drawMap();
-        }
-    }, {
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-            this._setStyle(this.baseConfig, ops);
-        }
-    }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState(this.state);
-        }
-    }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            for (var i = 0; i < this.workerData.length; i++) {
-                var pixel = this.workerData[i].pixel;
-                pixel.x = pixel.x + distanceX;
-                pixel.y = pixel.y + distanceY;
-            }
-
-            this.refresh();
-        }
-    }, {
-        key: 'drawMap',
-        value: function drawMap() {
-            var _this2 = this;
-
-            this.setState(_OnState2.default.computeBefore);
-            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin) {
-                if (_this2.eventType == 'onmoving') {
-                    return;
-                }
-                _this2.setState(_OnState2.default.conputeAfter);
-
-                _this2.setWorkerData(pixels);
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
-                margin = null;
-                pixels = null;
-            });
-        }
-    }, {
-        key: '_isMouseOver',
-        value: function _isMouseOver(x, y, imgX, imgY, imgW, imgH) {
-            return !(x < imgX || x > imgX + imgW || y < imgY || y > imgY + imgH);
-        }
-    }, {
-        key: 'getTarget',
-        value: function getTarget(x, y) {
-            var pixels = this.workerData;
-
-            for (var i = 0, len = pixels.length; i < len; i++) {
-                var item = pixels[i];
-                var pixel = item.pixel;
-                var style = this.setDrawStyle(item);
-                var img = void 0;
-                if ((0, _util.isString)(img)) {
-                    img = this.cacheImg[style.icon];
-                } else {
-                    img = style.icon;
-                }
-
-                if (!img) break;
-                if (style.width && style.height) {
-                    var xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height, 1);
-
-                    if (this._isMouseOver(x, y, xy.x, xy.y, style.width, style.height)) {
-                        return {
-                            index: i,
-                            item: item
-                        };
-                    }
-                } else {
-
-                    var _xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height);
-                    if (this._isMouseOver(x, y, _xy.x, _xy.y, img.width, img.height)) {
-
-                        return {
-                            index: i,
-                            item: item
-                        };
-                    }
-                }
-            }
-            return {
-                index: -1,
-                item: null
-            };
-        }
-    }, {
-        key: 'findIndexSelectItem',
-        value: function findIndexSelectItem(item) {
-            var index = -1;
-            if (item) {
-                index = this.selectItem.findIndex(function (val) {
-                    return val && val.lat == item.lat && val.lng == item.lng;
-                });
-            }
-
-            return index;
-        }
-    }, {
-        key: 'refresh',
-        value: function refresh() {
-            this.setState(_OnState2.default.drawBefore);
-            this.clearCanvas();
-            this._loopDraw(this.ctx, this.workerData);
-            this.setState(_OnState2.default.drawAfter);
-        }
-    }, {
-        key: 'loadImg',
-        value: function loadImg(img, fun) {
-            var me = this;
-            if ((0, _util.isString)(img)) {
-                var image = me.cacheImg[img];
-                if (!image) {
-                    var _image = new Image();
-                    _image.src = img;
-                    _image.onload = function () {
-
-                        me.cacheImg[img] = _image;
-                        fun(_image);
-                    };
-                } else {
-                    fun(image);
-                }
-            } else {
-                fun(img);
-            }
-        }
-    }, {
-        key: 'isPercent',
-        value: function isPercent(val) {
-            if (val.toString().indexOf('%') > -1) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }, {
-        key: '_getDrawXY',
-        value: function _getDrawXY(pixel, offsetL, offsetT, width, height) {
-            var x = 0,
-                y = 0;
-            var scaleW = width;
-            var scaleH = height;
-            var offsetLeft = parseFloat(offsetL);
-            var offsetTop = parseFloat(offsetT);
-
-            if (this.isPercent(offsetL)) {
-                x = pixel.x + scaleW * offsetLeft / 100;
-            } else {
-                x = pixel.x + offsetLeft;
-            }
-            if (this.isPercent(offsetT)) {
-                y = pixel.y + scaleH * offsetTop / 100;
-            } else {
-                y = pixel.y + offsetTop;
-            }
-            return {
-                x: x,
-                y: y
-            };
-        }
-    }, {
-        key: 'setDrawStyle',
-        value: function setDrawStyle(item) {
-            var normal = this.styleConfig.normal;
-            var result = {};
-            Object.assign(result, normal);
-
-
-            var splitList = this.styleConfig.splitList;
-            for (var i = 0; i < splitList.length; i++) {
-                var condition = splitList[i];
-                if (condition.end == null) {
-                    if (item.count >= condition.start) {
-                        Object.assign(result, normal, condition);
-                        break;
-                    }
-                } else if (item.count >= condition.start && item.count < condition.end) {
-                    Object.assign(result, normal, condition);
-                    break;
-                }
-            }
-
-            return result;
-        }
-    }, {
-        key: '_loopDraw',
-        value: function _loopDraw(ctx, pixels) {
-            var _this3 = this;
-
-            var _loop = function _loop(i, len) {
-                var item = pixels[i];
-                var pixel = item.pixel;
-                var style = _this3.setDrawStyle(item);
-                _this3.loadImg(style.icon, function (img) {
-                    if (style.width && style.height) {
-                        var xy = _this3._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height);
-                        _this3._drawImage(_this3.ctx, img, xy.x, xy.y, style.width, style.height);
-                    } else {
-                        var _xy2 = _this3._getDrawXY(pixel, style.offsets.left, style.offsets.top, img.width, img.height, 1);
-                        _this3._drawImage(_this3.ctx, img, _xy2.x, _xy2.y, img.width, img.height);
-                    }
-                });
-            };
-
-            for (var i = 0, len = pixels.length; i < len; i++) {
-                _loop(i, len);
-            }
-        }
-    }, {
-        key: '_drawImage',
-        value: function _drawImage(ctx, img, x, y, width, height) {
-            ctx.drawImage(img, x, y, width, height);
-        }
-    }]);
-
-    return ImgOverlay;
-}(_Parameter2.Parameter);
-
-/***/ }),
-/* 17 */,
-/* 18 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.MoveLineOverlay = undefined;
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _CanvasOverlay = __webpack_require__(3);
-
-var _util = __webpack_require__(0);
-
-var _MapStyle = __webpack_require__(6);
-
-var _MoveLineConfig = __webpack_require__(41);
-
-var _MoveLineConfig2 = _interopRequireDefault(_MoveLineConfig);
-
-var _BaseClass2 = __webpack_require__(11);
-
-var _BaseClass3 = _interopRequireDefault(_BaseClass2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Marker = function () {
-    function Marker(opts) {
-        _classCallCheck(this, Marker);
-
-        this.styleConfig = {
-            markerColor: opts.markerColor || opts.color,
-            markerRadius: opts.markerRadius,
-            fontColor: opts.color
-        };
-        this.text = opts.name;
-        this.point = opts.point;
-    }
-
-    _createClass(Marker, [{
-        key: 'draw',
-        value: function draw(ctx, map) {
-            var _map$pointToPixel = map.pointToPixel(this.point),
-                x = _map$pointToPixel.x,
-                y = _map$pointToPixel.y;
-
-            var _styleConfig = this.styleConfig,
-                markerColor = _styleConfig.markerColor,
-                markerRadius = _styleConfig.markerRadius,
-                fontColor = _styleConfig.fontColor;
-
-
-            ctx.save();
-            ctx.beginPath();
-            ctx.fillStyle = markerColor;
-            ctx.arc(x, y, markerRadius, 0, Math.PI * 2, true);
-            ctx.closePath();
-            ctx.fill();
-
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.font = '12px Microsoft YaHei';
-            ctx.fillStyle = fontColor || markerColor;
-            ctx.fillText(this.text, x, y - 10);
-            ctx.restore();
-        }
-    }]);
-
-    return Marker;
-}();
-
-var MarkLine = function () {
-    function MarkLine(opts) {
-        _classCallCheck(this, MarkLine);
-
-        this.from = opts.from;
-        this.to = opts.to;
-        this.id = opts.id;
-        this.step = 0;
-        this.path = null;
-    }
-
-    _createClass(MarkLine, [{
-        key: 'getPointList',
-        value: function getPointList(from, to) {
-            var points = [[from.x, from.y], [to.x, to.y]];
-            var ex = points[1][0];
-            var ey = points[1][1];
-            points[3] = [ex, ey];
-            points[1] = this.getOffsetPoint(points[0], points[3]);
-            points[2] = this.getOffsetPoint(points[3], points[0]);
-            points = this.smoothSpline(points, false);
-            points[points.length - 1] = [ex, ey];
-            return points;
-        }
-    }, {
-        key: 'getOffsetPoint',
-        value: function getOffsetPoint(start, end) {
-            var distance = this.getDistance(start, end) / 3;
-            var angle = void 0,
-                dX = void 0,
-                dY = void 0;
-            var mp = [start[0], start[1]];
-            var deltaAngle = -0.2;
-            if (start[0] != end[0] && start[1] != end[1]) {
-                var k = (end[1] - start[1]) / (end[0] - start[0]);
-                angle = Math.atan(k);
-            } else if (start[0] == end[0]) {
-                angle = (start[1] <= end[1] ? 1 : -1) * Math.PI / 2;
-            } else {
-                angle = 0;
-            }
-            if (start[0] <= end[0]) {
-                angle -= deltaAngle;
-                dX = Math.round(Math.cos(angle) * distance);
-                dY = Math.round(Math.sin(angle) * distance);
-                mp[0] += dX;
-                mp[1] += dY;
-            } else {
-                angle += deltaAngle;
-                dX = Math.round(Math.cos(angle) * distance);
-                dY = Math.round(Math.sin(angle) * distance);
-                mp[0] -= dX;
-                mp[1] -= dY;
-            }
-            return mp;
-        }
-    }, {
-        key: 'smoothSpline',
-        value: function smoothSpline(points, isLoop) {
-            var len = points.length;
-            var ret = [];
-            var distance = 0;
-            for (var i = 1; i < len; i++) {
-                distance += this.getDistance(points[i - 1], points[i]);
-            }
-            var segs = distance / 2;
-            segs = segs < len ? len : segs;
-            for (var _i = 0; _i < segs; _i++) {
-                var pos = _i / (segs - 1) * (isLoop ? len : len - 1);
-                var idx = Math.floor(pos);
-                var w = pos - idx;
-                var p0 = void 0;
-                var p1 = points[idx % len];
-                var p2 = void 0;
-                var p3 = void 0;
-                if (!isLoop) {
-                    p0 = points[idx === 0 ? idx : idx - 1];
-                    p2 = points[idx > len - 2 ? len - 1 : idx + 1];
-                    p3 = points[idx > len - 3 ? len - 1 : idx + 2];
-                } else {
-                    p0 = points[(idx - 1 + len) % len];
-                    p2 = points[(idx + 1) % len];
-                    p3 = points[(idx + 2) % len];
-                }
-                var w2 = w * w;
-                var w3 = w * w2;
-
-                ret.push([this.interpolate(p0[0], p1[0], p2[0], p3[0], w, w2, w3), this.interpolate(p0[1], p1[1], p2[1], p3[1], w, w2, w3)]);
-            }
-            return ret;
-        }
-    }, {
-        key: 'interpolate',
-        value: function interpolate(p0, p1, p2, p3, t, t2, t3) {
-            var v0 = (p2 - p0) * 0.5;
-            var v1 = (p3 - p1) * 0.5;
-            return (2 * (p1 - p2) + v0 + v1) * t3 + (-3 * (p1 - p2) - 2 * v0 - v1) * t2 + v0 * t + p1;
-        }
-    }, {
-        key: 'getDistance',
-        value: function getDistance(p1, p2) {
-            return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1]));
-        }
-    }, {
-        key: 'drawMarker',
-        value: function drawMarker(context, map) {
-            this.from.draw(context, map);
-            this.to.draw(context, map);
-        }
-    }, {
-        key: 'drawLinePath',
-        value: function drawLinePath(context, styleConfig, map) {
-            var pointList = this.path = this.getPointList(map.pointToPixel(this.from.point), map.pointToPixel(this.to.point));
-            var len = pointList.length;
-            context.save();
-            context.beginPath();
-            context.lineWidth = styleConfig.lineWidth;
-            context.strokeStyle = styleConfig.colors[this.id];
-
-            if (!styleConfig.lineType || styleConfig.lineType == 'solid') {
-                context.moveTo(pointList[0][0], pointList[0][1]);
-                for (var i = 0; i < len; i++) {
-                    context.lineTo(pointList[i][0], pointList[i][1]);
-                }
-            } else if (styleConfig.lineType == 'dashed' || styleConfig.lineType == 'dotted') {
-                for (var _i2 = 1; _i2 < len; _i2 += 2) {
-                    context.moveTo(pointList[_i2 - 1][0], pointList[_i2 - 1][1]);
-                    context.lineTo(pointList[_i2][0], pointList[_i2][1]);
-                }
-            }
-            context.stroke();
-            context.restore();
-            this.step = 0;
-        }
-    }, {
-        key: 'drawMoveCircle',
-        value: function drawMoveCircle(context, styleConfig, map) {
-            var pointList = this.path || this.getPointList(map.pointToPixel(this.from.point), map.pointToPixel(this.to.point));
-            context.save();
-            context.fillStyle = styleConfig.fillColor;
-            context.shadowColor = styleConfig.shadowColor;
-            context.shadowBlur = styleConfig.shadowBlur;
-            context.beginPath();
-            context.arc(pointList[this.step][0], pointList[this.step][1], styleConfig.moveRadius, 0, Math.PI * 2, true);
-            context.fill();
-            context.closePath();
-            context.restore();
-            this.step += 1;
-            if (this.step >= pointList.length) {
-                this.step = 0;
-            }
-        }
-    }]);
-
-    return MarkLine;
-}();
-
-var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
-    _inherits(MoveLineOverlay, _BaseClass);
-
-    function MoveLineOverlay(opts) {
-        _classCallCheck(this, MoveLineOverlay);
-
-        var _this = _possibleConstructorReturn(this, (MoveLineOverlay.__proto__ || Object.getPrototypeOf(MoveLineOverlay)).call(this));
-
-        _this.markLines = [];
-        _this.map = null;
-        _this.styleConfig = null;
-        _this.data = opts.data || [];
-        _this.baseLayer = null;
-        _this.animationLayer = null;
-        _this.setOptionStyle(opts);
-        _this.render = _this.render.bind(_this);
-        _this.animationDraw = null;
-        return _this;
-    }
-
-    _createClass(MoveLineOverlay, [{
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-            var option = (0, _util.merge)(_MoveLineConfig2.default, ops);
-            this.styleConfig = option.style.normal;
-            this.data = ops.data ? option.data : this.data;
-            this.tMapStyle(option.skin);
-            if (this.baseLayer) {
-                this.markLines.length = 0;
-                this.draw();
-            }
-        }
-    }, {
-        key: 'tMapStyle',
-        value: function tMapStyle(skin) {
-
-            var styleJson = null;
-            if ((0, _util.isString)(skin)) {
-                styleJson = skin == 'Blueness' ? _MapStyle.Blueness : _MapStyle.WhiteLover;
-            } else if ((0, _util.isArray)(skin)) {
-                styleJson = skin;
-            }
-            skin && this.map && this.map.setMapStyle({
-                styleJson: styleJson
-            });
-        }
-    }, {
-        key: 'initialize',
-        value: function initialize(map) {
-            this.map = map;
-            this.baseLayer = new _CanvasOverlay.CanvasOverlay({
-                repaintEnd: this.draw.bind(this)
-            });
-            this.animationLayer = new _CanvasOverlay.CanvasOverlay();
-            map.addOverlay(this.baseLayer);
-            map.addOverlay(this.animationLayer);
-
-            var now = void 0;
-            var then = Date.now();
-            var interval = 1000 / this.styleConfig.fps;
-            var delta = void 0;
-            var me = this;
-
-            function drawFrame() {
-                requestAnimationFrame(drawFrame);
-                now = Date.now();
-                delta = now - then;
-                if (delta > interval) {
-                    then = now - delta % interval;
-                    me.render();
-                }
-            }
-            this.animationDraw = drawFrame;
-            this.animationDraw();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var markLines = this.markLines,
-                animationLayer = this.animationLayer,
-                styleConfig = this.styleConfig;
-
-            var animationCtx = animationLayer.ctx;
-            if (!animationCtx) {
-                return;
-            }
-
-            if (!animationLayer.animationFlag) {
-                animationLayer.clearCanvas();
-                return;
-            }
-            animationCtx.fillStyle = 'rgba(0,0,0,0.93)';
-            var prev = animationCtx.globalCompositeOperation;
-            animationCtx.globalCompositeOperation = 'destination-in';
-            var size = this.map.getSize();
-            animationCtx.fillRect(0, 0, size.width, size.height);
-            animationCtx.globalCompositeOperation = prev;
-
-            for (var i = 0; i < markLines.length; i++) {
-                var markLine = markLines[i];
-                markLine.drawMoveCircle(animationCtx, styleConfig, this.map);
-            }
-        }
-    }, {
-        key: 'drawBaseLayer',
-        value: function drawBaseLayer() {
-            var baseCtx = this.baseLayer.ctx;
-            if (!baseCtx) {
-                return;
-            }
-            if (this.markLines.length == 0) {
-                this.addMarkLine();
-            }
-            var styleConfig = this.styleConfig,
-                map = this.map;
-
-            this.baseLayer.clearCanvas();
-            this.markLines.forEach(function (line) {
-                line.drawMarker(baseCtx, map);
-                line.drawLinePath(baseCtx, styleConfig, map);
-            });
-        }
-    }, {
-        key: 'addMarkLine',
-        value: function addMarkLine() {
-            var styleConfig = this.styleConfig,
-                markLines = this.markLines,
-                data = this.data;
-
-            markLines.length = 0;
-
-            data.forEach(function (line, i) {
-                markLines.push(new MarkLine({
-                    id: i,
-                    from: new Marker({
-                        name: line.from.city,
-                        markerColor: styleConfig.markerColor,
-                        markerRadius: styleConfig.markerRadius,
-                        point: new BMap.Point(line.from.lnglat[0], line.from.lnglat[1]),
-                        color: styleConfig.markerColor || styleConfig.colors[i]
-                    }),
-                    to: new Marker({
-                        name: line.to.city,
-                        markerColor: styleConfig.markerColor,
-                        markerRadius: styleConfig.markerRadius,
-                        point: new BMap.Point(line.to.lnglat[0], line.to.lnglat[1]),
-                        color: styleConfig.markerColor || styleConfig.colors[i]
-                    })
-                }));
-            });
-        }
-    }, {
-        key: 'setData',
-        value: function setData(points) {
-            this.setPoints(points);
-        }
-    }, {
-        key: 'getData',
-        value: function getData() {
-            return this.data;
-        }
-    }, {
-        key: 'setPoints',
-        value: function setPoints(points) {
-            if (!(0, _util.isArray)(points)) {
-                throw new TypeError('inMap: data must be a Array');
-            }
-            this.data = points;
-            this.markLines.length = 0;
-            this.draw();
-        }
-    }, {
-        key: 'draw',
-        value: function draw() {
-            this.baseLayer.canvasResize();
-            this.animationLayer.canvasResize();
-            this.drawBaseLayer();
-        }
-    }, {
-        key: 'dispose',
-        value: function dispose() {
-            window.requestAnimationFrame(this.animationDraw);
-            this.markLines = [];
-            this.map.removeOverlay(this.animationLayer);
-            this.map.removeOverlay(this.baseLayer);
-        }
-    }]);
-
-    return MoveLineOverlay;
-}(_BaseClass3.default);
-
-/***/ }),
-/* 19 */,
-/* 20 */,
-/* 21 */,
-/* 22 */,
-/* 23 */,
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
-/* 28 */,
-/* 29 */,
-/* 30 */,
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    tooltip: {
-        show: false,
-        customClass: 'inmap-tooltip-black',
-        offsets: {
-            top: 5,
-            left: 12
-        }
-
-    },
-    legend: {
-        show: false,
-        toFixed: 2 },
-
-    style: {
-        normal: {
-            borderWidth: 0.1,
-            backgroundColor: 'rgba(200, 200, 200, 0.5)',
-            mergeCount: 1.5,
-            label: {
-                show: false,
-                color: 'rgba(0,0,0,1)',
-                font: '13px Arial'
-            }
-        },
-
-        colors: [],
-        splitList: []
-
-    },
-    data: [],
-    event: {
-        multiSelect: false, onMouseClick: function onMouseClick() {},
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    style: {
-        normal: {
-            borderColor: 'rgba(50, 50, 255, 0.8)',
-            borderWidth: 0.05
-        }
-    },
-    data: [],
-    event: {
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    tooltip: {
-        show: false,
-        customClass: 'inmap-tooltip-black',
-        offsets: {
-            top: 5,
-            left: 12
-        }
-
-    },
-    legend: {
-        show: false,
-        toFixed: 2 },
-    draw: {},
-    style: {
-        normal: {
-            borderWidth: 0.1,
-            backgroundColor: 'rgba(200, 200, 200, 0.5)',
-            mergeCount: 1.5,
-            label: {
-                show: false,
-                color: 'rgba(0,0,0,1)',
-                font: '13px Arial'
-            }
-        },
-
-        colors: [],
-        splitList: []
-
-    },
-    data: [],
-    event: {
-        multiSelect: false, onMouseClick: function onMouseClick() {},
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    style: {
-        normal: {
-            fps: 25,
-            color: '#FAFA32',
-            radius: 20,
-            speed: 0.15 }
-    },
-    data: []
-};
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    tooltip: {
-        show: true,
-        customClass: 'inmap-tooltip-black',
-        formatter: '{count}',
-        offsets: {
-            top: 5,
-            left: 12
-        }
-    },
-    legend: {
-        show: true,
-        title: '图例'
-    },
-    style: {
-        type: 'sum',
-        colors: ['rgba(31,98,1,1)', 'rgba(95,154,4,1)', 'rgba(139,227,7,1)', 'rgba(218,134,9,1)', 'rgba(220,54,6,1)', 'rgba(218,2,8,1)', 'rgba(148,1,2,1)', 'rgba(92,1,0,1)'],
-        normal: {
-            backgroundColor: 'rgba(200, 200, 200, 0.5)',
-            padding: 1,
-            size: 50,
-            unit: 'px',
-            label: {
-                show: false,
-                font: '12px sans-serif',
-                shadowBlur: 0,
-                lineWidth: 1,
-                color: 'rgba(75,80,86,1)'
-            }
-        },
-        mouseOver: {},
-        selected: {}
-
-    },
-    data: [],
-    event: {
-        multiSelect: false,
-        onMouseClick: function onMouseClick() {},
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    tooltip: {
-        show: false,
-        offsets: {
-            top: 5,
-            left: 12
-        }
-    },
-    legend: {
-        show: false
-    },
-    style: {
-        gradient: {
-            0.25: 'rgb(0,0,255)',
-            0.55: 'rgb(0,255,0)',
-            0.85: 'rgb(255,255,0)',
-            1.0: 'rgb(255,0,0)'
-        },
-        normal: {
-            radius: 15,
-            minOpacity: 0,
-            maxOpacity: 1,
-            minValue: 0,
-            maxValue: 0,
-            minScope: 0,
-            maxScope: 1 }
-    },
-    data: [],
-    event: {
-        multiSelect: false,
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    tooltip: {
-        show: true,
-        customClass: 'inmap-tooltip-black',
-        formatter: '{count}',
-        offsets: {
-            top: 5,
-            left: 12
-        }
-    },
-    legend: {
-        show: true,
-        title: '图例'
-    },
-    style: {
-        colors: ['rgba(31,98,1,1)', 'rgba(95,154,4,1)', 'rgba(139,227,7,1)', 'rgba(218,134,9,1)', 'rgba(220,54,6,1)', 'rgba(218,2,8,1)', 'rgba(148,1,2,1)', 'rgba(92,1,0,1)'],
-        normal: {
-            backgroundColor: 'rgba(200, 200, 200, 0.5)',
-            padding: 1,
-            size: 50,
-            unit: 'px',
-            label: {
-                show: false,
-                font: '12px sans-serif',
-                shadowBlur: 0,
-                lineWidth: 1,
-                color: 'rgba(75,80,86,1)'
-            }
-        },
-        mouseOver: {},
-        selected: {}
-
-    },
-    data: [],
-    event: {
-        multiSelect: false,
-        onMouseClick: function onMouseClick() {},
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    tooltip: {
-        show: true,
-        customClass: 'inmap-tooltip-black',
-        offsets: {
-            top: 5,
-            left: 12
-        },
-        formatter: '{count}'
-    },
-    legend: {
-        show: false
-    },
-    style: {
-        normal: {
-            icon: null,
-            width: 0,
-            height: 0,
-            offsets: {
-                top: 0,
-                left: 0
-            }
-        },
-        mouseOver: {},
-        selected: {},
-        colors: [],
-        splitList: []
-    },
-    data: [],
-    event: {
-        multiSelect: false, onMouseClick: function onMouseClick() {},
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 39 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    center: [],
-    id: null,
-    skin: null,
-    zoom: {
-        value: 5,
-        show: true,
-        max: 18,
-        min: 5
-    }
-};
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    show: false,
-    title: null,
-    formatter: null,
-    list: []
-};
-
-/***/ }),
-/* 41 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    style: {
-        normal: {
-            markerRadius: 3,
-
-            markerColor: '#fff',
-
-            lineType: 'solid',
-
-            lineWidth: 1,
-
-            colors: ['#F9815C', '#F8AB60', '#EDCC72', '#E2F194', '#94E08A', '#4ECDA5'],
-
-            moveRadius: 2,
-
-            fillColor: '#fff',
-
-            shadowColor: '#fff',
-
-            shadowBlur: 5,
-            fps: 30,
-            skin: null }
-    },
-    data: []
-};
-
-/***/ }),
-/* 42 */,
-/* 43 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.workerMrg = exports.FlashDotOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.CircuitOverlay = exports.HeatOverlay = exports.BoundaryOverlay = exports.GriddingOverlay = exports.DotOverlay = exports.Map = exports.utils = exports.version = undefined;
-
-var _DotOverlay = __webpack_require__(59);
-
-var _GriddingOverlay = __webpack_require__(13);
-
-var _BoundaryOverlay = __webpack_require__(57);
-
-var _HeatOverlay = __webpack_require__(14);
-
-var _CircuitOverlay = __webpack_require__(58);
-
-var _HoneycombOverlay = __webpack_require__(15);
-
-var _ImgOverlay = __webpack_require__(16);
-
-var _MoveLineOverlay = __webpack_require__(18);
-
-var _FlashDotOverlay = __webpack_require__(60);
-
-var _FlashDotOverlay2 = _interopRequireDefault(_FlashDotOverlay);
-
-var _index = __webpack_require__(12);
-
-var _util = __webpack_require__(0);
-
-var utils = _interopRequireWildcard(_util);
-
-var _workerMrg = __webpack_require__(9);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var version = "1.5.9";
-console.log('inMap v' + version);
-
-var inMap = {
-    version: version,
-    utils: utils,
-    Map: _index.Map,
-    DotOverlay: _DotOverlay.DotOverlay,
-    GriddingOverlay: _GriddingOverlay.GriddingOverlay,
-    BoundaryOverlay: _BoundaryOverlay.BoundaryOverlay,
-    HeatOverlay: _HeatOverlay.HeatOverlay,
-    CircuitOverlay: _CircuitOverlay.CircuitOverlay,
-    HoneycombOverlay: _HoneycombOverlay.HoneycombOverlay,
-    ImgOverlay: _ImgOverlay.ImgOverlay,
-    MoveLineOverlay: _MoveLineOverlay.MoveLineOverlay,
-    FlashDotOverlay: _FlashDotOverlay2.default,
-    workerMrg: _workerMrg.workerMrg
-};
-exports.version = version;
-exports.utils = utils;
-exports.Map = _index.Map;
-exports.DotOverlay = _DotOverlay.DotOverlay;
-exports.GriddingOverlay = _GriddingOverlay.GriddingOverlay;
-exports.BoundaryOverlay = _BoundaryOverlay.BoundaryOverlay;
-exports.HeatOverlay = _HeatOverlay.HeatOverlay;
-exports.CircuitOverlay = _CircuitOverlay.CircuitOverlay;
-exports.HoneycombOverlay = _HoneycombOverlay.HoneycombOverlay;
-exports.ImgOverlay = _ImgOverlay.ImgOverlay;
-exports.MoveLineOverlay = _MoveLineOverlay.MoveLineOverlay;
-exports.FlashDotOverlay = _FlashDotOverlay2.default;
-exports.workerMrg = _workerMrg.workerMrg;
-exports.default = inMap;
-
-/***/ }),
-/* 44 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Color = __webpack_require__(5);
-
-var _Legend = __webpack_require__(40);
-
-var _Legend2 = _interopRequireDefault(_Legend);
-
-var _util = __webpack_require__(0);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Legend = function () {
-    function Legend(toolDom, opts) {
-        _classCallCheck(this, Legend);
-
-        this.opts = opts || _Legend2.default;
-        this.dom = this.crateDom(toolDom);
-        this.hide();
-    }
-
-    _createClass(Legend, [{
-        key: 'crateDom',
-        value: function crateDom(toolDom) {
-            var div = document.createElement('div');
-            div.classList.add('inmap-legend');
-            toolDom.appendChild(div);
-            return div;
-        }
-    }, {
-        key: 'show',
-        value: function show() {
-            this.dom.style.display = 'inline-block';
-        }
-    }, {
-        key: 'hide',
-        value: function hide() {
-            this.dom.style.display = 'none';
-        }
-    }, {
-        key: 'toFixed',
-        value: function toFixed(num) {
-            return isNaN(num) ? num : parseFloat(num).toFixed(this.opts.toFixed);
-        }
-    }, {
-        key: 'setTitle',
-        value: function setTitle(title) {
-            this.opts.title = title;
-            this.render();
-        }
-    }, {
-        key: 'setOption',
-        value: function setOption(opts) {
-            this.opts = (0, _util.merge)(_Legend2.default, this.opts, opts);
-            this.opts.list = this.opts.list || [];
-            this.render();
-        }
-    }, {
-        key: 'setItems',
-        value: function setItems(list) {
-            this.opts.list = list;
-            this.render();
-        }
-    }, {
-        key: '_verify',
-        value: function _verify() {
-            var _opts = this.opts,
-                show = _opts.show,
-                title = _opts.title,
-                list = _opts.list;
-
-            if (!(0, _util.isBoolean)(show)) {
-                throw new TypeError('inMap: legend options show must be a Boolean');
-            }
-            if (!(0, _util.isEmpty)(title) && !(0, _util.isString)(title)) {
-                throw new TypeError('inMap: legend options title must be a String');
-            }
-            if (!(0, _util.isArray)(list)) {
-                throw new TypeError('inMap: legend options list must be a Array');
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this = this;
-
-            this._verify();
-            var _opts2 = this.opts,
-                show = _opts2.show,
-                title = _opts2.title,
-                list = _opts2.list;
-
-            if (show) {
-                this.show();
-            } else {
-                this.hide();
-                return;
-            }
-
-            var str = '';
-            if (title) {
-                str = '<div class="inmap-legend-title">' + title + ' </div>';
-            }
-
-            str += '<table cellpadding="0" cellspacing="0">';
-            list.forEach(function (val, index) {
-                var text = null,
-                    backgroundColor = val.backgroundColor;
-                var isShow = backgroundColor != null;
-                var legendBg = new _Color.Color(backgroundColor),
-                    difference = 0.2;
-
-                var opacity = val.opacity;
-                if (opacity) {
-                    opacity += difference;
-                }
-                if (legendBg.a) {
-                    opacity = legendBg.a + difference;
-                } else {
-                    opacity = 1;
-                }
-                backgroundColor = legendBg.getRgbaStyle(opacity);
-                if (val.text) {
-                    text = val.text;
-                } else if (_this.opts.formatter) {
-                    text = _this.opts.formatter(_this.toFixed(val.start), _this.toFixed(val.end), index, val);
-                } else {
-                    text = _this.toFixed(val.start) + ' ~ ' + (val.end == null ? '<span class="inmap-infinity"></span>' : _this.toFixed(val.end));
-                }
-                var td = isShow ? ' <td style="background:' + backgroundColor + '; width:17px;"></td>' : '';
-                str += '\n                <tr>\n                   ' + td + '\n                    <td class="inmap-legend-text">\n                       ' + text + '\n                    </td>\n                </tr>\n                ';
-            });
-            str += '</table>';
-            if (list.length <= 0) {
-                this.hide();
-            }
-            this.dom.innerHTML = str;
-        }
-    }, {
-        key: 'dispose',
-        value: function dispose(parentDom) {
-            parentDom.removeChild(this.dom);
-            this.opts = null;
-            this.dom = null;
-        }
-    }]);
-
-    return Legend;
-}();
-
-exports.default = Legend;
-
-/***/ }),
-/* 45 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _util = __webpack_require__(0);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ToolTip = function () {
-    function ToolTip(toolDom) {
-        _classCallCheck(this, ToolTip);
-
-        this.dom = this.create(toolDom);
-        this.tooltipTemplate = null;
-        this.opts = {};
-        this.hide();
-    }
-
-    _createClass(ToolTip, [{
-        key: 'create',
-        value: function create(toolDom) {
-            var dom = document.createElement('div');
-            dom.classList.add('inmap-tooltip');
-            toolDom.appendChild(dom);
-            return dom;
-        }
-    }, {
-        key: 'compileTooltipTemplate',
-        value: function compileTooltipTemplate(formatter) {
-            formatter = '`' + formatter.replace(/\{/g, '${overItem.') + '`';
-            this.tooltipTemplate = new Function('overItem', 'return ' + formatter);
-        }
-    }, {
-        key: 'show',
-        value: function show(x, y) {
-            var _opts$offsets = this.opts.offsets,
-                left = _opts$offsets.left,
-                top = _opts$offsets.top;
-
-            this.dom.style.left = x + left + 'px';
-            this.dom.style.top = y + top + 'px';
-            this.dom.style.display = 'block';
-        }
-    }, {
-        key: 'hide',
-        value: function hide() {
-            this.dom.style.display = 'none';
-        }
-    }, {
-        key: 'setOption',
-        value: function setOption(opts) {
-            var result = (0, _util.merge)(this.opts, opts);
-            var formatter = result.formatter,
-                customClass = result.customClass;
-
-
-            if ((0, _util.isString)(formatter)) {
-                this.compileTooltipTemplate(result.formatter);
-            }
-
-            if (this.opts.customClass) {
-                this.dom.classList.remove(this.opts.customClass);
-            }
-
-            this.dom.classList.add(customClass);
-            this.opts = result;
-        }
-    }, {
-        key: 'render',
-        value: function render(event, overItem) {
-            if (!this.opts.show) return;
-            if (overItem) {
-                var formatter = this.opts.formatter;
-                if ((0, _util.isFunction)(formatter)) {
-                    this.dom.innerHTML = formatter(overItem);
-                } else if ((0, _util.isString)(formatter)) {
-                    this.dom.innerHTML = this.tooltipTemplate(overItem);
-                }
-                this.show(event.offsetX, event.offsetY);
-            } else {
-                this.hide();
-            }
-        }
-    }]);
-
-    return ToolTip;
-}();
-
-exports.default = ToolTip;
-
-/***/ }),
-/* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var MapZoom = exports.MapZoom = function () {
-    function MapZoom(map, mapDom, opts) {
-        _classCallCheck(this, MapZoom);
-
-        this.map = map;
-        this.mapDom = mapDom;
-        this.zoom = opts;
-        this.createDom();
-    }
-
-    _createClass(MapZoom, [{
-        key: 'createDom',
-        value: function createDom() {
-            var div = document.createElement('div');
-            div.classList.add('inmap-scale-group');
-            div.innerHTML = '<a>+</a > <a>-</a >';
-            this.mapDom.appendChild(div);
-            this.event(div);
-        }
-    }, {
-        key: 'setButtonState',
-        value: function setButtonState() {
-            var doms = this.mapDom.querySelectorAll('.inmap-scale-group a');
-            var zoom = this.map.getZoom();
-            if (zoom >= this.zoom.max) {
-                doms[0].setAttribute('disabled', 'true');
-            } else {
-                doms[0].removeAttribute('disabled');
-            }
-            if (zoom <= this.zoom.min) {
-                doms[1].setAttribute('disabled', 'true');
-            } else {
-                doms[1].removeAttribute('disabled');
-            }
-        }
-    }, {
-        key: 'event',
-        value: function event(div) {
-            var _this = this;
-
-            var doms = div.querySelectorAll('a');
-            doms[0].addEventListener('click', function () {
-                var zoom = _this.map.getZoom();
-                if (zoom < _this.zoom.max) {
-                    _this.map.zoomIn();
-                }
-            });
-            doms[1].addEventListener('click', function () {
-                var zoom = _this.map.getZoom();
-                if (zoom > _this.zoom.min) {
-                    _this.map.zoomOut();
-                }
-            });
-        }
-    }]);
-
-    return MapZoom;
-}();
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _util = __webpack_require__(0);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var BatchesData = function () {
-    function BatchesData(option) {
-        _classCallCheck(this, BatchesData);
-
-        this.setOption(option);
-        this.intervalId = null;
-        this.splitArray = [];
-        this.index = 0;
-    }
-
-    _createClass(BatchesData, [{
-        key: 'setOption',
-        value: function setOption(_ref) {
-            var _ref$interval = _ref.interval,
-                interval = _ref$interval === undefined ? 400 : _ref$interval,
-                _ref$splitCount = _ref.splitCount,
-                splitCount = _ref$splitCount === undefined ? 1500 : _ref$splitCount;
-
-            this.clear();
-            this.interval = interval;
-            this.splitCount = splitCount;
-        }
-    }, {
-        key: 'clear',
-        value: function clear() {
-            this.splitArray = [];
-            this.index = 0;
-            if (this.intervalId) {
-                clearInterval(this.intervalId);
-            }
-        }
-    }, {
-        key: 'action',
-        value: function action(data, callback, ctx) {
-            var _this = this;
-
-            this.clear();
-            var splitCount = this.splitCount,
-                interval = this.interval;
-
-
-            this.splitArray = (0, _util.chunk)(data, splitCount);
-
-            var loop = function loop() {
-                var item = _this.splitArray[_this.index];
-                item && callback(ctx, item);
-
-                _this.index++;
-
-                if (_this.index >= _this.splitArray.length - 1) {
-                    _this.clear();
-                } else {
-                    _this.intervalId = setTimeout(loop, interval);
-                }
-            };
-            loop();
-        }
-    }]);
-
-    return BatchesData;
-}();
-
-exports.default = BatchesData;
-
-/***/ }),
-/* 48 */,
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(50)();
-// imports
-
-
-// module
-exports.push([module.i, ".inmap-container {\n  opacity: 1;\n  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;\n}\n.inmap-container,\n.inmap-container *:after,\n.inmap-container *:before {\n  display: -webkit-box;\n}\n.inmap-scale-group {\n  position: absolute;\n  right: 10px;\n  bottom: 35px;\n  z-index: 999999;\n  opacity: 1;\n}\n.inmap-scale-group > a {\n  display: block;\n  width: 24px;\n  height: 24px;\n  font-size: 17px;\n  line-height: 22px;\n  text-align: center;\n  background: #fff;\n  margin-top: 5px;\n  color: #666;\n  cursor: pointer;\n  text-decoration: none;\n}\n.inmap-scale-group > a[disabled] {\n  color: rgba(187, 190, 196, 0.6);\n  background-color: #f7f7f7;\n  border-color: #dddee1;\n}\n.inmap-tooltip {\n  position: absolute;\n  opacity: 1;\n  display: none;\n  pointer-events: none;\n  border-style: solid;\n  white-space: nowrap;\n  z-index: 9999999;\n  transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1), top 0.4s cubic-bezier(0.23, 1, 0.32, 1);\n  border-radius: 4px;\n  font-style: normal;\n  font-variant: normal;\n  font-weight: normal;\n  font-stretch: normal;\n  font-size: 14px;\n  font-family: sans-serif;\n  line-height: 21px;\n  padding: 5px;\n  left: 323px;\n  top: 451px;\n}\n.inmap-tooltip-black {\n  border-width: 0px;\n  border-color: #333333;\n  background-color: rgba(50, 50, 50, 0.7);\n  color: #ffffff;\n}\n.inmap-legend-container {\n  position: absolute;\n  left: 35px;\n  bottom: 35px;\n  z-index: 9999;\n}\n.inmap-legend {\n  list-style: none;\n  opacity: 1;\n  height: auto;\n  font-size: 12px;\n  text-align: center;\n  border: 10px solid rgba(255, 255, 255, 0.7);\n  box-shadow: rgba(8, 16, 34, 0.3) 2px 0px 7px;\n  border-radius: 5px;\n  margin-right: 3px;\n}\n.inmap-legend .inmap-legend-title {\n  background-color: rgba(255, 255, 255, 0.7);\n  padding-bottom: 3px;\n}\n.inmap-legend > table {\n  width: 100%;\n}\n.inmap-legend table,\n.inmap-legend table tbody,\n.inmap-legend table tr,\n.inmap-legend table tr td {\n  padding: 0;\n  border: 0;\n  margin: 0;\n}\n.inmap-legend .inmap-chunk {\n  display: inline-block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  width: 14px;\n}\n.inmap-legend .inmap-legend-text {\n  background-color: rgba(255, 255, 255, 0.7);\n  padding-left: 5px;\n  text-align: left;\n  font-size: 12px;\n}\n.inmap-legend .inmap-infinity {\n  top: 4px;\n  left: 7px;\n  position: relative;\n}\n.inmap-legend .inmap-infinity:before,\n.inmap-legend .inmap-infinity:after {\n  content: \"\";\n  box-sizing: border-box;\n  width: 6px;\n  height: 6px;\n  position: absolute;\n  top: 0;\n  left: 0;\n  border: 1px solid #495060;\n  -moz-border-radius: 50px 50px 0;\n  border-radius: 50px 50px 0 50px;\n  -webkit-transform: rotate(128deg);\n  -moz-transform: rotate(128deg);\n  -ms-transform: rotate(128deg);\n  -o-transform: rotate(128deg);\n  transform: rotate(128deg);\n}\n.inmap-legend .inmap-infinity:after {\n  left: auto;\n  right: 0;\n  -moz-border-radius: 50px 50px 50px 0;\n  border-radius: 50px 50px 50px 0;\n  -webkit-transform: rotate(-128deg);\n  -moz-transform: rotate(-128deg);\n  -ms-transform: rotate(-128deg);\n  -o-transform: rotate(-128deg);\n  transform: rotate(-128deg);\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function() {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		var result = [];
-		for(var i = 0; i < this.length; i++) {
-			var item = this[i];
-			if(item[2]) {
-				result.push("@media " + item[2] + "{" + item[1] + "}");
-			} else {
-				result.push(item[1]);
-			}
-		}
-		return result.join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-
-/***/ }),
-/* 51 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-var stylesInDom = {},
-	memoize = function(fn) {
-		var memo;
-		return function () {
-			if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-			return memo;
-		};
-	},
-	isOldIE = memoize(function() {
-		return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
-	}),
-	getHeadElement = memoize(function () {
-		return document.head || document.getElementsByTagName("head")[0];
-	}),
-	singletonElement = null,
-	singletonCounter = 0,
-	styleElementsInsertedAtTop = [];
-
-module.exports = function(list, options) {
-	if(typeof DEBUG !== "undefined" && DEBUG) {
-		if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (typeof options.singleton === "undefined") options.singleton = isOldIE();
-
-	// By default, add <style> tags to the bottom of <head>.
-	if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
-
-	var styles = listToStyles(list);
-	addStylesToDom(styles, options);
-
-	return function update(newList) {
-		var mayRemove = [];
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-		if(newList) {
-			var newStyles = listToStyles(newList);
-			addStylesToDom(newStyles, options);
-		}
-		for(var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-			if(domStyle.refs === 0) {
-				for(var j = 0; j < domStyle.parts.length; j++)
-					domStyle.parts[j]();
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-}
-
-function addStylesToDom(styles, options) {
-	for(var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-		if(domStyle) {
-			domStyle.refs++;
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles(list) {
-	var styles = [];
-	var newStyles = {};
-	for(var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-		if(!newStyles[id])
-			styles.push(newStyles[id] = {id: id, parts: [part]});
-		else
-			newStyles[id].parts.push(part);
-	}
-	return styles;
-}
-
-function insertStyleElement(options, styleElement) {
-	var head = getHeadElement();
-	var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
-	if (options.insertAt === "top") {
-		if(!lastStyleElementInsertedAtTop) {
-			head.insertBefore(styleElement, head.firstChild);
-		} else if(lastStyleElementInsertedAtTop.nextSibling) {
-			head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			head.appendChild(styleElement);
-		}
-		styleElementsInsertedAtTop.push(styleElement);
-	} else if (options.insertAt === "bottom") {
-		head.appendChild(styleElement);
-	} else {
-		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-	}
-}
-
-function removeStyleElement(styleElement) {
-	styleElement.parentNode.removeChild(styleElement);
-	var idx = styleElementsInsertedAtTop.indexOf(styleElement);
-	if(idx >= 0) {
-		styleElementsInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement(options) {
-	var styleElement = document.createElement("style");
-	styleElement.type = "text/css";
-	insertStyleElement(options, styleElement);
-	return styleElement;
-}
-
-function createLinkElement(options) {
-	var linkElement = document.createElement("link");
-	linkElement.rel = "stylesheet";
-	insertStyleElement(options, linkElement);
-	return linkElement;
-}
-
-function addStyle(obj, options) {
-	var styleElement, update, remove;
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-		styleElement = singletonElement || (singletonElement = createStyleElement(options));
-		update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-	} else if(obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function") {
-		styleElement = createLinkElement(options);
-		update = updateLink.bind(null, styleElement);
-		remove = function() {
-			removeStyleElement(styleElement);
-			if(styleElement.href)
-				URL.revokeObjectURL(styleElement.href);
-		};
-	} else {
-		styleElement = createStyleElement(options);
-		update = applyToTag.bind(null, styleElement);
-		remove = function() {
-			removeStyleElement(styleElement);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle(newObj) {
-		if(newObj) {
-			if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-				return;
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag(styleElement, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (styleElement.styleSheet) {
-		styleElement.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = styleElement.childNodes;
-		if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-		if (childNodes.length) {
-			styleElement.insertBefore(cssNode, childNodes[index]);
-		} else {
-			styleElement.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag(styleElement, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		styleElement.setAttribute("media", media)
-	}
-
-	if(styleElement.styleSheet) {
-		styleElement.styleSheet.cssText = css;
-	} else {
-		while(styleElement.firstChild) {
-			styleElement.removeChild(styleElement.firstChild);
-		}
-		styleElement.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink(linkElement, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	if(sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = linkElement.href;
-
-	linkElement.href = URL.createObjectURL(blob);
-
-	if(oldSrc)
-		URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(49);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(51)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./map.less", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./map.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */,
-/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5311,7 +2439,7 @@ var _Color = __webpack_require__(5);
 
 var _util = __webpack_require__(0);
 
-var _BoundaryConfig = __webpack_require__(31);
+var _BoundaryConfig = __webpack_require__(32);
 
 var _BoundaryConfig2 = _interopRequireDefault(_BoundaryConfig);
 
@@ -5623,7 +2751,7 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 58 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5638,9 +2766,9 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __webpack_require__(0);
 
-var _CanvasOverlay2 = __webpack_require__(3);
+var _CanvasOverlay2 = __webpack_require__(2);
 
-var _CircuitConfig = __webpack_require__(32);
+var _CircuitConfig = __webpack_require__(33);
 
 var _CircuitConfig2 = _interopRequireDefault(_CircuitConfig);
 
@@ -5831,7 +2959,7 @@ var CircuitOverlay = exports.CircuitOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 59 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5844,19 +2972,19 @@ exports.DotOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay = __webpack_require__(3);
+var _CanvasOverlay = __webpack_require__(2);
 
-var _Label = __webpack_require__(7);
+var _Label = __webpack_require__(8);
 
 var _Parameter2 = __webpack_require__(4);
 
 var _util = __webpack_require__(0);
 
-var _BatchesData = __webpack_require__(47);
+var _BatchesData = __webpack_require__(48);
 
 var _BatchesData2 = _interopRequireDefault(_BatchesData);
 
-var _DotConfig = __webpack_require__(33);
+var _DotConfig = __webpack_require__(34);
 
 var _DotConfig2 = _interopRequireDefault(_DotConfig);
 
@@ -6268,7 +3396,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 60 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6280,11 +3408,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay2 = __webpack_require__(3);
+var _CanvasOverlay2 = __webpack_require__(2);
 
 var _util = __webpack_require__(0);
 
-var _FlashDotConfig = __webpack_require__(34);
+var _FlashDotConfig = __webpack_require__(35);
 
 var _FlashDotConfig2 = _interopRequireDefault(_FlashDotConfig);
 
@@ -6431,6 +3559,2871 @@ var FlashDotOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 exports.default = FlashDotOverlay;
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.GriddingOverlay = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Parameter2 = __webpack_require__(4);
+
+var _GriddingConfig = __webpack_require__(36);
+
+var _GriddingConfig2 = _interopRequireDefault(_GriddingConfig);
+
+var _OnState = __webpack_require__(1);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var GriddingOverlay = exports.GriddingOverlay = function (_Parameter) {
+    _inherits(GriddingOverlay, _Parameter);
+
+    function GriddingOverlay(ops) {
+        _classCallCheck(this, GriddingOverlay);
+
+        var _this = _possibleConstructorReturn(this, (GriddingOverlay.__proto__ || Object.getPrototypeOf(GriddingOverlay)).call(this, _GriddingConfig2.default, ops));
+
+        _this.state = null;
+        _this._drawSize = 0;
+        _this.mpp = {};
+
+        return _this;
+    }
+
+    _createClass(GriddingOverlay, [{
+        key: 'parameterInit',
+        value: function parameterInit() {}
+    }, {
+        key: 'setOptionStyle',
+        value: function setOptionStyle(ops) {
+            this._setStyle(this.baseConfig, ops);
+        }
+    }, {
+        key: 'draw',
+        value: function draw() {
+            this.resize();
+        }
+    }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.eventConfig.onState(this.state);
+        }
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+            this.setState(_OnState2.default.drawBefore);
+            this.drawRec();
+            this.setState(_OnState2.default.drawAfter);
+        }
+    }, {
+        key: 'resize',
+        value: function resize() {
+            this.drawMap();
+        }
+    }, {
+        key: 'onOptionChange',
+        value: function onOptionChange() {
+            this.map && this.createColorSplit();
+        }
+    }, {
+        key: 'onDataChange',
+        value: function onDataChange() {
+            this.map && this.createColorSplit();
+        }
+    }, {
+        key: '_calculateMpp',
+        value: function _calculateMpp() {
+            var zoom = this.map.getZoom();
+            if (this.mpp[zoom]) {
+                return this.mpp[zoom];
+            } else {
+                this.mpp[zoom] = this.getMpp();
+                return this.mpp[zoom];
+            }
+        }
+    }, {
+        key: 'getMpp',
+        value: function getMpp() {
+            var mapCenter = this.map.getCenter();
+            var assistValue = 10;
+            var cpt = new BMap.Point(mapCenter.lng, mapCenter.lat + assistValue);
+            var dpx = Math.abs(this.map.pointToPixel(mapCenter).y - this.map.pointToPixel(cpt).y);
+            return this.map.getDistance(mapCenter, cpt) / dpx;
+        }
+    }, {
+        key: 'drawMap',
+        value: function drawMap() {
+            var _this2 = this;
+
+            this.clearData();
+            var _styleConfig = this.styleConfig,
+                normal = _styleConfig.normal,
+                type = _styleConfig.type;
+
+            var zoom = this.map.getZoom();
+            var mapCenter = this.map.getCenter();
+            var mapSize = this.map.getSize();
+
+            var zoomUnit = Math.pow(2, 18 - zoom);
+            var mercatorProjection = this.map.getMapType().getProjection();
+            var mcCenter = mercatorProjection.lngLatToPoint(mapCenter);
+
+            var nwMcX = mcCenter.x - mapSize.width / 2 * zoomUnit;
+            var nwMc = new BMap.Pixel(nwMcX, mcCenter.y + mapSize.height / 2 * zoomUnit);
+            var size = 0;
+            if (normal.unit == 'px') {
+                size = normal.size * zoomUnit;
+            } else if (normal.unit == 'm') {
+                var mpp = this._calculateMpp();
+                if (mpp == 0 || isNaN(mpp)) {
+                    return;
+                }
+                size = normal.size / mpp * zoomUnit;
+            } else {
+                throw new TypeError('inMap: style.normal.unit must be is "meters" or "px" .');
+            }
+
+            var params = {
+                points: this.points,
+                size: size,
+                type: type,
+                nwMc: nwMc,
+                zoomUnit: zoomUnit,
+                mapSize: mapSize,
+                mapCenter: mapCenter,
+                zoom: zoom
+
+            };
+            this.setState(_OnState2.default.computeBefore);
+            this.postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj) {
+                if (_this2.eventType == 'onmoving') {
+                    return;
+                }
+
+                _this2.canvasResize();
+                _this2.setState(_OnState2.default.conputeAfter);
+                _this2.workerData = gridsObj.grids;
+                _this2._drawSize = size / zoomUnit;
+                _this2.setState(_OnState2.default.drawBefore);
+
+                if (_this2.eventType != 'onmoveend' || _this2.styleConfig.splitList == null || _this2.styleConfig.splitList.length < _this2.styleConfig.colors.length) {
+                    _this2.createColorSplit();
+                }
+                _this2.refresh();
+                gridsObj = null;
+            });
+        }
+    }, {
+        key: '_isMouseOver',
+        value: function _isMouseOver(mouseX, mouseY, x, y, w, h) {
+            return !(mouseX < x || mouseX > x + w || mouseY < y || mouseY > y + h);
+        }
+    }, {
+        key: 'findIndexSelectItem',
+        value: function findIndexSelectItem(item) {
+            var index = -1;
+            if (item) {
+                index = this.selectItem.findIndex(function (val) {
+                    return val && val.x == item.x && val.y == item.y;
+                });
+            }
+            return index;
+        }
+    }, {
+        key: 'getTarget',
+        value: function getTarget(x, y) {
+
+            var gridStep = this._drawSize;
+            var mapSize = this.map.getSize();
+            for (var i = 0; i < this.workerData.length; i++) {
+                var item = this.workerData[i];
+                var x1 = item.x;
+                var y1 = item.y;
+                if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
+                    if (this._isMouseOver(x, y, x1, y1, gridStep, gridStep)) {
+                        return {
+                            index: i,
+                            item: item
+                        };
+                    }
+                }
+            }
+            return {
+                index: -1,
+                item: null
+            };
+        }
+    }, {
+        key: 'compileSplitList',
+        value: function compileSplitList(data) {
+
+            var colors = this.styleConfig.colors;
+            if (colors.length < 0 || data.length <= 0) return;
+            data = data.sort(function (a, b) {
+                return parseFloat(a.count) - parseFloat(b.count);
+            });
+            var mod = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144];
+
+            var colorMod = mod.slice(0, colors.length).reverse();
+            var sunMod = colorMod.reduce(function (sum, val) {
+                return sum + val;
+            }, 0);
+            var split = [];
+            var star = 0,
+                end = 0,
+                sign = 0,
+                length = data.length;
+
+            for (var i = 0; i < colorMod.length; i++) {
+                if (split.length == 0) {
+                    star = data[0].count;
+                } else {
+                    star = split[i - 1].end;
+                }
+                if (i == colorMod.length - 1) {
+                    end = null;
+                } else {
+                    sign = parseInt(colorMod[i] / sunMod * length) + sign;
+                    end = data[sign].count;
+                }
+                split.push({
+                    start: star,
+                    end: end,
+                    backgroundColor: null
+                });
+            }
+            var result = [];
+            for (var _i = 0; _i < split.length; _i++) {
+                var item = split[_i];
+                if (item.start != item.end) {
+                    item.backgroundColor = colors[result.length];
+                    result.push(item);
+                }
+            }
+            split = [];
+            this.styleConfig.splitList = result;
+        }
+    }, {
+        key: 'createColorSplit',
+        value: function createColorSplit() {
+
+            this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
+
+            this.setlegend(this.legendConfig, this.styleConfig.splitList);
+        }
+    }, {
+        key: 'setTooltip',
+        value: function setTooltip(event) {
+            var item = this.overItem && this.overItem.list.length > 0 ? this.overItem : null;
+            this.toolTip.render(event, item);
+        }
+    }, {
+        key: 'getStyle',
+        value: function getStyle(item) {
+            if (item.count == 0) {
+                return {
+                    backgroundColor: 'rgba(255,255,255,0)'
+                };
+            } else {
+                return this.setDrawStyle(item);
+            }
+        }
+    }, {
+        key: 'drawRec',
+        value: function drawRec() {
+            this.clearCanvas();
+            var gridStep = this._drawSize;
+            var style = this.styleConfig.normal;
+            var mapSize = this.map.getSize();
+            this.ctx.shadowOffsetX = 0;
+            this.ctx.shadowOffsetY = 0;
+            for (var i = 0; i < this.workerData.length; i++) {
+                var item = this.workerData[i];
+                var x = item.x;
+                var y = item.y;
+                if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
+                    var drawStyle = this.getStyle(item);
+                    if (drawStyle.shadowColor) {
+                        this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
+                        this.ctx.shadowBlur = drawStyle.shadowBlur || 10;
+                    } else {
+                        this.ctx.shadowColor = 'transparent';
+                        this.ctx.shadowBlur = 0;
+                    }
+                    this.ctx.fillStyle = drawStyle.backgroundColor;
+                    this.ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
+                }
+            }
+        }
+    }]);
+
+    return GriddingOverlay;
+}(_Parameter2.Parameter);
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.HeatOverlay = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _CanvasOverlay2 = __webpack_require__(2);
+
+var _util = __webpack_require__(0);
+
+var _HeatConfig = __webpack_require__(37);
+
+var _HeatConfig2 = _interopRequireDefault(_HeatConfig);
+
+var _OnState = __webpack_require__(1);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var HeatOverlay = exports.HeatOverlay = function (_CanvasOverlay) {
+    _inherits(HeatOverlay, _CanvasOverlay);
+
+    function HeatOverlay(ops) {
+        _classCallCheck(this, HeatOverlay);
+
+        var _this = _possibleConstructorReturn(this, (HeatOverlay.__proto__ || Object.getPrototypeOf(HeatOverlay)).call(this, ops));
+
+        _this.points = [];
+        _this.workerData = [];
+        _this._setStyle(_HeatConfig2.default, ops);
+        _this.delteOption();
+        _this.state = null;
+        return _this;
+    }
+
+    _createClass(HeatOverlay, [{
+        key: 'resize',
+        value: function resize() {
+            this.drawMap();
+        }
+    }, {
+        key: 'getTransformData',
+        value: function getTransformData() {
+            return this.workerData.length > 0 ? this.workerData : this.points;
+        }
+    }, {
+        key: '_setStyle',
+        value: function _setStyle(config, ops) {
+            ops = ops || {};
+            var option = (0, _util.merge)(config, ops);
+            this.styleConfig = option.style;
+            this.eventConfig = option.event;
+            this.gradient = option.style.gradient;
+            this.points = ops.data ? option.data : this.points;
+            this.tMapStyle(option.skin);
+        }
+    }, {
+        key: 'setOptionStyle',
+        value: function setOptionStyle(ops) {
+            this._setStyle(_HeatConfig2.default, ops);
+            this.delteOption();
+            (0, _util.clearPushArray)(this.workerData, []);
+            this.drawMap();
+        }
+    }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.eventConfig.onState(this.state);
+        }
+    }, {
+        key: 'delteOption',
+        value: function delteOption() {
+            this.tooltipConfig = {
+                show: false
+            };
+            this.legendConfig = {
+                show: false
+            };
+        }
+    }, {
+        key: 'setData',
+        value: function setData(points) {
+            this.setPoints(points);
+        }
+    }, {
+        key: 'setPoints',
+        value: function setPoints(points) {
+            if (!(0, _util.isArray)(points)) {
+                throw new TypeError('inMap :data must be a Array');
+            }
+            this.points = points;
+            this.drawMap();
+        }
+    }, {
+        key: 'getMax',
+        value: function getMax() {
+            var normal = this.styleConfig.normal;
+            normal.maxValue = 0;
+            for (var i = 0, len = this.points.length; i < len; i++) {
+                if (this.points[i].count > normal.maxValue) {
+                    normal.maxValue = this.points[i].count;
+                }
+            }
+        }
+    }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+            for (var i = 0; i < this.workerData.length; i++) {
+                var pixel = this.workerData[i].pixel;
+                pixel.x = pixel.x + distanceX;
+                pixel.y = pixel.y + distanceY;
+            }
+            this.setState(_OnState2.default.drawBefore);
+            this.refresh();
+            this.setState(_OnState2.default.drawAfter);
+        }
+    }, {
+        key: 'setWorkerData',
+        value: function setWorkerData(val) {
+            this.points = [];
+            (0, _util.clearPushArray)(this.workerData, val);
+        }
+    }, {
+        key: 'drawMap',
+        value: function drawMap() {
+            var _this2 = this;
+
+            this.setState(_OnState2.default.computeBefore);
+
+            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin) {
+
+                if (_this2.eventType == 'onmoving') {
+                    return;
+                }
+                _this2.setState(_OnState2.default.conputeAfter);
+
+                _this2.setWorkerData(pixels);
+                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+
+                margin = null;
+                pixels = null;
+            });
+        }
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+            this.clearCanvas();
+            var normal = this.styleConfig.normal;
+            var container = this.container;
+            if (normal.maxValue == 0) {
+                this.getMax();
+            }
+            if (container.width <= 0) {
+                return;
+            }
+
+            var ctx = this.ctx;
+            for (var i = 0, _len = this.workerData.length; i < _len; i++) {
+                var item = this.workerData[i];
+                var opacity = (item.count - normal.minValue) / (normal.maxValue - normal.minValue);
+                opacity = opacity > 1 ? 1 : opacity;
+                this.drawPoint(item.pixel.x, item.pixel.y, normal.radius, opacity);
+            }
+
+            var palette = this.getColorPaint();
+
+            var img = ctx.getImageData(0, 0, container.width, container.height);
+            var imgData = img.data;
+
+            var max_opacity = normal.maxOpacity * 255;
+            var min_opacity = normal.minOpacity * 255;
+
+            var max_scope = (normal.maxScope > 1 ? 1 : normal.maxScope) * 255;
+            var min_scope = (normal.minScope < 0 ? 0 : normal.minScope) * 255;
+            var len = imgData.length;
+            for (var _i = 3; _i < len; _i += 4) {
+                var alpha = imgData[_i];
+                var offset = alpha * 4;
+                if (!offset) {
+                    continue;
+                }
+                imgData[_i - 3] = palette[offset];
+                imgData[_i - 2] = palette[offset + 1];
+                imgData[_i - 1] = palette[offset + 2];
+
+                if (imgData[_i] > max_scope) {
+                    imgData[_i] = 0;
+                }
+                if (imgData[_i] < min_scope) {
+                    imgData[_i] = 0;
+                }
+
+                if (imgData[_i] > max_opacity) {
+                    imgData[_i] = max_opacity;
+                }
+                if (imgData[_i] < min_opacity) {
+                    imgData[_i] = min_opacity;
+                }
+            }
+
+            ctx.putImageData(img, 0, 0, 0, 0, container.width, container.height);
+        }
+    }, {
+        key: 'drawPoint',
+        value: function drawPoint(x, y, radius, opacity) {
+            var ctx = this.ctx;
+            ctx.globalAlpha = opacity;
+            ctx.beginPath();
+            var gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+            gradient.addColorStop(0, 'rgba(0,0,0,1)');
+            gradient.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.fillStyle = gradient;
+            ctx.arc(x, y, radius, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill();
+        }
+    }, {
+        key: 'getColorPaint',
+        value: function getColorPaint() {
+            var gradientConfig = this.gradient;
+            var paletteCanvas = document.createElement('canvas');
+            var paletteCtx = paletteCanvas.getContext('2d');
+
+            paletteCanvas.width = 256;
+            paletteCanvas.height = 1;
+
+            var gradient = paletteCtx.createLinearGradient(0, 0, 256, 1);
+            for (var key in gradientConfig) {
+                gradient.addColorStop(key, gradientConfig[key]);
+            }
+
+            paletteCtx.fillStyle = gradient;
+            paletteCtx.fillRect(0, 0, 256, 1);
+            return paletteCtx.getImageData(0, 0, 256, 1).data;
+        }
+    }]);
+
+    return HeatOverlay;
+}(_CanvasOverlay2.CanvasOverlay);
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.HoneycombOverlay = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Parameter2 = __webpack_require__(4);
+
+var _HoneycombConfig = __webpack_require__(38);
+
+var _HoneycombConfig2 = _interopRequireDefault(_HoneycombConfig);
+
+var _OnState = __webpack_require__(1);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var HoneycombOverlay = exports.HoneycombOverlay = function (_Parameter) {
+    _inherits(HoneycombOverlay, _Parameter);
+
+    function HoneycombOverlay(ops) {
+        _classCallCheck(this, HoneycombOverlay);
+
+        var _this = _possibleConstructorReturn(this, (HoneycombOverlay.__proto__ || Object.getPrototypeOf(HoneycombOverlay)).call(this, _HoneycombConfig2.default, ops));
+
+        _this.state = null;
+        _this.mpp = {};
+        _this._drawSize = 0;
+        return _this;
+    }
+
+    _createClass(HoneycombOverlay, [{
+        key: 'setOptionStyle',
+        value: function setOptionStyle(ops) {
+            this._setStyle(this.baseConfig, ops);
+        }
+    }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.eventConfig.onState(this.state);
+        }
+    }, {
+        key: 'draw',
+        value: function draw() {
+            this.resize();
+        }
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+            this.setState(_OnState2.default.drawBefore);
+            this.drawRec();
+            this.setState(_OnState2.default.drawAfter);
+        }
+    }, {
+        key: 'resize',
+        value: function resize() {
+            this.drawMap();
+        }
+    }, {
+        key: 'onOptionChange',
+        value: function onOptionChange() {
+            this.map && this.createColorSplit();
+        }
+    }, {
+        key: 'onDataChange',
+        value: function onDataChange() {
+            this.map && this.createColorSplit();
+        }
+    }, {
+        key: '_calculateMpp',
+        value: function _calculateMpp() {
+            var zoom = this.map.getZoom();
+            if (this.mpp[zoom]) {
+                return this.mpp[zoom];
+            } else {
+                this.mpp[zoom] = this.getMpp();
+                return this.mpp[zoom];
+            }
+        }
+    }, {
+        key: 'getMpp',
+        value: function getMpp() {
+            var mapCenter = this.map.getCenter();
+            var assistValue = 10;
+            var cpt = new BMap.Point(mapCenter.lng, mapCenter.lat + assistValue);
+            var dpx = Math.abs(this.map.pointToPixel(mapCenter).y - this.map.pointToPixel(cpt).y);
+            return this.map.getDistance(mapCenter, cpt) / dpx;
+        }
+    }, {
+        key: 'drawMap',
+        value: function drawMap() {
+            var _this2 = this;
+
+            this.clearData();
+            var _styleConfig = this.styleConfig,
+                normal = _styleConfig.normal,
+                type = _styleConfig.type;
+
+            var zoom = this.map.getZoom();
+            var mapCenter = this.map.getCenter();
+            var mapSize = this.map.getSize();
+
+            var zoomUnit = Math.pow(2, 18 - zoom);
+            var mercatorProjection = this.map.getMapType().getProjection();
+            var mcCenter = mercatorProjection.lngLatToPoint(mapCenter);
+
+            var nwMcX = mcCenter.x - mapSize.width / 2 * zoomUnit;
+            var nwMc = new BMap.Pixel(nwMcX, mcCenter.y + mapSize.height / 2 * zoomUnit);
+            var size = 0;
+
+            if (normal.unit == 'px') {
+                size = normal.size * zoomUnit;
+            } else if (normal.unit == 'm') {
+                var mpp = this._calculateMpp();
+                if (mpp == 0 || isNaN(mpp)) {
+                    return;
+                }
+                size = normal.size / mpp * zoomUnit;
+            } else {
+                throw new TypeError('inMap: style.normal.unit must be is "meters" or "px" .');
+            }
+
+            var params = {
+                points: this.points,
+                size: size,
+                type: type,
+                nwMc: nwMc,
+                zoomUnit: zoomUnit,
+                mapSize: mapSize,
+                mapCenter: mapCenter,
+                zoom: zoom
+            };
+            this.setState(_OnState2.default.computeBefore);
+
+            this.postMessage('HoneycombOverlay.toRecGrids', params, function (gridsObj) {
+                if (_this2.eventType == 'onmoving') {
+                    return;
+                }
+                _this2.canvasResize();
+                _this2.setState(_OnState2.default.conputeAfter);
+
+                _this2.workerData = gridsObj.grids;
+                _this2._drawSize = size / zoomUnit;
+
+                if (_this2.eventType != 'onmoveend' || _this2.styleConfig.splitList == null || _this2.styleConfig.splitList.length < _this2.styleConfig.colors.length) {
+                    _this2.createColorSplit();
+                }
+                _this2.refresh();
+                gridsObj = null;
+            });
+        }
+    }, {
+        key: 'createColorSplit',
+        value: function createColorSplit() {
+
+            this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
+
+            this.setlegend(this.legendConfig, this.styleConfig.splitList);
+        }
+    }, {
+        key: 'compileSplitList',
+        value: function compileSplitList(data) {
+
+            var colors = this.styleConfig.colors;
+            if (colors.length < 0 || data.length <= 0) return;
+            data = data.sort(function (a, b) {
+                return parseFloat(a.count) - parseFloat(b.count);
+            });
+            var mod = [1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144];
+
+            var colorMod = mod.slice(0, colors.length).reverse();
+            var sunMod = colorMod.reduce(function (sum, val) {
+                return sum + val;
+            }, 0);
+            var split = [];
+            var star = 0,
+                end = 0,
+                sign = 0,
+                length = data.length;
+
+            for (var i = 0; i < colorMod.length; i++) {
+                if (split.length == 0) {
+                    star = data[0].count;
+                } else {
+                    star = split[i - 1].end;
+                }
+                if (i == colorMod.length - 1) {
+                    end = null;
+                } else {
+                    sign = parseInt(colorMod[i] / sunMod * length) + sign;
+                    end = data[sign].count;
+                }
+
+                split.push({
+                    start: star,
+                    end: end,
+                    backgroundColor: colors[i]
+                });
+            }
+            var result = [];
+            for (var _i = 0; _i < split.length; _i++) {
+                var item = split[_i];
+                if (item.start != item.end) {
+                    item.backgroundColor = colors[result.length];
+                    result.push(item);
+                }
+            }
+            split = [];
+
+            this.styleConfig.splitList = result;
+        }
+    }, {
+        key: 'findIndexSelectItem',
+        value: function findIndexSelectItem(item) {
+            var index = -1;
+            if (item) {
+                index = this.selectItem.findIndex(function (val) {
+                    return val && val.x == item.x && val.y == item.y;
+                });
+            }
+            return index;
+        }
+    }, {
+        key: 'getStyle',
+        value: function getStyle(item) {
+            if (item.count == 0) {
+                return {
+                    backgroundColor: 'rgba(255,255,255,0)'
+                };
+            } else {
+                return this.setDrawStyle(item);
+            }
+        }
+    }, {
+        key: 'getTarget',
+        value: function getTarget(mouseX, mouseY) {
+            var gridStep = this._drawSize;
+            var mapSize = this.map.getSize();
+
+            for (var i = 0; i < this.workerData.length; i++) {
+                var item = this.workerData[i];
+                var x = item.x;
+                var y = item.y;
+                if (item.count > 0 && x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, y - gridStep / 2);
+                    this.ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
+                    this.ctx.lineTo(x + gridStep / 2, y + gridStep / 4);
+                    this.ctx.lineTo(x, y + gridStep / 2);
+                    this.ctx.lineTo(x - gridStep / 2, y + gridStep / 4);
+                    this.ctx.lineTo(x - gridStep / 2, y - gridStep / 4);
+                    this.ctx.closePath();
+
+                    if (this.ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
+                        return {
+                            index: i,
+                            item: item
+                        };
+                    }
+                }
+            }
+            return {
+                index: -1,
+                item: null
+            };
+        }
+    }, {
+        key: 'drawRec',
+        value: function drawRec() {
+            this.clearCanvas();
+            var mapSize = this.map.getSize();
+            var gridsW = this._drawSize;
+
+            var style = this.styleConfig.normal;
+            this.ctx.shadowOffsetX = 0;
+            this.ctx.shadowOffsetY = 0;
+            for (var i = 0; i < this.workerData.length; i++) {
+                var item = this.workerData[i];
+                var x = item.x;
+                var y = item.y;
+                var count = item.count;
+                if (count > 0 && x > -gridsW && y > -gridsW && x < mapSize.width + gridsW && y < mapSize.height + gridsW) {
+                    var drawStyle = this.getStyle(item);
+                    this.drawLine(x, y, gridsW - style.padding, drawStyle, this.ctx);
+                }
+            }
+        }
+    }, {
+        key: 'drawLine',
+        value: function drawLine(x, y, gridStep, drawStyle, ctx) {
+
+            ctx.beginPath();
+            if (drawStyle.shadowColor) {
+                this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
+                this.ctx.shadowBlur = drawStyle.shadowBlur || 10;
+            } else {
+                this.ctx.shadowColor = 'transparent';
+                this.ctx.shadowBlur = 0;
+            }
+            ctx.fillStyle = drawStyle.backgroundColor;
+            ctx.moveTo(x, y - gridStep / 2);
+            ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
+            ctx.lineTo(x + gridStep / 2, y + gridStep / 4);
+            ctx.lineTo(x, y + gridStep / 2);
+            ctx.lineTo(x - gridStep / 2, y + gridStep / 4);
+            ctx.lineTo(x - gridStep / 2, y - gridStep / 4);
+            ctx.fill();
+            ctx.closePath();
+        }
+    }]);
+
+    return HoneycombOverlay;
+}(_Parameter2.Parameter);
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.ImgOverlay = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Parameter2 = __webpack_require__(4);
+
+var _ImgConfig = __webpack_require__(39);
+
+var _ImgConfig2 = _interopRequireDefault(_ImgConfig);
+
+var _util = __webpack_require__(0);
+
+var _OnState = __webpack_require__(1);
+
+var _OnState2 = _interopRequireDefault(_OnState);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
+    _inherits(ImgOverlay, _Parameter);
+
+    function ImgOverlay(opts) {
+        _classCallCheck(this, ImgOverlay);
+
+        var _this = _possibleConstructorReturn(this, (ImgOverlay.__proto__ || Object.getPrototypeOf(ImgOverlay)).call(this, _ImgConfig2.default, opts));
+
+        _this.cacheImg = {};
+        _this.state = null;
+        return _this;
+    }
+
+    _createClass(ImgOverlay, [{
+        key: 'resize',
+        value: function resize() {
+            this.drawMap();
+        }
+    }, {
+        key: 'setOptionStyle',
+        value: function setOptionStyle(ops) {
+            this._setStyle(this.baseConfig, ops);
+        }
+    }, {
+        key: 'setState',
+        value: function setState(val) {
+            this.state = val;
+            this.eventConfig.onState(this.state);
+        }
+    }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+            for (var i = 0; i < this.workerData.length; i++) {
+                var pixel = this.workerData[i].pixel;
+                pixel.x = pixel.x + distanceX;
+                pixel.y = pixel.y + distanceY;
+            }
+
+            this.refresh();
+        }
+    }, {
+        key: 'drawMap',
+        value: function drawMap() {
+            var _this2 = this;
+
+            this.setState(_OnState2.default.computeBefore);
+            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin) {
+                if (_this2.eventType == 'onmoving') {
+                    return;
+                }
+                _this2.setState(_OnState2.default.conputeAfter);
+
+                _this2.setWorkerData(pixels);
+                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                margin = null;
+                pixels = null;
+            });
+        }
+    }, {
+        key: '_isMouseOver',
+        value: function _isMouseOver(x, y, imgX, imgY, imgW, imgH) {
+            return !(x < imgX || x > imgX + imgW || y < imgY || y > imgY + imgH);
+        }
+    }, {
+        key: 'getTarget',
+        value: function getTarget(x, y) {
+            var pixels = this.workerData;
+
+            for (var i = 0, len = pixels.length; i < len; i++) {
+                var item = pixels[i];
+                var pixel = item.pixel;
+                var style = this.setDrawStyle(item);
+                var img = void 0;
+                if ((0, _util.isString)(img)) {
+                    img = this.cacheImg[style.icon];
+                } else {
+                    img = style.icon;
+                }
+
+                if (!img) break;
+                if (style.width && style.height) {
+                    var xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height, 1);
+
+                    if (this._isMouseOver(x, y, xy.x, xy.y, style.width, style.height)) {
+                        return {
+                            index: i,
+                            item: item
+                        };
+                    }
+                } else {
+
+                    var _xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height);
+                    if (this._isMouseOver(x, y, _xy.x, _xy.y, img.width, img.height)) {
+
+                        return {
+                            index: i,
+                            item: item
+                        };
+                    }
+                }
+            }
+            return {
+                index: -1,
+                item: null
+            };
+        }
+    }, {
+        key: 'findIndexSelectItem',
+        value: function findIndexSelectItem(item) {
+            var index = -1;
+            if (item) {
+                index = this.selectItem.findIndex(function (val) {
+                    return val && val.lat == item.lat && val.lng == item.lng;
+                });
+            }
+
+            return index;
+        }
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+            this.setState(_OnState2.default.drawBefore);
+            this.clearCanvas();
+            this._loopDraw(this.ctx, this.workerData);
+            this.setState(_OnState2.default.drawAfter);
+        }
+    }, {
+        key: 'loadImg',
+        value: function loadImg(img, fun) {
+            var me = this;
+            if ((0, _util.isString)(img)) {
+                var image = me.cacheImg[img];
+                if (!image) {
+                    var _image = new Image();
+                    _image.src = img;
+                    _image.onload = function () {
+
+                        me.cacheImg[img] = _image;
+                        fun(_image);
+                    };
+                } else {
+                    fun(image);
+                }
+            } else {
+                fun(img);
+            }
+        }
+    }, {
+        key: 'isPercent',
+        value: function isPercent(val) {
+            if (val.toString().indexOf('%') > -1) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }, {
+        key: '_getDrawXY',
+        value: function _getDrawXY(pixel, offsetL, offsetT, width, height) {
+            var x = 0,
+                y = 0;
+            var scaleW = width;
+            var scaleH = height;
+            var offsetLeft = parseFloat(offsetL);
+            var offsetTop = parseFloat(offsetT);
+
+            if (this.isPercent(offsetL)) {
+                x = pixel.x + scaleW * offsetLeft / 100;
+            } else {
+                x = pixel.x + offsetLeft;
+            }
+            if (this.isPercent(offsetT)) {
+                y = pixel.y + scaleH * offsetTop / 100;
+            } else {
+                y = pixel.y + offsetTop;
+            }
+            return {
+                x: x,
+                y: y
+            };
+        }
+    }, {
+        key: 'setDrawStyle',
+        value: function setDrawStyle(item) {
+            var normal = this.styleConfig.normal;
+            var result = {};
+            Object.assign(result, normal);
+
+
+            var splitList = this.styleConfig.splitList;
+            for (var i = 0; i < splitList.length; i++) {
+                var condition = splitList[i];
+                if (condition.end == null) {
+                    if (item.count >= condition.start) {
+                        Object.assign(result, normal, condition);
+                        break;
+                    }
+                } else if (item.count >= condition.start && item.count < condition.end) {
+                    Object.assign(result, normal, condition);
+                    break;
+                }
+            }
+
+            return result;
+        }
+    }, {
+        key: '_loopDraw',
+        value: function _loopDraw(ctx, pixels) {
+            var _this3 = this;
+
+            var _loop = function _loop(i, len) {
+                var item = pixels[i];
+                var pixel = item.pixel;
+                var style = _this3.setDrawStyle(item);
+                _this3.loadImg(style.icon, function (img) {
+                    if (style.width && style.height) {
+                        var xy = _this3._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height);
+                        _this3._drawImage(_this3.ctx, img, xy.x, xy.y, style.width, style.height);
+                    } else {
+                        var _xy2 = _this3._getDrawXY(pixel, style.offsets.left, style.offsets.top, img.width, img.height, 1);
+                        _this3._drawImage(_this3.ctx, img, _xy2.x, _xy2.y, img.width, img.height);
+                    }
+                });
+            };
+
+            for (var i = 0, len = pixels.length; i < len; i++) {
+                _loop(i, len);
+            }
+        }
+    }, {
+        key: '_drawImage',
+        value: function _drawImage(ctx, img, x, y, width, height) {
+            ctx.drawImage(img, x, y, width, height);
+        }
+    }]);
+
+    return ImgOverlay;
+}(_Parameter2.Parameter);
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.MoveLineOverlay = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _CanvasOverlay = __webpack_require__(2);
+
+var _util = __webpack_require__(0);
+
+var _MapStyle = __webpack_require__(7);
+
+var _MoveLineConfig = __webpack_require__(42);
+
+var _MoveLineConfig2 = _interopRequireDefault(_MoveLineConfig);
+
+var _BaseClass2 = __webpack_require__(13);
+
+var _BaseClass3 = _interopRequireDefault(_BaseClass2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Marker = function () {
+    function Marker(opts) {
+        _classCallCheck(this, Marker);
+
+        this.styleConfig = {
+            markerColor: opts.markerColor || opts.color,
+            markerRadius: opts.markerRadius,
+            fontColor: opts.color
+        };
+        this.text = opts.name;
+        this.point = opts.point;
+    }
+
+    _createClass(Marker, [{
+        key: 'draw',
+        value: function draw(ctx, map) {
+            var _map$pointToPixel = map.pointToPixel(this.point),
+                x = _map$pointToPixel.x,
+                y = _map$pointToPixel.y;
+
+            var _styleConfig = this.styleConfig,
+                markerColor = _styleConfig.markerColor,
+                markerRadius = _styleConfig.markerRadius,
+                fontColor = _styleConfig.fontColor;
+
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.fillStyle = markerColor;
+            ctx.arc(x, y, markerRadius, 0, Math.PI * 2, true);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.font = '12px Microsoft YaHei';
+            ctx.fillStyle = fontColor || markerColor;
+            ctx.fillText(this.text, x, y - 10);
+            ctx.restore();
+        }
+    }]);
+
+    return Marker;
+}();
+
+var MarkLine = function () {
+    function MarkLine(opts) {
+        _classCallCheck(this, MarkLine);
+
+        this.from = opts.from;
+        this.to = opts.to;
+        this.id = opts.id;
+        this.step = 0;
+        this.path = null;
+    }
+
+    _createClass(MarkLine, [{
+        key: 'getPointList',
+        value: function getPointList(from, to) {
+            var points = [[from.x, from.y], [to.x, to.y]];
+            var ex = points[1][0];
+            var ey = points[1][1];
+            points[3] = [ex, ey];
+            points[1] = this.getOffsetPoint(points[0], points[3]);
+            points[2] = this.getOffsetPoint(points[3], points[0]);
+            points = this.smoothSpline(points, false);
+            points[points.length - 1] = [ex, ey];
+            return points;
+        }
+    }, {
+        key: 'getOffsetPoint',
+        value: function getOffsetPoint(start, end) {
+            var distance = this.getDistance(start, end) / 3;
+            var angle = void 0,
+                dX = void 0,
+                dY = void 0;
+            var mp = [start[0], start[1]];
+            var deltaAngle = -0.2;
+            if (start[0] != end[0] && start[1] != end[1]) {
+                var k = (end[1] - start[1]) / (end[0] - start[0]);
+                angle = Math.atan(k);
+            } else if (start[0] == end[0]) {
+                angle = (start[1] <= end[1] ? 1 : -1) * Math.PI / 2;
+            } else {
+                angle = 0;
+            }
+            if (start[0] <= end[0]) {
+                angle -= deltaAngle;
+                dX = Math.round(Math.cos(angle) * distance);
+                dY = Math.round(Math.sin(angle) * distance);
+                mp[0] += dX;
+                mp[1] += dY;
+            } else {
+                angle += deltaAngle;
+                dX = Math.round(Math.cos(angle) * distance);
+                dY = Math.round(Math.sin(angle) * distance);
+                mp[0] -= dX;
+                mp[1] -= dY;
+            }
+            return mp;
+        }
+    }, {
+        key: 'smoothSpline',
+        value: function smoothSpline(points, isLoop) {
+            var len = points.length;
+            var ret = [];
+            var distance = 0;
+            for (var i = 1; i < len; i++) {
+                distance += this.getDistance(points[i - 1], points[i]);
+            }
+            var segs = distance / 2;
+            segs = segs < len ? len : segs;
+            for (var _i = 0; _i < segs; _i++) {
+                var pos = _i / (segs - 1) * (isLoop ? len : len - 1);
+                var idx = Math.floor(pos);
+                var w = pos - idx;
+                var p0 = void 0;
+                var p1 = points[idx % len];
+                var p2 = void 0;
+                var p3 = void 0;
+                if (!isLoop) {
+                    p0 = points[idx === 0 ? idx : idx - 1];
+                    p2 = points[idx > len - 2 ? len - 1 : idx + 1];
+                    p3 = points[idx > len - 3 ? len - 1 : idx + 2];
+                } else {
+                    p0 = points[(idx - 1 + len) % len];
+                    p2 = points[(idx + 1) % len];
+                    p3 = points[(idx + 2) % len];
+                }
+                var w2 = w * w;
+                var w3 = w * w2;
+
+                ret.push([this.interpolate(p0[0], p1[0], p2[0], p3[0], w, w2, w3), this.interpolate(p0[1], p1[1], p2[1], p3[1], w, w2, w3)]);
+            }
+            return ret;
+        }
+    }, {
+        key: 'interpolate',
+        value: function interpolate(p0, p1, p2, p3, t, t2, t3) {
+            var v0 = (p2 - p0) * 0.5;
+            var v1 = (p3 - p1) * 0.5;
+            return (2 * (p1 - p2) + v0 + v1) * t3 + (-3 * (p1 - p2) - 2 * v0 - v1) * t2 + v0 * t + p1;
+        }
+    }, {
+        key: 'getDistance',
+        value: function getDistance(p1, p2) {
+            return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1]));
+        }
+    }, {
+        key: 'drawMarker',
+        value: function drawMarker(context, map) {
+            this.from.draw(context, map);
+            this.to.draw(context, map);
+        }
+    }, {
+        key: 'drawLinePath',
+        value: function drawLinePath(context, styleConfig, map) {
+            var pointList = this.path = this.getPointList(map.pointToPixel(this.from.point), map.pointToPixel(this.to.point));
+            var len = pointList.length;
+            context.save();
+            context.beginPath();
+            context.lineWidth = styleConfig.lineWidth;
+            context.strokeStyle = styleConfig.colors[this.id];
+
+            if (!styleConfig.lineType || styleConfig.lineType == 'solid') {
+                context.moveTo(pointList[0][0], pointList[0][1]);
+                for (var i = 0; i < len; i++) {
+                    context.lineTo(pointList[i][0], pointList[i][1]);
+                }
+            } else if (styleConfig.lineType == 'dashed' || styleConfig.lineType == 'dotted') {
+                for (var _i2 = 1; _i2 < len; _i2 += 2) {
+                    context.moveTo(pointList[_i2 - 1][0], pointList[_i2 - 1][1]);
+                    context.lineTo(pointList[_i2][0], pointList[_i2][1]);
+                }
+            }
+            context.stroke();
+            context.restore();
+            this.step = 0;
+        }
+    }, {
+        key: 'drawMoveCircle',
+        value: function drawMoveCircle(context, styleConfig, map) {
+            var pointList = this.path || this.getPointList(map.pointToPixel(this.from.point), map.pointToPixel(this.to.point));
+            context.save();
+            context.fillStyle = styleConfig.fillColor;
+            context.shadowColor = styleConfig.shadowColor;
+            context.shadowBlur = styleConfig.shadowBlur;
+            context.beginPath();
+            context.arc(pointList[this.step][0], pointList[this.step][1], styleConfig.moveRadius, 0, Math.PI * 2, true);
+            context.fill();
+            context.closePath();
+            context.restore();
+            this.step += 1;
+            if (this.step >= pointList.length) {
+                this.step = 0;
+            }
+        }
+    }]);
+
+    return MarkLine;
+}();
+
+var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
+    _inherits(MoveLineOverlay, _BaseClass);
+
+    function MoveLineOverlay(opts) {
+        _classCallCheck(this, MoveLineOverlay);
+
+        var _this = _possibleConstructorReturn(this, (MoveLineOverlay.__proto__ || Object.getPrototypeOf(MoveLineOverlay)).call(this));
+
+        _this.markLines = [];
+        _this.map = null;
+        _this.styleConfig = null;
+        _this.data = opts.data || [];
+        _this.baseLayer = null;
+        _this.animationLayer = null;
+        _this.setOptionStyle(opts);
+        _this.render = _this.render.bind(_this);
+        _this.animationDraw = null;
+        return _this;
+    }
+
+    _createClass(MoveLineOverlay, [{
+        key: 'setOptionStyle',
+        value: function setOptionStyle(ops) {
+            var option = (0, _util.merge)(_MoveLineConfig2.default, ops);
+            this.styleConfig = option.style.normal;
+            this.data = ops.data ? option.data : this.data;
+            this.tMapStyle(option.skin);
+            if (this.baseLayer) {
+                this.markLines.length = 0;
+                this.draw();
+            }
+        }
+    }, {
+        key: 'tMapStyle',
+        value: function tMapStyle(skin) {
+
+            var styleJson = null;
+            if ((0, _util.isString)(skin)) {
+                styleJson = skin == 'Blueness' ? _MapStyle.Blueness : _MapStyle.WhiteLover;
+            } else if ((0, _util.isArray)(skin)) {
+                styleJson = skin;
+            }
+            skin && this.map && this.map.setMapStyle({
+                styleJson: styleJson
+            });
+        }
+    }, {
+        key: 'initialize',
+        value: function initialize(map) {
+            this.map = map;
+            this.baseLayer = new _CanvasOverlay.CanvasOverlay({
+                repaintEnd: this.draw.bind(this)
+            });
+            this.animationLayer = new _CanvasOverlay.CanvasOverlay();
+            map.addOverlay(this.baseLayer);
+            map.addOverlay(this.animationLayer);
+
+            var now = void 0;
+            var then = Date.now();
+            var interval = 1000 / this.styleConfig.fps;
+            var delta = void 0;
+            var me = this;
+
+            function drawFrame() {
+                requestAnimationFrame(drawFrame);
+                now = Date.now();
+                delta = now - then;
+                if (delta > interval) {
+                    then = now - delta % interval;
+                    me.render();
+                }
+            }
+            this.animationDraw = drawFrame;
+            this.animationDraw();
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var markLines = this.markLines,
+                animationLayer = this.animationLayer,
+                styleConfig = this.styleConfig;
+
+            var animationCtx = animationLayer.ctx;
+            if (!animationCtx) {
+                return;
+            }
+
+            if (!animationLayer.animationFlag) {
+                animationLayer.clearCanvas();
+                return;
+            }
+            animationCtx.fillStyle = 'rgba(0,0,0,0.93)';
+            var prev = animationCtx.globalCompositeOperation;
+            animationCtx.globalCompositeOperation = 'destination-in';
+            var size = this.map.getSize();
+            animationCtx.fillRect(0, 0, size.width, size.height);
+            animationCtx.globalCompositeOperation = prev;
+
+            for (var i = 0; i < markLines.length; i++) {
+                var markLine = markLines[i];
+                markLine.drawMoveCircle(animationCtx, styleConfig, this.map);
+            }
+        }
+    }, {
+        key: 'drawBaseLayer',
+        value: function drawBaseLayer() {
+            var baseCtx = this.baseLayer.ctx;
+            if (!baseCtx) {
+                return;
+            }
+            if (this.markLines.length == 0) {
+                this.addMarkLine();
+            }
+            var styleConfig = this.styleConfig,
+                map = this.map;
+
+            this.baseLayer.clearCanvas();
+            this.markLines.forEach(function (line) {
+                line.drawMarker(baseCtx, map);
+                line.drawLinePath(baseCtx, styleConfig, map);
+            });
+        }
+    }, {
+        key: 'addMarkLine',
+        value: function addMarkLine() {
+            var styleConfig = this.styleConfig,
+                markLines = this.markLines,
+                data = this.data;
+
+            markLines.length = 0;
+
+            data.forEach(function (line, i) {
+                markLines.push(new MarkLine({
+                    id: i,
+                    from: new Marker({
+                        name: line.from.city,
+                        markerColor: styleConfig.markerColor,
+                        markerRadius: styleConfig.markerRadius,
+                        point: new BMap.Point(line.from.lnglat[0], line.from.lnglat[1]),
+                        color: styleConfig.markerColor || styleConfig.colors[i]
+                    }),
+                    to: new Marker({
+                        name: line.to.city,
+                        markerColor: styleConfig.markerColor,
+                        markerRadius: styleConfig.markerRadius,
+                        point: new BMap.Point(line.to.lnglat[0], line.to.lnglat[1]),
+                        color: styleConfig.markerColor || styleConfig.colors[i]
+                    })
+                }));
+            });
+        }
+    }, {
+        key: 'setData',
+        value: function setData(points) {
+            this.setPoints(points);
+        }
+    }, {
+        key: 'getData',
+        value: function getData() {
+            return this.data;
+        }
+    }, {
+        key: 'setPoints',
+        value: function setPoints(points) {
+            if (!(0, _util.isArray)(points)) {
+                throw new TypeError('inMap: data must be a Array');
+            }
+            this.data = points;
+            this.markLines.length = 0;
+            this.draw();
+        }
+    }, {
+        key: 'draw',
+        value: function draw() {
+            this.baseLayer.canvasResize();
+            this.animationLayer.canvasResize();
+            this.drawBaseLayer();
+        }
+    }, {
+        key: 'dispose',
+        value: function dispose() {
+            window.requestAnimationFrame(this.animationDraw);
+            this.markLines = [];
+            this.map.removeOverlay(this.animationLayer);
+            this.map.removeOverlay(this.baseLayer);
+        }
+    }]);
+
+    return MoveLineOverlay;
+}(_BaseClass3.default);
+
+/***/ }),
+/* 24 */,
+/* 25 */,
+/* 26 */,
+/* 27 */,
+/* 28 */,
+/* 29 */,
+/* 30 */,
+/* 31 */,
+/* 32 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    tooltip: {
+        show: false,
+        customClass: 'inmap-tooltip-black',
+        offsets: {
+            top: 5,
+            left: 12
+        }
+
+    },
+    legend: {
+        show: false,
+        toFixed: 2 },
+
+    style: {
+        normal: {
+            borderWidth: 0.1,
+            backgroundColor: 'rgba(200, 200, 200, 0.5)',
+            mergeCount: 1.5,
+            label: {
+                show: false,
+                color: 'rgba(0,0,0,1)',
+                font: '13px Arial'
+            }
+        },
+
+        colors: [],
+        splitList: []
+
+    },
+    data: [],
+    event: {
+        multiSelect: false, onMouseClick: function onMouseClick() {},
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 33 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    style: {
+        normal: {
+            borderColor: 'rgba(50, 50, 255, 0.8)',
+            borderWidth: 0.05
+        }
+    },
+    data: [],
+    event: {
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 34 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    tooltip: {
+        show: false,
+        customClass: 'inmap-tooltip-black',
+        offsets: {
+            top: 5,
+            left: 12
+        }
+
+    },
+    legend: {
+        show: false,
+        toFixed: 2 },
+    draw: {},
+    style: {
+        normal: {
+            borderWidth: 0.1,
+            backgroundColor: 'rgba(200, 200, 200, 0.5)',
+            mergeCount: 1.5,
+            label: {
+                show: false,
+                color: 'rgba(0,0,0,1)',
+                font: '13px Arial'
+            }
+        },
+
+        colors: [],
+        splitList: []
+
+    },
+    data: [],
+    event: {
+        multiSelect: false, onMouseClick: function onMouseClick() {},
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    style: {
+        normal: {
+            fps: 25,
+            color: '#FAFA32',
+            radius: 20,
+            speed: 0.15 }
+    },
+    data: []
+};
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    tooltip: {
+        show: true,
+        customClass: 'inmap-tooltip-black',
+        formatter: '{count}',
+        offsets: {
+            top: 5,
+            left: 12
+        }
+    },
+    legend: {
+        show: true,
+        title: '图例'
+    },
+    style: {
+        type: 'sum',
+        colors: ['rgba(31,98,1,1)', 'rgba(95,154,4,1)', 'rgba(139,227,7,1)', 'rgba(218,134,9,1)', 'rgba(220,54,6,1)', 'rgba(218,2,8,1)', 'rgba(148,1,2,1)', 'rgba(92,1,0,1)'],
+        normal: {
+            backgroundColor: 'rgba(200, 200, 200, 0.5)',
+            padding: 1,
+            size: 50,
+            unit: 'px',
+            label: {
+                show: false,
+                font: '12px sans-serif',
+                shadowBlur: 0,
+                lineWidth: 1,
+                color: 'rgba(75,80,86,1)'
+            }
+        },
+        mouseOver: {},
+        selected: {}
+
+    },
+    data: [],
+    event: {
+        multiSelect: false,
+        onMouseClick: function onMouseClick() {},
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    tooltip: {
+        show: false,
+        offsets: {
+            top: 5,
+            left: 12
+        }
+    },
+    legend: {
+        show: false
+    },
+    style: {
+        gradient: {
+            0.25: 'rgb(0,0,255)',
+            0.55: 'rgb(0,255,0)',
+            0.85: 'rgb(255,255,0)',
+            1.0: 'rgb(255,0,0)'
+        },
+        normal: {
+            radius: 15,
+            minOpacity: 0,
+            maxOpacity: 1,
+            minValue: 0,
+            maxValue: 0,
+            minScope: 0,
+            maxScope: 1 }
+    },
+    data: [],
+    event: {
+        multiSelect: false,
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    tooltip: {
+        show: true,
+        customClass: 'inmap-tooltip-black',
+        formatter: '{count}',
+        offsets: {
+            top: 5,
+            left: 12
+        }
+    },
+    legend: {
+        show: true,
+        title: '图例'
+    },
+    style: {
+        colors: ['rgba(31,98,1,1)', 'rgba(95,154,4,1)', 'rgba(139,227,7,1)', 'rgba(218,134,9,1)', 'rgba(220,54,6,1)', 'rgba(218,2,8,1)', 'rgba(148,1,2,1)', 'rgba(92,1,0,1)'],
+        normal: {
+            backgroundColor: 'rgba(200, 200, 200, 0.5)',
+            padding: 1,
+            size: 50,
+            unit: 'px',
+            label: {
+                show: false,
+                font: '12px sans-serif',
+                shadowBlur: 0,
+                lineWidth: 1,
+                color: 'rgba(75,80,86,1)'
+            }
+        },
+        mouseOver: {},
+        selected: {}
+
+    },
+    data: [],
+    event: {
+        multiSelect: false,
+        onMouseClick: function onMouseClick() {},
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    tooltip: {
+        show: true,
+        customClass: 'inmap-tooltip-black',
+        offsets: {
+            top: 5,
+            left: 12
+        },
+        formatter: '{count}'
+    },
+    legend: {
+        show: false
+    },
+    style: {
+        normal: {
+            icon: null,
+            width: 0,
+            height: 0,
+            offsets: {
+                top: 0,
+                left: 0
+            }
+        },
+        mouseOver: {},
+        selected: {},
+        colors: [],
+        splitList: []
+    },
+    data: [],
+    event: {
+        multiSelect: false, onMouseClick: function onMouseClick() {},
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    center: [],
+    id: null,
+    skin: null,
+    zoom: {
+        value: 5,
+        show: true,
+        max: 18,
+        min: 5
+    }
+};
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    show: false,
+    title: null,
+    formatter: null,
+    list: []
+};
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    style: {
+        normal: {
+            markerRadius: 3,
+
+            markerColor: '#fff',
+
+            lineType: 'solid',
+
+            lineWidth: 1,
+
+            colors: ['#F9815C', '#F8AB60', '#EDCC72', '#E2F194', '#94E08A', '#4ECDA5'],
+
+            moveRadius: 2,
+
+            fillColor: '#fff',
+
+            shadowColor: '#fff',
+
+            shadowBlur: 5,
+            fps: 30,
+            skin: null }
+    },
+    data: []
+};
+
+/***/ }),
+/* 43 */,
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.workerMrg = exports.FlashDotOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.CircuitOverlay = exports.HeatOverlay = exports.BoundaryOverlay = exports.GriddingOverlay = exports.DotOverlay = exports.Map = exports.utils = exports.version = undefined;
+
+var _DotOverlay = __webpack_require__(17);
+
+var _GriddingOverlay = __webpack_require__(19);
+
+var _BoundaryOverlay = __webpack_require__(15);
+
+var _HeatOverlay = __webpack_require__(20);
+
+var _CircuitOverlay = __webpack_require__(16);
+
+var _HoneycombOverlay = __webpack_require__(21);
+
+var _ImgOverlay = __webpack_require__(22);
+
+var _MoveLineOverlay = __webpack_require__(23);
+
+var _FlashDotOverlay = __webpack_require__(18);
+
+var _FlashDotOverlay2 = _interopRequireDefault(_FlashDotOverlay);
+
+var _index = __webpack_require__(14);
+
+var _util = __webpack_require__(0);
+
+var utils = _interopRequireWildcard(_util);
+
+var _workerMrg = __webpack_require__(10);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var version = "1.6.2";
+console.log('inMap v' + version);
+
+var inMap = {
+    version: version,
+    utils: utils,
+    Map: _index.Map,
+    DotOverlay: _DotOverlay.DotOverlay,
+    GriddingOverlay: _GriddingOverlay.GriddingOverlay,
+    BoundaryOverlay: _BoundaryOverlay.BoundaryOverlay,
+    HeatOverlay: _HeatOverlay.HeatOverlay,
+    CircuitOverlay: _CircuitOverlay.CircuitOverlay,
+    HoneycombOverlay: _HoneycombOverlay.HoneycombOverlay,
+    ImgOverlay: _ImgOverlay.ImgOverlay,
+    MoveLineOverlay: _MoveLineOverlay.MoveLineOverlay,
+    FlashDotOverlay: _FlashDotOverlay2.default,
+    workerMrg: _workerMrg.workerMrg
+};
+exports.version = version;
+exports.utils = utils;
+exports.Map = _index.Map;
+exports.DotOverlay = _DotOverlay.DotOverlay;
+exports.GriddingOverlay = _GriddingOverlay.GriddingOverlay;
+exports.BoundaryOverlay = _BoundaryOverlay.BoundaryOverlay;
+exports.HeatOverlay = _HeatOverlay.HeatOverlay;
+exports.CircuitOverlay = _CircuitOverlay.CircuitOverlay;
+exports.HoneycombOverlay = _HoneycombOverlay.HoneycombOverlay;
+exports.ImgOverlay = _ImgOverlay.ImgOverlay;
+exports.MoveLineOverlay = _MoveLineOverlay.MoveLineOverlay;
+exports.FlashDotOverlay = _FlashDotOverlay2.default;
+exports.workerMrg = _workerMrg.workerMrg;
+exports.default = inMap;
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Color = __webpack_require__(5);
+
+var _Legend = __webpack_require__(41);
+
+var _Legend2 = _interopRequireDefault(_Legend);
+
+var _util = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Legend = function () {
+    function Legend(toolDom, opts) {
+        _classCallCheck(this, Legend);
+
+        this.opts = opts || _Legend2.default;
+        this.dom = this.crateDom(toolDom);
+        this.hide();
+    }
+
+    _createClass(Legend, [{
+        key: 'crateDom',
+        value: function crateDom(toolDom) {
+            var div = document.createElement('div');
+            div.classList.add('inmap-legend');
+            toolDom.appendChild(div);
+            return div;
+        }
+    }, {
+        key: 'show',
+        value: function show() {
+            this.dom.style.display = 'inline-block';
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            this.dom.style.display = 'none';
+        }
+    }, {
+        key: 'toFixed',
+        value: function toFixed(num) {
+            return isNaN(num) ? num : parseFloat(num).toFixed(this.opts.toFixed);
+        }
+    }, {
+        key: 'setTitle',
+        value: function setTitle(title) {
+            this.opts.title = title;
+            this.render();
+        }
+    }, {
+        key: 'setOption',
+        value: function setOption(opts) {
+            this.opts = (0, _util.merge)(_Legend2.default, this.opts, opts);
+            this.opts.list = this.opts.list || [];
+            this.render();
+        }
+    }, {
+        key: 'setItems',
+        value: function setItems(list) {
+            this.opts.list = list;
+            this.render();
+        }
+    }, {
+        key: '_verify',
+        value: function _verify() {
+            var _opts = this.opts,
+                show = _opts.show,
+                title = _opts.title,
+                list = _opts.list;
+
+            if (!(0, _util.isBoolean)(show)) {
+                throw new TypeError('inMap: legend options show must be a Boolean');
+            }
+            if (!(0, _util.isEmpty)(title) && !(0, _util.isString)(title)) {
+                throw new TypeError('inMap: legend options title must be a String');
+            }
+            if (!(0, _util.isArray)(list)) {
+                throw new TypeError('inMap: legend options list must be a Array');
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this = this;
+
+            this._verify();
+            var _opts2 = this.opts,
+                show = _opts2.show,
+                title = _opts2.title,
+                list = _opts2.list;
+
+            if (show) {
+                this.show();
+            } else {
+                this.hide();
+                return;
+            }
+
+            var str = '';
+            if (title) {
+                str = '<div class="inmap-legend-title">' + title + ' </div>';
+            }
+
+            str += '<table cellpadding="0" cellspacing="0">';
+            list.forEach(function (val, index) {
+                var text = null,
+                    backgroundColor = val.backgroundColor;
+                var isShow = backgroundColor != null;
+                var legendBg = new _Color.Color(backgroundColor),
+                    difference = 0.2;
+
+                var opacity = val.opacity;
+                if (opacity) {
+                    opacity += difference;
+                }
+                if (legendBg.a) {
+                    opacity = legendBg.a + difference;
+                } else {
+                    opacity = 1;
+                }
+                backgroundColor = legendBg.getRgbaStyle(opacity);
+                if (val.text) {
+                    text = val.text;
+                } else if (_this.opts.formatter) {
+                    text = _this.opts.formatter(_this.toFixed(val.start), _this.toFixed(val.end), index, val);
+                } else {
+                    text = _this.toFixed(val.start) + ' ~ ' + (val.end == null ? '<span class="inmap-infinity"></span>' : _this.toFixed(val.end));
+                }
+                var td = isShow ? ' <td style="background:' + backgroundColor + '; width:17px;"></td>' : '';
+                str += '\n                <tr>\n                   ' + td + '\n                    <td class="inmap-legend-text">\n                       ' + text + '\n                    </td>\n                </tr>\n                ';
+            });
+            str += '</table>';
+            if (list.length <= 0) {
+                this.hide();
+            }
+            this.dom.innerHTML = str;
+        }
+    }, {
+        key: 'dispose',
+        value: function dispose(parentDom) {
+            parentDom.removeChild(this.dom);
+            this.opts = null;
+            this.dom = null;
+        }
+    }]);
+
+    return Legend;
+}();
+
+exports.default = Legend;
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ToolTip = function () {
+    function ToolTip(toolDom) {
+        _classCallCheck(this, ToolTip);
+
+        this.dom = this.create(toolDom);
+        this.tooltipTemplate = null;
+        this.opts = {};
+        this.hide();
+    }
+
+    _createClass(ToolTip, [{
+        key: 'create',
+        value: function create(toolDom) {
+            var dom = document.createElement('div');
+            dom.classList.add('inmap-tooltip');
+            toolDom.appendChild(dom);
+            return dom;
+        }
+    }, {
+        key: 'compileTooltipTemplate',
+        value: function compileTooltipTemplate(formatter) {
+            formatter = '`' + formatter.replace(/\{/g, '${overItem.') + '`';
+            this.tooltipTemplate = new Function('overItem', 'return ' + formatter);
+        }
+    }, {
+        key: 'show',
+        value: function show(x, y) {
+            var _opts$offsets = this.opts.offsets,
+                left = _opts$offsets.left,
+                top = _opts$offsets.top;
+
+            this.dom.style.left = x + left + 'px';
+            this.dom.style.top = y + top + 'px';
+            this.dom.style.display = 'block';
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            this.dom.style.display = 'none';
+        }
+    }, {
+        key: 'setOption',
+        value: function setOption(opts) {
+            var result = (0, _util.merge)(this.opts, opts);
+            var formatter = result.formatter,
+                customClass = result.customClass;
+
+
+            if ((0, _util.isString)(formatter)) {
+                this.compileTooltipTemplate(result.formatter);
+            }
+
+            if (this.opts.customClass) {
+                this.dom.classList.remove(this.opts.customClass);
+            }
+
+            this.dom.classList.add(customClass);
+            this.opts = result;
+        }
+    }, {
+        key: 'render',
+        value: function render(event, overItem) {
+            if (!this.opts.show) return;
+            if (overItem) {
+                var formatter = this.opts.formatter;
+                if ((0, _util.isFunction)(formatter)) {
+                    this.dom.innerHTML = formatter(overItem);
+                } else if ((0, _util.isString)(formatter)) {
+                    this.dom.innerHTML = this.tooltipTemplate(overItem);
+                }
+                this.show(event.offsetX, event.offsetY);
+            } else {
+                this.hide();
+            }
+        }
+    }]);
+
+    return ToolTip;
+}();
+
+exports.default = ToolTip;
+
+/***/ }),
+/* 47 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MapZoom = exports.MapZoom = function () {
+    function MapZoom(map, mapDom, opts) {
+        _classCallCheck(this, MapZoom);
+
+        this.map = map;
+        this.mapDom = mapDom;
+        this.zoom = opts;
+        this.createDom();
+    }
+
+    _createClass(MapZoom, [{
+        key: 'createDom',
+        value: function createDom() {
+            var div = document.createElement('div');
+            div.classList.add('inmap-scale-group');
+            div.innerHTML = '<a>+</a > <a>-</a >';
+            this.mapDom.appendChild(div);
+            this.event(div);
+        }
+    }, {
+        key: 'setButtonState',
+        value: function setButtonState() {
+            var doms = this.mapDom.querySelectorAll('.inmap-scale-group a');
+            var zoom = this.map.getZoom();
+            if (zoom >= this.zoom.max) {
+                doms[0].setAttribute('disabled', 'true');
+            } else {
+                doms[0].removeAttribute('disabled');
+            }
+            if (zoom <= this.zoom.min) {
+                doms[1].setAttribute('disabled', 'true');
+            } else {
+                doms[1].removeAttribute('disabled');
+            }
+        }
+    }, {
+        key: 'event',
+        value: function event(div) {
+            var _this = this;
+
+            var doms = div.querySelectorAll('a');
+            doms[0].addEventListener('click', function () {
+                var zoom = _this.map.getZoom();
+                if (zoom < _this.zoom.max) {
+                    _this.map.zoomIn();
+                }
+            });
+            doms[1].addEventListener('click', function () {
+                var zoom = _this.map.getZoom();
+                if (zoom > _this.zoom.min) {
+                    _this.map.zoomOut();
+                }
+            });
+        }
+    }]);
+
+    return MapZoom;
+}();
+
+/***/ }),
+/* 48 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var BatchesData = function () {
+    function BatchesData(option) {
+        _classCallCheck(this, BatchesData);
+
+        this.setOption(option);
+        this.intervalId = null;
+        this.splitArray = [];
+        this.index = 0;
+    }
+
+    _createClass(BatchesData, [{
+        key: 'setOption',
+        value: function setOption(_ref) {
+            var _ref$interval = _ref.interval,
+                interval = _ref$interval === undefined ? 400 : _ref$interval,
+                _ref$splitCount = _ref.splitCount,
+                splitCount = _ref$splitCount === undefined ? 1500 : _ref$splitCount;
+
+            this.clear();
+            this.interval = interval;
+            this.splitCount = splitCount;
+        }
+    }, {
+        key: 'clear',
+        value: function clear() {
+            this.splitArray = [];
+            this.index = 0;
+            if (this.intervalId) {
+                clearInterval(this.intervalId);
+            }
+        }
+    }, {
+        key: 'action',
+        value: function action(data, callback, ctx) {
+            var _this = this;
+
+            this.clear();
+            var splitCount = this.splitCount,
+                interval = this.interval;
+
+
+            this.splitArray = (0, _util.chunk)(data, splitCount);
+
+            var loop = function loop() {
+                var item = _this.splitArray[_this.index];
+                item && callback(ctx, item);
+
+                _this.index++;
+
+                if (_this.index >= _this.splitArray.length - 1) {
+                    _this.clear();
+                } else {
+                    _this.intervalId = setTimeout(loop, interval);
+                }
+            };
+            loop();
+        }
+    }]);
+
+    return BatchesData;
+}();
+
+exports.default = BatchesData;
+
+/***/ }),
+/* 49 */,
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(51)();
+// imports
+
+
+// module
+exports.push([module.i, ".inmap-container {\n  opacity: 1;\n  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;\n}\n.inmap-container,\n.inmap-container *:after,\n.inmap-container *:before {\n  display: -webkit-box;\n}\n.inmap-scale-group {\n  position: absolute;\n  right: 10px;\n  bottom: 35px;\n  z-index: 999999;\n  opacity: 1;\n}\n.inmap-scale-group > a {\n  display: block;\n  width: 24px;\n  height: 24px;\n  font-size: 17px;\n  line-height: 22px;\n  text-align: center;\n  background: #fff;\n  margin-top: 5px;\n  color: #666;\n  cursor: pointer;\n  text-decoration: none;\n}\n.inmap-scale-group > a[disabled] {\n  color: rgba(187, 190, 196, 0.6);\n  background-color: #f7f7f7;\n  border-color: #dddee1;\n}\n.inmap-tooltip {\n  position: absolute;\n  opacity: 1;\n  display: none;\n  pointer-events: none;\n  border-style: solid;\n  white-space: nowrap;\n  z-index: 9999999;\n  transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1), top 0.4s cubic-bezier(0.23, 1, 0.32, 1);\n  border-radius: 4px;\n  font-style: normal;\n  font-variant: normal;\n  font-weight: normal;\n  font-stretch: normal;\n  font-size: 14px;\n  font-family: sans-serif;\n  line-height: 21px;\n  padding: 5px;\n  left: 323px;\n  top: 451px;\n}\n.inmap-tooltip-black {\n  border-width: 0px;\n  border-color: #333333;\n  background-color: rgba(50, 50, 50, 0.7);\n  color: #ffffff;\n}\n.inmap-legend-container {\n  position: absolute;\n  left: 35px;\n  bottom: 35px;\n  z-index: 9999;\n}\n.inmap-legend {\n  list-style: none;\n  opacity: 1;\n  height: auto;\n  font-size: 12px;\n  text-align: center;\n  border: 10px solid rgba(255, 255, 255, 0.7);\n  box-shadow: rgba(8, 16, 34, 0.3) 2px 0px 7px;\n  border-radius: 5px;\n  margin-right: 3px;\n}\n.inmap-legend .inmap-legend-title {\n  background-color: rgba(255, 255, 255, 0.7);\n  padding-bottom: 3px;\n}\n.inmap-legend > table {\n  width: 100%;\n}\n.inmap-legend table,\n.inmap-legend table tbody,\n.inmap-legend table tr,\n.inmap-legend table tr td {\n  padding: 0;\n  border: 0;\n  margin: 0;\n}\n.inmap-legend .inmap-chunk {\n  display: inline-block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  width: 14px;\n}\n.inmap-legend .inmap-legend-text {\n  background-color: rgba(255, 255, 255, 0.7);\n  padding-left: 5px;\n  text-align: left;\n  font-size: 12px;\n}\n.inmap-legend .inmap-infinity {\n  top: 4px;\n  left: 7px;\n  position: relative;\n}\n.inmap-legend .inmap-infinity:before,\n.inmap-legend .inmap-infinity:after {\n  content: \"\";\n  box-sizing: border-box;\n  width: 6px;\n  height: 6px;\n  position: absolute;\n  top: 0;\n  left: 0;\n  border: 1px solid #495060;\n  -moz-border-radius: 50px 50px 0;\n  border-radius: 50px 50px 0 50px;\n  -webkit-transform: rotate(128deg);\n  -moz-transform: rotate(128deg);\n  -ms-transform: rotate(128deg);\n  -o-transform: rotate(128deg);\n  transform: rotate(128deg);\n}\n.inmap-legend .inmap-infinity:after {\n  left: auto;\n  right: 0;\n  -moz-border-radius: 50px 50px 50px 0;\n  border-radius: 50px 50px 50px 0;\n  -webkit-transform: rotate(-128deg);\n  -moz-transform: rotate(-128deg);\n  -ms-transform: rotate(-128deg);\n  -o-transform: rotate(-128deg);\n  transform: rotate(-128deg);\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+var stylesInDom = {},
+	memoize = function(fn) {
+		var memo;
+		return function () {
+			if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+			return memo;
+		};
+	},
+	isOldIE = memoize(function() {
+		return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
+	}),
+	getHeadElement = memoize(function () {
+		return document.head || document.getElementsByTagName("head")[0];
+	}),
+	singletonElement = null,
+	singletonCounter = 0,
+	styleElementsInsertedAtTop = [];
+
+module.exports = function(list, options) {
+	if(typeof DEBUG !== "undefined" && DEBUG) {
+		if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+	// By default, add <style> tags to the bottom of <head>.
+	if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+	var styles = listToStyles(list);
+	addStylesToDom(styles, options);
+
+	return function update(newList) {
+		var mayRemove = [];
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+		if(newList) {
+			var newStyles = listToStyles(newList);
+			addStylesToDom(newStyles, options);
+		}
+		for(var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+			if(domStyle.refs === 0) {
+				for(var j = 0; j < domStyle.parts.length; j++)
+					domStyle.parts[j]();
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+}
+
+function addStylesToDom(styles, options) {
+	for(var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+		if(domStyle) {
+			domStyle.refs++;
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles(list) {
+	var styles = [];
+	var newStyles = {};
+	for(var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+		if(!newStyles[id])
+			styles.push(newStyles[id] = {id: id, parts: [part]});
+		else
+			newStyles[id].parts.push(part);
+	}
+	return styles;
+}
+
+function insertStyleElement(options, styleElement) {
+	var head = getHeadElement();
+	var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+	if (options.insertAt === "top") {
+		if(!lastStyleElementInsertedAtTop) {
+			head.insertBefore(styleElement, head.firstChild);
+		} else if(lastStyleElementInsertedAtTop.nextSibling) {
+			head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			head.appendChild(styleElement);
+		}
+		styleElementsInsertedAtTop.push(styleElement);
+	} else if (options.insertAt === "bottom") {
+		head.appendChild(styleElement);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement(styleElement) {
+	styleElement.parentNode.removeChild(styleElement);
+	var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+	if(idx >= 0) {
+		styleElementsInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement(options) {
+	var styleElement = document.createElement("style");
+	styleElement.type = "text/css";
+	insertStyleElement(options, styleElement);
+	return styleElement;
+}
+
+function createLinkElement(options) {
+	var linkElement = document.createElement("link");
+	linkElement.rel = "stylesheet";
+	insertStyleElement(options, linkElement);
+	return linkElement;
+}
+
+function addStyle(obj, options) {
+	var styleElement, update, remove;
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+		styleElement = singletonElement || (singletonElement = createStyleElement(options));
+		update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+	} else if(obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function") {
+		styleElement = createLinkElement(options);
+		update = updateLink.bind(null, styleElement);
+		remove = function() {
+			removeStyleElement(styleElement);
+			if(styleElement.href)
+				URL.revokeObjectURL(styleElement.href);
+		};
+	} else {
+		styleElement = createStyleElement(options);
+		update = applyToTag.bind(null, styleElement);
+		remove = function() {
+			removeStyleElement(styleElement);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle(newObj) {
+		if(newObj) {
+			if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+				return;
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag(styleElement, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (styleElement.styleSheet) {
+		styleElement.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = styleElement.childNodes;
+		if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+		if (childNodes.length) {
+			styleElement.insertBefore(cssNode, childNodes[index]);
+		} else {
+			styleElement.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag(styleElement, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		styleElement.setAttribute("media", media)
+	}
+
+	if(styleElement.styleSheet) {
+		styleElement.styleSheet.cssText = css;
+	} else {
+		while(styleElement.firstChild) {
+			styleElement.removeChild(styleElement.firstChild);
+		}
+		styleElement.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink(linkElement, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	if(sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = linkElement.href;
+
+	linkElement.href = URL.createObjectURL(blob);
+
+	if(oldSrc)
+		URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(50);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(52)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./map.less", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./map.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);
