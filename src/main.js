@@ -26,6 +26,7 @@ import {
     MoveLineOverlay
 } from './overlay/MoveLineOverlay';
 import PointAnimationOverlay from './overlay/PointAnimationOverlay';
+import LineStringAnimationOverlay from './overlay/LineStringAnimationOverlay';
 import {
     Map
 } from './map/index';
@@ -48,6 +49,7 @@ const inMap = {
     ImgOverlay,
     MoveLineOverlay,
     PointAnimationOverlay,
+    LineStringAnimationOverlay,
     workerMrg
 };
 export {
@@ -63,6 +65,7 @@ export {
     ImgOverlay,
     MoveLineOverlay,
     PointAnimationOverlay,
+    LineStringAnimationOverlay,
     workerMrg
 };
 export default inMap;
