@@ -117,7 +117,7 @@ export class HoneycombOverlay extends Parameter {
         });
     }
     createColorSplit() {
-        this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData)
+        this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
         this.setlegend(this.legendConfig, this.styleConfig.splitList);
     }
     compileSplitList(data) {

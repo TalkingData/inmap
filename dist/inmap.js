@@ -3611,10 +3611,6 @@ var _CanvasOverlay2 = __webpack_require__(2);
 
 var _util = __webpack_require__(0);
 
-var _OnState = __webpack_require__(1);
-
-var _OnState2 = _interopRequireDefault(_OnState);
-
 var _LineStringAnimationConfig = __webpack_require__(39);
 
 var _LineStringAnimationConfig2 = _interopRequireDefault(_LineStringAnimationConfig);

@@ -6,7 +6,7 @@ import {
     isArray,
     clearPushArray
 } from './../common/util';
-import State from './../config/OnState';
+
 import LineStringAnimationConfig from './../config/LineStringAnimationConfig';
 class MarkLine {
     constructor(opts) {
