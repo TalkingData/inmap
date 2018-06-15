@@ -1801,7 +1801,7 @@ exports.LineStringOverlay = undefined;
 
 var _pointToPixel = __webpack_require__(2);
 
-var _Curive = __webpack_require__(55);
+var _Curive = __webpack_require__(54);
 
 var LineStringOverlay = exports.LineStringOverlay = {
     transferCoordinate: function transferCoordinate(_coordinates, nwMc, zoomUnit) {
@@ -2458,8 +2458,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 54 */,
-/* 55 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
