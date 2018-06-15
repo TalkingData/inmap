@@ -4898,14 +4898,13 @@ var PolygonOverlay = exports.PolygonOverlay = function (_Parameter) {
                         pixel[1] = pixel[1] + distanceY;
                     }
                 }
-                if (this.styleConfig.normal.label.show) {
-                    var labelPixels = geometry.labelPixels;
-                    for (var _j = 0; _j < labelPixels.length; _j++) {
-                        var bestCell = labelPixels[_j];
-                        if (bestCell) {
-                            bestCell.x = bestCell.x + distanceX;
-                            bestCell.y = bestCell.y + distanceY;
-                        }
+
+                var labelPixels = geometry.labelPixels;
+                for (var _j = 0; _j < labelPixels.length; _j++) {
+                    var bestCell = labelPixels[_j];
+                    if (bestCell) {
+                        bestCell.x = bestCell.x + distanceX;
+                        bestCell.y = bestCell.y + distanceY;
                     }
                 }
             }

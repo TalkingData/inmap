@@ -52,17 +52,17 @@ export class PolygonOverlay extends Parameter {
                     pixel[1] = pixel[1] + distanceY;
                 }
             }
-            if (this.styleConfig.normal.label.show) {
-                let labelPixels = geometry.labelPixels;
-                for (let j = 0; j < labelPixels.length; j++) {
-                    let bestCell = labelPixels[j];
-                    if (bestCell) {
-                        bestCell.x = bestCell.x + distanceX;
-                        bestCell.y = bestCell.y + distanceY;
-                    }
 
+            let labelPixels = geometry.labelPixels;
+            for (let j = 0; j < labelPixels.length; j++) {
+                let bestCell = labelPixels[j];
+                if (bestCell) {
+                    bestCell.x = bestCell.x + distanceX;
+                    bestCell.y = bestCell.y + distanceY;
                 }
+
             }
+
         }
         this.refresh();
     }
