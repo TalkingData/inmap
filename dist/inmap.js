@@ -6426,115 +6426,7 @@ if(false) {
 
 /***/ }),
 /* 53 */,
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.lineCurive = lineCurive;
-exports.getPointList = getPointList;
-function getOffsetPoint(start, end, deltaAngle) {
-    var distance = getDistance(start, end) / 4;
-    var angle = void 0,
-        dX = void 0,
-        dY = void 0;
-    var mp = [start[0], start[1]];
-    deltaAngle = deltaAngle == null ? -0.2 : deltaAngle;
-    if (start[0] != end[0] && start[1] != end[1]) {
-        var k = (end[1] - start[1]) / (end[0] - start[0]);
-        angle = Math.atan(k);
-    } else if (start[0] == end[0]) {
-        angle = (start[1] <= end[1] ? 1 : -1) * Math.PI / 2;
-    } else {
-        angle = 0;
-    }
-    if (start[0] <= end[0]) {
-        angle -= deltaAngle;
-        dX = Math.round(Math.cos(angle) * distance);
-        dY = Math.round(Math.sin(angle) * distance);
-        mp[0] += dX;
-        mp[1] += dY;
-    } else {
-        angle += deltaAngle;
-        dX = Math.round(Math.cos(angle) * distance);
-        dY = Math.round(Math.sin(angle) * distance);
-        mp[0] -= dX;
-        mp[1] -= dY;
-    }
-    return mp;
-}
-
-function smoothSpline(points, isLoop) {
-    var len = points.length;
-    var ret = [];
-    var distance = 0;
-    for (var i = 1; i < len; i++) {
-        distance += getDistance(points[i - 1], points[i]);
-    }
-    var segs = distance / 2;
-    segs = segs < len ? len : segs;
-    for (var _i = 0; _i < segs; _i++) {
-        var pos = _i / (segs - 1) * (isLoop ? len : len - 1);
-        var idx = Math.floor(pos);
-        var w = pos - idx;
-        var p0 = void 0;
-        var p1 = points[idx % len];
-        var p2 = void 0;
-        var p3 = void 0;
-        if (!isLoop) {
-            p0 = points[idx === 0 ? idx : idx - 1];
-            p2 = points[idx > len - 2 ? len - 1 : idx + 1];
-            p3 = points[idx > len - 3 ? len - 1 : idx + 2];
-        } else {
-            p0 = points[(idx - 1 + len) % len];
-            p2 = points[(idx + 1) % len];
-            p3 = points[(idx + 2) % len];
-        }
-        var w2 = w * w;
-        var w3 = w * w2;
-
-        ret.push([interpolate(p0[0], p1[0], p2[0], p3[0], w, w2, w3), interpolate(p0[1], p1[1], p2[1], p3[1], w, w2, w3)]);
-    }
-    return ret;
-}
-
-function interpolate(p0, p1, p2, p3, t, t2, t3) {
-    var v0 = (p2 - p0) * 0.5;
-    var v1 = (p3 - p1) * 0.5;
-    return (2 * (p1 - p2) + v0 + v1) * t3 + (-3 * (p1 - p2) - 2 * v0 - v1) * t2 + v0 * t + p1;
-}
-
-function getDistance(p1, p2) {
-    return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1]));
-}
-function lineCurive(fromPoint, endPoint, n) {
-    var delLng = (endPoint[0] - fromPoint[0]) / n;
-    var delLat = (endPoint[1] - fromPoint[1]) / n;
-    var path = [];
-    for (var i = 0; i < n; i++) {
-        var pointNLng = fromPoint[0] + delLng * i;
-        var pointNLat = fromPoint[1] + delLat * i;
-        path.push([pointNLng, pointNLat]);
-    }
-    return path;
-}
-function getPointList(start, end, deltaAngle) {
-    var points = [[start[0], start[1]], [end[0], end[1]]];
-    var ex = points[1][0];
-    var ey = points[1][1];
-    points[3] = [ex, ey];
-    points[1] = getOffsetPoint(points[0], points[3], deltaAngle);
-    points[2] = getOffsetPoint(points[3], points[0], deltaAngle);
-    points = smoothSpline(points, false);
-    points[points.length - 1] = [ex, ey];
-    return points;
-}
-
-/***/ }),
+/* 54 */,
 /* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6555,9 +6447,9 @@ var _OnState = __webpack_require__(1);
 
 var _OnState2 = _interopRequireDefault(_OnState);
 
-var _Curive = __webpack_require__(54);
+var _LineStringAnimationConfig = __webpack_require__(56);
 
-var _Curive2 = _interopRequireDefault(_Curive);
+var _LineStringAnimationConfig2 = _interopRequireDefault(_LineStringAnimationConfig);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6572,7 +6464,6 @@ var MarkLine = function () {
         _classCallCheck(this, MarkLine);
 
         this.path = opts.path;
-
         this.step = 0;
     }
 
@@ -6616,7 +6507,7 @@ var MarkLine = function () {
             context.shadowColor = styleConfig.shadowColor;
             context.shadowBlur = styleConfig.shadowBlur;
             context.beginPath();
-            context.arc(pointList[this.step][0], pointList[this.step][1], styleConfig.moveRadius, 0, Math.PI * 2, true);
+            context.arc(pointList[this.step][0], pointList[this.step][1], styleConfig.size, 0, Math.PI * 2, true);
             context.fill();
             context.closePath();
             context.restore();
@@ -6641,7 +6532,7 @@ var LineStringAnimationOverlay = function (_CanvasOverlay) {
         _this.points = [];
         _this.workerData = [];
         _this.markLineData = [];
-        _this._setStyle({}, ops);
+        _this._setStyle(_LineStringAnimationConfig2.default, ops);
         return _this;
     }
 
@@ -6649,7 +6540,7 @@ var LineStringAnimationOverlay = function (_CanvasOverlay) {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
 
-            this._setStyle({}, ops);
+            this._setStyle(_LineStringAnimationConfig2.default, ops);
             this.map && this.drawMap();
         }
     }, {
@@ -6666,11 +6557,6 @@ var LineStringAnimationOverlay = function (_CanvasOverlay) {
             } else {
                 this.map && this.refresh();
             }
-        }
-    }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
         }
     }, {
         key: 'translation',
@@ -6717,24 +6603,21 @@ var LineStringAnimationOverlay = function (_CanvasOverlay) {
             var projection = this.map.getMapType().getProjection();
             var mcCenter = projection.lngLatToPoint(this.map.getCenter());
             var nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
+
             var params = {
                 points: this.getTransformData(),
                 nwMc: nwMc,
                 zoomUnit: zoomUnit,
                 isAnimation: true,
-
-                lineOrCurve: 'curve',
-                deltaAngle: -0.2
+                lineOrCurve: this.styleConfig.lineOrCurve,
+                deltaAngle: this.styleConfig.deltaAngle
             };
 
-            this.setState(_OnState2.default.computeBefore);
             this.postMessage('LineStringOverlay.calculatePixel', params, function (pixels, margin) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
                 (0, _util.clearPushArray)(_this2.workerData, pixels);
-
-                _this2.setState(_OnState2.default.conputeAfter);
 
                 _this2.createMarkLine(pixels);
                 _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
@@ -6807,6 +6690,29 @@ var LineStringAnimationOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 exports.default = LineStringAnimationOverlay;
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    style: {
+        size: 0.5,
+
+        fillColor: 'rgba(255, 250, 250, 0.9)',
+
+        shadowBlur: 0,
+        fps: 20,
+        lineOrCurve: 'curve',
+        deltaAngle: -0.2 },
+    data: []
+};
 
 /***/ })
 /******/ ]);

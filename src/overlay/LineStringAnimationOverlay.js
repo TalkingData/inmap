@@ -7,14 +7,11 @@ import {
     clearPushArray
 } from './../common/util';
 import State from './../config/OnState';
-import Curive from './../common/Curive';
-
+import LineStringAnimationConfig from './../config/LineStringAnimationConfig';
 class MarkLine {
     constructor(opts) {
         this.path = opts.path;
-        // this.id = opts.id;
         this.step = 0;
-        //  this.path = this.getPointList(map.pointToPixel(this.from.point), map.pointToPixel(this.to.point));
     }
     drawMarker(context, map) {
         this.from.draw(context, map);
@@ -51,7 +48,7 @@ class MarkLine {
         context.shadowColor = styleConfig.shadowColor;
         context.shadowBlur = styleConfig.shadowBlur;
         context.beginPath();
-        context.arc(pointList[this.step][0], pointList[this.step][1], styleConfig.moveRadius, 0, Math.PI * 2, true);
+        context.arc(pointList[this.step][0], pointList[this.step][1], styleConfig.size, 0, Math.PI * 2, true);
         context.fill();
         context.closePath();
         context.restore();
@@ -66,13 +63,13 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
     constructor(ops) {
         super(ops);
         this.points = [];
-        this.workerData = []; 
+        this.workerData = [];
         this.markLineData = [];
-        this._setStyle({}, ops);
+        this._setStyle(LineStringAnimationConfig, ops);
     }
     setOptionStyle(ops) {
 
-        this._setStyle({}, ops);
+        this._setStyle(LineStringAnimationConfig, ops);
         this.map && this.drawMap();
     }
     _setStyle(config, ops) {
@@ -89,10 +86,6 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
             this.map && this.refresh();
         }
 
-    }
-    setState(val) {
-        this.state = val;
-        // this.eventConfig.onState(this.state);
     }
     translation(distanceX, distanceY) {
         for (let i = 0; i < this.markLineData.length; i++) {
@@ -128,26 +121,23 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
         let mcCenter = projection.lngLatToPoint(this.map.getCenter());
         let nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit); //左上角墨卡托坐标
 
-        // debugger
         let params = {
             points: this.getTransformData(),
             nwMc: nwMc,
             zoomUnit: zoomUnit,
             isAnimation: true,
-            // lineOrCurve: 'line',
-            // deltaAngle:50
-            lineOrCurve: 'curve',
-            deltaAngle:-0.2
+            lineOrCurve: this.styleConfig.lineOrCurve,
+            deltaAngle: this.styleConfig.deltaAngle
         };
 
-        this.setState(State.computeBefore);
+        
         this.postMessage('LineStringOverlay.calculatePixel', params, (pixels, margin) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
             clearPushArray(this.workerData, pixels);
 
-            this.setState(State.conputeAfter);
+            
 
             this.createMarkLine(pixels);
             this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
