@@ -68,13 +68,16 @@ export class LineStringOverlay extends CanvasOverlay {
     resize() {
         this.drawMap();
     }
+    getTransformData() {
+        return this.workerData.length > 0 ? this.workerData : this.points;
+    }
     drawMap() {
         let zoomUnit = Math.pow(2, 18 - this.map.getZoom());
         let projection = this.map.getMapType().getProjection();
         let mcCenter = projection.lngLatToPoint(this.map.getCenter());
         let nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit); //左上角墨卡托坐标
         let params = {
-            points: this.points,
+            points: this.getTransformData(),
             nwMc: nwMc,
             zoomUnit: zoomUnit
         };
