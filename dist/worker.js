@@ -1527,21 +1527,21 @@ var GriddingOverlay = exports.GriddingOverlay = {
                 };
             }
         }
-
         for (var _i = 0; _i < data.length; _i++) {
             var item = data[_i];
             var x = item.geometry.pixel.x;
             var y = item.geometry.pixel.y;
-
-            for (var _j = 0; _j < stockXA.length; _j++) {
-                var dataX = Number(stockXA[_j]);
-                if (x >= dataX && x < dataX + gridStep) {
-                    for (var k = 0; k < stockYA.length; k++) {
-                        var dataY = Number(stockYA[k]);
-                        if (y >= dataY && y < dataY + gridStep) {
-                            var grid = grids[stockXA[_j] + '_' + stockYA[k]];
-                            grid.list.push(item);
-                            grid.count += item.count;
+            if (x >= startX && x <= endX && y >= startY && y <= endY) {
+                for (var _j = 0; _j < stockXA.length; _j++) {
+                    var dataX = Number(stockXA[_j]);
+                    if (x >= dataX && x < dataX + gridStep) {
+                        for (var k = 0; k < stockYA.length; k++) {
+                            var dataY = Number(stockYA[k]);
+                            if (y >= dataY && y < dataY + gridStep) {
+                                var grid = grids[stockXA[_j] + '_' + stockYA[k]];
+                                grid.list.push(item);
+                                grid.count += item.count;
+                            }
                         }
                     }
                 }
@@ -1690,20 +1690,22 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
             var item = data[i];
             var pX = item.geometry.pixel.x;
             var pY = item.geometry.pixel.y;
-            var fixYIndex = Math.round((pY - startY) / depthY);
-            var fixY = fixYIndex * depthY + startY;
-            var fixXIndex = Math.round((pX - startX) / depthX);
-            var fixX = fixXIndex * depthX + startX;
+            if (pX >= startX && pX <= endX && pY >= startY && pY <= endY) {
+                var fixYIndex = Math.round((pY - startY) / depthY);
+                var fixY = fixYIndex * depthY + startY;
+                var fixXIndex = Math.round((pX - startX) / depthX);
+                var fixX = fixXIndex * depthX + startX;
 
-            if (fixYIndex % 2) {
-                fixX = fixX - depthX / 2;
-            }
-            if (fixX < startX || fixX > endX || fixY < startY || fixY > endY) {
-                continue;
-            }
-            if (grids[fixX + '|' + fixY]) {
-                grids[fixX + '|' + fixY].list.push(item);
-                grids[fixX + '|' + fixY].count += item.count;
+                if (fixYIndex % 2) {
+                    fixX = fixX - depthX / 2;
+                }
+                if (fixX < startX || fixX > endX || fixY < startY || fixY > endY) {
+                    continue;
+                }
+                if (grids[fixX + '|' + fixY]) {
+                    grids[fixX + '|' + fixY].list.push(item);
+                    grids[fixX + '|' + fixY].count += item.count;
+                }
             }
         }
 

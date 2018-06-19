@@ -3965,6 +3965,11 @@ var LineStringOverlay = exports.LineStringOverlay = function (_CanvasOverlay) {
             this.drawMap();
         }
     }, {
+        key: 'getTransformData',
+        value: function getTransformData() {
+            return this.workerData.length > 0 ? this.workerData : this.points;
+        }
+    }, {
         key: 'drawMap',
         value: function drawMap() {
             var _this2 = this;
@@ -3974,7 +3979,7 @@ var LineStringOverlay = exports.LineStringOverlay = function (_CanvasOverlay) {
             var mcCenter = projection.lngLatToPoint(this.map.getCenter());
             var nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
             var params = {
-                points: this.points,
+                points: this.getTransformData(),
                 nwMc: nwMc,
                 zoomUnit: zoomUnit
             };
@@ -5906,7 +5911,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.5.9";
+var version = "2.0.0";
 console.log('inMap v' + version);
 
 var inMap = {

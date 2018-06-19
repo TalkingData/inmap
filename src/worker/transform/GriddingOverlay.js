@@ -82,27 +82,27 @@ export let GriddingOverlay = {
                 };
             }
         }
-
         for (let i = 0; i < data.length; i++) {
             let item = data[i];
             let x = item.geometry.pixel.x;
             let y = item.geometry.pixel.y;
-
-            for (let j = 0; j < stockXA.length; j++) {
-                let dataX = Number(stockXA[j]);
-                if (x >= dataX && x < dataX + gridStep) {
-                    for (let k = 0; k < stockYA.length; k++) {
-                        let dataY = Number(stockYA[k]);
-                        if (y >= dataY && y < dataY + gridStep) {
-                            let grid = grids[stockXA[j] + '_' + stockYA[k]];
-                            grid.list.push(item);
-                            grid.count += item.count; //sum
+            if (x >= startX && x <= endX && y >= startY && y <= endY) {
+                for (let j = 0; j < stockXA.length; j++) {
+                    let dataX = Number(stockXA[j]);
+                    if (x >= dataX && x < dataX + gridStep) {
+                        for (let k = 0; k < stockYA.length; k++) {
+                            let dataY = Number(stockYA[k]);
+                            if (y >= dataY && y < dataY + gridStep) {
+                                let grid = grids[stockXA[j] + '_' + stockYA[k]];
+                                grid.list.push(item);
+                                grid.count += item.count; //sum
+                            }
                         }
                     }
                 }
             }
         }
-
+    
         let result = [];
         for (let key in grids) {
             let item = grids[key];
