@@ -52,7 +52,7 @@ export let HoneycombOverlay = {
                 grids: []
             };
         }
-        
+
         let grids = {};
         let gridStep = Math.round(size / zoomUnit);
         let depthX = gridStep;
@@ -67,7 +67,7 @@ export let HoneycombOverlay = {
 
         let endX = parseInt(mapSize.width + depthX, 10);
         let endY = parseInt(mapSize.height + depthY, 10);
-       
+
         let pointX = startX;
         let pointY = startY;
 
@@ -96,21 +96,24 @@ export let HoneycombOverlay = {
             let item = data[i];
             let pX = item.px;
             let pY = item.py;
-            let fixYIndex = Math.round((pY - startY) / depthY);
-            let fixY = fixYIndex * depthY + startY;
-            let fixXIndex = Math.round((pX - startX) / depthX);
-            let fixX = fixXIndex * depthX + startX;
+            if (pX >= startX && pX <= endX && pY >= startY && pY <= endY) {
+                let fixYIndex = Math.round((pY - startY) / depthY);
+                let fixY = fixYIndex * depthY + startY;
+                let fixXIndex = Math.round((pX - startX) / depthX);
+                let fixX = fixXIndex * depthX + startX;
 
-            if (fixYIndex % 2) {
-                fixX = fixX - depthX / 2;
+                if (fixYIndex % 2) {
+                    fixX = fixX - depthX / 2;
+                }
+                if (fixX < startX || fixX > endX || fixY < startY || fixY > endY) {
+                    continue;
+                }
+                if (grids[fixX + '|' + fixY]) {
+                    grids[fixX + '|' + fixY].list.push(item);
+                    grids[fixX + '|' + fixY].count += item.count;
+                }
             }
-            if (fixX < startX || fixX > endX || fixY < startY || fixY > endY) {
-                continue;
-            }
-            if (grids[fixX + '|' + fixY]) {
-                grids[fixX + '|' + fixY].list.push(item);
-                grids[fixX + '|' + fixY].count += item.count;
-            }
+
         }
 
         let result = [];

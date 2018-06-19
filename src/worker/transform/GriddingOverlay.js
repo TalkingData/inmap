@@ -65,7 +65,7 @@ export let GriddingOverlay = {
         let startY = (nwMc.y - startYMc) / zoomUnit;
         let endY = mapSize.height;
 
-        
+
         let stockXA = [];
         let stickXAIndex = 0;
         while (startX + stickXAIndex * gridStep < endX) {
@@ -98,20 +98,22 @@ export let GriddingOverlay = {
             let x = data[i].px;
             let y = data[i].py;
             let item = data[i];
-
-            for (let j = 0; j < stockXA.length; j++) {
-                let dataX = Number(stockXA[j]);
-                if (x >= dataX && x < dataX + gridStep) {
-                    for (let k = 0; k < stockYA.length; k++) {
-                        let dataY = Number(stockYA[k]);
-                        if (y >= dataY && y < dataY + gridStep) {
-                            let grid = grids[stockXA[j] + '_' + stockYA[k]];
-                            grid.list.push(item);
-                            grid.count += item.count; //sum
+            if (x >= startX && x <= endX && y >= startY && y <= endY) {
+                for (let j = 0; j < stockXA.length; j++) {
+                    let dataX = Number(stockXA[j]);
+                    if (x >= dataX && x < dataX + gridStep) {
+                        for (let k = 0; k < stockYA.length; k++) {
+                            let dataY = Number(stockYA[k]);
+                            if (y >= dataY && y < dataY + gridStep) {
+                                let grid = grids[stockXA[j] + '_' + stockYA[k]];
+                                grid.list.push(item);
+                                grid.count += item.count; //sum
+                            }
                         }
                     }
                 }
             }
+
         }
 
         let result = [];
