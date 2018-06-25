@@ -31,6 +31,7 @@ import {
 } from './map/index';
 import * as utils from './common/util';
 import {workerMrg} from './common/workerMrg';
+import PolygonEditorOverlay from './overlay/PolygonEditorOverlay';
 
 let version = VERSION;
 console.log(`inMap v${version}`);
@@ -48,7 +49,8 @@ const inMap = {
     ImgOverlay,
     MoveLineOverlay,
     FlashDotOverlay,
-    workerMrg
+    workerMrg,
+    PolygonEditorOverlay
 };
 export {
     version,
@@ -63,6 +65,7 @@ export {
     ImgOverlay,
     MoveLineOverlay,
     FlashDotOverlay,
-    workerMrg
+    workerMrg,
+    PolygonEditorOverlay
 };
 export default inMap;
