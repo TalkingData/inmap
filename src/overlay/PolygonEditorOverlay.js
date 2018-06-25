@@ -1,16 +1,15 @@
+import config from './../config/PolygonEditor';
+import {
+    merge
+} from './../common/util';
 export default class PolygonEditorOverlay {
     constructor(opts) {
-        this.points = this._geoJsonToPoint(opts.data || []);
+        let option = merge(config, opts);
+        this.points = this._geoJsonToPoint(option.data || []);
         this.overlay = null;
         this.map = null;
         this.isDispose = false;
-        this.option = {
-            strokeColor: 'rgba(24,144,255,1)',
-            fillColor: 'rgba(24,144,255,0.4)',
-            strokeWeight: 2,
-            strokeOpacity: 1,
-            enableEditing: true
-        };
+        this.option = option.style;
         this._vectisWidth = 10;
         this.drawPoint = [];
         this.pixels = null;
@@ -32,7 +31,7 @@ export default class PolygonEditorOverlay {
         this.overlay.setPath(this.points);
         this.bingMoveEvent();
         this.copy();
-     
+
     }
     bingMoveEvent() {
         this.map.addEventListener('click', this.clickAction);
@@ -44,7 +43,7 @@ export default class PolygonEditorOverlay {
     }
     clickAction(e) {
         this._second = new Date();
-      
+
         if (this.isClick) {
             if (this._second - this._first <= this._interval) {
                 this._first = new Date();
@@ -101,7 +100,7 @@ export default class PolygonEditorOverlay {
         this.isDispose = true;
     }
     startAction(e) {
-         
+
         let points = this.points;
         points.push(e.point);
         this.drawPoint = points.concat(points[points.length - 1]);
@@ -135,8 +134,8 @@ export default class PolygonEditorOverlay {
         this.overlay.setPositionAt(this.drawPoint.length - 1, e.point);
 
     }
-    dblclickAction(e) {
-       
+    dblclickAction() {
+
         if (!this._isBinded) {
             return;
         }
@@ -150,7 +149,7 @@ export default class PolygonEditorOverlay {
         ['setStrokeColor', 'getStrokeColor', 'setFillColor', 'getFillColor', 'setStrokeOpacity', 'getStrokeOpacity', 'setFillOpacity', 'getFillOpacity', 'setStrokeWeight', 'getStrokeWeight', 'setStrokeStyle', 'getStrokeStyle', 'getBounds', 'enableEditing', 'disableEditing', 'enableMassClear', 'disableMassClear', 'setPositionAt', 'getMap', 'addEventListener', 'removeEventListener'].forEach((key) => {
             this[key] = this.overlay[key].bind(this.overlay);
         });
-        
+
     }
     _geoJsonToPoint(data) {
         if (data.geometry) {
