@@ -62,7 +62,7 @@ export default class PolygonEditorOverlay {
         this.toolTipConfig.show = false;
     }
     getAreaByPolygon() {
-        let me = this;
+
         if (!this.isClick && this.toolTipConfig.show) {
             let geos = this.overlay.getPath();
             let areas = GeoUtils.getPolygonArea(geos);
@@ -72,9 +72,14 @@ export default class PolygonEditorOverlay {
         } else {
             this.ToolTip && this.ToolTip.hide();
         }
-        this.setTimeout = setTimeout((me) => {
-            me.getAreaByPolygon();
-        }, 800, me);
+        this.setTimeout = setTimeout(() => {
+            if (this.getAreaByPolygon) {
+                this.getAreaByPolygon();
+            } else {
+                clearTimeout(this.setTimeout);
+            }
+
+        }, 800);
 
     }
 

@@ -6549,7 +6549,8 @@ var PolygonEditorOverlay = function () {
     }, {
         key: 'getAreaByPolygon',
         value: function getAreaByPolygon() {
-            var me = this;
+            var _this = this;
+
             if (!this.isClick && this.toolTipConfig.show) {
                 var geos = this.overlay.getPath();
                 var areas = _GeoUtils2.default.getPolygonArea(geos);
@@ -6559,9 +6560,13 @@ var PolygonEditorOverlay = function () {
             } else {
                 this.ToolTip && this.ToolTip.hide();
             }
-            this.setTimeout = setTimeout(function (me) {
-                me.getAreaByPolygon();
-            }, 800, me);
+            this.setTimeout = setTimeout(function () {
+                if (_this.getAreaByPolygon) {
+                    _this.getAreaByPolygon();
+                } else {
+                    clearTimeout(_this.setTimeout);
+                }
+            }, 800);
         }
     }, {
         key: 'getGeoCenter',
@@ -6611,13 +6616,13 @@ var PolygonEditorOverlay = function () {
     }, {
         key: 'findIndexVectis',
         value: function findIndexVectis(_ref) {
-            var _this = this;
+            var _this2 = this;
 
             var x = _ref.x,
                 y = _ref.y;
 
             this.pixels = this.overlay.getPath().map(function (item) {
-                return _this.map.pointToOverlayPixel(item);
+                return _this2.map.pointToOverlayPixel(item);
             });
 
             var r = this._vectisWidth / 2;
@@ -6666,10 +6671,10 @@ var PolygonEditorOverlay = function () {
     }, {
         key: 'translation',
         value: function translation(x, y) {
-            var _this2 = this;
+            var _this3 = this;
 
             this.pixels = this.overlay.getPath().map(function (item) {
-                return _this2.map.pointToOverlayPixel(item);
+                return _this3.map.pointToOverlayPixel(item);
             });
             for (var i = 0; i < this.pixels.length; i++) {
                 var item = this.pixels[i];
@@ -6678,7 +6683,7 @@ var PolygonEditorOverlay = function () {
             }
 
             this.drawPoint = this.pixels.map(function (item) {
-                return _this2.map.overlayPixelToPoint(item);
+                return _this3.map.overlayPixelToPoint(item);
             });
 
             this.overlay.setPath(this.drawPoint);
@@ -6706,10 +6711,10 @@ var PolygonEditorOverlay = function () {
     }, {
         key: 'copy',
         value: function copy() {
-            var _this3 = this;
+            var _this4 = this;
 
             ['setStrokeColor', 'getStrokeColor', 'setFillColor', 'getFillColor', 'setStrokeOpacity', 'getStrokeOpacity', 'setFillOpacity', 'getFillOpacity', 'setStrokeWeight', 'getStrokeWeight', 'setStrokeStyle', 'getStrokeStyle', 'getBounds', 'enableEditing', 'disableEditing', 'enableMassClear', 'disableMassClear', 'setPositionAt', 'getMap', 'addEventListener', 'removeEventListener'].forEach(function (key) {
-                _this3[key] = _this3.overlay[key].bind(_this3.overlay);
+                _this4[key] = _this4.overlay[key].bind(_this4.overlay);
             });
         }
     }, {
