@@ -25,8 +25,24 @@ export default class ToolTip {
             left,
             top
         } = this.opts.offsets;
+
         this.dom.style.left = x + left + 'px';
         this.dom.style.top = y + top + 'px';
+        this.dom.style.display = 'block';
+    }
+    showCenterText(text, x, y) {
+        this.dom.innerHTML = text;
+        this.dom.style.display = 'block';
+        this.dom.style.visibility = 'hidden';
+        let width = this.dom.offsetWidth;
+        this.dom.style.left = x - (width / 2) + 'px';
+        this.dom.style.top = y + 'px';
+        this.dom.style.visibility = 'visible';
+    }
+    showText(text, x, y) {
+        this.dom.innerHTML = text;
+        this.dom.style.left = x + 'px';
+        this.dom.style.top = y + 'px';
         this.dom.style.display = 'block';
     }
     hide() {
