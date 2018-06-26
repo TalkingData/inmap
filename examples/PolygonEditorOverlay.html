@@ -37,6 +37,8 @@
         <button onclick="closeEdit()">关闭编辑</button>
         <button onclick="translation()">平移</button>
         <button onclick="getpath()">获得围栏路径</button>
+        <button onclick="hideArea()">隐藏面积</button>
+        
     </div>
 </body>
 
@@ -135,5 +137,8 @@
         let data = JSON.stringify(overlay.getPath(), null, 2);
         console.log(data);
         alert(data);
+    }
+    function hideArea(){
+        overlay.hideAreaText();
     }
 </script>
