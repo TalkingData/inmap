@@ -25,14 +25,19 @@ export let LineStringOverlay = {
         } = webObj.request.data;
         if (isAnimation) {
             if (lineOrCurve == 'line') {
-                LineStringOverlay.setLineCurive(points, zoomUnit, nwMc,deltaAngle);
+                LineStringOverlay.setLineCurive(points, zoomUnit, nwMc, deltaAngle);
             } else if (lineOrCurve == 'curve') {
                 LineStringOverlay.setCurive(points, zoomUnit, nwMc, deltaAngle);
 
             }
 
         } else {
-            LineStringOverlay.transfrom(points, zoomUnit, nwMc);
+            if (lineOrCurve == 'curve') {
+                LineStringOverlay.setCurive(points, zoomUnit, nwMc, deltaAngle);
+            } else {
+                LineStringOverlay.transfrom(points, zoomUnit, nwMc);
+            }
+
         }
         webObj.request.data = points;
         console.log(points);
@@ -50,21 +55,29 @@ export let LineStringOverlay = {
                     return [pixel.x, pixel.y];
                 });
             }
-            let lngLat1 = item.geometry['medianCoordinates'][0];
-            let lngLat2 = item.geometry['medianCoordinates'][1];
-            let x1 = (lngLat1[0] - nwMc.x) / zoomUnit;
-            let y1 = (nwMc.y - lngLat1[1]) / zoomUnit;
+            let medianCoordinates = item.geometry.medianCoordinates;
+            let paths = [];
+            for (let k = 0, len = medianCoordinates.length; k < len; k += 2) {
+                let lngLat1 = medianCoordinates[k];
+                let lngLat2 = medianCoordinates[k + 1];
+                let x1 = (lngLat1[0] - nwMc.x) / zoomUnit;
+                let y1 = (nwMc.y - lngLat1[1]) / zoomUnit;
 
-            let x2 = (lngLat2[0] - nwMc.x) / zoomUnit;
-            let y2 = (nwMc.y - lngLat2[1]) / zoomUnit;
-            item.geometry['pixels'] = getPointList([x1, y1], [x2, y2], deltaAngle);
+                let x2 = (lngLat2[0] - nwMc.x) / zoomUnit;
+                let y2 = (nwMc.y - lngLat2[1]) / zoomUnit;
+
+                paths = paths.concat(getPointList([x1, y1], [x2, y2], deltaAngle));
+                x1 = null, y1 = null, x2 = null, y2 = null, lngLat1 = null, lngLat2 = null;
+            }
+
+            item.geometry['pixels'] = paths;
         }
     },
-    setLineCurive(points, zoomUnit, nwMc,n) {
+    setLineCurive(points, zoomUnit, nwMc, n) {
         for (let j = 0; j < points.length; j++) {
             let item = points[j];
             if (!item.geometry.animationCoordinates) {
-                item.geometry['animationCoordinates'] = lineCurive(item.geometry.coordinates[0], item.geometry.coordinates[1],n);
+                item.geometry['animationCoordinates'] = lineCurive(item.geometry.coordinates[0], item.geometry.coordinates[1], n);
             }
             if (!item.geometry.animationMedianCoordinates) {
                 item.geometry['animationMedianCoordinates'] = item.geometry.animationCoordinates.map(function (item) {

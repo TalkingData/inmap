@@ -79,7 +79,9 @@ export class LineStringOverlay extends CanvasOverlay {
         let params = {
             points: this.getTransformData(),
             nwMc: nwMc,
-            zoomUnit: zoomUnit
+            zoomUnit: zoomUnit,
+            lineOrCurve: this.styleConfig.normal.lineCurive,
+            deltaAngle: this.styleConfig.normal.deltaAngle
         };
 
         this.setState(State.computeBefore);

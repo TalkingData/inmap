@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 43);
+/******/ 	return __webpack_require__(__webpack_require__.s = 46);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -278,8 +278,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 2 */,
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -296,7 +295,7 @@ var _BaseClass2 = __webpack_require__(11);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
-var _Legend = __webpack_require__(44);
+var _Legend = __webpack_require__(47);
 
 var _Legend2 = _interopRequireDefault(_Legend);
 
@@ -557,6 +556,7 @@ var CanvasOverlay = exports.CanvasOverlay = function (_BaseClass) {
 }(_BaseClass3.default);
 
 /***/ }),
+/* 3 */,
 /* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -572,7 +572,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __webpack_require__(0);
 
-var _CanvasOverlay2 = __webpack_require__(3);
+var _CanvasOverlay2 = __webpack_require__(2);
 
 var _Color = __webpack_require__(5);
 
@@ -2146,7 +2146,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ToolTip = __webpack_require__(45);
+var _ToolTip = __webpack_require__(48);
 
 var _ToolTip2 = _interopRequireDefault(_ToolTip);
 
@@ -2320,17 +2320,17 @@ var _util = __webpack_require__(0);
 
 var _MapStyle = __webpack_require__(6);
 
-var _mapZoom = __webpack_require__(46);
+var _mapZoom = __webpack_require__(49);
 
 var _Toolbar = __webpack_require__(10);
 
 var _Toolbar2 = _interopRequireDefault(_Toolbar);
 
-var _InmapConfig = __webpack_require__(39);
+var _InmapConfig = __webpack_require__(37);
 
 var _InmapConfig2 = _interopRequireDefault(_InmapConfig);
 
-__webpack_require__(52);
+__webpack_require__(55);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2433,7 +2433,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Parameter2 = __webpack_require__(4);
 
-var _GriddingConfig = __webpack_require__(35);
+var _GriddingConfig = __webpack_require__(33);
 
 var _GriddingConfig2 = _interopRequireDefault(_GriddingConfig);
 
@@ -2749,11 +2749,11 @@ exports.HeatOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay2 = __webpack_require__(3);
+var _CanvasOverlay2 = __webpack_require__(2);
 
 var _util = __webpack_require__(0);
 
-var _HeatConfig = __webpack_require__(36);
+var _HeatConfig = __webpack_require__(34);
 
 var _HeatConfig2 = _interopRequireDefault(_HeatConfig);
 
@@ -3009,7 +3009,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Parameter2 = __webpack_require__(4);
 
-var _HoneycombConfig = __webpack_require__(37);
+var _HoneycombConfig = __webpack_require__(35);
 
 var _HoneycombConfig2 = _interopRequireDefault(_HoneycombConfig);
 
@@ -3337,7 +3337,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Parameter2 = __webpack_require__(4);
 
-var _ImgConfig = __webpack_require__(38);
+var _ImgConfig = __webpack_require__(36);
 
 var _ImgConfig2 = _interopRequireDefault(_ImgConfig);
 
@@ -3604,15 +3604,276 @@ var ImgOverlay = exports.ImgOverlay = function (_Parameter) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _CanvasOverlay2 = __webpack_require__(2);
+
+var _util = __webpack_require__(0);
+
+var _LineStringAnimationConfig = __webpack_require__(39);
+
+var _LineStringAnimationConfig2 = _interopRequireDefault(_LineStringAnimationConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MarkLine = function () {
+    function MarkLine(opts) {
+        _classCallCheck(this, MarkLine);
+
+        this.path = opts.path;
+        this.step = 0;
+    }
+
+    _createClass(MarkLine, [{
+        key: 'drawMarker',
+        value: function drawMarker(context, map) {
+            this.from.draw(context, map);
+            this.to.draw(context, map);
+        }
+    }, {
+        key: 'drawLinePath',
+        value: function drawLinePath(context, styleConfig) {
+            var pointList = this.path;
+            var len = pointList.length;
+            context.save();
+            context.beginPath();
+            context.lineWidth = styleConfig.lineWidth;
+            context.strokeStyle = styleConfig.colors[this.id];
+
+            if (!styleConfig.lineType || styleConfig.lineType == 'solid') {
+                context.moveTo(pointList[0][0], pointList[0][1]);
+                for (var i = 0; i < len; i++) {
+                    context.lineTo(pointList[i][0], pointList[i][1]);
+                }
+            } else if (styleConfig.lineType == 'dashed' || styleConfig.lineType == 'dotted') {
+                for (var _i = 1; _i < len; _i += 2) {
+                    context.moveTo(pointList[_i - 1][0], pointList[_i - 1][1]);
+                    context.lineTo(pointList[_i][0], pointList[_i][1]);
+                }
+            }
+            context.stroke();
+            context.restore();
+        }
+    }, {
+        key: 'drawMoveCircle',
+        value: function drawMoveCircle(context, styleConfig) {
+            var pointList = this.path;
+            if (pointList.length <= 0) return;
+            context.save();
+            context.fillStyle = styleConfig.fillColor;
+            context.shadowColor = styleConfig.shadowColor;
+            context.shadowBlur = styleConfig.shadowBlur;
+            context.beginPath();
+            context.arc(pointList[this.step][0], pointList[this.step][1], styleConfig.size, 0, Math.PI * 2, true);
+            context.fill();
+            context.closePath();
+            context.restore();
+            this.step += 1;
+            if (this.step >= pointList.length) {
+                this.step = 0;
+            }
+        }
+    }]);
+
+    return MarkLine;
+}();
+
+var LineStringAnimationOverlay = function (_CanvasOverlay) {
+    _inherits(LineStringAnimationOverlay, _CanvasOverlay);
+
+    function LineStringAnimationOverlay(ops) {
+        _classCallCheck(this, LineStringAnimationOverlay);
+
+        var _this = _possibleConstructorReturn(this, (LineStringAnimationOverlay.__proto__ || Object.getPrototypeOf(LineStringAnimationOverlay)).call(this, ops));
+
+        _this.points = [];
+        _this.workerData = [];
+        _this.markLineData = [];
+        _this._setStyle(_LineStringAnimationConfig2.default, ops);
+        return _this;
+    }
+
+    _createClass(LineStringAnimationOverlay, [{
+        key: 'setOptionStyle',
+        value: function setOptionStyle(ops) {
+
+            this._setStyle(_LineStringAnimationConfig2.default, ops);
+            this.map && this.drawMap();
+        }
+    }, {
+        key: '_setStyle',
+        value: function _setStyle(config, ops) {
+            var option = (0, _util.merge)(config, ops);
+
+            this.styleConfig = option.style;
+            this.eventConfig = option.event;
+            this.tMapStyle(option.skin);
+
+            if (ops.data) {
+                this.setData(ops.data);
+            } else {
+                this.map && this.refresh();
+            }
+        }
+    }, {
+        key: 'translation',
+        value: function translation(distanceX, distanceY) {
+            for (var i = 0; i < this.markLineData.length; i++) {
+                var pixels = this.markLineData[i].path;
+                for (var j = 0; j < pixels.length; j++) {
+                    var pixel = pixels[j];
+                    pixel[0] = pixel[0] + distanceX;
+                    pixel[1] = pixel[1] + distanceY;
+                }
+            }
+            this.refresh();
+        }
+    }, {
+        key: 'setData',
+        value: function setData(points) {
+            if (!(0, _util.isArray)(points)) {
+                throw new TypeError('inMap: data must be a Array');
+            }
+            this.points = points;
+            this.map && this.drawMap();
+        }
+    }, {
+        key: 'resize',
+        value: function resize() {
+            if (!this.animationDraw) {
+
+                this.initAnimation();
+            }
+            this.drawMap();
+        }
+    }, {
+        key: 'getTransformData',
+        value: function getTransformData() {
+            return this.workerData.length > 0 ? this.workerData : this.points;
+        }
+    }, {
+        key: 'drawMap',
+        value: function drawMap() {
+            var _this2 = this;
+
+            var zoomUnit = Math.pow(2, 18 - this.map.getZoom());
+            var projection = this.map.getMapType().getProjection();
+            var mcCenter = projection.lngLatToPoint(this.map.getCenter());
+            var nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
+
+            var params = {
+                points: this.getTransformData(),
+                nwMc: nwMc,
+                zoomUnit: zoomUnit,
+                isAnimation: true,
+                lineOrCurve: this.styleConfig.lineOrCurve,
+                deltaAngle: this.styleConfig.deltaAngle
+            };
+
+            this.postMessage('LineStringOverlay.calculatePixel', params, function (pixels, margin) {
+                if (_this2.eventType == 'onmoving') {
+                    return;
+                }
+                (0, _util.clearPushArray)(_this2.workerData, pixels);
+
+                _this2.createMarkLine(pixels);
+                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                params = null;
+                margin = null;
+            });
+        }
+    }, {
+        key: 'createMarkLine',
+        value: function createMarkLine(data) {
+            (0, _util.clearPushArray)(this.markLineData);
+            for (var i = 0; i < data.length; i++) {
+                var pixels = data[i].geometry.pixels;
+                this.markLineData.push(new MarkLine({
+                    path: pixels
+                }));
+            }
+        }
+    }, {
+        key: 'initAnimation',
+        value: function initAnimation() {
+            var now = void 0;
+            var then = Date.now();
+            var interval = 1000 / this.styleConfig.fps;
+            var delta = void 0;
+            var me = this;
+
+            function drawFrame() {
+                requestAnimationFrame(drawFrame);
+                now = Date.now();
+                delta = now - then;
+                if (delta > interval) {
+                    then = now - delta % interval;
+                    me.refresh();
+                }
+            }
+            this.animationDraw = drawFrame;
+            this.animationDraw();
+        }
+    }, {
+        key: 'refresh',
+        value: function refresh() {
+            var markLineData = this.markLineData,
+                styleConfig = this.styleConfig;
+
+
+            if (!this.ctx) {
+                return;
+            }
+
+            if (!this.animationFlag) {
+                this.clearCanvas();
+                return;
+            }
+            this.ctx.fillStyle = 'rgba(0,0,0,0.93)';
+            var prev = this.ctx.globalCompositeOperation;
+            this.ctx.globalCompositeOperation = 'destination-in';
+            var size = this.map.getSize();
+            this.ctx.fillRect(0, 0, size.width, size.height);
+            this.ctx.globalCompositeOperation = prev;
+
+            for (var i = 0; i < markLineData.length; i++) {
+                var markLine = markLineData[i];
+                markLine.drawMoveCircle(this.ctx, styleConfig, this.map);
+            }
+        }
+    }]);
+
+    return LineStringAnimationOverlay;
+}(_CanvasOverlay2.CanvasOverlay);
+
+exports.default = LineStringAnimationOverlay;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.LineStringOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _util = __webpack_require__(0);
 
-var _CanvasOverlay2 = __webpack_require__(3);
+var _CanvasOverlay2 = __webpack_require__(2);
 
-var _LineStringConfig = __webpack_require__(57);
+var _LineStringConfig = __webpack_require__(40);
 
 var _LineStringConfig2 = _interopRequireDefault(_LineStringConfig);
 
@@ -3720,7 +3981,9 @@ var LineStringOverlay = exports.LineStringOverlay = function (_CanvasOverlay) {
             var params = {
                 points: this.getTransformData(),
                 nwMc: nwMc,
-                zoomUnit: zoomUnit
+                zoomUnit: zoomUnit,
+                lineOrCurve: this.styleConfig.normal.lineCurive,
+                deltaAngle: this.styleConfig.normal.deltaAngle
             };
 
             this.setState(_OnState2.default.computeBefore);
@@ -3775,7 +4038,7 @@ var LineStringOverlay = exports.LineStringOverlay = function (_CanvasOverlay) {
 }(_CanvasOverlay2.CanvasOverlay);
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3788,7 +4051,7 @@ exports.MoveLineOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay = __webpack_require__(3);
+var _CanvasOverlay = __webpack_require__(2);
 
 var _util = __webpack_require__(0);
 
@@ -4204,7 +4467,7 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
 }(_BaseClass3.default);
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4216,11 +4479,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay2 = __webpack_require__(3);
+var _CanvasOverlay2 = __webpack_require__(2);
 
 var _util = __webpack_require__(0);
 
-var _PointAnimation = __webpack_require__(58);
+var _PointAnimation = __webpack_require__(42);
 
 var _PointAnimation2 = _interopRequireDefault(_PointAnimation);
 
@@ -4369,7 +4632,7 @@ var PointAnimationOverlay = function (_CanvasOverlay) {
 exports.default = PointAnimationOverlay;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4382,7 +4645,7 @@ exports.PointOverlay = undefined;
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay = __webpack_require__(3);
+var _CanvasOverlay = __webpack_require__(2);
 
 var _Label = __webpack_require__(7);
 
@@ -4390,11 +4653,11 @@ var _Parameter2 = __webpack_require__(4);
 
 var _util = __webpack_require__(0);
 
-var _BatchesData = __webpack_require__(47);
+var _BatchesData = __webpack_require__(50);
 
 var _BatchesData2 = _interopRequireDefault(_BatchesData);
 
-var _PointConfig = __webpack_require__(59);
+var _PointConfig = __webpack_require__(43);
 
 var _PointConfig2 = _interopRequireDefault(_PointConfig);
 
@@ -4814,7 +5077,7 @@ var PointOverlay = exports.PointOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4833,7 +5096,7 @@ var _Color = __webpack_require__(5);
 
 var _util = __webpack_require__(0);
 
-var _PolygonConfig = __webpack_require__(60);
+var _PolygonConfig = __webpack_require__(44);
 
 var _PolygonConfig2 = _interopRequireDefault(_PolygonConfig);
 
@@ -5164,7 +5427,6 @@ var PolygonOverlay = exports.PolygonOverlay = function (_Parameter) {
 }(_Parameter2.Parameter);
 
 /***/ }),
-/* 22 */,
 /* 23 */,
 /* 24 */,
 /* 25 */,
@@ -5175,9 +5437,7 @@ var PolygonOverlay = exports.PolygonOverlay = function (_Parameter) {
 /* 30 */,
 /* 31 */,
 /* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5229,7 +5489,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 36 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5273,7 +5533,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 37 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5324,7 +5584,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 38 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5369,7 +5629,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 39 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5391,7 +5651,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 40 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5405,6 +5665,54 @@ exports.default = {
     title: null,
     formatter: null,
     list: []
+};
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    style: {
+        size: 0.5,
+
+        fillColor: 'rgba(255, 250, 250, 0.9)',
+
+        shadowBlur: 0,
+        fps: 20,
+        lineOrCurve: 'curve',
+        deltaAngle: -0.2 },
+    data: []
+};
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    style: {
+        normal: {
+            borderColor: 'rgba(50, 50, 255, 0.8)',
+            borderWidth: 0.05,
+            lineCurive: null,
+            deltaAngle: -0.2
+        }
+    },
+    data: [],
+    event: {
+        onState: function onState() {}
+    }
 };
 
 /***/ }),
@@ -5444,8 +5752,123 @@ exports.default = {
 };
 
 /***/ }),
-/* 42 */,
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    style: {
+        normal: {
+            fps: 25,
+            color: '#FAFA32',
+            radius: 20,
+            speed: 0.15 }
+    },
+    data: []
+};
+
+/***/ }),
 /* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    tooltip: {
+        show: false,
+        customClass: 'inmap-tooltip-black',
+        offsets: {
+            top: 5,
+            left: 12
+        }
+
+    },
+    legend: {
+        show: false,
+        toFixed: 2 },
+    draw: {},
+    style: {
+        normal: {
+            borderWidth: 0.1,
+            backgroundColor: 'rgba(200, 200, 200, 0.5)',
+            mergeCount: 1.5,
+            label: {
+                show: false,
+                color: 'rgba(0,0,0,1)',
+                font: '13px Arial'
+            }
+        },
+
+        colors: [],
+        splitList: []
+
+    },
+    data: [],
+    event: {
+        multiSelect: false, onMouseClick: function onMouseClick() {},
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    tooltip: {
+        show: false,
+        customClass: 'inmap-tooltip-black',
+        offsets: {
+            top: 5,
+            left: 12
+        }
+
+    },
+    legend: {
+        show: false,
+        toFixed: 2 },
+
+    style: {
+        normal: {
+            borderWidth: 0.1,
+            backgroundColor: 'rgba(200, 200, 200, 0.5)',
+            mergeCount: 1.5,
+            label: {
+                show: false,
+                color: 'rgba(0,0,0,1)',
+                font: '13px Arial'
+            }
+        },
+
+        colors: [],
+        splitList: []
+
+    },
+    data: [],
+    event: {
+        multiSelect: false, onMouseClick: function onMouseClick() {},
+        onState: function onState() {}
+    }
+};
+
+/***/ }),
+/* 45 */,
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5456,27 +5879,27 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.workerMrg = exports.LineStringAnimationOverlay = exports.PointAnimationOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.LineStringOverlay = exports.HeatOverlay = exports.PolygonOverlay = exports.GriddingOverlay = exports.PointOverlay = exports.Map = exports.utils = exports.version = undefined;
 
-var _PointOverlay = __webpack_require__(20);
+var _PointOverlay = __webpack_require__(21);
 
 var _GriddingOverlay = __webpack_require__(13);
 
-var _PolygonOverlay = __webpack_require__(21);
+var _PolygonOverlay = __webpack_require__(22);
 
 var _HeatOverlay = __webpack_require__(14);
 
-var _LineStringOverlay = __webpack_require__(17);
+var _LineStringOverlay = __webpack_require__(18);
 
 var _HoneycombOverlay = __webpack_require__(15);
 
 var _ImgOverlay = __webpack_require__(16);
 
-var _MoveLineOverlay = __webpack_require__(18);
+var _MoveLineOverlay = __webpack_require__(19);
 
-var _PointAnimationOverlay = __webpack_require__(19);
+var _PointAnimationOverlay = __webpack_require__(20);
 
 var _PointAnimationOverlay2 = _interopRequireDefault(_PointAnimationOverlay);
 
-var _LineStringAnimationOverlay = __webpack_require__(54);
+var _LineStringAnimationOverlay = __webpack_require__(17);
 
 var _LineStringAnimationOverlay2 = _interopRequireDefault(_LineStringAnimationOverlay);
 
@@ -5492,7 +5915,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.5.8";
+var version = "2.0.0";
 console.log('inMap v' + version);
 
 var inMap = {
@@ -5528,7 +5951,7 @@ exports.workerMrg = _workerMrg.workerMrg;
 exports.default = inMap;
 
 /***/ }),
-/* 44 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5542,7 +5965,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _Color = __webpack_require__(5);
 
-var _Legend = __webpack_require__(40);
+var _Legend = __webpack_require__(38);
 
 var _Legend2 = _interopRequireDefault(_Legend);
 
@@ -5693,7 +6116,7 @@ var Legend = function () {
 exports.default = Legend;
 
 /***/ }),
-/* 45 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5792,7 +6215,7 @@ var ToolTip = function () {
 exports.default = ToolTip;
 
 /***/ }),
-/* 46 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5866,7 +6289,7 @@ var MapZoom = exports.MapZoom = function () {
 }();
 
 /***/ }),
-/* 47 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5947,11 +6370,11 @@ var BatchesData = function () {
 exports.default = BatchesData;
 
 /***/ }),
-/* 48 */,
-/* 49 */
+/* 51 */,
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(50)();
+exports = module.exports = __webpack_require__(53)();
 // imports
 
 
@@ -5962,7 +6385,7 @@ exports.push([module.i, ".inmap-container {\n  opacity: 1;\n  font-family: Helve
 
 
 /***/ }),
-/* 50 */
+/* 53 */
 /***/ (function(module, exports) {
 
 /*
@@ -6018,7 +6441,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 51 */
+/* 54 */
 /***/ (function(module, exports) {
 
 /*
@@ -6270,16 +6693,16 @@ function updateLink(linkElement, obj) {
 
 
 /***/ }),
-/* 52 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(49);
+var content = __webpack_require__(52);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(51)(content, {});
+var update = __webpack_require__(54)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -6294,430 +6717,6 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
-
-/***/ }),
-/* 53 */,
-/* 54 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _CanvasOverlay2 = __webpack_require__(3);
-
-var _util = __webpack_require__(0);
-
-var _LineStringAnimationConfig = __webpack_require__(56);
-
-var _LineStringAnimationConfig2 = _interopRequireDefault(_LineStringAnimationConfig);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var MarkLine = function () {
-    function MarkLine(opts) {
-        _classCallCheck(this, MarkLine);
-
-        this.path = opts.path;
-        this.step = 0;
-    }
-
-    _createClass(MarkLine, [{
-        key: 'drawMarker',
-        value: function drawMarker(context, map) {
-            this.from.draw(context, map);
-            this.to.draw(context, map);
-        }
-    }, {
-        key: 'drawLinePath',
-        value: function drawLinePath(context, styleConfig) {
-            var pointList = this.path;
-            var len = pointList.length;
-            context.save();
-            context.beginPath();
-            context.lineWidth = styleConfig.lineWidth;
-            context.strokeStyle = styleConfig.colors[this.id];
-
-            if (!styleConfig.lineType || styleConfig.lineType == 'solid') {
-                context.moveTo(pointList[0][0], pointList[0][1]);
-                for (var i = 0; i < len; i++) {
-                    context.lineTo(pointList[i][0], pointList[i][1]);
-                }
-            } else if (styleConfig.lineType == 'dashed' || styleConfig.lineType == 'dotted') {
-                for (var _i = 1; _i < len; _i += 2) {
-                    context.moveTo(pointList[_i - 1][0], pointList[_i - 1][1]);
-                    context.lineTo(pointList[_i][0], pointList[_i][1]);
-                }
-            }
-            context.stroke();
-            context.restore();
-        }
-    }, {
-        key: 'drawMoveCircle',
-        value: function drawMoveCircle(context, styleConfig) {
-            var pointList = this.path;
-            if (pointList.length <= 0) return;
-            context.save();
-            context.fillStyle = styleConfig.fillColor;
-            context.shadowColor = styleConfig.shadowColor;
-            context.shadowBlur = styleConfig.shadowBlur;
-            context.beginPath();
-            context.arc(pointList[this.step][0], pointList[this.step][1], styleConfig.size, 0, Math.PI * 2, true);
-            context.fill();
-            context.closePath();
-            context.restore();
-            this.step += 1;
-            if (this.step >= pointList.length) {
-                this.step = 0;
-            }
-        }
-    }]);
-
-    return MarkLine;
-}();
-
-var LineStringAnimationOverlay = function (_CanvasOverlay) {
-    _inherits(LineStringAnimationOverlay, _CanvasOverlay);
-
-    function LineStringAnimationOverlay(ops) {
-        _classCallCheck(this, LineStringAnimationOverlay);
-
-        var _this = _possibleConstructorReturn(this, (LineStringAnimationOverlay.__proto__ || Object.getPrototypeOf(LineStringAnimationOverlay)).call(this, ops));
-
-        _this.points = [];
-        _this.workerData = [];
-        _this.markLineData = [];
-        _this._setStyle(_LineStringAnimationConfig2.default, ops);
-        return _this;
-    }
-
-    _createClass(LineStringAnimationOverlay, [{
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-
-            this._setStyle(_LineStringAnimationConfig2.default, ops);
-            this.map && this.drawMap();
-        }
-    }, {
-        key: '_setStyle',
-        value: function _setStyle(config, ops) {
-            var option = (0, _util.merge)(config, ops);
-
-            this.styleConfig = option.style;
-            this.eventConfig = option.event;
-            this.tMapStyle(option.skin);
-
-            if (ops.data) {
-                this.setData(ops.data);
-            } else {
-                this.map && this.refresh();
-            }
-        }
-    }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            for (var i = 0; i < this.markLineData.length; i++) {
-                var pixels = this.markLineData[i].path;
-                for (var j = 0; j < pixels.length; j++) {
-                    var pixel = pixels[j];
-                    pixel[0] = pixel[0] + distanceX;
-                    pixel[1] = pixel[1] + distanceY;
-                }
-            }
-            this.refresh();
-        }
-    }, {
-        key: 'setData',
-        value: function setData(points) {
-            if (!(0, _util.isArray)(points)) {
-                throw new TypeError('inMap: data must be a Array');
-            }
-            this.points = points;
-            this.map && this.drawMap();
-        }
-    }, {
-        key: 'resize',
-        value: function resize() {
-            if (!this.animationDraw) {
-
-                this.initAnimation();
-            }
-            this.drawMap();
-        }
-    }, {
-        key: 'getTransformData',
-        value: function getTransformData() {
-            return this.workerData.length > 0 ? this.workerData : this.points;
-        }
-    }, {
-        key: 'drawMap',
-        value: function drawMap() {
-            var _this2 = this;
-
-            var zoomUnit = Math.pow(2, 18 - this.map.getZoom());
-            var projection = this.map.getMapType().getProjection();
-            var mcCenter = projection.lngLatToPoint(this.map.getCenter());
-            var nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
-
-            var params = {
-                points: this.getTransformData(),
-                nwMc: nwMc,
-                zoomUnit: zoomUnit,
-                isAnimation: true,
-                lineOrCurve: this.styleConfig.lineOrCurve,
-                deltaAngle: this.styleConfig.deltaAngle
-            };
-
-            this.postMessage('LineStringOverlay.calculatePixel', params, function (pixels, margin) {
-                if (_this2.eventType == 'onmoving') {
-                    return;
-                }
-                (0, _util.clearPushArray)(_this2.workerData, pixels);
-
-                _this2.createMarkLine(pixels);
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
-                params = null;
-                margin = null;
-            });
-        }
-    }, {
-        key: 'createMarkLine',
-        value: function createMarkLine(data) {
-            (0, _util.clearPushArray)(this.markLineData);
-            for (var i = 0; i < data.length; i++) {
-                var pixels = data[i].geometry.pixels;
-                this.markLineData.push(new MarkLine({
-                    path: pixels
-                }));
-            }
-        }
-    }, {
-        key: 'initAnimation',
-        value: function initAnimation() {
-            var now = void 0;
-            var then = Date.now();
-            var interval = 1000 / this.styleConfig.fps;
-            var delta = void 0;
-            var me = this;
-
-            function drawFrame() {
-                requestAnimationFrame(drawFrame);
-                now = Date.now();
-                delta = now - then;
-                if (delta > interval) {
-                    then = now - delta % interval;
-                    me.refresh();
-                }
-            }
-            this.animationDraw = drawFrame;
-            this.animationDraw();
-        }
-    }, {
-        key: 'refresh',
-        value: function refresh() {
-            var markLineData = this.markLineData,
-                styleConfig = this.styleConfig;
-
-
-            if (!this.ctx) {
-                return;
-            }
-
-            if (!this.animationFlag) {
-                this.clearCanvas();
-                return;
-            }
-            this.ctx.fillStyle = 'rgba(0,0,0,0.93)';
-            var prev = this.ctx.globalCompositeOperation;
-            this.ctx.globalCompositeOperation = 'destination-in';
-            var size = this.map.getSize();
-            this.ctx.fillRect(0, 0, size.width, size.height);
-            this.ctx.globalCompositeOperation = prev;
-
-            for (var i = 0; i < markLineData.length; i++) {
-                var markLine = markLineData[i];
-                markLine.drawMoveCircle(this.ctx, styleConfig, this.map);
-            }
-        }
-    }]);
-
-    return LineStringAnimationOverlay;
-}(_CanvasOverlay2.CanvasOverlay);
-
-exports.default = LineStringAnimationOverlay;
-
-/***/ }),
-/* 55 */,
-/* 56 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    style: {
-        size: 0.5,
-
-        fillColor: 'rgba(255, 250, 250, 0.9)',
-
-        shadowBlur: 0,
-        fps: 20,
-        lineOrCurve: 'curve',
-        deltaAngle: -0.2 },
-    data: []
-};
-
-/***/ }),
-/* 57 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    style: {
-        normal: {
-            borderColor: 'rgba(50, 50, 255, 0.8)',
-            borderWidth: 0.05
-        }
-    },
-    data: [],
-    event: {
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 58 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    style: {
-        normal: {
-            fps: 25,
-            color: '#FAFA32',
-            radius: 20,
-            speed: 0.15 }
-    },
-    data: []
-};
-
-/***/ }),
-/* 59 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    tooltip: {
-        show: false,
-        customClass: 'inmap-tooltip-black',
-        offsets: {
-            top: 5,
-            left: 12
-        }
-
-    },
-    legend: {
-        show: false,
-        toFixed: 2 },
-    draw: {},
-    style: {
-        normal: {
-            borderWidth: 0.1,
-            backgroundColor: 'rgba(200, 200, 200, 0.5)',
-            mergeCount: 1.5,
-            label: {
-                show: false,
-                color: 'rgba(0,0,0,1)',
-                font: '13px Arial'
-            }
-        },
-
-        colors: [],
-        splitList: []
-
-    },
-    data: [],
-    event: {
-        multiSelect: false, onMouseClick: function onMouseClick() {},
-        onState: function onState() {}
-    }
-};
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    tooltip: {
-        show: false,
-        customClass: 'inmap-tooltip-black',
-        offsets: {
-            top: 5,
-            left: 12
-        }
-
-    },
-    legend: {
-        show: false,
-        toFixed: 2 },
-
-    style: {
-        normal: {
-            borderWidth: 0.1,
-            backgroundColor: 'rgba(200, 200, 200, 0.5)',
-            mergeCount: 1.5,
-            label: {
-                show: false,
-                color: 'rgba(0,0,0,1)',
-                font: '13px Arial'
-            }
-        },
-
-        colors: [],
-        splitList: []
-
-    },
-    data: [],
-    event: {
-        multiSelect: false, onMouseClick: function onMouseClick() {},
-        onState: function onState() {}
-    }
-};
 
 /***/ })
 /******/ ]);
