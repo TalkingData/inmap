@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 51);
+/******/ 	return __webpack_require__(__webpack_require__.s = 48);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -262,8 +262,7 @@ function clearPushArray(a, b) {
 
 /***/ }),
 /* 1 */,
-/* 2 */,
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1126,9 +1125,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
   }]);
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(56)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(53)(module)))
 
 /***/ }),
+/* 3 */,
 /* 4 */,
 /* 5 */,
 /* 6 */,
@@ -1437,8 +1437,7 @@ module.exports = deepmerge_1;
 /* 19 */,
 /* 20 */,
 /* 21 */,
-/* 22 */,
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1449,7 +1448,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.GriddingOverlay = undefined;
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
 var GriddingOverlay = exports.GriddingOverlay = {
     toRecGrids: function toRecGrids(webObj) {
@@ -1567,7 +1566,7 @@ var GriddingOverlay = exports.GriddingOverlay = {
 };
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1578,7 +1577,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.HeatOverlay = undefined;
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
 var HeatOverlay = exports.HeatOverlay = {
     pointsToPixels: function pointsToPixels(webObj) {
@@ -1595,7 +1594,7 @@ var HeatOverlay = exports.HeatOverlay = {
 };
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1606,7 +1605,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.HoneycombOverlay = undefined;
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
 var HoneycombOverlay = exports.HoneycombOverlay = {
     toRecGrids: function toRecGrids(webObj) {
@@ -1727,7 +1726,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
 };
 
 /***/ }),
-/* 26 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1791,7 +1790,7 @@ var LablEvading = exports.LablEvading = {
 };
 
 /***/ }),
-/* 27 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1802,9 +1801,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.LineStringOverlay = undefined;
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
-var _Curive = __webpack_require__(30);
+var _Curive = __webpack_require__(55);
 
 var LineStringOverlay = exports.LineStringOverlay = {
     transferCoordinate: function transferCoordinate(_coordinates, nwMc, zoomUnit) {
@@ -1903,7 +1902,7 @@ var LineStringOverlay = exports.LineStringOverlay = {
 };
 
 /***/ }),
-/* 28 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1914,11 +1913,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PolygonOverlay = undefined;
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
-var _Point = __webpack_require__(31);
+var _Point = __webpack_require__(29);
 
-var _polylabel = __webpack_require__(32);
+var _polylabel = __webpack_require__(30);
 
 var _polylabel2 = _interopRequireDefault(_polylabel);
 
@@ -1953,7 +1952,7 @@ var PolygonOverlay = exports.PolygonOverlay = {
 };
 
 /***/ }),
-/* 29 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1964,7 +1963,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.PolymeOverlay = undefined;
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
 var PolymeOverlay = exports.PolymeOverlay = {
     mergeCount: 0,
@@ -2043,116 +2042,7 @@ var PolymeOverlay = exports.PolymeOverlay = {
 };
 
 /***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.lineCurive = lineCurive;
-exports.getPointList = getPointList;
-function getOffsetPoint(start, end, deltaAngle) {
-    var distance = getDistance(start, end) / 4;
-    var angle = void 0,
-        dX = void 0,
-        dY = void 0;
-    var mp = [start[0], start[1]];
-    deltaAngle = deltaAngle == null ? -0.2 : deltaAngle;
-    if (start[0] != end[0] && start[1] != end[1]) {
-        var k = (end[1] - start[1]) / (end[0] - start[0]);
-        angle = Math.atan(k);
-    } else if (start[0] == end[0]) {
-        angle = (start[1] <= end[1] ? 1 : -1) * Math.PI / 2;
-    } else {
-        angle = 0;
-    }
-    if (start[0] <= end[0]) {
-        angle -= deltaAngle;
-        dX = Math.round(Math.cos(angle) * distance);
-        dY = Math.round(Math.sin(angle) * distance);
-        mp[0] += dX;
-        mp[1] += dY;
-    } else {
-        angle += deltaAngle;
-        dX = Math.round(Math.cos(angle) * distance);
-        dY = Math.round(Math.sin(angle) * distance);
-        mp[0] -= dX;
-        mp[1] -= dY;
-    }
-    return mp;
-}
-
-function smoothSpline(points, isLoop) {
-    var len = points.length;
-    var ret = [];
-    var distance = 0;
-    for (var i = 1; i < len; i++) {
-        distance += getDistance(points[i - 1], points[i]);
-    }
-    var segs = distance / 2;
-    segs = segs < len ? len : segs;
-    for (var _i = 0; _i < segs; _i++) {
-        var pos = _i / (segs - 1) * (isLoop ? len : len - 1);
-        var idx = Math.floor(pos);
-        var w = pos - idx;
-        var p0 = void 0;
-        var p1 = points[idx % len];
-        var p2 = void 0;
-        var p3 = void 0;
-        if (!isLoop) {
-            p0 = points[idx === 0 ? idx : idx - 1];
-            p2 = points[idx > len - 2 ? len - 1 : idx + 1];
-            p3 = points[idx > len - 3 ? len - 1 : idx + 2];
-        } else {
-            p0 = points[(idx - 1 + len) % len];
-            p2 = points[(idx + 1) % len];
-            p3 = points[(idx + 2) % len];
-        }
-        var w2 = w * w;
-        var w3 = w * w2;
-
-        ret.push([interpolate(p0[0], p1[0], p2[0], p3[0], w, w2, w3), interpolate(p0[1], p1[1], p2[1], p3[1], w, w2, w3)]);
-    }
-    return ret;
-}
-
-function interpolate(p0, p1, p2, p3, t, t2, t3) {
-    var v0 = (p2 - p0) * 0.5;
-    var v1 = (p3 - p1) * 0.5;
-    return (2 * (p1 - p2) + v0 + v1) * t3 + (-3 * (p1 - p2) - 2 * v0 - v1) * t2 + v0 * t + p1;
-}
-
-function getDistance(p1, p2) {
-    return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1]));
-}
-function lineCurive(fromPoint, endPoint, n) {
-    var delLng = (endPoint[0] - fromPoint[0]) / n;
-    var delLat = (endPoint[1] - fromPoint[1]) / n;
-    var path = [];
-    for (var i = 0; i < n; i++) {
-        var pointNLng = fromPoint[0] + delLng * i;
-        var pointNLat = fromPoint[1] + delLat * i;
-        path.push([pointNLng, pointNLat]);
-    }
-    return path;
-}
-function getPointList(start, end, deltaAngle) {
-    var points = [[start[0], start[1]], [end[0], end[1]]];
-    var ex = points[1][0];
-    var ey = points[1][1];
-    points[3] = [ex, ey];
-    points[1] = getOffsetPoint(points[0], points[3], deltaAngle);
-    points[2] = getOffsetPoint(points[3], points[0], deltaAngle);
-    points = smoothSpline(points, false);
-    points[points.length - 1] = [ex, ey];
-    return points;
-}
-
-/***/ }),
-/* 31 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2192,7 +2082,7 @@ Point.prototype.equals = function (other) {
 exports.default = Point;
 
 /***/ }),
-/* 32 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2203,7 +2093,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = polylabel;
 
-var _tinyqueue = __webpack_require__(45);
+var _tinyqueue = __webpack_require__(42);
 
 var _tinyqueue2 = _interopRequireDefault(_tinyqueue);
 
@@ -2340,6 +2230,8 @@ function polylabel(polygon) {
 }
 
 /***/ }),
+/* 31 */,
+/* 32 */,
 /* 33 */,
 /* 34 */,
 /* 35 */,
@@ -2349,10 +2241,7 @@ function polylabel(polygon) {
 /* 39 */,
 /* 40 */,
 /* 41 */,
-/* 42 */,
-/* 43 */,
-/* 44 */,
-/* 45 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2449,12 +2338,12 @@ TinyQueue.prototype = {
 };
 
 /***/ }),
+/* 43 */,
+/* 44 */,
+/* 45 */,
 /* 46 */,
 /* 47 */,
-/* 48 */,
-/* 49 */,
-/* 50 */,
-/* 51 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2465,19 +2354,19 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TDpost = undefined;
 
-var _HeatOverlay = __webpack_require__(24);
+var _HeatOverlay = __webpack_require__(23);
 
-var _GriddingOverlay = __webpack_require__(23);
+var _GriddingOverlay = __webpack_require__(22);
 
-var _PolygonOverlay = __webpack_require__(28);
+var _PolygonOverlay = __webpack_require__(27);
 
-var _LineStringOverlay = __webpack_require__(27);
+var _LineStringOverlay = __webpack_require__(26);
 
-var _HoneycombOverlay = __webpack_require__(25);
+var _HoneycombOverlay = __webpack_require__(24);
 
-var _PolymeOverlay = __webpack_require__(29);
+var _PolymeOverlay = __webpack_require__(28);
 
-var _LablEvading = __webpack_require__(26);
+var _LablEvading = __webpack_require__(25);
 
 var callbackList = {
     'HeatOverlay': _HeatOverlay.HeatOverlay,
@@ -2539,11 +2428,11 @@ var TDpost = exports.TDpost = function TDpost(client) {
 };
 
 /***/ }),
+/* 49 */,
+/* 50 */,
+/* 51 */,
 /* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */
+/* 53 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -2569,6 +2458,116 @@ module.exports = function(module) {
 	return module;
 };
 
+
+/***/ }),
+/* 54 */,
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.lineCurive = lineCurive;
+exports.getPointList = getPointList;
+function getOffsetPoint(start, end, deltaAngle) {
+    var distance = getDistance(start, end) / 4;
+    var angle = void 0,
+        dX = void 0,
+        dY = void 0;
+    var mp = [start[0], start[1]];
+    deltaAngle = deltaAngle == null ? -0.2 : deltaAngle;
+    if (start[0] != end[0] && start[1] != end[1]) {
+        var k = (end[1] - start[1]) / (end[0] - start[0]);
+        angle = Math.atan(k);
+    } else if (start[0] == end[0]) {
+        angle = (start[1] <= end[1] ? 1 : -1) * Math.PI / 2;
+    } else {
+        angle = 0;
+    }
+    if (start[0] <= end[0]) {
+        angle -= deltaAngle;
+        dX = Math.round(Math.cos(angle) * distance);
+        dY = Math.round(Math.sin(angle) * distance);
+        mp[0] += dX;
+        mp[1] += dY;
+    } else {
+        angle += deltaAngle;
+        dX = Math.round(Math.cos(angle) * distance);
+        dY = Math.round(Math.sin(angle) * distance);
+        mp[0] -= dX;
+        mp[1] -= dY;
+    }
+    return mp;
+}
+
+function smoothSpline(points, isLoop) {
+    var len = points.length;
+    var ret = [];
+    var distance = 0;
+    for (var i = 1; i < len; i++) {
+        distance += getDistance(points[i - 1], points[i]);
+    }
+    var segs = distance / 2;
+    segs = segs < len ? len : segs;
+    for (var _i = 0; _i < segs; _i++) {
+        var pos = _i / (segs - 1) * (isLoop ? len : len - 1);
+        var idx = Math.floor(pos);
+        var w = pos - idx;
+        var p0 = void 0;
+        var p1 = points[idx % len];
+        var p2 = void 0;
+        var p3 = void 0;
+        if (!isLoop) {
+            p0 = points[idx === 0 ? idx : idx - 1];
+            p2 = points[idx > len - 2 ? len - 1 : idx + 1];
+            p3 = points[idx > len - 3 ? len - 1 : idx + 2];
+        } else {
+            p0 = points[(idx - 1 + len) % len];
+            p2 = points[(idx + 1) % len];
+            p3 = points[(idx + 2) % len];
+        }
+        var w2 = w * w;
+        var w3 = w * w2;
+
+        ret.push([interpolate(p0[0], p1[0], p2[0], p3[0], w, w2, w3), interpolate(p0[1], p1[1], p2[1], p3[1], w, w2, w3)]);
+    }
+    return ret;
+}
+
+function interpolate(p0, p1, p2, p3, t, t2, t3) {
+    var v0 = (p2 - p0) * 0.5;
+    var v1 = (p3 - p1) * 0.5;
+    return (2 * (p1 - p2) + v0 + v1) * t3 + (-3 * (p1 - p2) - 2 * v0 - v1) * t2 + v0 * t + p1;
+}
+
+function getDistance(p1, p2) {
+    return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1]));
+}
+function lineCurive(fromPoint, endPoint, n) {
+    var delLng = (endPoint[0] - fromPoint[0]) / n;
+    var delLat = (endPoint[1] - fromPoint[1]) / n;
+    var path = [];
+    for (var i = 0; i < n; i++) {
+        var pointNLng = fromPoint[0] + delLng * i;
+        var pointNLat = fromPoint[1] + delLat * i;
+        path.push([pointNLng, pointNLat]);
+    }
+    return path;
+}
+function getPointList(start, end, deltaAngle) {
+    var points = [[start[0], start[1]], [end[0], end[1]]];
+    var ex = points[1][0];
+    var ey = points[1][1];
+    points[3] = [ex, ey];
+    points[1] = getOffsetPoint(points[0], points[3], deltaAngle);
+    points[2] = getOffsetPoint(points[3], points[0], deltaAngle);
+    points = smoothSpline(points, false);
+    points[points.length - 1] = [ex, ey];
+    return points;
+}
 
 /***/ })
 /******/ ]);

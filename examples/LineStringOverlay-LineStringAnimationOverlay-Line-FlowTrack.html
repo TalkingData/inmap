@@ -49,22 +49,57 @@
             min: 3,
         }
     });
-    data.length = 100;
+    console.log(data);
+    var overlay = new inMap.LineStringOverlay({
+        style: {
+            normal: {
+                borderColor: 'rgba(255, 250, 50, 0.3)',
+                borderWidth: 0.3,
+                shadowColor: 'rgba(255, 250, 50, 1)',
+                shadowBlur: 20,
+            },
+        },
+        data: data,
+        event: {
+            onState(state) {
+                console.log(state);
+            }
+        }
+    });
+    map.add(overlay);
+    var data2 = data.map(function (item) {
+        var coordinates = item.geometry.coordinates;
+        var val1 = coordinates[0],
+            val2 = coordinates[1];
+        var differenceCount = (val1[0] - val2[0]) + (val1[1] - val2[1]);
 
-    var overlay = new inMap.LineStringAnimationOverlay({
-        style: { 
+        return {
+            geometry: item.geometry,
+            differenceCount: Math.abs(differenceCount)
+        };
+
+    });
+    data2.sort(function (a, b) {
+        return b.differenceCount - a.differenceCount;
+    });
+    
+
+    data2.length = 50;
+
+    var overlay2 = new inMap.LineStringAnimationOverlay({
+        style: {
             //移动点半径
-            size: 0.5,
+            size: 0.7,
             //移动点颜色
-            fillColor: 'rgba(255, 250, 250, 0.9)',    
+            fillColor: 'rgba(255, 250, 250, 0.9)',
             //移动点阴影大小
             shadowBlur: 0,
             fps: 20,
-            lineOrCurve: 'curve',//cure or line
-               // deltaAngle: 0  
+            lineOrCurve: 'line', //cure or line
+            deltaAngle: 50 //动画散点个数
         },
-        data: data,
-         
+        data: data2,
+
     });
-    map.add(overlay);
+    map.add(overlay2);
 </script>
