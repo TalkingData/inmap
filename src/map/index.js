@@ -12,6 +12,7 @@ import {
 } from './mapZoom';
 import Toolbar from './Toolbar';
 import inmapConfig from './../config/InmapConfig';
+import PolygonEditor from '../overlay/PolygonEditorOverlay';
 import './map.less';
 
 export class Map {
@@ -69,9 +70,12 @@ export class Map {
     add(overlay) {
         if (overlay.isDispose) {
             throw new TypeError('inMap: overlay has been destroyed.');
+        } else if (overlay instanceof PolygonEditor) {
+          overlay._init(this.map);
         } else {
             this.map.addOverlay(overlay);
         }
+
 
     }
     remove(overlay) {

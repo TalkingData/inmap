@@ -27,6 +27,7 @@ import {
 } from './overlay/MoveLineOverlay';
 import PointAnimationOverlay from './overlay/PointAnimationOverlay';
 import LineStringAnimationOverlay from './overlay/LineStringAnimationOverlay';
+import PolygonEditorOverlay from './overlay/PolygonEditorOverlay';
 import {
     Map
 } from './map/index';
@@ -43,6 +44,7 @@ const inMap = {
     PointOverlay,
     GriddingOverlay,
     PolygonOverlay,
+    PolygonEditorOverlay,
     HeatOverlay,
     LineStringOverlay,
     HoneycombOverlay,
@@ -59,6 +61,7 @@ export {
     PointOverlay,
     GriddingOverlay,
     PolygonOverlay,
+    PolygonEditorOverlay,
     HeatOverlay,
     LineStringOverlay,
     HoneycombOverlay,

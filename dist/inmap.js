@@ -2330,6 +2330,10 @@ var _InmapConfig = __webpack_require__(37);
 
 var _InmapConfig2 = _interopRequireDefault(_InmapConfig);
 
+var _PolygonEditorOverlay = __webpack_require__(57);
+
+var _PolygonEditorOverlay2 = _interopRequireDefault(_PolygonEditorOverlay);
+
 __webpack_require__(55);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -2400,6 +2404,8 @@ var Map = exports.Map = function () {
         value: function add(overlay) {
             if (overlay.isDispose) {
                 throw new TypeError('inMap: overlay has been destroyed.');
+            } else if (overlay instanceof _PolygonEditorOverlay2.default) {
+                overlay._init(this.map);
             } else {
                 this.map.addOverlay(overlay);
             }
@@ -5876,7 +5882,7 @@ exports.default = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.workerMrg = exports.LineStringAnimationOverlay = exports.PointAnimationOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.LineStringOverlay = exports.HeatOverlay = exports.PolygonOverlay = exports.GriddingOverlay = exports.PointOverlay = exports.Map = exports.utils = exports.version = undefined;
+exports.workerMrg = exports.LineStringAnimationOverlay = exports.PointAnimationOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.LineStringOverlay = exports.HeatOverlay = exports.PolygonEditorOverlay = exports.PolygonOverlay = exports.GriddingOverlay = exports.PointOverlay = exports.Map = exports.utils = exports.version = undefined;
 
 var _PointOverlay = __webpack_require__(21);
 
@@ -5902,6 +5908,10 @@ var _LineStringAnimationOverlay = __webpack_require__(17);
 
 var _LineStringAnimationOverlay2 = _interopRequireDefault(_LineStringAnimationOverlay);
 
+var _PolygonEditorOverlay = __webpack_require__(57);
+
+var _PolygonEditorOverlay2 = _interopRequireDefault(_PolygonEditorOverlay);
+
 var _index = __webpack_require__(12);
 
 var _util = __webpack_require__(0);
@@ -5924,6 +5934,7 @@ var inMap = {
     PointOverlay: _PointOverlay.PointOverlay,
     GriddingOverlay: _GriddingOverlay.GriddingOverlay,
     PolygonOverlay: _PolygonOverlay.PolygonOverlay,
+    PolygonEditorOverlay: _PolygonEditorOverlay2.default,
     HeatOverlay: _HeatOverlay.HeatOverlay,
     LineStringOverlay: _LineStringOverlay.LineStringOverlay,
     HoneycombOverlay: _HoneycombOverlay.HoneycombOverlay,
@@ -5939,6 +5950,7 @@ exports.Map = _index.Map;
 exports.PointOverlay = _PointOverlay.PointOverlay;
 exports.GriddingOverlay = _GriddingOverlay.GriddingOverlay;
 exports.PolygonOverlay = _PolygonOverlay.PolygonOverlay;
+exports.PolygonEditorOverlay = _PolygonEditorOverlay2.default;
 exports.HeatOverlay = _HeatOverlay.HeatOverlay;
 exports.LineStringOverlay = _LineStringOverlay.LineStringOverlay;
 exports.HoneycombOverlay = _HoneycombOverlay.HoneycombOverlay;
@@ -6716,6 +6728,657 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+/* 56 */,
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _PolygonEditor = __webpack_require__(58);
+
+var _PolygonEditor2 = _interopRequireDefault(_PolygonEditor);
+
+var _GeoUtils = __webpack_require__(59);
+
+var _GeoUtils2 = _interopRequireDefault(_GeoUtils);
+
+var _util = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var PolygonEditorOverlay = function () {
+    function PolygonEditorOverlay(opts) {
+        _classCallCheck(this, PolygonEditorOverlay);
+
+        var option = (0, _util.merge)(_PolygonEditor2.default, opts);
+        this.toolTipConfig = option.tooltip;
+        this.points = this._geoJsonToPoint(option.data || []);
+        this.overlay = null;
+        this.map = null;
+        this.isDispose = false;
+        this.option = option.style;
+        this._vectisWidth = 10;
+        this.drawPoint = [];
+        this.pixels = null;
+        this._isBinded = false;
+        this.isClick = this.points.length > 0 ? false : true;
+        this.overlay = new BMap.Polygon([], this.option);
+        this.startAction = this.startAction.bind(this);
+        this.mousemoveAction = this.mousemoveAction.bind(this);
+        this.dblclickAction = this.dblclickAction.bind(this);
+        this.clickAction = this.clickAction.bind(this);
+        this.getAreaByPolygon = this.getAreaByPolygon.bind(this);
+        this.setTimeout = null;
+        this._first = new Date(), this._second = null, this._interval = 250;
+    }
+
+    _createClass(PolygonEditorOverlay, [{
+        key: '_init',
+        value: function _init(map) {
+            this.map = map;
+            this.map.addOverlay(this.overlay);
+            this.overlay.setPath(this.points);
+            this.bingMoveEvent();
+            this.copy();
+            if (this.map.inmapToolBar) {
+                this.ToolTip = this.map.inmapToolBar.toolTip;
+                this.ToolTip.setOption(this.toolTipConfig);
+                this.getAreaByPolygon();
+            }
+        }
+    }, {
+        key: 'bingMoveEvent',
+        value: function bingMoveEvent() {
+            this.map.addEventListener('click', this.clickAction);
+            this.map.addEventListener('mousemove', this.mousemoveAction);
+        }
+    }, {
+        key: 'removeMoveEvent',
+        value: function removeMoveEvent() {
+            this.map.removeEventListener('mousedown', this.startAction);
+            this.map.removeEventListener('click', this.clickAction);
+        }
+    }, {
+        key: 'showAreaText',
+        value: function showAreaText() {
+            this.toolTipConfig.show = true;
+        }
+    }, {
+        key: 'hideAreaText',
+        value: function hideAreaText() {
+            this.toolTipConfig.show = false;
+        }
+    }, {
+        key: 'getAreaByPolygon',
+        value: function getAreaByPolygon() {
+            var _this = this;
+
+            if (!this.isClick && this.toolTipConfig.show) {
+                var geos = this.overlay.getPath();
+                var areas = _GeoUtils2.default.getPolygonArea(geos);
+                var center = this.getGeoCenter(geos);
+                var pixel = this.map.pointToOverlayPixel(new BMap.Point(center.lng, center.lat));
+                this.ToolTip && this.ToolTip.showCenterText('\u9762\u79EF\uFF1A' + parseInt(areas) + '\u5E73\u65B9\u7C73', pixel.x + this.map.offsetX, pixel.y + this.map.offsetY);
+            } else {
+                this.ToolTip && this.ToolTip.hide();
+            }
+            this.setTimeout = setTimeout(function () {
+                if (_this.getAreaByPolygon) {
+                    _this.getAreaByPolygon();
+                } else {
+                    clearTimeout(_this.setTimeout);
+                }
+            }, 800);
+        }
+    }, {
+        key: 'getGeoCenter',
+        value: function getGeoCenter(geo) {
+            var minX = geo[0].lng;
+            var maxX = geo[0].lng;
+            var minY = geo[0].lat;
+            var maxY = geo[0].lat;
+            for (var i = 1; i < geo.length; i++) {
+                minX = Math.min(minX, geo[i].lng);
+                maxX = Math.max(maxX, geo[i].lng);
+                minY = Math.min(minY, geo[i].lat);
+                maxY = Math.max(maxY, geo[i].lat);
+            }
+            return {
+                lng: minX + (maxX - minX) / 2,
+                lat: minY + (maxY - minY) / 2
+            };
+        }
+    }, {
+        key: 'clickAction',
+        value: function clickAction(e) {
+            this._second = new Date();
+
+            if (this.isClick) {
+                if (this._second - this._first <= this._interval) {
+                    this._first = new Date();
+                    this.dblclickAction(e);
+                } else {
+                    this._first = new Date();
+                    this.startAction(e);
+                }
+            } else {
+                if (this._second - this._first <= this._interval) {
+                    this._first = new Date();
+                    var index = this.findIndexVectis(e.pixel);
+                    if (index > -1) {
+                        this.drawPoint.splice(index, 1);
+                        this.overlay.setPath(this.drawPoint);
+                    }
+                } else {
+                    this._first = new Date();
+                }
+            }
+            this.getAreaByPolygon();
+        }
+    }, {
+        key: 'findIndexVectis',
+        value: function findIndexVectis(_ref) {
+            var _this2 = this;
+
+            var x = _ref.x,
+                y = _ref.y;
+
+            this.pixels = this.overlay.getPath().map(function (item) {
+                return _this2.map.pointToOverlayPixel(item);
+            });
+
+            var r = this._vectisWidth / 2;
+
+            for (var i = 0; i < this.pixels.length; i++) {
+                var item = this.pixels[i];
+                if (this._isMouseOver(x, y, item.x - r, item.y - r, this._vectisWidth, this._vectisWidth)) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+    }, {
+        key: '_isMouseOver',
+        value: function _isMouseOver(mouseX, mouseY, x, y, w, h) {
+            return !(mouseX < x || mouseX > x + w || mouseY < y || mouseY > y + h);
+        }
+    }, {
+        key: 'dispose',
+        value: function dispose() {
+            clearTimeout(this.setTimeout);
+            this.ToolTip && this.ToolTip.hide();
+            this.removeMoveEvent();
+            this.map.removeOverlay(this.overlay);
+            for (var key in this.overlay) {
+                this.overlay[key] = null;
+            }
+            for (var _key in this) {
+                this[_key] = null;
+            }
+            this.isDispose = true;
+        }
+    }, {
+        key: 'startAction',
+        value: function startAction(e) {
+
+            var points = this.points;
+            points.push(e.point);
+            this.drawPoint = points.concat(points[points.length - 1]);
+            this.overlay.setPath(this.drawPoint);
+
+            if (!this._isBinded) {
+                this._isBinded = true;
+            }
+        }
+    }, {
+        key: 'translation',
+        value: function translation(x, y) {
+            var _this3 = this;
+
+            this.pixels = this.overlay.getPath().map(function (item) {
+                return _this3.map.pointToOverlayPixel(item);
+            });
+            for (var i = 0; i < this.pixels.length; i++) {
+                var item = this.pixels[i];
+                item.x = item.x + x;
+                item.y = item.y + y;
+            }
+
+            this.drawPoint = this.pixels.map(function (item) {
+                return _this3.map.overlayPixelToPoint(item);
+            });
+
+            this.overlay.setPath(this.drawPoint);
+        }
+    }, {
+        key: 'mousemoveAction',
+        value: function mousemoveAction(e) {
+            if (!this._isBinded) {
+                return;
+            }
+            this.overlay.setPositionAt(this.drawPoint.length - 1, e.point);
+        }
+    }, {
+        key: 'dblclickAction',
+        value: function dblclickAction() {
+            if (!this._isBinded) {
+                return;
+            }
+            this.map.removeEventListener('mousemove', this.mousemoveAction);
+            this._isBinded = false;
+            this.isClick = false;
+            this.drawPoint.pop();
+            this.overlay.setPath(this.drawPoint);
+        }
+    }, {
+        key: 'copy',
+        value: function copy() {
+            var _this4 = this;
+
+            ['setStrokeColor', 'getStrokeColor', 'setFillColor', 'getFillColor', 'setStrokeOpacity', 'getStrokeOpacity', 'setFillOpacity', 'getFillOpacity', 'setStrokeWeight', 'getStrokeWeight', 'setStrokeStyle', 'getStrokeStyle', 'getBounds', 'enableEditing', 'disableEditing', 'enableMassClear', 'disableMassClear', 'setPositionAt', 'getMap', 'addEventListener', 'removeEventListener'].forEach(function (key) {
+                _this4[key] = _this4.overlay[key].bind(_this4.overlay);
+            });
+        }
+    }, {
+        key: '_geoJsonToPoint',
+        value: function _geoJsonToPoint(data) {
+            if (data.geometry) {
+                return data.geometry.coordinates.map(function (item) {
+                    return {
+                        lng: item[0],
+                        lat: item[1]
+                    };
+                });
+            } else {
+                return [];
+            }
+        }
+    }, {
+        key: 'setPath',
+        value: function setPath(data) {
+            var point = this._geoJsonToPoint(data);
+            this.overlay.setPath(point);
+        }
+    }, {
+        key: 'getPath',
+        value: function getPath() {
+            var data = this.overlay.getPath();
+            var coordinates = data.map(function (item) {
+                return [item.lng, item.lat];
+            });
+            return {
+                geometry: {
+                    type: 'Polygon',
+                    coordinates: coordinates
+                }
+            };
+        }
+    }]);
+
+    return PolygonEditorOverlay;
+}();
+
+exports.default = PolygonEditorOverlay;
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    tooltip: {
+        show: true,
+        customClass: 'inmap-tooltip-black',
+        offsets: {
+            top: 0,
+            left: 0
+        },
+        formatter: ''
+    },
+    style: {
+        strokeColor: 'rgba(24,144,255,1)',
+        fillColor: 'rgba(24,144,255,0.4)',
+        strokeWeight: 2,
+        strokeOpacity: 1,
+        enableEditing: true
+    },
+    data: []
+};
+
+/***/ }),
+/* 59 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var GeoUtils;
+(function () {
+    var a = 6370996.81;
+    var b = GeoUtils = function GeoUtils() {};
+    b.isPointInRect = function (f, g) {
+        if (!(f instanceof BMap.Point) || !(g instanceof BMap.Bounds)) {
+            return false;
+        }
+        var e = g.getSouthWest();
+        var h = g.getNorthEast();
+        return f.lng >= e.lng && f.lng <= h.lng && f.lat >= e.lat && f.lat <= h.lat;
+    };
+    b.isPointInCircle = function (e, h) {
+        if (!(e instanceof BMap.Point) || !(h instanceof BMap.Circle)) {
+            return false;
+        }
+        var i = h.getCenter();
+        var g = h.getRadius();
+        var f = b.getDistance(e, i);
+        if (f <= g) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+    b.isPointOnPolyline = function (f, h) {
+        if (!(f instanceof BMap.Point) || !(h instanceof BMap.Polyline)) {
+            return false;
+        }
+        var e = h.getBounds();
+        if (!this.isPointInRect(f, e)) {
+            return false;
+        }
+        var m = h.getPath();
+        for (var k = 0; k < m.length - 1; k++) {
+            var l = m[k];
+            var j = m[k + 1];
+            if (f.lng >= Math.min(l.lng, j.lng) && f.lng <= Math.max(l.lng, j.lng) && f.lat >= Math.min(l.lat, j.lat) && f.lat <= Math.max(l.lat, j.lat)) {
+                var g = (l.lng - f.lng) * (j.lat - f.lat) - (j.lng - f.lng) * (l.lat - f.lat);
+                if (g < 2e-10 && g > -2e-10) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    };
+    b.isPointInPolygon = function (o, l) {
+        if (!(o instanceof BMap.Point) || !(l instanceof BMap.Polygon)) {
+            return false;
+        }
+        var k = l.getBounds();
+        if (!this.isPointInRect(o, k)) {
+            return false;
+        }
+        var t = l.getPath();
+        var h = t.length;
+        var n = true;
+        var j = 0;
+        var g = 2e-10;
+        var s, q;
+        var e = o;
+        s = t[0];
+        for (var f = 1; f <= h; ++f) {
+            if (e.equals(s)) {
+                return n;
+            }
+            q = t[f % h];
+            if (e.lat < Math.min(s.lat, q.lat) || e.lat > Math.max(s.lat, q.lat)) {
+                s = q;
+                continue;
+            }
+            if (e.lat > Math.min(s.lat, q.lat) && e.lat < Math.max(s.lat, q.lat)) {
+                if (e.lng <= Math.max(s.lng, q.lng)) {
+                    if (s.lat == q.lat && e.lng >= Math.min(s.lng, q.lng)) {
+                        return n;
+                    }
+                    if (s.lng == q.lng) {
+                        if (s.lng == e.lng) {
+                            return n;
+                        } else {
+                            ++j;
+                        }
+                    } else {
+                        var r = (e.lat - s.lat) * (q.lng - s.lng) / (q.lat - s.lat) + s.lng;
+                        if (Math.abs(e.lng - r) < g) {
+                            return n;
+                        }
+                        if (e.lng < r) {
+                            ++j;
+                        }
+                    }
+                }
+            } else {
+                if (e.lat == q.lat && e.lng <= q.lng) {
+                    var m = t[(f + 1) % h];
+                    if (e.lat >= Math.min(s.lat, m.lat) && e.lat <= Math.max(s.lat, m.lat)) {
+                        ++j;
+                    } else {
+                        j += 2;
+                    }
+                }
+            }
+            s = q;
+        }
+        if (j % 2 == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+    b.degreeToRad = function (e) {
+        return Math.PI * e / 180;
+    };
+    b.radToDegree = function (e) {
+        return 180 * e / Math.PI;
+    };
+
+    function d(g, f, e) {
+        if (f != null) {
+            g = Math.max(g, f);
+        }
+        if (e != null) {
+            g = Math.min(g, e);
+        }
+        return g;
+    }
+
+    function c(g, f, e) {
+        while (g > e) {
+            g -= e - f;
+        }
+        while (g < f) {
+            g += e - f;
+        }
+        return g;
+    }
+    b.getDistance = function (j, h) {
+        if (!(j instanceof BMap.Point) || !(h instanceof BMap.Point)) {
+            return 0;
+        }
+        j.lng = c(j.lng, -180, 180);
+        j.lat = d(j.lat, -74, 74);
+        h.lng = c(h.lng, -180, 180);
+        h.lat = d(h.lat, -74, 74);
+        var f, e, i, g;
+        f = b.degreeToRad(j.lng);
+        i = b.degreeToRad(j.lat);
+        e = b.degreeToRad(h.lng);
+        g = b.degreeToRad(h.lat);
+        return a * Math.acos(Math.sin(i) * Math.sin(g) + Math.cos(i) * Math.cos(g) * Math.cos(e - f));
+    };
+    b.getPolylineDistance = function (f) {
+        if (f instanceof BMap.Polyline || f instanceof Array) {
+            var l;
+            if (f instanceof BMap.Polyline) {
+                l = f.getPath();
+            } else {
+                l = f;
+            }
+            if (l.length < 2) {
+                return 0;
+            }
+            var j = 0;
+            for (var h = 0; h < l.length - 1; h++) {
+                var k = l[h];
+                var g = l[h + 1];
+                var e = b.getDistance(k, g);
+                j += e;
+            }
+            return j;
+        } else {
+            return 0;
+        }
+    };
+    b.getPolygonArea = function (t) {
+        if (!(t instanceof BMap.Polygon) && !(t instanceof Array)) {
+            return 0;
+        }
+        var R;
+        if (t instanceof BMap.Polygon) {
+            R = t.getPath();
+        } else {
+            R = t;
+        }
+        if (R.length < 3) {
+            return 0;
+        }
+        var w = 0;
+        var D = 0;
+        var C = 0;
+        var L = 0;
+        var J = 0;
+        var F = 0;
+        var E = 0;
+        var S = 0;
+        var H = 0;
+        var p = 0;
+        var T = 0;
+        var I = 0;
+        var q = 0;
+        var e = 0;
+        var M = 0;
+        var v = 0;
+        var K = 0;
+        var N = 0;
+        var s = 0;
+        var O = 0;
+        var l = 0;
+        var g = 0;
+        var z = 0;
+        var Q = 0;
+        var G = 0;
+        var j = 0;
+        var A = 0;
+        var o = 0;
+        var m = 0;
+        var y = 0;
+        var x = 0;
+        var h = 0;
+        var k = 0;
+        var f = 0;
+        var n = a;
+        var B = R.length;
+        for (var P = 0; P < B; P++) {
+            if (P == 0) {
+                D = R[B - 1].lng * Math.PI / 180;
+                C = R[B - 1].lat * Math.PI / 180;
+                L = R[0].lng * Math.PI / 180;
+                J = R[0].lat * Math.PI / 180;
+                F = R[1].lng * Math.PI / 180;
+                E = R[1].lat * Math.PI / 180;
+            } else {
+                if (P == B - 1) {
+                    D = R[B - 2].lng * Math.PI / 180;
+                    C = R[B - 2].lat * Math.PI / 180;
+                    L = R[B - 1].lng * Math.PI / 180;
+                    J = R[B - 1].lat * Math.PI / 180;
+                    F = R[0].lng * Math.PI / 180;
+                    E = R[0].lat * Math.PI / 180;
+                } else {
+                    D = R[P - 1].lng * Math.PI / 180;
+                    C = R[P - 1].lat * Math.PI / 180;
+                    L = R[P].lng * Math.PI / 180;
+                    J = R[P].lat * Math.PI / 180;
+                    F = R[P + 1].lng * Math.PI / 180;
+                    E = R[P + 1].lat * Math.PI / 180;
+                }
+            }
+            S = Math.cos(J) * Math.cos(L);
+            H = Math.cos(J) * Math.sin(L);
+            p = Math.sin(J);
+            T = Math.cos(C) * Math.cos(D);
+            I = Math.cos(C) * Math.sin(D);
+            q = Math.sin(C);
+            e = Math.cos(E) * Math.cos(F);
+            M = Math.cos(E) * Math.sin(F);
+            v = Math.sin(E);
+            K = (S * S + H * H + p * p) / (S * T + H * I + p * q);
+            N = (S * S + H * H + p * p) / (S * e + H * M + p * v);
+            s = K * T - S;
+            O = K * I - H;
+            l = K * q - p;
+            g = N * e - S;
+            z = N * M - H;
+            Q = N * v - p;
+            m = (g * s + z * O + Q * l) / (Math.sqrt(g * g + z * z + Q * Q) * Math.sqrt(s * s + O * O + l * l));
+            m = Math.acos(m);
+            G = z * l - Q * O;
+            j = 0 - (g * l - Q * s);
+            A = g * O - z * s;
+            if (S != 0) {
+                o = G / S;
+            } else {
+                if (H != 0) {
+                    o = j / H;
+                } else {
+                    o = A / p;
+                }
+            }
+            if (o > 0) {
+                y += m;
+                k++;
+            } else {
+                x += m;
+                h++;
+            }
+        }
+        var u, r;
+        u = y + (2 * Math.PI * h - x);
+        r = 2 * Math.PI * k - y + x;
+        if (y > x) {
+            if (u - (B - 2) * Math.PI < 1) {
+                f = u;
+            } else {
+                f = r;
+            }
+        } else {
+            if (r - (B - 2) * Math.PI < 1) {
+                f = r;
+            } else {
+                f = u;
+            }
+        }
+        w = (f - (B - 2) * Math.PI) * n * n;
+        return w;
+    };
+})();
+exports.default = GeoUtils;
 
 /***/ })
 /******/ ]);

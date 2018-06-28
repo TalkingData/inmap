@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DotOverlay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="../dist/inmap.js"></script>
+</head>
+
+<body>
+    <div id="allmap"></div>
+    <div style="position: fixed;top: 0;width: 100%">
+        <button onclick="addOverlay()"> 创建围栏</button>
+        <button onclick="addEditorOverLay()">创建一个可编辑围栏</button>
+        <button onclick="openEdit()"> 打开编辑</button>
+        <button onclick="closeEdit()">关闭编辑</button>
+        <button onclick="translation()">平移</button>
+        <button onclick="getpath()">获得围栏路径</button>
+        <button onclick="hideArea()">隐藏面积</button>
+        
+    </div>
+</body>
+
+</html>
+<script>
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        // skin: "Blueness",
+        center: [105.403119, 38.028658],
+        zoom: {
+            value: 5,
+            show: true,
+            max: 6,
+            min: 5
+        },
+    });
+    var overlay = null;
+    function removeOverlay() {
+        if (overlay) {
+            inmap.remove(overlay);
+        }
+    }
+    function addOverlay() {
+        this.removeOverlay();
+        overlay = new inMap.PolygonEditorOverlay({
+            style: {},
+            data: [],
+        });
+        inmap.add(overlay);
+    }
+    function addEditorOverLay() {
+        this.removeOverlay();
+        overlay = new inMap.PolygonEditorOverlay({
+            style: {},
+            data: {
+                "geometry": {
+                    "type": "Polygon",
+                    "coordinates": [
+                        [
+                            89.066319,
+                            42.015565
+                        ],
+                        [
+                            91.494763,
+                            35.573006
+                        ],
+                        [
+                            94.291152,
+                            30.683971
+                        ],
+                        [
+                            101.355714,
+                            31.759106
+                        ],
+                        [
+                            108.861811,
+                            34.848232
+                        ],
+                        [
+                            106.874903,
+                            39.212162
+                        ],
+                        [
+                            102.901087,
+                            42.398553
+                        ],
+                        [
+                            95.542168,
+                            43.853853
+                        ]
+                    ]
+                }
+            }
+        });
+        inmap.add(overlay);
+    }
+    function openEdit() {
+        overlay.enableEditing();
+    }
+    function closeEdit() {
+        overlay.disableEditing();
+    }
+    function translation() {
+        overlay.translation(2, 2);
+    }
+    function getpath() {
+        let data = JSON.stringify(overlay.getPath(), null, 2);
+        console.log(data);
+        alert(data);
+    }
+    function hideArea(){
+        overlay.hideAreaText();
+    }
+</script>
