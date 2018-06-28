@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 51);
+/******/ 	return __webpack_require__(__webpack_require__.s = 54);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1126,7 +1126,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
   }]);
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(56)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(59)(module)))
 
 /***/ }),
 /* 4 */,
@@ -1440,7 +1440,8 @@ module.exports = deepmerge_1;
 /* 20 */,
 /* 21 */,
 /* 22 */,
-/* 23 */
+/* 23 */,
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1569,7 +1570,7 @@ var GriddingOverlay = {
 exports.default = GriddingOverlay;
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1597,7 +1598,7 @@ var HeatOverlay = {
 exports.default = HeatOverlay;
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1729,7 +1730,7 @@ var HoneycombOverlay = {
 exports.default = HoneycombOverlay;
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1793,7 +1794,7 @@ var LablEvading = {
 exports.default = LablEvading;
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1805,7 +1806,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _pointToPixel = __webpack_require__(3);
 
-var _Curive = __webpack_require__(30);
+var _Curive = __webpack_require__(31);
 
 var LineStringOverlay = {
     transferCoordinate: function transferCoordinate(_coordinates, nwMc, zoomUnit) {
@@ -1839,7 +1840,6 @@ var LineStringOverlay = {
             }
         }
         webObj.request.data = points;
-        console.log(points);
         return webObj;
     },
     setCurive: function setCurive(points, zoomUnit, nwMc, deltaAngle) {
@@ -1917,7 +1917,7 @@ var LineStringOverlay = {
 exports.default = LineStringOverlay;
 
 /***/ }),
-/* 28 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1929,11 +1929,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _pointToPixel = __webpack_require__(3);
 
-var _Point = __webpack_require__(31);
+var _Point = __webpack_require__(32);
 
 var _Point2 = _interopRequireDefault(_Point);
 
-var _polylabel = __webpack_require__(32);
+var _polylabel = __webpack_require__(33);
 
 var _polylabel2 = _interopRequireDefault(_polylabel);
 
@@ -1969,7 +1969,7 @@ var PolygonOverlay = {
 exports.default = PolygonOverlay;
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2059,7 +2059,7 @@ var PolymeOverlay = {
 exports.default = PolymeOverlay;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2168,7 +2168,7 @@ function getPointList(start, end, deltaAngle) {
 }
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2207,7 +2207,7 @@ Point.prototype.equals = function (other) {
 exports.default = Point;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2218,7 +2218,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = polylabel;
 
-var _tinyqueue = __webpack_require__(45);
+var _tinyqueue = __webpack_require__(48);
 
 var _tinyqueue2 = _interopRequireDefault(_tinyqueue);
 
@@ -2355,7 +2355,6 @@ function polylabel(polygon) {
 }
 
 /***/ }),
-/* 33 */,
 /* 34 */,
 /* 35 */,
 /* 36 */,
@@ -2367,7 +2366,10 @@ function polylabel(polygon) {
 /* 42 */,
 /* 43 */,
 /* 44 */,
-/* 45 */
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2464,12 +2466,12 @@ TinyQueue.prototype = {
 };
 
 /***/ }),
-/* 46 */,
-/* 47 */,
-/* 48 */,
 /* 49 */,
 /* 50 */,
-/* 51 */
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2480,31 +2482,31 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TDpost = undefined;
 
-var _HeatOverlay = __webpack_require__(24);
+var _HeatOverlay = __webpack_require__(25);
 
 var _HeatOverlay2 = _interopRequireDefault(_HeatOverlay);
 
-var _GriddingOverlay = __webpack_require__(23);
+var _GriddingOverlay = __webpack_require__(24);
 
 var _GriddingOverlay2 = _interopRequireDefault(_GriddingOverlay);
 
-var _PolygonOverlay = __webpack_require__(28);
+var _PolygonOverlay = __webpack_require__(29);
 
 var _PolygonOverlay2 = _interopRequireDefault(_PolygonOverlay);
 
-var _LineStringOverlay = __webpack_require__(27);
+var _LineStringOverlay = __webpack_require__(28);
 
 var _LineStringOverlay2 = _interopRequireDefault(_LineStringOverlay);
 
-var _HoneycombOverlay = __webpack_require__(25);
+var _HoneycombOverlay = __webpack_require__(26);
 
 var _HoneycombOverlay2 = _interopRequireDefault(_HoneycombOverlay);
 
-var _PolymeOverlay = __webpack_require__(29);
+var _PolymeOverlay = __webpack_require__(30);
 
 var _PolymeOverlay2 = _interopRequireDefault(_PolymeOverlay);
 
-var _LablEvading = __webpack_require__(26);
+var _LablEvading = __webpack_require__(27);
 
 var _LablEvading2 = _interopRequireDefault(_LablEvading);
 
@@ -2569,11 +2571,11 @@ var TDpost = exports.TDpost = function TDpost(client) {
 };
 
 /***/ }),
-/* 52 */,
-/* 53 */,
-/* 54 */,
 /* 55 */,
-/* 56 */
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {

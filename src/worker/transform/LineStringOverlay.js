@@ -40,7 +40,6 @@ const LineStringOverlay = {
 
         }
         webObj.request.data = points;
-        console.log(points);
         return webObj;
     },
     setCurive(points, zoomUnit, nwMc, deltaAngle) {

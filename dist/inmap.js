@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 46);
+/******/ 	return __webpack_require__(__webpack_require__.s = 49);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -290,11 +290,11 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _BaseClass2 = __webpack_require__(11);
+var _BaseClass2 = __webpack_require__(12);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
-var _Legend = __webpack_require__(47);
+var _Legend = __webpack_require__(50);
 
 var _Legend2 = _interopRequireDefault(_Legend);
 
@@ -302,7 +302,7 @@ var _util = __webpack_require__(0);
 
 var _MapStyle = __webpack_require__(6);
 
-var _Toolbar = __webpack_require__(10);
+var _Toolbar = __webpack_require__(11);
 
 var _Toolbar2 = _interopRequireDefault(_Toolbar);
 
@@ -2156,7 +2156,308 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ToolTip = __webpack_require__(48);
+var _PolygonEditor = __webpack_require__(46);
+
+var _PolygonEditor2 = _interopRequireDefault(_PolygonEditor);
+
+var _GeoUtils = __webpack_require__(47);
+
+var _GeoUtils2 = _interopRequireDefault(_GeoUtils);
+
+var _util = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var PolygonEditorOverlay = function () {
+    function PolygonEditorOverlay(opts) {
+        _classCallCheck(this, PolygonEditorOverlay);
+
+        var option = (0, _util.merge)(_PolygonEditor2.default, opts);
+        this.toolTipConfig = option.tooltip;
+        this.points = this._geoJsonToPoint(option.data || []);
+        this.overlay = null;
+        this.map = null;
+        this.isDispose = false;
+        this.option = option.style;
+        this._vectisWidth = 10;
+        this.drawPoint = [];
+        this.pixels = null;
+        this._isBinded = false;
+        this.isClick = this.points.length > 0 ? false : true;
+        this.overlay = new BMap.Polygon([], this.option);
+        this.startAction = this.startAction.bind(this);
+        this.mousemoveAction = this.mousemoveAction.bind(this);
+        this.dblclickAction = this.dblclickAction.bind(this);
+        this.clickAction = this.clickAction.bind(this);
+        this.getAreaByPolygon = this.getAreaByPolygon.bind(this);
+        this.setTimeout = null;
+        this._first = new Date(), this._second = null, this._interval = 250;
+    }
+
+    _createClass(PolygonEditorOverlay, [{
+        key: '_init',
+        value: function _init(map) {
+            this.map = map;
+            this.map.addOverlay(this.overlay);
+            this.overlay.setPath(this.points);
+            this.bingMoveEvent();
+            this.copy();
+            if (this.map.inmapToolBar) {
+                this.ToolTip = this.map.inmapToolBar.toolTip;
+                this.ToolTip.setOption(this.toolTipConfig);
+                this.getAreaByPolygon();
+            }
+        }
+    }, {
+        key: 'bingMoveEvent',
+        value: function bingMoveEvent() {
+            this.map.addEventListener('click', this.clickAction);
+            this.map.addEventListener('mousemove', this.mousemoveAction);
+        }
+    }, {
+        key: 'removeMoveEvent',
+        value: function removeMoveEvent() {
+            this.map.removeEventListener('mousedown', this.startAction);
+            this.map.removeEventListener('click', this.clickAction);
+        }
+    }, {
+        key: 'showAreaText',
+        value: function showAreaText() {
+            this.toolTipConfig.show = true;
+        }
+    }, {
+        key: 'hideAreaText',
+        value: function hideAreaText() {
+            this.toolTipConfig.show = false;
+        }
+    }, {
+        key: 'getAreaByPolygon',
+        value: function getAreaByPolygon() {
+            var _this = this;
+
+            if (!this.isClick && this.toolTipConfig.show) {
+                var geos = this.overlay.getPath();
+                var areas = _GeoUtils2.default.getPolygonArea(geos);
+                var center = this.getGeoCenter(geos);
+                var pixel = this.map.pointToOverlayPixel(new BMap.Point(center.lng, center.lat));
+                this.ToolTip && this.ToolTip.showCenterText('\u9762\u79EF\uFF1A' + parseInt(areas) + '\u5E73\u65B9\u7C73', pixel.x + this.map.offsetX, pixel.y + this.map.offsetY);
+            } else {
+                this.ToolTip && this.ToolTip.hide();
+            }
+            this.setTimeout = setTimeout(function () {
+                if (_this.getAreaByPolygon) {
+                    _this.getAreaByPolygon();
+                } else {
+                    clearTimeout(_this.setTimeout);
+                }
+            }, 800);
+        }
+    }, {
+        key: 'getGeoCenter',
+        value: function getGeoCenter(geo) {
+            var minX = geo[0].lng;
+            var maxX = geo[0].lng;
+            var minY = geo[0].lat;
+            var maxY = geo[0].lat;
+            for (var i = 1; i < geo.length; i++) {
+                minX = Math.min(minX, geo[i].lng);
+                maxX = Math.max(maxX, geo[i].lng);
+                minY = Math.min(minY, geo[i].lat);
+                maxY = Math.max(maxY, geo[i].lat);
+            }
+            return {
+                lng: minX + (maxX - minX) / 2,
+                lat: minY + (maxY - minY) / 2
+            };
+        }
+    }, {
+        key: 'clickAction',
+        value: function clickAction(e) {
+            this._second = new Date();
+
+            if (this.isClick) {
+                if (this._second - this._first <= this._interval) {
+                    this._first = new Date();
+                    this.dblclickAction(e);
+                } else {
+                    this._first = new Date();
+                    this.startAction(e);
+                }
+            } else {
+                if (this._second - this._first <= this._interval) {
+                    this._first = new Date();
+                    var index = this.findIndexVectis(e.pixel);
+                    if (index > -1) {
+                        this.drawPoint.splice(index, 1);
+                        this.overlay.setPath(this.drawPoint);
+                    }
+                } else {
+                    this._first = new Date();
+                }
+            }
+            this.getAreaByPolygon();
+        }
+    }, {
+        key: 'findIndexVectis',
+        value: function findIndexVectis(_ref) {
+            var _this2 = this;
+
+            var x = _ref.x,
+                y = _ref.y;
+
+            this.pixels = this.overlay.getPath().map(function (item) {
+                return _this2.map.pointToOverlayPixel(item);
+            });
+
+            var r = this._vectisWidth / 2;
+
+            for (var i = 0; i < this.pixels.length; i++) {
+                var item = this.pixels[i];
+                if (this._isMouseOver(x, y, item.x - r, item.y - r, this._vectisWidth, this._vectisWidth)) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+    }, {
+        key: '_isMouseOver',
+        value: function _isMouseOver(mouseX, mouseY, x, y, w, h) {
+            return !(mouseX < x || mouseX > x + w || mouseY < y || mouseY > y + h);
+        }
+    }, {
+        key: 'dispose',
+        value: function dispose() {
+            clearTimeout(this.setTimeout);
+            this.ToolTip && this.ToolTip.hide();
+            this.removeMoveEvent();
+            this.map.removeOverlay(this.overlay);
+            for (var key in this.overlay) {
+                this.overlay[key] = null;
+            }
+            for (var _key in this) {
+                this[_key] = null;
+            }
+            this.isDispose = true;
+        }
+    }, {
+        key: 'startAction',
+        value: function startAction(e) {
+
+            var points = this.points;
+            points.push(e.point);
+            this.drawPoint = points.concat(points[points.length - 1]);
+            this.overlay.setPath(this.drawPoint);
+
+            if (!this._isBinded) {
+                this._isBinded = true;
+            }
+        }
+    }, {
+        key: 'translation',
+        value: function translation(x, y) {
+            var _this3 = this;
+
+            this.pixels = this.overlay.getPath().map(function (item) {
+                return _this3.map.pointToOverlayPixel(item);
+            });
+            for (var i = 0; i < this.pixels.length; i++) {
+                var item = this.pixels[i];
+                item.x = item.x + x;
+                item.y = item.y + y;
+            }
+
+            this.drawPoint = this.pixels.map(function (item) {
+                return _this3.map.overlayPixelToPoint(item);
+            });
+
+            this.overlay.setPath(this.drawPoint);
+        }
+    }, {
+        key: 'mousemoveAction',
+        value: function mousemoveAction(e) {
+            if (!this._isBinded) {
+                return;
+            }
+            this.overlay.setPositionAt(this.drawPoint.length - 1, e.point);
+        }
+    }, {
+        key: 'dblclickAction',
+        value: function dblclickAction() {
+            if (!this._isBinded) {
+                return;
+            }
+            this.map.removeEventListener('mousemove', this.mousemoveAction);
+            this._isBinded = false;
+            this.isClick = false;
+            this.drawPoint.pop();
+            this.overlay.setPath(this.drawPoint);
+        }
+    }, {
+        key: 'copy',
+        value: function copy() {
+            var _this4 = this;
+
+            ['setStrokeColor', 'getStrokeColor', 'setFillColor', 'getFillColor', 'setStrokeOpacity', 'getStrokeOpacity', 'setFillOpacity', 'getFillOpacity', 'setStrokeWeight', 'getStrokeWeight', 'setStrokeStyle', 'getStrokeStyle', 'getBounds', 'enableEditing', 'disableEditing', 'enableMassClear', 'disableMassClear', 'setPositionAt', 'getMap', 'addEventListener', 'removeEventListener'].forEach(function (key) {
+                _this4[key] = _this4.overlay[key].bind(_this4.overlay);
+            });
+        }
+    }, {
+        key: '_geoJsonToPoint',
+        value: function _geoJsonToPoint(data) {
+            if (data.geometry) {
+                return data.geometry.coordinates.map(function (item) {
+                    return {
+                        lng: item[0],
+                        lat: item[1]
+                    };
+                });
+            } else {
+                return [];
+            }
+        }
+    }, {
+        key: 'setPath',
+        value: function setPath(data) {
+            var point = this._geoJsonToPoint(data);
+            this.overlay.setPath(point);
+        }
+    }, {
+        key: 'getPath',
+        value: function getPath() {
+            var data = this.overlay.getPath();
+            var coordinates = data.map(function (item) {
+                return [item.lng, item.lat];
+            });
+            return {
+                geometry: {
+                    type: 'Polygon',
+                    coordinates: coordinates
+                }
+            };
+        }
+    }]);
+
+    return PolygonEditorOverlay;
+}();
+
+exports.default = PolygonEditorOverlay;
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ToolTip = __webpack_require__(51);
 
 var _ToolTip2 = _interopRequireDefault(_ToolTip);
 
@@ -2201,7 +2502,7 @@ var Toolbar = function () {
 exports.default = Toolbar;
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2317,7 +2618,7 @@ BaseClass.prototype.removeWorkerMessage = function () {
 exports.default = BaseClass;
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2333,23 +2634,23 @@ var _util = __webpack_require__(0);
 
 var _MapStyle = __webpack_require__(6);
 
-var _mapZoom = __webpack_require__(49);
+var _mapZoom = __webpack_require__(52);
 
 var _mapZoom2 = _interopRequireDefault(_mapZoom);
 
-var _Toolbar = __webpack_require__(10);
+var _Toolbar = __webpack_require__(11);
 
 var _Toolbar2 = _interopRequireDefault(_Toolbar);
 
-var _InmapConfig = __webpack_require__(37);
+var _InmapConfig = __webpack_require__(38);
 
 var _InmapConfig2 = _interopRequireDefault(_InmapConfig);
 
-var _PolygonEditorOverlay = __webpack_require__(57);
+var _PolygonEditorOverlay = __webpack_require__(10);
 
 var _PolygonEditorOverlay2 = _interopRequireDefault(_PolygonEditorOverlay);
 
-__webpack_require__(55);
+__webpack_require__(58);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -2441,7 +2742,7 @@ var Map = function () {
 exports.default = Map;
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2457,7 +2758,7 @@ var _Parameter2 = __webpack_require__(4);
 
 var _Parameter3 = _interopRequireDefault(_Parameter2);
 
-var _GriddingConfig = __webpack_require__(33);
+var _GriddingConfig = __webpack_require__(34);
 
 var _GriddingConfig2 = _interopRequireDefault(_GriddingConfig);
 
@@ -2761,7 +3062,7 @@ var GriddingOverlay = function (_Parameter) {
 exports.default = GriddingOverlay;
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2779,7 +3080,7 @@ var _CanvasOverlay3 = _interopRequireDefault(_CanvasOverlay2);
 
 var _util = __webpack_require__(0);
 
-var _HeatConfig = __webpack_require__(34);
+var _HeatConfig = __webpack_require__(35);
 
 var _HeatConfig2 = _interopRequireDefault(_HeatConfig);
 
@@ -3022,7 +3323,7 @@ var HeatOverlay = function (_CanvasOverlay) {
 exports.default = HeatOverlay;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3038,7 +3339,7 @@ var _Parameter2 = __webpack_require__(4);
 
 var _Parameter3 = _interopRequireDefault(_Parameter2);
 
-var _HoneycombConfig = __webpack_require__(35);
+var _HoneycombConfig = __webpack_require__(36);
 
 var _HoneycombConfig2 = _interopRequireDefault(_HoneycombConfig);
 
@@ -3353,7 +3654,7 @@ var HoneycombOverlay = function (_Parameter) {
 exports.default = HoneycombOverlay;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3369,7 +3670,7 @@ var _Parameter2 = __webpack_require__(4);
 
 var _Parameter3 = _interopRequireDefault(_Parameter2);
 
-var _ImgConfig = __webpack_require__(36);
+var _ImgConfig = __webpack_require__(37);
 
 var _ImgConfig2 = _interopRequireDefault(_ImgConfig);
 
@@ -3629,7 +3930,7 @@ var ImgOverlay = function (_Parameter) {
 exports.default = ImgOverlay;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3647,7 +3948,7 @@ var _CanvasOverlay3 = _interopRequireDefault(_CanvasOverlay2);
 
 var _util = __webpack_require__(0);
 
-var _LineStringAnimationConfig = __webpack_require__(39);
+var _LineStringAnimationConfig = __webpack_require__(40);
 
 var _LineStringAnimationConfig2 = _interopRequireDefault(_LineStringAnimationConfig);
 
@@ -3891,7 +4192,7 @@ var LineStringAnimationOverlay = function (_CanvasOverlay) {
 exports.default = LineStringAnimationOverlay;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3909,7 +4210,7 @@ var _CanvasOverlay2 = __webpack_require__(2);
 
 var _CanvasOverlay3 = _interopRequireDefault(_CanvasOverlay2);
 
-var _LineStringConfig = __webpack_require__(40);
+var _LineStringConfig = __webpack_require__(41);
 
 var _LineStringConfig2 = _interopRequireDefault(_LineStringConfig);
 
@@ -4076,7 +4377,7 @@ var LineStringOverlay = function (_CanvasOverlay) {
 exports.default = LineStringOverlay;
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4096,11 +4397,11 @@ var _util = __webpack_require__(0);
 
 var _MapStyle = __webpack_require__(6);
 
-var _MoveLineConfig = __webpack_require__(41);
+var _MoveLineConfig = __webpack_require__(42);
 
 var _MoveLineConfig2 = _interopRequireDefault(_MoveLineConfig);
 
-var _BaseClass2 = __webpack_require__(11);
+var _BaseClass2 = __webpack_require__(12);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
@@ -4508,7 +4809,7 @@ var MoveLineOverlay = function (_BaseClass) {
 exports.default = MoveLineOverlay;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4526,7 +4827,7 @@ var _CanvasOverlay3 = _interopRequireDefault(_CanvasOverlay2);
 
 var _util = __webpack_require__(0);
 
-var _PointAnimation = __webpack_require__(42);
+var _PointAnimation = __webpack_require__(43);
 
 var _PointAnimation2 = _interopRequireDefault(_PointAnimation);
 
@@ -4675,7 +4976,7 @@ var PointAnimationOverlay = function (_CanvasOverlay) {
 exports.default = PointAnimationOverlay;
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4701,11 +5002,11 @@ var _Parameter3 = _interopRequireDefault(_Parameter2);
 
 var _util = __webpack_require__(0);
 
-var _BatchesData = __webpack_require__(50);
+var _BatchesData = __webpack_require__(53);
 
 var _BatchesData2 = _interopRequireDefault(_BatchesData);
 
-var _PointConfig = __webpack_require__(43);
+var _PointConfig = __webpack_require__(44);
 
 var _PointConfig2 = _interopRequireDefault(_PointConfig);
 
@@ -5127,7 +5428,7 @@ var PointOverlay = function (_Parameter) {
 exports.default = PointOverlay;
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5149,7 +5450,7 @@ var _Color2 = _interopRequireDefault(_Color);
 
 var _util = __webpack_require__(0);
 
-var _PolygonConfig = __webpack_require__(44);
+var _PolygonConfig = __webpack_require__(45);
 
 var _PolygonConfig2 = _interopRequireDefault(_PolygonConfig);
 
@@ -5482,7 +5783,6 @@ var PolygonOverlay = function (_Parameter) {
 exports.default = PolygonOverlay;
 
 /***/ }),
-/* 23 */,
 /* 24 */,
 /* 25 */,
 /* 26 */,
@@ -5492,7 +5792,8 @@ exports.default = PolygonOverlay;
 /* 30 */,
 /* 31 */,
 /* 32 */,
-/* 33 */
+/* 33 */,
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5544,7 +5845,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5588,7 +5889,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5639,7 +5940,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5684,7 +5985,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5706,7 +6007,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5723,7 +6024,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5746,7 +6047,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5771,7 +6072,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5807,7 +6108,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5828,7 +6129,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5875,7 +6176,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5922,1191 +6223,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 45 */,
 /* 46 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.workerMrg = exports.LineStringAnimationOverlay = exports.PointAnimationOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.LineStringOverlay = exports.HeatOverlay = exports.PolygonEditorOverlay = exports.PolygonOverlay = exports.GriddingOverlay = exports.PointOverlay = exports.Map = exports.utils = exports.version = undefined;
-
-var _PointOverlay = __webpack_require__(21);
-
-var _PointOverlay2 = _interopRequireDefault(_PointOverlay);
-
-var _GriddingOverlay = __webpack_require__(13);
-
-var _GriddingOverlay2 = _interopRequireDefault(_GriddingOverlay);
-
-var _PolygonOverlay = __webpack_require__(22);
-
-var _PolygonOverlay2 = _interopRequireDefault(_PolygonOverlay);
-
-var _HeatOverlay = __webpack_require__(14);
-
-var _HeatOverlay2 = _interopRequireDefault(_HeatOverlay);
-
-var _LineStringOverlay = __webpack_require__(18);
-
-var _LineStringOverlay2 = _interopRequireDefault(_LineStringOverlay);
-
-var _HoneycombOverlay = __webpack_require__(15);
-
-var _HoneycombOverlay2 = _interopRequireDefault(_HoneycombOverlay);
-
-var _ImgOverlay = __webpack_require__(16);
-
-var _ImgOverlay2 = _interopRequireDefault(_ImgOverlay);
-
-var _MoveLineOverlay = __webpack_require__(19);
-
-var _MoveLineOverlay2 = _interopRequireDefault(_MoveLineOverlay);
-
-var _PointAnimationOverlay = __webpack_require__(20);
-
-var _PointAnimationOverlay2 = _interopRequireDefault(_PointAnimationOverlay);
-
-var _LineStringAnimationOverlay = __webpack_require__(17);
-
-var _LineStringAnimationOverlay2 = _interopRequireDefault(_LineStringAnimationOverlay);
-
-var _PolygonEditorOverlay = __webpack_require__(57);
-
-var _PolygonEditorOverlay2 = _interopRequireDefault(_PolygonEditorOverlay);
-
-var _index = __webpack_require__(12);
-
-var _index2 = _interopRequireDefault(_index);
-
-var _util = __webpack_require__(0);
-
-var utils = _interopRequireWildcard(_util);
-
-var _workerMrg = __webpack_require__(9);
-
-var _workerMrg2 = _interopRequireDefault(_workerMrg);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var version = "2.0.0";
-console.log('inMap v' + version);
-
-var inMap = {
-    version: version,
-    utils: utils,
-    Map: _index2.default,
-    PointOverlay: _PointOverlay2.default,
-    GriddingOverlay: _GriddingOverlay2.default,
-    PolygonOverlay: _PolygonOverlay2.default,
-    PolygonEditorOverlay: _PolygonEditorOverlay2.default,
-    HeatOverlay: _HeatOverlay2.default,
-    LineStringOverlay: _LineStringOverlay2.default,
-    HoneycombOverlay: _HoneycombOverlay2.default,
-    ImgOverlay: _ImgOverlay2.default,
-    MoveLineOverlay: _MoveLineOverlay2.default,
-    PointAnimationOverlay: _PointAnimationOverlay2.default,
-    LineStringAnimationOverlay: _LineStringAnimationOverlay2.default,
-    workerMrg: _workerMrg2.default
-};
-exports.version = version;
-exports.utils = utils;
-exports.Map = _index2.default;
-exports.PointOverlay = _PointOverlay2.default;
-exports.GriddingOverlay = _GriddingOverlay2.default;
-exports.PolygonOverlay = _PolygonOverlay2.default;
-exports.PolygonEditorOverlay = _PolygonEditorOverlay2.default;
-exports.HeatOverlay = _HeatOverlay2.default;
-exports.LineStringOverlay = _LineStringOverlay2.default;
-exports.HoneycombOverlay = _HoneycombOverlay2.default;
-exports.ImgOverlay = _ImgOverlay2.default;
-exports.MoveLineOverlay = _MoveLineOverlay2.default;
-exports.PointAnimationOverlay = _PointAnimationOverlay2.default;
-exports.LineStringAnimationOverlay = _LineStringAnimationOverlay2.default;
-exports.workerMrg = _workerMrg2.default;
-exports.default = inMap;
-
-/***/ }),
-/* 47 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _Color = __webpack_require__(5);
-
-var _Color2 = _interopRequireDefault(_Color);
-
-var _Legend = __webpack_require__(38);
-
-var _Legend2 = _interopRequireDefault(_Legend);
-
-var _util = __webpack_require__(0);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Legend = function () {
-    function Legend(toolDom, opts) {
-        _classCallCheck(this, Legend);
-
-        this.opts = opts || _Legend2.default;
-        this.dom = this.crateDom(toolDom);
-        this.hide();
-    }
-
-    _createClass(Legend, [{
-        key: 'crateDom',
-        value: function crateDom(toolDom) {
-            var div = document.createElement('div');
-            div.classList.add('inmap-legend');
-            toolDom.appendChild(div);
-            return div;
-        }
-    }, {
-        key: 'show',
-        value: function show() {
-            this.dom.style.display = 'inline-block';
-        }
-    }, {
-        key: 'hide',
-        value: function hide() {
-            this.dom.style.display = 'none';
-        }
-    }, {
-        key: 'toFixed',
-        value: function toFixed(num) {
-            return isNaN(num) ? num : parseFloat(num).toFixed(this.opts.toFixed);
-        }
-    }, {
-        key: 'setTitle',
-        value: function setTitle(title) {
-            this.opts.title = title;
-            this.render();
-        }
-    }, {
-        key: 'setOption',
-        value: function setOption(opts) {
-            this.opts = (0, _util.merge)(_Legend2.default, this.opts, opts);
-            this.opts.list = this.opts.list || [];
-            this.render();
-        }
-    }, {
-        key: 'setItems',
-        value: function setItems(list) {
-            this.opts.list = list;
-            this.render();
-        }
-    }, {
-        key: '_verify',
-        value: function _verify() {
-            var _opts = this.opts,
-                show = _opts.show,
-                title = _opts.title,
-                list = _opts.list;
-
-            if (!(0, _util.isBoolean)(show)) {
-                throw new TypeError('inMap: legend options show must be a Boolean');
-            }
-            if (!(0, _util.isEmpty)(title) && !(0, _util.isString)(title)) {
-                throw new TypeError('inMap: legend options title must be a String');
-            }
-            if (!(0, _util.isArray)(list)) {
-                throw new TypeError('inMap: legend options list must be a Array');
-            }
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var _this = this;
-
-            this._verify();
-            var _opts2 = this.opts,
-                show = _opts2.show,
-                title = _opts2.title,
-                list = _opts2.list;
-
-            if (show) {
-                this.show();
-            } else {
-                this.hide();
-                return;
-            }
-
-            var str = '';
-            if (title) {
-                str = '<div class="inmap-legend-title">' + title + ' </div>';
-            }
-
-            str += '<table cellpadding="0" cellspacing="0">';
-            list.forEach(function (val, index) {
-                var text = null,
-                    backgroundColor = val.backgroundColor;
-                var isShow = backgroundColor != null;
-                var legendBg = new _Color2.default(backgroundColor),
-                    difference = 0.2;
-
-                var opacity = val.opacity;
-                if (opacity) {
-                    opacity += difference;
-                }
-                if (legendBg.a) {
-                    opacity = legendBg.a + difference;
-                } else {
-                    opacity = 1;
-                }
-                backgroundColor = legendBg.getRgbaStyle(opacity);
-                if (val.text) {
-                    text = val.text;
-                } else if (_this.opts.formatter) {
-                    text = _this.opts.formatter(_this.toFixed(val.start), _this.toFixed(val.end), index, val);
-                } else {
-                    text = _this.toFixed(val.start) + ' ~ ' + (val.end == null ? '<span class="inmap-infinity"></span>' : _this.toFixed(val.end));
-                }
-                var td = isShow ? ' <td style="background:' + backgroundColor + '; width:17px;"></td>' : '';
-                str += '\n                <tr>\n                   ' + td + '\n                    <td class="inmap-legend-text">\n                       ' + text + '\n                    </td>\n                </tr>\n                ';
-            });
-            str += '</table>';
-            if (list.length <= 0) {
-                this.hide();
-            }
-            this.dom.innerHTML = str;
-        }
-    }, {
-        key: 'dispose',
-        value: function dispose(parentDom) {
-            parentDom.removeChild(this.dom);
-            this.opts = null;
-            this.dom = null;
-        }
-    }]);
-
-    return Legend;
-}();
-
-exports.default = Legend;
-
-/***/ }),
-/* 48 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _util = __webpack_require__(0);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ToolTip = function () {
-    function ToolTip(toolDom) {
-        _classCallCheck(this, ToolTip);
-
-        this.dom = this.create(toolDom);
-        this.tooltipTemplate = null;
-        this.opts = {};
-        this.hide();
-    }
-
-    _createClass(ToolTip, [{
-        key: 'create',
-        value: function create(toolDom) {
-            var dom = document.createElement('div');
-            dom.classList.add('inmap-tooltip');
-            toolDom.appendChild(dom);
-            return dom;
-        }
-    }, {
-        key: 'compileTooltipTemplate',
-        value: function compileTooltipTemplate(formatter) {
-            formatter = '`' + formatter.replace(/\{/g, '${overItem.') + '`';
-            this.tooltipTemplate = new Function('overItem', 'return ' + formatter);
-        }
-    }, {
-        key: 'show',
-        value: function show(x, y) {
-            var _opts$offsets = this.opts.offsets,
-                left = _opts$offsets.left,
-                top = _opts$offsets.top;
-
-            this.dom.style.left = x + left + 'px';
-            this.dom.style.top = y + top + 'px';
-            this.dom.style.display = 'block';
-        }
-    }, {
-        key: 'hide',
-        value: function hide() {
-            this.dom.style.display = 'none';
-        }
-    }, {
-        key: 'setOption',
-        value: function setOption(opts) {
-            var result = (0, _util.merge)(this.opts, opts);
-            var formatter = result.formatter,
-                customClass = result.customClass;
-
-
-            if ((0, _util.isString)(formatter)) {
-                this.compileTooltipTemplate(result.formatter);
-            }
-
-            if (this.opts.customClass) {
-                this.dom.classList.remove(this.opts.customClass);
-            }
-
-            this.dom.classList.add(customClass);
-            this.opts = result;
-        }
-    }, {
-        key: 'render',
-        value: function render(event, overItem) {
-            if (!this.opts.show) return;
-            if (overItem) {
-                var formatter = this.opts.formatter;
-                if ((0, _util.isFunction)(formatter)) {
-                    this.dom.innerHTML = formatter(overItem);
-                } else if ((0, _util.isString)(formatter)) {
-                    this.dom.innerHTML = this.tooltipTemplate(overItem);
-                }
-                this.show(event.offsetX, event.offsetY);
-            } else {
-                this.hide();
-            }
-        }
-    }]);
-
-    return ToolTip;
-}();
-
-exports.default = ToolTip;
-
-/***/ }),
-/* 49 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var MapZoom = function () {
-    function MapZoom(map, mapDom, opts) {
-        _classCallCheck(this, MapZoom);
-
-        this.map = map;
-        this.mapDom = mapDom;
-        this.zoom = opts;
-        this.createDom();
-    }
-
-    _createClass(MapZoom, [{
-        key: 'createDom',
-        value: function createDom() {
-            var div = document.createElement('div');
-            div.classList.add('inmap-scale-group');
-            div.innerHTML = '<a>+</a > <a>-</a >';
-            this.mapDom.appendChild(div);
-            this.event(div);
-        }
-    }, {
-        key: 'setButtonState',
-        value: function setButtonState() {
-            var doms = this.mapDom.querySelectorAll('.inmap-scale-group a');
-            var zoom = this.map.getZoom();
-            if (zoom >= this.zoom.max) {
-                doms[0].setAttribute('disabled', 'true');
-            } else {
-                doms[0].removeAttribute('disabled');
-            }
-            if (zoom <= this.zoom.min) {
-                doms[1].setAttribute('disabled', 'true');
-            } else {
-                doms[1].removeAttribute('disabled');
-            }
-        }
-    }, {
-        key: 'event',
-        value: function event(div) {
-            var _this = this;
-
-            var doms = div.querySelectorAll('a');
-            doms[0].addEventListener('click', function () {
-                var zoom = _this.map.getZoom();
-                if (zoom < _this.zoom.max) {
-                    _this.map.zoomIn();
-                }
-            });
-            doms[1].addEventListener('click', function () {
-                var zoom = _this.map.getZoom();
-                if (zoom > _this.zoom.min) {
-                    _this.map.zoomOut();
-                }
-            });
-        }
-    }]);
-
-    return MapZoom;
-}();
-
-exports.default = MapZoom;
-
-/***/ }),
-/* 50 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _util = __webpack_require__(0);
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var BatchesData = function () {
-    function BatchesData(option) {
-        _classCallCheck(this, BatchesData);
-
-        this.setOption(option);
-        this.intervalId = null;
-        this.splitArray = [];
-        this.index = 0;
-    }
-
-    _createClass(BatchesData, [{
-        key: 'setOption',
-        value: function setOption(_ref) {
-            var _ref$interval = _ref.interval,
-                interval = _ref$interval === undefined ? 400 : _ref$interval,
-                _ref$splitCount = _ref.splitCount,
-                splitCount = _ref$splitCount === undefined ? 1500 : _ref$splitCount;
-
-            this.clear();
-            this.interval = interval;
-            this.splitCount = splitCount;
-        }
-    }, {
-        key: 'clear',
-        value: function clear() {
-            this.splitArray = [];
-            this.index = 0;
-            if (this.intervalId) {
-                clearInterval(this.intervalId);
-            }
-        }
-    }, {
-        key: 'action',
-        value: function action(data, callback, ctx) {
-            var _this = this;
-
-            this.clear();
-            var splitCount = this.splitCount,
-                interval = this.interval;
-
-
-            this.splitArray = (0, _util.chunk)(data, splitCount);
-
-            var loop = function loop() {
-                var item = _this.splitArray[_this.index];
-                item && callback(ctx, item);
-
-                _this.index++;
-
-                if (_this.index >= _this.splitArray.length - 1) {
-                    _this.clear();
-                } else {
-                    _this.intervalId = setTimeout(loop, interval);
-                }
-            };
-            loop();
-        }
-    }]);
-
-    return BatchesData;
-}();
-
-exports.default = BatchesData;
-
-/***/ }),
-/* 51 */,
-/* 52 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(53)();
-// imports
-
-
-// module
-exports.push([module.i, ".inmap-container {\n  opacity: 1;\n  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;\n}\n.inmap-container,\n.inmap-container *:after,\n.inmap-container *:before {\n  display: -webkit-box;\n}\n.inmap-scale-group {\n  position: absolute;\n  right: 10px;\n  bottom: 35px;\n  z-index: 999999;\n  opacity: 1;\n}\n.inmap-scale-group > a {\n  display: block;\n  width: 24px;\n  height: 24px;\n  font-size: 17px;\n  line-height: 22px;\n  text-align: center;\n  background: #fff;\n  margin-top: 5px;\n  color: #666;\n  cursor: pointer;\n  text-decoration: none;\n}\n.inmap-scale-group > a[disabled] {\n  color: rgba(187, 190, 196, 0.6);\n  background-color: #f7f7f7;\n  border-color: #dddee1;\n}\n.inmap-tooltip {\n  position: absolute;\n  opacity: 1;\n  display: none;\n  pointer-events: none;\n  border-style: solid;\n  white-space: nowrap;\n  z-index: 9999999;\n  transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1), top 0.4s cubic-bezier(0.23, 1, 0.32, 1);\n  border-radius: 4px;\n  font-style: normal;\n  font-variant: normal;\n  font-weight: normal;\n  font-stretch: normal;\n  font-size: 14px;\n  font-family: sans-serif;\n  line-height: 21px;\n  padding: 5px;\n  left: 323px;\n  top: 451px;\n}\n.inmap-tooltip-black {\n  border-width: 0px;\n  border-color: #333333;\n  background-color: rgba(50, 50, 50, 0.7);\n  color: #ffffff;\n}\n.inmap-legend-container {\n  position: absolute;\n  left: 35px;\n  bottom: 35px;\n  z-index: 9999;\n}\n.inmap-legend {\n  list-style: none;\n  opacity: 1;\n  height: auto;\n  font-size: 12px;\n  text-align: center;\n  border: 10px solid rgba(255, 255, 255, 0.7);\n  box-shadow: rgba(8, 16, 34, 0.3) 2px 0px 7px;\n  border-radius: 5px;\n  margin-right: 3px;\n}\n.inmap-legend .inmap-legend-title {\n  background-color: rgba(255, 255, 255, 0.7);\n  padding-bottom: 3px;\n}\n.inmap-legend > table {\n  width: 100%;\n}\n.inmap-legend table,\n.inmap-legend table tbody,\n.inmap-legend table tr,\n.inmap-legend table tr td {\n  padding: 0;\n  border: 0;\n  margin: 0;\n}\n.inmap-legend .inmap-chunk {\n  display: inline-block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  width: 14px;\n}\n.inmap-legend .inmap-legend-text {\n  background-color: rgba(255, 255, 255, 0.7);\n  padding-left: 5px;\n  text-align: left;\n  font-size: 12px;\n}\n.inmap-legend .inmap-infinity {\n  top: 4px;\n  left: 7px;\n  position: relative;\n}\n.inmap-legend .inmap-infinity:before,\n.inmap-legend .inmap-infinity:after {\n  content: \"\";\n  box-sizing: border-box;\n  width: 6px;\n  height: 6px;\n  position: absolute;\n  top: 0;\n  left: 0;\n  border: 1px solid #495060;\n  -moz-border-radius: 50px 50px 0;\n  border-radius: 50px 50px 0 50px;\n  -webkit-transform: rotate(128deg);\n  -moz-transform: rotate(128deg);\n  -ms-transform: rotate(128deg);\n  -o-transform: rotate(128deg);\n  transform: rotate(128deg);\n}\n.inmap-legend .inmap-infinity:after {\n  left: auto;\n  right: 0;\n  -moz-border-radius: 50px 50px 50px 0;\n  border-radius: 50px 50px 50px 0;\n  -webkit-transform: rotate(-128deg);\n  -moz-transform: rotate(-128deg);\n  -ms-transform: rotate(-128deg);\n  -o-transform: rotate(-128deg);\n  transform: rotate(-128deg);\n}\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 53 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function() {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		var result = [];
-		for(var i = 0; i < this.length; i++) {
-			var item = this[i];
-			if(item[2]) {
-				result.push("@media " + item[2] + "{" + item[1] + "}");
-			} else {
-				result.push(item[1]);
-			}
-		}
-		return result.join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-
-/***/ }),
-/* 54 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-var stylesInDom = {},
-	memoize = function(fn) {
-		var memo;
-		return function () {
-			if (typeof memo === "undefined") memo = fn.apply(this, arguments);
-			return memo;
-		};
-	},
-	isOldIE = memoize(function() {
-		return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
-	}),
-	getHeadElement = memoize(function () {
-		return document.head || document.getElementsByTagName("head")[0];
-	}),
-	singletonElement = null,
-	singletonCounter = 0,
-	styleElementsInsertedAtTop = [];
-
-module.exports = function(list, options) {
-	if(typeof DEBUG !== "undefined" && DEBUG) {
-		if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
-	}
-
-	options = options || {};
-	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
-	// tags it will allow on a page
-	if (typeof options.singleton === "undefined") options.singleton = isOldIE();
-
-	// By default, add <style> tags to the bottom of <head>.
-	if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
-
-	var styles = listToStyles(list);
-	addStylesToDom(styles, options);
-
-	return function update(newList) {
-		var mayRemove = [];
-		for(var i = 0; i < styles.length; i++) {
-			var item = styles[i];
-			var domStyle = stylesInDom[item.id];
-			domStyle.refs--;
-			mayRemove.push(domStyle);
-		}
-		if(newList) {
-			var newStyles = listToStyles(newList);
-			addStylesToDom(newStyles, options);
-		}
-		for(var i = 0; i < mayRemove.length; i++) {
-			var domStyle = mayRemove[i];
-			if(domStyle.refs === 0) {
-				for(var j = 0; j < domStyle.parts.length; j++)
-					domStyle.parts[j]();
-				delete stylesInDom[domStyle.id];
-			}
-		}
-	};
-}
-
-function addStylesToDom(styles, options) {
-	for(var i = 0; i < styles.length; i++) {
-		var item = styles[i];
-		var domStyle = stylesInDom[item.id];
-		if(domStyle) {
-			domStyle.refs++;
-			for(var j = 0; j < domStyle.parts.length; j++) {
-				domStyle.parts[j](item.parts[j]);
-			}
-			for(; j < item.parts.length; j++) {
-				domStyle.parts.push(addStyle(item.parts[j], options));
-			}
-		} else {
-			var parts = [];
-			for(var j = 0; j < item.parts.length; j++) {
-				parts.push(addStyle(item.parts[j], options));
-			}
-			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
-		}
-	}
-}
-
-function listToStyles(list) {
-	var styles = [];
-	var newStyles = {};
-	for(var i = 0; i < list.length; i++) {
-		var item = list[i];
-		var id = item[0];
-		var css = item[1];
-		var media = item[2];
-		var sourceMap = item[3];
-		var part = {css: css, media: media, sourceMap: sourceMap};
-		if(!newStyles[id])
-			styles.push(newStyles[id] = {id: id, parts: [part]});
-		else
-			newStyles[id].parts.push(part);
-	}
-	return styles;
-}
-
-function insertStyleElement(options, styleElement) {
-	var head = getHeadElement();
-	var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
-	if (options.insertAt === "top") {
-		if(!lastStyleElementInsertedAtTop) {
-			head.insertBefore(styleElement, head.firstChild);
-		} else if(lastStyleElementInsertedAtTop.nextSibling) {
-			head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
-		} else {
-			head.appendChild(styleElement);
-		}
-		styleElementsInsertedAtTop.push(styleElement);
-	} else if (options.insertAt === "bottom") {
-		head.appendChild(styleElement);
-	} else {
-		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
-	}
-}
-
-function removeStyleElement(styleElement) {
-	styleElement.parentNode.removeChild(styleElement);
-	var idx = styleElementsInsertedAtTop.indexOf(styleElement);
-	if(idx >= 0) {
-		styleElementsInsertedAtTop.splice(idx, 1);
-	}
-}
-
-function createStyleElement(options) {
-	var styleElement = document.createElement("style");
-	styleElement.type = "text/css";
-	insertStyleElement(options, styleElement);
-	return styleElement;
-}
-
-function createLinkElement(options) {
-	var linkElement = document.createElement("link");
-	linkElement.rel = "stylesheet";
-	insertStyleElement(options, linkElement);
-	return linkElement;
-}
-
-function addStyle(obj, options) {
-	var styleElement, update, remove;
-
-	if (options.singleton) {
-		var styleIndex = singletonCounter++;
-		styleElement = singletonElement || (singletonElement = createStyleElement(options));
-		update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
-		remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
-	} else if(obj.sourceMap &&
-		typeof URL === "function" &&
-		typeof URL.createObjectURL === "function" &&
-		typeof URL.revokeObjectURL === "function" &&
-		typeof Blob === "function" &&
-		typeof btoa === "function") {
-		styleElement = createLinkElement(options);
-		update = updateLink.bind(null, styleElement);
-		remove = function() {
-			removeStyleElement(styleElement);
-			if(styleElement.href)
-				URL.revokeObjectURL(styleElement.href);
-		};
-	} else {
-		styleElement = createStyleElement(options);
-		update = applyToTag.bind(null, styleElement);
-		remove = function() {
-			removeStyleElement(styleElement);
-		};
-	}
-
-	update(obj);
-
-	return function updateStyle(newObj) {
-		if(newObj) {
-			if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
-				return;
-			update(obj = newObj);
-		} else {
-			remove();
-		}
-	};
-}
-
-var replaceText = (function () {
-	var textStore = [];
-
-	return function (index, replacement) {
-		textStore[index] = replacement;
-		return textStore.filter(Boolean).join('\n');
-	};
-})();
-
-function applyToSingletonTag(styleElement, index, remove, obj) {
-	var css = remove ? "" : obj.css;
-
-	if (styleElement.styleSheet) {
-		styleElement.styleSheet.cssText = replaceText(index, css);
-	} else {
-		var cssNode = document.createTextNode(css);
-		var childNodes = styleElement.childNodes;
-		if (childNodes[index]) styleElement.removeChild(childNodes[index]);
-		if (childNodes.length) {
-			styleElement.insertBefore(cssNode, childNodes[index]);
-		} else {
-			styleElement.appendChild(cssNode);
-		}
-	}
-}
-
-function applyToTag(styleElement, obj) {
-	var css = obj.css;
-	var media = obj.media;
-
-	if(media) {
-		styleElement.setAttribute("media", media)
-	}
-
-	if(styleElement.styleSheet) {
-		styleElement.styleSheet.cssText = css;
-	} else {
-		while(styleElement.firstChild) {
-			styleElement.removeChild(styleElement.firstChild);
-		}
-		styleElement.appendChild(document.createTextNode(css));
-	}
-}
-
-function updateLink(linkElement, obj) {
-	var css = obj.css;
-	var sourceMap = obj.sourceMap;
-
-	if(sourceMap) {
-		// http://stackoverflow.com/a/26603875
-		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
-	}
-
-	var blob = new Blob([css], { type: "text/css" });
-
-	var oldSrc = linkElement.href;
-
-	linkElement.href = URL.createObjectURL(blob);
-
-	if(oldSrc)
-		URL.revokeObjectURL(oldSrc);
-}
-
-
-/***/ }),
-/* 55 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(52);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// add the styles to the DOM
-var update = __webpack_require__(54)(content, {});
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./map.less", function() {
-			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./map.less");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 56 */,
-/* 57 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _PolygonEditor = __webpack_require__(58);
-
-var _PolygonEditor2 = _interopRequireDefault(_PolygonEditor);
-
-var _GeoUtils = __webpack_require__(59);
-
-var _GeoUtils2 = _interopRequireDefault(_GeoUtils);
-
-var _util = __webpack_require__(0);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var PolygonEditorOverlay = function () {
-    function PolygonEditorOverlay(opts) {
-        _classCallCheck(this, PolygonEditorOverlay);
-
-        var option = (0, _util.merge)(_PolygonEditor2.default, opts);
-        this.toolTipConfig = option.tooltip;
-        this.points = this._geoJsonToPoint(option.data || []);
-        this.overlay = null;
-        this.map = null;
-        this.isDispose = false;
-        this.option = option.style;
-        this._vectisWidth = 10;
-        this.drawPoint = [];
-        this.pixels = null;
-        this._isBinded = false;
-        this.isClick = this.points.length > 0 ? false : true;
-        this.overlay = new BMap.Polygon([], this.option);
-        this.startAction = this.startAction.bind(this);
-        this.mousemoveAction = this.mousemoveAction.bind(this);
-        this.dblclickAction = this.dblclickAction.bind(this);
-        this.clickAction = this.clickAction.bind(this);
-        this.getAreaByPolygon = this.getAreaByPolygon.bind(this);
-        this.setTimeout = null;
-        this._first = new Date(), this._second = null, this._interval = 250;
-    }
-
-    _createClass(PolygonEditorOverlay, [{
-        key: '_init',
-        value: function _init(map) {
-            this.map = map;
-            this.map.addOverlay(this.overlay);
-            this.overlay.setPath(this.points);
-            this.bingMoveEvent();
-            this.copy();
-            if (this.map.inmapToolBar) {
-                this.ToolTip = this.map.inmapToolBar.toolTip;
-                this.ToolTip.setOption(this.toolTipConfig);
-                this.getAreaByPolygon();
-            }
-        }
-    }, {
-        key: 'bingMoveEvent',
-        value: function bingMoveEvent() {
-            this.map.addEventListener('click', this.clickAction);
-            this.map.addEventListener('mousemove', this.mousemoveAction);
-        }
-    }, {
-        key: 'removeMoveEvent',
-        value: function removeMoveEvent() {
-            this.map.removeEventListener('mousedown', this.startAction);
-            this.map.removeEventListener('click', this.clickAction);
-        }
-    }, {
-        key: 'showAreaText',
-        value: function showAreaText() {
-            this.toolTipConfig.show = true;
-        }
-    }, {
-        key: 'hideAreaText',
-        value: function hideAreaText() {
-            this.toolTipConfig.show = false;
-        }
-    }, {
-        key: 'getAreaByPolygon',
-        value: function getAreaByPolygon() {
-            var _this = this;
-
-            if (!this.isClick && this.toolTipConfig.show) {
-                var geos = this.overlay.getPath();
-                var areas = _GeoUtils2.default.getPolygonArea(geos);
-                var center = this.getGeoCenter(geos);
-                var pixel = this.map.pointToOverlayPixel(new BMap.Point(center.lng, center.lat));
-                this.ToolTip && this.ToolTip.showCenterText('\u9762\u79EF\uFF1A' + parseInt(areas) + '\u5E73\u65B9\u7C73', pixel.x + this.map.offsetX, pixel.y + this.map.offsetY);
-            } else {
-                this.ToolTip && this.ToolTip.hide();
-            }
-            this.setTimeout = setTimeout(function () {
-                if (_this.getAreaByPolygon) {
-                    _this.getAreaByPolygon();
-                } else {
-                    clearTimeout(_this.setTimeout);
-                }
-            }, 800);
-        }
-    }, {
-        key: 'getGeoCenter',
-        value: function getGeoCenter(geo) {
-            var minX = geo[0].lng;
-            var maxX = geo[0].lng;
-            var minY = geo[0].lat;
-            var maxY = geo[0].lat;
-            for (var i = 1; i < geo.length; i++) {
-                minX = Math.min(minX, geo[i].lng);
-                maxX = Math.max(maxX, geo[i].lng);
-                minY = Math.min(minY, geo[i].lat);
-                maxY = Math.max(maxY, geo[i].lat);
-            }
-            return {
-                lng: minX + (maxX - minX) / 2,
-                lat: minY + (maxY - minY) / 2
-            };
-        }
-    }, {
-        key: 'clickAction',
-        value: function clickAction(e) {
-            this._second = new Date();
-
-            if (this.isClick) {
-                if (this._second - this._first <= this._interval) {
-                    this._first = new Date();
-                    this.dblclickAction(e);
-                } else {
-                    this._first = new Date();
-                    this.startAction(e);
-                }
-            } else {
-                if (this._second - this._first <= this._interval) {
-                    this._first = new Date();
-                    var index = this.findIndexVectis(e.pixel);
-                    if (index > -1) {
-                        this.drawPoint.splice(index, 1);
-                        this.overlay.setPath(this.drawPoint);
-                    }
-                } else {
-                    this._first = new Date();
-                }
-            }
-            this.getAreaByPolygon();
-        }
-    }, {
-        key: 'findIndexVectis',
-        value: function findIndexVectis(_ref) {
-            var _this2 = this;
-
-            var x = _ref.x,
-                y = _ref.y;
-
-            this.pixels = this.overlay.getPath().map(function (item) {
-                return _this2.map.pointToOverlayPixel(item);
-            });
-
-            var r = this._vectisWidth / 2;
-
-            for (var i = 0; i < this.pixels.length; i++) {
-                var item = this.pixels[i];
-                if (this._isMouseOver(x, y, item.x - r, item.y - r, this._vectisWidth, this._vectisWidth)) {
-                    return i;
-                }
-            }
-            return -1;
-        }
-    }, {
-        key: '_isMouseOver',
-        value: function _isMouseOver(mouseX, mouseY, x, y, w, h) {
-            return !(mouseX < x || mouseX > x + w || mouseY < y || mouseY > y + h);
-        }
-    }, {
-        key: 'dispose',
-        value: function dispose() {
-            clearTimeout(this.setTimeout);
-            this.ToolTip && this.ToolTip.hide();
-            this.removeMoveEvent();
-            this.map.removeOverlay(this.overlay);
-            for (var key in this.overlay) {
-                this.overlay[key] = null;
-            }
-            for (var _key in this) {
-                this[_key] = null;
-            }
-            this.isDispose = true;
-        }
-    }, {
-        key: 'startAction',
-        value: function startAction(e) {
-
-            var points = this.points;
-            points.push(e.point);
-            this.drawPoint = points.concat(points[points.length - 1]);
-            this.overlay.setPath(this.drawPoint);
-
-            if (!this._isBinded) {
-                this._isBinded = true;
-            }
-        }
-    }, {
-        key: 'translation',
-        value: function translation(x, y) {
-            var _this3 = this;
-
-            this.pixels = this.overlay.getPath().map(function (item) {
-                return _this3.map.pointToOverlayPixel(item);
-            });
-            for (var i = 0; i < this.pixels.length; i++) {
-                var item = this.pixels[i];
-                item.x = item.x + x;
-                item.y = item.y + y;
-            }
-
-            this.drawPoint = this.pixels.map(function (item) {
-                return _this3.map.overlayPixelToPoint(item);
-            });
-
-            this.overlay.setPath(this.drawPoint);
-        }
-    }, {
-        key: 'mousemoveAction',
-        value: function mousemoveAction(e) {
-            if (!this._isBinded) {
-                return;
-            }
-            this.overlay.setPositionAt(this.drawPoint.length - 1, e.point);
-        }
-    }, {
-        key: 'dblclickAction',
-        value: function dblclickAction() {
-            if (!this._isBinded) {
-                return;
-            }
-            this.map.removeEventListener('mousemove', this.mousemoveAction);
-            this._isBinded = false;
-            this.isClick = false;
-            this.drawPoint.pop();
-            this.overlay.setPath(this.drawPoint);
-        }
-    }, {
-        key: 'copy',
-        value: function copy() {
-            var _this4 = this;
-
-            ['setStrokeColor', 'getStrokeColor', 'setFillColor', 'getFillColor', 'setStrokeOpacity', 'getStrokeOpacity', 'setFillOpacity', 'getFillOpacity', 'setStrokeWeight', 'getStrokeWeight', 'setStrokeStyle', 'getStrokeStyle', 'getBounds', 'enableEditing', 'disableEditing', 'enableMassClear', 'disableMassClear', 'setPositionAt', 'getMap', 'addEventListener', 'removeEventListener'].forEach(function (key) {
-                _this4[key] = _this4.overlay[key].bind(_this4.overlay);
-            });
-        }
-    }, {
-        key: '_geoJsonToPoint',
-        value: function _geoJsonToPoint(data) {
-            if (data.geometry) {
-                return data.geometry.coordinates.map(function (item) {
-                    return {
-                        lng: item[0],
-                        lat: item[1]
-                    };
-                });
-            } else {
-                return [];
-            }
-        }
-    }, {
-        key: 'setPath',
-        value: function setPath(data) {
-            var point = this._geoJsonToPoint(data);
-            this.overlay.setPath(point);
-        }
-    }, {
-        key: 'getPath',
-        value: function getPath() {
-            var data = this.overlay.getPath();
-            var coordinates = data.map(function (item) {
-                return [item.lng, item.lat];
-            });
-            return {
-                geometry: {
-                    type: 'Polygon',
-                    coordinates: coordinates
-                }
-            };
-        }
-    }]);
-
-    return PolygonEditorOverlay;
-}();
-
-exports.default = PolygonEditorOverlay;
-
-/***/ }),
-/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7136,7 +6253,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 59 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7453,6 +6570,888 @@ var GeoUtils;
     };
 })();
 exports.default = GeoUtils;
+
+/***/ }),
+/* 48 */,
+/* 49 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.workerMrg = exports.LineStringAnimationOverlay = exports.PointAnimationOverlay = exports.MoveLineOverlay = exports.ImgOverlay = exports.HoneycombOverlay = exports.LineStringOverlay = exports.HeatOverlay = exports.PolygonEditorOverlay = exports.PolygonOverlay = exports.GriddingOverlay = exports.PointOverlay = exports.Map = exports.utils = exports.version = undefined;
+
+var _PointOverlay = __webpack_require__(22);
+
+var _PointOverlay2 = _interopRequireDefault(_PointOverlay);
+
+var _GriddingOverlay = __webpack_require__(14);
+
+var _GriddingOverlay2 = _interopRequireDefault(_GriddingOverlay);
+
+var _PolygonOverlay = __webpack_require__(23);
+
+var _PolygonOverlay2 = _interopRequireDefault(_PolygonOverlay);
+
+var _HeatOverlay = __webpack_require__(15);
+
+var _HeatOverlay2 = _interopRequireDefault(_HeatOverlay);
+
+var _LineStringOverlay = __webpack_require__(19);
+
+var _LineStringOverlay2 = _interopRequireDefault(_LineStringOverlay);
+
+var _HoneycombOverlay = __webpack_require__(16);
+
+var _HoneycombOverlay2 = _interopRequireDefault(_HoneycombOverlay);
+
+var _ImgOverlay = __webpack_require__(17);
+
+var _ImgOverlay2 = _interopRequireDefault(_ImgOverlay);
+
+var _MoveLineOverlay = __webpack_require__(20);
+
+var _MoveLineOverlay2 = _interopRequireDefault(_MoveLineOverlay);
+
+var _PointAnimationOverlay = __webpack_require__(21);
+
+var _PointAnimationOverlay2 = _interopRequireDefault(_PointAnimationOverlay);
+
+var _LineStringAnimationOverlay = __webpack_require__(18);
+
+var _LineStringAnimationOverlay2 = _interopRequireDefault(_LineStringAnimationOverlay);
+
+var _PolygonEditorOverlay = __webpack_require__(10);
+
+var _PolygonEditorOverlay2 = _interopRequireDefault(_PolygonEditorOverlay);
+
+var _index = __webpack_require__(13);
+
+var _index2 = _interopRequireDefault(_index);
+
+var _util = __webpack_require__(0);
+
+var utils = _interopRequireWildcard(_util);
+
+var _workerMrg = __webpack_require__(9);
+
+var _workerMrg2 = _interopRequireDefault(_workerMrg);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var version = "2.0.0";
+console.log('inMap v' + version);
+
+var inMap = {
+    version: version,
+    utils: utils,
+    Map: _index2.default,
+    PointOverlay: _PointOverlay2.default,
+    GriddingOverlay: _GriddingOverlay2.default,
+    PolygonOverlay: _PolygonOverlay2.default,
+    PolygonEditorOverlay: _PolygonEditorOverlay2.default,
+    HeatOverlay: _HeatOverlay2.default,
+    LineStringOverlay: _LineStringOverlay2.default,
+    HoneycombOverlay: _HoneycombOverlay2.default,
+    ImgOverlay: _ImgOverlay2.default,
+    MoveLineOverlay: _MoveLineOverlay2.default,
+    PointAnimationOverlay: _PointAnimationOverlay2.default,
+    LineStringAnimationOverlay: _LineStringAnimationOverlay2.default,
+    workerMrg: _workerMrg2.default
+};
+exports.version = version;
+exports.utils = utils;
+exports.Map = _index2.default;
+exports.PointOverlay = _PointOverlay2.default;
+exports.GriddingOverlay = _GriddingOverlay2.default;
+exports.PolygonOverlay = _PolygonOverlay2.default;
+exports.PolygonEditorOverlay = _PolygonEditorOverlay2.default;
+exports.HeatOverlay = _HeatOverlay2.default;
+exports.LineStringOverlay = _LineStringOverlay2.default;
+exports.HoneycombOverlay = _HoneycombOverlay2.default;
+exports.ImgOverlay = _ImgOverlay2.default;
+exports.MoveLineOverlay = _MoveLineOverlay2.default;
+exports.PointAnimationOverlay = _PointAnimationOverlay2.default;
+exports.LineStringAnimationOverlay = _LineStringAnimationOverlay2.default;
+exports.workerMrg = _workerMrg2.default;
+exports.default = inMap;
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _Color = __webpack_require__(5);
+
+var _Color2 = _interopRequireDefault(_Color);
+
+var _Legend = __webpack_require__(39);
+
+var _Legend2 = _interopRequireDefault(_Legend);
+
+var _util = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Legend = function () {
+    function Legend(toolDom, opts) {
+        _classCallCheck(this, Legend);
+
+        this.opts = opts || _Legend2.default;
+        this.dom = this.crateDom(toolDom);
+        this.hide();
+    }
+
+    _createClass(Legend, [{
+        key: 'crateDom',
+        value: function crateDom(toolDom) {
+            var div = document.createElement('div');
+            div.classList.add('inmap-legend');
+            toolDom.appendChild(div);
+            return div;
+        }
+    }, {
+        key: 'show',
+        value: function show() {
+            this.dom.style.display = 'inline-block';
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            this.dom.style.display = 'none';
+        }
+    }, {
+        key: 'toFixed',
+        value: function toFixed(num) {
+            return isNaN(num) ? num : parseFloat(num).toFixed(this.opts.toFixed);
+        }
+    }, {
+        key: 'setTitle',
+        value: function setTitle(title) {
+            this.opts.title = title;
+            this.render();
+        }
+    }, {
+        key: 'setOption',
+        value: function setOption(opts) {
+            this.opts = (0, _util.merge)(_Legend2.default, this.opts, opts);
+            this.opts.list = this.opts.list || [];
+            this.render();
+        }
+    }, {
+        key: 'setItems',
+        value: function setItems(list) {
+            this.opts.list = list;
+            this.render();
+        }
+    }, {
+        key: '_verify',
+        value: function _verify() {
+            var _opts = this.opts,
+                show = _opts.show,
+                title = _opts.title,
+                list = _opts.list;
+
+            if (!(0, _util.isBoolean)(show)) {
+                throw new TypeError('inMap: legend options show must be a Boolean');
+            }
+            if (!(0, _util.isEmpty)(title) && !(0, _util.isString)(title)) {
+                throw new TypeError('inMap: legend options title must be a String');
+            }
+            if (!(0, _util.isArray)(list)) {
+                throw new TypeError('inMap: legend options list must be a Array');
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this = this;
+
+            this._verify();
+            var _opts2 = this.opts,
+                show = _opts2.show,
+                title = _opts2.title,
+                list = _opts2.list;
+
+            if (show) {
+                this.show();
+            } else {
+                this.hide();
+                return;
+            }
+
+            var str = '';
+            if (title) {
+                str = '<div class="inmap-legend-title">' + title + ' </div>';
+            }
+
+            str += '<table cellpadding="0" cellspacing="0">';
+            list.forEach(function (val, index) {
+                var text = null,
+                    backgroundColor = val.backgroundColor;
+                var isShow = backgroundColor != null;
+                var legendBg = new _Color2.default(backgroundColor),
+                    difference = 0.2;
+
+                var opacity = val.opacity;
+                if (opacity) {
+                    opacity += difference;
+                }
+                if (legendBg.a) {
+                    opacity = legendBg.a + difference;
+                } else {
+                    opacity = 1;
+                }
+                backgroundColor = legendBg.getRgbaStyle(opacity);
+                if (val.text) {
+                    text = val.text;
+                } else if (_this.opts.formatter) {
+                    text = _this.opts.formatter(_this.toFixed(val.start), _this.toFixed(val.end), index, val);
+                } else {
+                    text = _this.toFixed(val.start) + ' ~ ' + (val.end == null ? '<span class="inmap-infinity"></span>' : _this.toFixed(val.end));
+                }
+                var td = isShow ? ' <td style="background:' + backgroundColor + '; width:17px;"></td>' : '';
+                str += '\n                <tr>\n                   ' + td + '\n                    <td class="inmap-legend-text">\n                       ' + text + '\n                    </td>\n                </tr>\n                ';
+            });
+            str += '</table>';
+            if (list.length <= 0) {
+                this.hide();
+            }
+            this.dom.innerHTML = str;
+        }
+    }, {
+        key: 'dispose',
+        value: function dispose(parentDom) {
+            parentDom.removeChild(this.dom);
+            this.opts = null;
+            this.dom = null;
+        }
+    }]);
+
+    return Legend;
+}();
+
+exports.default = Legend;
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ToolTip = function () {
+    function ToolTip(toolDom) {
+        _classCallCheck(this, ToolTip);
+
+        this.dom = this.create(toolDom);
+        this.tooltipTemplate = null;
+        this.opts = {};
+        this.hide();
+    }
+
+    _createClass(ToolTip, [{
+        key: 'create',
+        value: function create(toolDom) {
+            var dom = document.createElement('div');
+            dom.classList.add('inmap-tooltip');
+            toolDom.appendChild(dom);
+            return dom;
+        }
+    }, {
+        key: 'compileTooltipTemplate',
+        value: function compileTooltipTemplate(formatter) {
+            formatter = '`' + formatter.replace(/\{/g, '${overItem.') + '`';
+            this.tooltipTemplate = new Function('overItem', 'return ' + formatter);
+        }
+    }, {
+        key: 'show',
+        value: function show(x, y) {
+            var _opts$offsets = this.opts.offsets,
+                left = _opts$offsets.left,
+                top = _opts$offsets.top;
+
+            this.dom.style.left = x + left + 'px';
+            this.dom.style.top = y + top + 'px';
+            this.dom.style.display = 'block';
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            this.dom.style.display = 'none';
+        }
+    }, {
+        key: 'setOption',
+        value: function setOption(opts) {
+            var result = (0, _util.merge)(this.opts, opts);
+            var formatter = result.formatter,
+                customClass = result.customClass;
+
+
+            if ((0, _util.isString)(formatter)) {
+                this.compileTooltipTemplate(result.formatter);
+            }
+
+            if (this.opts.customClass) {
+                this.dom.classList.remove(this.opts.customClass);
+            }
+
+            this.dom.classList.add(customClass);
+            this.opts = result;
+        }
+    }, {
+        key: 'render',
+        value: function render(event, overItem) {
+            if (!this.opts.show) return;
+            if (overItem) {
+                var formatter = this.opts.formatter;
+                if ((0, _util.isFunction)(formatter)) {
+                    this.dom.innerHTML = formatter(overItem);
+                } else if ((0, _util.isString)(formatter)) {
+                    this.dom.innerHTML = this.tooltipTemplate(overItem);
+                }
+                this.show(event.offsetX, event.offsetY);
+            } else {
+                this.hide();
+            }
+        }
+    }]);
+
+    return ToolTip;
+}();
+
+exports.default = ToolTip;
+
+/***/ }),
+/* 52 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MapZoom = function () {
+    function MapZoom(map, mapDom, opts) {
+        _classCallCheck(this, MapZoom);
+
+        this.map = map;
+        this.mapDom = mapDom;
+        this.zoom = opts;
+        this.createDom();
+    }
+
+    _createClass(MapZoom, [{
+        key: 'createDom',
+        value: function createDom() {
+            var div = document.createElement('div');
+            div.classList.add('inmap-scale-group');
+            div.innerHTML = '<a>+</a > <a>-</a >';
+            this.mapDom.appendChild(div);
+            this.event(div);
+        }
+    }, {
+        key: 'setButtonState',
+        value: function setButtonState() {
+            var doms = this.mapDom.querySelectorAll('.inmap-scale-group a');
+            var zoom = this.map.getZoom();
+            if (zoom >= this.zoom.max) {
+                doms[0].setAttribute('disabled', 'true');
+            } else {
+                doms[0].removeAttribute('disabled');
+            }
+            if (zoom <= this.zoom.min) {
+                doms[1].setAttribute('disabled', 'true');
+            } else {
+                doms[1].removeAttribute('disabled');
+            }
+        }
+    }, {
+        key: 'event',
+        value: function event(div) {
+            var _this = this;
+
+            var doms = div.querySelectorAll('a');
+            doms[0].addEventListener('click', function () {
+                var zoom = _this.map.getZoom();
+                if (zoom < _this.zoom.max) {
+                    _this.map.zoomIn();
+                }
+            });
+            doms[1].addEventListener('click', function () {
+                var zoom = _this.map.getZoom();
+                if (zoom > _this.zoom.min) {
+                    _this.map.zoomOut();
+                }
+            });
+        }
+    }]);
+
+    return MapZoom;
+}();
+
+exports.default = MapZoom;
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _util = __webpack_require__(0);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var BatchesData = function () {
+    function BatchesData(option) {
+        _classCallCheck(this, BatchesData);
+
+        this.setOption(option);
+        this.intervalId = null;
+        this.splitArray = [];
+        this.index = 0;
+    }
+
+    _createClass(BatchesData, [{
+        key: 'setOption',
+        value: function setOption(_ref) {
+            var _ref$interval = _ref.interval,
+                interval = _ref$interval === undefined ? 400 : _ref$interval,
+                _ref$splitCount = _ref.splitCount,
+                splitCount = _ref$splitCount === undefined ? 1500 : _ref$splitCount;
+
+            this.clear();
+            this.interval = interval;
+            this.splitCount = splitCount;
+        }
+    }, {
+        key: 'clear',
+        value: function clear() {
+            this.splitArray = [];
+            this.index = 0;
+            if (this.intervalId) {
+                clearInterval(this.intervalId);
+            }
+        }
+    }, {
+        key: 'action',
+        value: function action(data, callback, ctx) {
+            var _this = this;
+
+            this.clear();
+            var splitCount = this.splitCount,
+                interval = this.interval;
+
+
+            this.splitArray = (0, _util.chunk)(data, splitCount);
+
+            var loop = function loop() {
+                var item = _this.splitArray[_this.index];
+                item && callback(ctx, item);
+
+                _this.index++;
+
+                if (_this.index >= _this.splitArray.length - 1) {
+                    _this.clear();
+                } else {
+                    _this.intervalId = setTimeout(loop, interval);
+                }
+            };
+            loop();
+        }
+    }]);
+
+    return BatchesData;
+}();
+
+exports.default = BatchesData;
+
+/***/ }),
+/* 54 */,
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(56)();
+// imports
+
+
+// module
+exports.push([module.i, ".inmap-container {\n  opacity: 1;\n  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;\n}\n.inmap-container,\n.inmap-container *:after,\n.inmap-container *:before {\n  display: -webkit-box;\n}\n.inmap-scale-group {\n  position: absolute;\n  right: 10px;\n  bottom: 35px;\n  z-index: 999999;\n  opacity: 1;\n}\n.inmap-scale-group > a {\n  display: block;\n  width: 24px;\n  height: 24px;\n  font-size: 17px;\n  line-height: 22px;\n  text-align: center;\n  background: #fff;\n  margin-top: 5px;\n  color: #666;\n  cursor: pointer;\n  text-decoration: none;\n}\n.inmap-scale-group > a[disabled] {\n  color: rgba(187, 190, 196, 0.6);\n  background-color: #f7f7f7;\n  border-color: #dddee1;\n}\n.inmap-tooltip {\n  position: absolute;\n  opacity: 1;\n  display: none;\n  pointer-events: none;\n  border-style: solid;\n  white-space: nowrap;\n  z-index: 9999999;\n  transition: left 0.4s cubic-bezier(0.23, 1, 0.32, 1), top 0.4s cubic-bezier(0.23, 1, 0.32, 1);\n  border-radius: 4px;\n  font-style: normal;\n  font-variant: normal;\n  font-weight: normal;\n  font-stretch: normal;\n  font-size: 14px;\n  font-family: sans-serif;\n  line-height: 21px;\n  padding: 5px;\n  left: 323px;\n  top: 451px;\n}\n.inmap-tooltip-black {\n  border-width: 0px;\n  border-color: #333333;\n  background-color: rgba(50, 50, 50, 0.7);\n  color: #ffffff;\n}\n.inmap-legend-container {\n  position: absolute;\n  left: 35px;\n  bottom: 35px;\n  z-index: 9999;\n}\n.inmap-legend {\n  list-style: none;\n  opacity: 1;\n  height: auto;\n  font-size: 12px;\n  text-align: center;\n  border: 10px solid rgba(255, 255, 255, 0.7);\n  box-shadow: rgba(8, 16, 34, 0.3) 2px 0px 7px;\n  border-radius: 5px;\n  margin-right: 3px;\n}\n.inmap-legend .inmap-legend-title {\n  background-color: rgba(255, 255, 255, 0.7);\n  padding-bottom: 3px;\n}\n.inmap-legend > table {\n  width: 100%;\n}\n.inmap-legend table,\n.inmap-legend table tbody,\n.inmap-legend table tr,\n.inmap-legend table tr td {\n  padding: 0;\n  border: 0;\n  margin: 0;\n}\n.inmap-legend .inmap-chunk {\n  display: inline-block;\n  position: absolute;\n  top: 0;\n  right: 0;\n  bottom: 0;\n  left: 0;\n  width: 14px;\n}\n.inmap-legend .inmap-legend-text {\n  background-color: rgba(255, 255, 255, 0.7);\n  padding-left: 5px;\n  text-align: left;\n  font-size: 12px;\n}\n.inmap-legend .inmap-infinity {\n  top: 4px;\n  left: 7px;\n  position: relative;\n}\n.inmap-legend .inmap-infinity:before,\n.inmap-legend .inmap-infinity:after {\n  content: \"\";\n  box-sizing: border-box;\n  width: 6px;\n  height: 6px;\n  position: absolute;\n  top: 0;\n  left: 0;\n  border: 1px solid #495060;\n  -moz-border-radius: 50px 50px 0;\n  border-radius: 50px 50px 0 50px;\n  -webkit-transform: rotate(128deg);\n  -moz-transform: rotate(128deg);\n  -ms-transform: rotate(128deg);\n  -o-transform: rotate(128deg);\n  transform: rotate(128deg);\n}\n.inmap-legend .inmap-infinity:after {\n  left: auto;\n  right: 0;\n  -moz-border-radius: 50px 50px 50px 0;\n  border-radius: 50px 50px 50px 0;\n  -webkit-transform: rotate(-128deg);\n  -moz-transform: rotate(-128deg);\n  -ms-transform: rotate(-128deg);\n  -o-transform: rotate(-128deg);\n  transform: rotate(-128deg);\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 56 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function() {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		var result = [];
+		for(var i = 0; i < this.length; i++) {
+			var item = this[i];
+			if(item[2]) {
+				result.push("@media " + item[2] + "{" + item[1] + "}");
+			} else {
+				result.push(item[1]);
+			}
+		}
+		return result.join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+var stylesInDom = {},
+	memoize = function(fn) {
+		var memo;
+		return function () {
+			if (typeof memo === "undefined") memo = fn.apply(this, arguments);
+			return memo;
+		};
+	},
+	isOldIE = memoize(function() {
+		return /msie [6-9]\b/.test(self.navigator.userAgent.toLowerCase());
+	}),
+	getHeadElement = memoize(function () {
+		return document.head || document.getElementsByTagName("head")[0];
+	}),
+	singletonElement = null,
+	singletonCounter = 0,
+	styleElementsInsertedAtTop = [];
+
+module.exports = function(list, options) {
+	if(typeof DEBUG !== "undefined" && DEBUG) {
+		if(typeof document !== "object") throw new Error("The style-loader cannot be used in a non-browser environment");
+	}
+
+	options = options || {};
+	// Force single-tag solution on IE6-9, which has a hard limit on the # of <style>
+	// tags it will allow on a page
+	if (typeof options.singleton === "undefined") options.singleton = isOldIE();
+
+	// By default, add <style> tags to the bottom of <head>.
+	if (typeof options.insertAt === "undefined") options.insertAt = "bottom";
+
+	var styles = listToStyles(list);
+	addStylesToDom(styles, options);
+
+	return function update(newList) {
+		var mayRemove = [];
+		for(var i = 0; i < styles.length; i++) {
+			var item = styles[i];
+			var domStyle = stylesInDom[item.id];
+			domStyle.refs--;
+			mayRemove.push(domStyle);
+		}
+		if(newList) {
+			var newStyles = listToStyles(newList);
+			addStylesToDom(newStyles, options);
+		}
+		for(var i = 0; i < mayRemove.length; i++) {
+			var domStyle = mayRemove[i];
+			if(domStyle.refs === 0) {
+				for(var j = 0; j < domStyle.parts.length; j++)
+					domStyle.parts[j]();
+				delete stylesInDom[domStyle.id];
+			}
+		}
+	};
+}
+
+function addStylesToDom(styles, options) {
+	for(var i = 0; i < styles.length; i++) {
+		var item = styles[i];
+		var domStyle = stylesInDom[item.id];
+		if(domStyle) {
+			domStyle.refs++;
+			for(var j = 0; j < domStyle.parts.length; j++) {
+				domStyle.parts[j](item.parts[j]);
+			}
+			for(; j < item.parts.length; j++) {
+				domStyle.parts.push(addStyle(item.parts[j], options));
+			}
+		} else {
+			var parts = [];
+			for(var j = 0; j < item.parts.length; j++) {
+				parts.push(addStyle(item.parts[j], options));
+			}
+			stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
+		}
+	}
+}
+
+function listToStyles(list) {
+	var styles = [];
+	var newStyles = {};
+	for(var i = 0; i < list.length; i++) {
+		var item = list[i];
+		var id = item[0];
+		var css = item[1];
+		var media = item[2];
+		var sourceMap = item[3];
+		var part = {css: css, media: media, sourceMap: sourceMap};
+		if(!newStyles[id])
+			styles.push(newStyles[id] = {id: id, parts: [part]});
+		else
+			newStyles[id].parts.push(part);
+	}
+	return styles;
+}
+
+function insertStyleElement(options, styleElement) {
+	var head = getHeadElement();
+	var lastStyleElementInsertedAtTop = styleElementsInsertedAtTop[styleElementsInsertedAtTop.length - 1];
+	if (options.insertAt === "top") {
+		if(!lastStyleElementInsertedAtTop) {
+			head.insertBefore(styleElement, head.firstChild);
+		} else if(lastStyleElementInsertedAtTop.nextSibling) {
+			head.insertBefore(styleElement, lastStyleElementInsertedAtTop.nextSibling);
+		} else {
+			head.appendChild(styleElement);
+		}
+		styleElementsInsertedAtTop.push(styleElement);
+	} else if (options.insertAt === "bottom") {
+		head.appendChild(styleElement);
+	} else {
+		throw new Error("Invalid value for parameter 'insertAt'. Must be 'top' or 'bottom'.");
+	}
+}
+
+function removeStyleElement(styleElement) {
+	styleElement.parentNode.removeChild(styleElement);
+	var idx = styleElementsInsertedAtTop.indexOf(styleElement);
+	if(idx >= 0) {
+		styleElementsInsertedAtTop.splice(idx, 1);
+	}
+}
+
+function createStyleElement(options) {
+	var styleElement = document.createElement("style");
+	styleElement.type = "text/css";
+	insertStyleElement(options, styleElement);
+	return styleElement;
+}
+
+function createLinkElement(options) {
+	var linkElement = document.createElement("link");
+	linkElement.rel = "stylesheet";
+	insertStyleElement(options, linkElement);
+	return linkElement;
+}
+
+function addStyle(obj, options) {
+	var styleElement, update, remove;
+
+	if (options.singleton) {
+		var styleIndex = singletonCounter++;
+		styleElement = singletonElement || (singletonElement = createStyleElement(options));
+		update = applyToSingletonTag.bind(null, styleElement, styleIndex, false);
+		remove = applyToSingletonTag.bind(null, styleElement, styleIndex, true);
+	} else if(obj.sourceMap &&
+		typeof URL === "function" &&
+		typeof URL.createObjectURL === "function" &&
+		typeof URL.revokeObjectURL === "function" &&
+		typeof Blob === "function" &&
+		typeof btoa === "function") {
+		styleElement = createLinkElement(options);
+		update = updateLink.bind(null, styleElement);
+		remove = function() {
+			removeStyleElement(styleElement);
+			if(styleElement.href)
+				URL.revokeObjectURL(styleElement.href);
+		};
+	} else {
+		styleElement = createStyleElement(options);
+		update = applyToTag.bind(null, styleElement);
+		remove = function() {
+			removeStyleElement(styleElement);
+		};
+	}
+
+	update(obj);
+
+	return function updateStyle(newObj) {
+		if(newObj) {
+			if(newObj.css === obj.css && newObj.media === obj.media && newObj.sourceMap === obj.sourceMap)
+				return;
+			update(obj = newObj);
+		} else {
+			remove();
+		}
+	};
+}
+
+var replaceText = (function () {
+	var textStore = [];
+
+	return function (index, replacement) {
+		textStore[index] = replacement;
+		return textStore.filter(Boolean).join('\n');
+	};
+})();
+
+function applyToSingletonTag(styleElement, index, remove, obj) {
+	var css = remove ? "" : obj.css;
+
+	if (styleElement.styleSheet) {
+		styleElement.styleSheet.cssText = replaceText(index, css);
+	} else {
+		var cssNode = document.createTextNode(css);
+		var childNodes = styleElement.childNodes;
+		if (childNodes[index]) styleElement.removeChild(childNodes[index]);
+		if (childNodes.length) {
+			styleElement.insertBefore(cssNode, childNodes[index]);
+		} else {
+			styleElement.appendChild(cssNode);
+		}
+	}
+}
+
+function applyToTag(styleElement, obj) {
+	var css = obj.css;
+	var media = obj.media;
+
+	if(media) {
+		styleElement.setAttribute("media", media)
+	}
+
+	if(styleElement.styleSheet) {
+		styleElement.styleSheet.cssText = css;
+	} else {
+		while(styleElement.firstChild) {
+			styleElement.removeChild(styleElement.firstChild);
+		}
+		styleElement.appendChild(document.createTextNode(css));
+	}
+}
+
+function updateLink(linkElement, obj) {
+	var css = obj.css;
+	var sourceMap = obj.sourceMap;
+
+	if(sourceMap) {
+		// http://stackoverflow.com/a/26603875
+		css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
+	}
+
+	var blob = new Blob([css], { type: "text/css" });
+
+	var oldSrc = linkElement.href;
+
+	linkElement.href = URL.createObjectURL(blob);
+
+	if(oldSrc)
+		URL.revokeObjectURL(oldSrc);
+}
+
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(55);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// add the styles to the DOM
+var update = __webpack_require__(57)(content, {});
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./map.less", function() {
+			var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/less-loader/index.js!./map.less");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ })
 /******/ ]);
