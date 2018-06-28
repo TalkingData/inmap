@@ -1855,7 +1855,7 @@ var LineStringOverlay = exports.LineStringOverlay = {
             }
             var medianCoordinates = item.geometry.medianCoordinates;
             var paths = [];
-            for (var k = 0, len = medianCoordinates.length; k < len; k += 2) {
+            for (var k = 0, len = medianCoordinates.length; k < len - 1; k++) {
                 var lngLat1 = medianCoordinates[k];
                 var lngLat2 = medianCoordinates[k + 1];
                 var x1 = (lngLat1[0] - nwMc.x) / zoomUnit;

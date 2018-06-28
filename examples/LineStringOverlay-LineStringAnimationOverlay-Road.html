@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>LineStringOverlay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+    <script>
+    </script>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="./data/car.js"></script>
+    <script src="../dist/inmap.js"></script>
+
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    var map = new inMap.Map({
+        id: 'allmap',
+        skin: 'Blueness',
+        center: [106.563777, 29.578285],
+        zoom: {
+            value: 12,
+            show: true,
+            max: 22
+        }
+    });
+    var data2 = [].concat(data);
+
+
+
+
+
+
+    var overlay = new inMap.LineStringOverlay({
+        style: {
+            normal: {
+                // globalCompositeOperation: 'lighter',
+                borderColor: 'rgba(50, 50, 255, 0.8)',
+                borderWidth: 2,
+            },
+        },
+        data: data,
+        event: {
+            onState(state) {
+                console.log(state);
+            }
+        }
+    });
+
+    map.add(overlay);
+
+
+    data2.length = 100;
+    var overlay2 = new inMap.LineStringAnimationOverlay({
+        style: {
+            //移动点半径
+            size: 1,
+            //移动点颜色
+            fillColor: 'rgba(255, 250, 250, 0.9)',
+            //移动点阴影大小
+            shadowBlur: 0,
+            fps: 20,
+            lineOrCurve: 'curve', //cuare or line
+            // deltaAngle: 50 //动画散点个数
+        },
+        data: data2,
+        event: {
+            onState(state) {
+                console.log(state);
+            }
+        }
+    });
+    map.add(overlay2);
+</script>

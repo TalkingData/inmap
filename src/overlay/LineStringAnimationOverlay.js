@@ -74,7 +74,6 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
     }
     _setStyle(config, ops) {
         let option = merge(config, ops);
-
         this.styleConfig = option.style;
         this.eventConfig = option.event;
         this.tMapStyle(option.skin);

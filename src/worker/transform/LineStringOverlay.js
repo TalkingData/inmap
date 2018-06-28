@@ -57,7 +57,7 @@ export let LineStringOverlay = {
             }
             let medianCoordinates = item.geometry.medianCoordinates;
             let paths = [];
-            for (let k = 0, len = medianCoordinates.length; k < len; k += 2) {
+            for (let k = 0, len = medianCoordinates.length; k < len - 1; k++) {
                 let lngLat1 = medianCoordinates[k];
                 let lngLat2 = medianCoordinates[k + 1];
                 let x1 = (lngLat1[0] - nwMc.x) / zoomUnit;

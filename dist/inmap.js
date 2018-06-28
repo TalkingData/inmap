@@ -3711,7 +3711,6 @@ var LineStringAnimationOverlay = function (_CanvasOverlay) {
         key: '_setStyle',
         value: function _setStyle(config, ops) {
             var option = (0, _util.merge)(config, ops);
-
             this.styleConfig = option.style;
             this.eventConfig = option.event;
             this.tMapStyle(option.skin);
