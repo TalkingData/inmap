@@ -1,15 +1,9 @@
 /*
  * 点的绘制
  */
-import {
-    CanvasOverlay
-} from './base/CanvasOverlay.js';
-import {
-    Label
-} from './../worker/helper/Label';
-import {
-    Parameter
-} from './base/Parameter';
+import CanvasOverlay from './base/CanvasOverlay.js';
+import Label from './../worker/helper/Label';
+import Parameter from './base/Parameter';
 import {
     isEmpty,
     detectmob,
@@ -18,7 +12,7 @@ import BatchesData from './base/BatchesData';
 import PointConfig from '../config/PointConfig';
 import State from './../config/OnState';
 let isMobile = detectmob();
-export class PointOverlay extends Parameter {
+export default class PointOverlay extends Parameter {
     constructor(opts) {
         super(PointConfig, opts);
 

@@ -1,4 +1,4 @@
-export class Label {
+export default class Label {
     constructor(x, y, radius, height, byteWidth, name) {
         this.center = {
             x,

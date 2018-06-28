@@ -1146,7 +1146,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Label = exports.Label = function () {
+var Label = function () {
     function Label(x, y, radius, height, byteWidth, name) {
         _classCallCheck(this, Label);
 
@@ -1319,6 +1319,8 @@ var Label = exports.Label = function () {
     return Label;
 }();
 
+exports.default = Label;
+
 /***/ }),
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -1447,11 +1449,10 @@ module.exports = deepmerge_1;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.GriddingOverlay = undefined;
 
 var _pointToPixel = __webpack_require__(3);
 
-var GriddingOverlay = exports.GriddingOverlay = {
+var GriddingOverlay = {
     toRecGrids: function toRecGrids(webObj) {
         var _webObj$request$data = webObj.request.data,
             points = _webObj$request$data.points,
@@ -1565,6 +1566,7 @@ var GriddingOverlay = exports.GriddingOverlay = {
         };
     }
 };
+exports.default = GriddingOverlay;
 
 /***/ }),
 /* 24 */
@@ -1576,11 +1578,10 @@ var GriddingOverlay = exports.GriddingOverlay = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.HeatOverlay = undefined;
 
 var _pointToPixel = __webpack_require__(3);
 
-var HeatOverlay = exports.HeatOverlay = {
+var HeatOverlay = {
     pointsToPixels: function pointsToPixels(webObj) {
         webObj.request.data.forEach(function (val) {
             var point = val.geometry.coordinates;
@@ -1593,6 +1594,7 @@ var HeatOverlay = exports.HeatOverlay = {
         return webObj;
     }
 };
+exports.default = HeatOverlay;
 
 /***/ }),
 /* 25 */
@@ -1604,11 +1606,10 @@ var HeatOverlay = exports.HeatOverlay = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.HoneycombOverlay = undefined;
 
 var _pointToPixel = __webpack_require__(3);
 
-var HoneycombOverlay = exports.HoneycombOverlay = {
+var HoneycombOverlay = {
     toRecGrids: function toRecGrids(webObj) {
         var _webObj$request$data = webObj.request.data,
             points = _webObj$request$data.points,
@@ -1725,6 +1726,7 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
         };
     }
 };
+exports.default = HoneycombOverlay;
 
 /***/ }),
 /* 26 */
@@ -1736,11 +1738,10 @@ var HoneycombOverlay = exports.HoneycombOverlay = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.LablEvading = undefined;
 
 var _Label = __webpack_require__(7);
 
-var LablEvading = exports.LablEvading = {
+var LablEvading = {
     merge: function merge(webObj) {
         var _webObj$request$data = webObj.request.data,
             pixels = _webObj$request$data.pixels,
@@ -1789,6 +1790,7 @@ var LablEvading = exports.LablEvading = {
         };
     }
 };
+exports.default = LablEvading;
 
 /***/ }),
 /* 27 */
@@ -1800,13 +1802,12 @@ var LablEvading = exports.LablEvading = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.LineStringOverlay = undefined;
 
 var _pointToPixel = __webpack_require__(3);
 
 var _Curive = __webpack_require__(30);
 
-var LineStringOverlay = exports.LineStringOverlay = {
+var LineStringOverlay = {
     transferCoordinate: function transferCoordinate(_coordinates, nwMc, zoomUnit) {
         return _coordinates.map(function (item) {
             var x = (item[0] - nwMc.x) / zoomUnit;
@@ -1913,6 +1914,7 @@ var LineStringOverlay = exports.LineStringOverlay = {
         }
     }
 };
+exports.default = LineStringOverlay;
 
 /***/ }),
 /* 28 */
@@ -1924,11 +1926,12 @@ var LineStringOverlay = exports.LineStringOverlay = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.PolygonOverlay = undefined;
 
 var _pointToPixel = __webpack_require__(3);
 
 var _Point = __webpack_require__(31);
+
+var _Point2 = _interopRequireDefault(_Point);
 
 var _polylabel = __webpack_require__(32);
 
@@ -1936,7 +1939,7 @@ var _polylabel2 = _interopRequireDefault(_polylabel);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var PolygonOverlay = exports.PolygonOverlay = {
+var PolygonOverlay = {
     calculatePixel: function calculatePixel(webObj) {
         var data = webObj.request.data.data;
 
@@ -1949,7 +1952,7 @@ var PolygonOverlay = exports.PolygonOverlay = {
                 var geo = coordinates[i];
                 var tmp = [];
                 for (var k = 0; k < geo.length; k++) {
-                    var pixel = (0, _pointToPixel.pointToPixelWorker)(new _Point.Point(geo[k][0], geo[k][1]), map);
+                    var pixel = (0, _pointToPixel.pointToPixelWorker)(new _Point2.default(geo[k][0], geo[k][1]), map);
                     tmp.push([pixel.x, pixel.y]);
                 }
                 pixels.push(tmp);
@@ -1963,6 +1966,7 @@ var PolygonOverlay = exports.PolygonOverlay = {
         return webObj;
     }
 };
+exports.default = PolygonOverlay;
 
 /***/ }),
 /* 29 */
@@ -1974,11 +1978,10 @@ var PolygonOverlay = exports.PolygonOverlay = {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.PolymeOverlay = undefined;
 
 var _pointToPixel = __webpack_require__(3);
 
-var PolymeOverlay = exports.PolymeOverlay = {
+var PolymeOverlay = {
     mergeCount: 0,
 
     isMeet: function isMeet(a, b) {
@@ -2053,6 +2056,7 @@ var PolymeOverlay = exports.PolymeOverlay = {
         };
     }
 };
+exports.default = PolymeOverlay;
 
 /***/ }),
 /* 30 */
@@ -2173,7 +2177,6 @@ function getPointList(start, end, deltaAngle) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.Point = Point;
 
 var _util = __webpack_require__(0);
 
@@ -2479,27 +2482,42 @@ exports.TDpost = undefined;
 
 var _HeatOverlay = __webpack_require__(24);
 
+var _HeatOverlay2 = _interopRequireDefault(_HeatOverlay);
+
 var _GriddingOverlay = __webpack_require__(23);
+
+var _GriddingOverlay2 = _interopRequireDefault(_GriddingOverlay);
 
 var _PolygonOverlay = __webpack_require__(28);
 
+var _PolygonOverlay2 = _interopRequireDefault(_PolygonOverlay);
+
 var _LineStringOverlay = __webpack_require__(27);
+
+var _LineStringOverlay2 = _interopRequireDefault(_LineStringOverlay);
 
 var _HoneycombOverlay = __webpack_require__(25);
 
+var _HoneycombOverlay2 = _interopRequireDefault(_HoneycombOverlay);
+
 var _PolymeOverlay = __webpack_require__(29);
+
+var _PolymeOverlay2 = _interopRequireDefault(_PolymeOverlay);
 
 var _LablEvading = __webpack_require__(26);
 
+var _LablEvading2 = _interopRequireDefault(_LablEvading);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var callbackList = {
-    'HeatOverlay': _HeatOverlay.HeatOverlay,
-    'HeatTileOverlay': _HeatOverlay.HeatTileOverlay,
-    'GriddingOverlay': _GriddingOverlay.GriddingOverlay,
-    'PolygonOverlay': _PolygonOverlay.PolygonOverlay,
-    'LineStringOverlay': _LineStringOverlay.LineStringOverlay,
-    'HoneycombOverlay': _HoneycombOverlay.HoneycombOverlay,
-    'PolymeOverlay': _PolymeOverlay.PolymeOverlay,
-    'LablEvading': _LablEvading.LablEvading
+    'HeatOverlay': _HeatOverlay2.default,
+    'GriddingOverlay': _GriddingOverlay2.default,
+    'PolygonOverlay': _PolygonOverlay2.default,
+    'LineStringOverlay': _LineStringOverlay2.default,
+    'HoneycombOverlay': _HoneycombOverlay2.default,
+    'PolymeOverlay': _PolymeOverlay2.default,
+    'LablEvading': _LablEvading2.default
 };
 
 onmessage = function onmessage(e) {

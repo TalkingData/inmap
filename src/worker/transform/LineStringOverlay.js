@@ -5,7 +5,7 @@ import {
     getPointList,
     lineCurive
 } from './../../common/Curive';
-export let LineStringOverlay = {
+const LineStringOverlay = {
     transferCoordinate(_coordinates, nwMc, zoomUnit) {
         return _coordinates.map(function (item) {
             let x = (item[0] - nwMc.x) / zoomUnit;
@@ -115,3 +115,4 @@ export let LineStringOverlay = {
         }
     }
 };
+export default LineStringOverlay;

@@ -6,17 +6,13 @@ import {
     isArray,
     clearPushArray
 } from './../../common/util';
-import {
-    CanvasOverlay
-} from './CanvasOverlay';
-import {
-    Color
-} from './../../common/Color';
+import CanvasOverlay from './CanvasOverlay';
+import Color from './../../common/Color';
 let isMobile = detectmob();
 /**
  * 接头定义 参数解析类
  */
-export class Parameter extends CanvasOverlay {
+export default class Parameter extends CanvasOverlay {
     constructor(baseConfig, ops) {
         super();
         this.points = []; //数据

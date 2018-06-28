@@ -617,4 +617,4 @@ Colors.prototype = {
     }
 
 };
-export const Color = Colors;
+export default Colors;

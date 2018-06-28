@@ -1,10 +1,7 @@
-import {
-    Parameter
-} from './base/Parameter.js';
-
+import Parameter from './base/Parameter.js';
 import HoneycombConfig from './../config/HoneycombConfig.js';
 import State from './../config/OnState';
-export class HoneycombOverlay extends Parameter {
+export default class HoneycombOverlay extends Parameter {
     constructor(ops) {
         super(HoneycombConfig, ops);
         this.state = null;

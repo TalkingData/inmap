@@ -2,7 +2,7 @@ import {
     pointToPixelWorker
 } from '../../lib/pointToPixel';
 
-export const HeatOverlay = {
+const HeatOverlay = {
     pointsToPixels: function (webObj) {
         webObj.request.data.forEach((val) => {
             let point = val.geometry.coordinates;
@@ -15,3 +15,4 @@ export const HeatOverlay = {
         return webObj;
     }
 };
+export default HeatOverlay;

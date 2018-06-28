@@ -1,6 +1,4 @@
-import {
-    CanvasOverlay
-} from './base/CanvasOverlay.js';
+import CanvasOverlay from './base/CanvasOverlay.js';
 import {
     merge,
     isString,
@@ -197,7 +195,7 @@ class MarkLine {
     }
 }
 
-export class MoveLineOverlay extends BaseClass {
+export default class MoveLineOverlay extends BaseClass {
     constructor(opts) {
         super();
         this.markLines = [];

@@ -1,6 +1,4 @@
-import {
-    Parameter
-} from './base/Parameter';
+import Parameter from './base/Parameter';
 import ImgConfig from './../config/ImgConfig';
 import {
     isString
@@ -9,7 +7,7 @@ import State from './../config/OnState';
 /*
  * 点的绘制
  */
-export class ImgOverlay extends Parameter {
+export default class ImgOverlay extends Parameter {
     constructor(opts) {
         super(ImgConfig, opts);
         this.cacheImg = {}; //缓存图片对象

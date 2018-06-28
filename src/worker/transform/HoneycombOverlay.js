@@ -2,7 +2,7 @@ import {
     pointToPixelWorker
 } from '../../lib/pointToPixel';
 
-export let HoneycombOverlay = {
+const HoneycombOverlay = {
     toRecGrids: function (webObj) {
         let {
             points,
@@ -120,3 +120,4 @@ export let HoneycombOverlay = {
         };
     }
 };
+export default HoneycombOverlay;

@@ -1,7 +1,7 @@
 import {
     pointToPixelWorker
 } from '../../lib/pointToPixel';
-export let PolymeOverlay = {
+const PolymeOverlay = {
     mergeCount: 0,
     /*
      * 判断两个圆点是否相交
@@ -80,3 +80,4 @@ export let PolymeOverlay = {
         };
     }
 };
+export default PolymeOverlay;

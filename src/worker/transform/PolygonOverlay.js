@@ -2,11 +2,9 @@ import {
     pointToPixelWorker
 } from '../../lib/pointToPixel';
 
-import {
-    Point
-} from './../../common/Point';
+import Point from './../../common/Point';
 import polylabel from './../../common/polylabel';
-export let PolygonOverlay = {
+const PolygonOverlay = {
     calculatePixel: function (webObj) {
         let {
             data,
@@ -36,3 +34,4 @@ export let PolygonOverlay = {
         return webObj;
     }
 };
+export default PolygonOverlay;

@@ -15,7 +15,7 @@ import {isString} from './util';
  * @param {Object} lat 墨卡托Y(纬度);.
  * @return {Point} 返回一个地理点坐标对象.
  */
-export function Point(lng, lat) {
+function Point(lng, lat) {
     // 新增base64支持 - by jz
     if (isNaN(lng)) {
         

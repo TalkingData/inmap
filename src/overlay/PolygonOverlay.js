@@ -1,10 +1,5 @@
-import {
-    Parameter
-} from './base/Parameter.js';
-
-import {
-    Color
-} from './../common/Color';
+import Parameter from './base/Parameter.js';
+import Color from './../common/Color';
 import {
     clearPushArray
 } from './../common/util';
@@ -12,7 +7,7 @@ import PolygonConfig from '../config/PolygonConfig';
 import State from './../config/OnState';
 
 
-export class PolygonOverlay extends Parameter {
+export default class PolygonOverlay extends Parameter {
     constructor(ops) {
         super(PolygonConfig, ops);
         this.patchSplitList();

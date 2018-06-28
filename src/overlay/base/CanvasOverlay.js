@@ -13,7 +13,7 @@ import {
 import Toolbar from './../../map/Toolbar';
 let zIndex = 1;
 
-export class CanvasOverlay extends BaseClass {
+export default class CanvasOverlay extends BaseClass {
     constructor(opts) {
         super();
         this.ctx = null; //canvas对象

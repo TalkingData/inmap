@@ -7,13 +7,11 @@ import {
     isArray,
     clearPushArray
 } from './../common/util';
-import {
-    CanvasOverlay
-} from './base/CanvasOverlay';
+import CanvasOverlay from './base/CanvasOverlay';
 import LineStringConfig from '../config/LineStringConfig';
 import State from './../config/OnState';
 
-export class LineStringOverlay extends CanvasOverlay {
+export default class LineStringOverlay extends CanvasOverlay {
     constructor(ops) {
         super(ops);
         this.points = [];

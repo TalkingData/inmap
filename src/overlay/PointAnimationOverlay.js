@@ -1,6 +1,4 @@
-import {
-    CanvasOverlay
-} from './base/CanvasOverlay.js';
+import CanvasOverlay from './base/CanvasOverlay.js';
 import {
     merge
 } from './../common/util';

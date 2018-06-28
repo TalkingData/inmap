@@ -1,16 +1,12 @@
-import {
-    Parameter
-} from './base/Parameter.js';
-
+import Parameter from './base/Parameter.js';
 import GriddingConfig from './../config/GriddingConfig.js';
 import State from './../config/OnState';
-export class GriddingOverlay extends Parameter {
+export default class GriddingOverlay extends Parameter {
     constructor(ops) {
         super(GriddingConfig, ops);
         this.state = null;
         this._drawSize = 0;
         this.mpp = {};
-
     }
     parameterInit() {
 

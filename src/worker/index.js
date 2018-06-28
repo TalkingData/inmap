@@ -1,28 +1,12 @@
-import {
-    HeatOverlay,
-    HeatTileOverlay,
-} from './transform/HeatOverlay';
-import {
-    GriddingOverlay
-} from './transform/GriddingOverlay';
-import {
-    PolygonOverlay
-} from './transform/PolygonOverlay';
-import {
-    LineStringOverlay
-} from './transform/LineStringOverlay';
-import {
-    HoneycombOverlay
-} from './transform/HoneycombOverlay';
-import {
-    PolymeOverlay
-} from './transform/PolymeOverlay';
-import {
-    LablEvading
-} from './transform/LablEvading';
+import HeatOverlay from './transform/HeatOverlay';
+import GriddingOverlay from './transform/GriddingOverlay';
+import PolygonOverlay from './transform/PolygonOverlay';
+import LineStringOverlay from './transform/LineStringOverlay';
+import HoneycombOverlay from './transform/HoneycombOverlay';
+import PolymeOverlay from './transform/PolymeOverlay';
+import LablEvading from './transform/LablEvading';
 let callbackList = {
     'HeatOverlay': HeatOverlay,
-    'HeatTileOverlay': HeatTileOverlay,
     'GriddingOverlay': GriddingOverlay,
     'PolygonOverlay': PolygonOverlay,
     'LineStringOverlay': LineStringOverlay,

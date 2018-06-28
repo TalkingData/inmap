@@ -66,4 +66,4 @@
      }
  }
 
- export const workerMrg = new WorkerMrg();
+ export default new WorkerMrg();

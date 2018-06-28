@@ -1,6 +1,4 @@
-import {
-    workerMrg
-} from './../../common/workerMrg';
+import workerMrg from './../../common/workerMrg';
 
 let baseClassCounter = 0;
 let inmap_instances = {};

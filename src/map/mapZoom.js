@@ -1,4 +1,4 @@
-export class MapZoom {
+export default class MapZoom {
     constructor(map, mapDom, opts) {
         this.map = map;
         this.mapDom = mapDom;
@@ -35,7 +35,7 @@ export class MapZoom {
             if (zoom < this.zoom.max) {
                 this.map.zoomIn();
             }
-            
+
         });
         doms[1].addEventListener('click', () => {
             let zoom = this.map.getZoom();

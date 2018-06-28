@@ -1,6 +1,4 @@
-import {
-    CanvasOverlay
-} from './base/CanvasOverlay';
+import CanvasOverlay from './base/CanvasOverlay';
 import {
     merge,
     isArray,
@@ -9,7 +7,7 @@ import {
 
 import HeatConfig from './../config/HeatConfig';
 import State from './../config/OnState';
-export class HeatOverlay extends CanvasOverlay {
+export default class HeatOverlay extends CanvasOverlay {
     constructor(ops) {
         super(ops);
         this.points = [];

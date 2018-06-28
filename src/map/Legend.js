@@ -1,6 +1,4 @@
-import {
-    Color
-} from './../common/Color';
+import Color from './../common/Color';
 import config from './../config/Legend';
 import {
     isArray,

@@ -1,6 +1,4 @@
-import {
-    CanvasOverlay
-} from './base/CanvasOverlay.js';
+import CanvasOverlay from './base/CanvasOverlay.js';
 import {
     merge,
     isArray,
@@ -129,14 +127,14 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
             deltaAngle: this.styleConfig.deltaAngle
         };
 
-        
+
         this.postMessage('LineStringOverlay.calculatePixel', params, (pixels, margin) => {
             if (this.eventType == 'onmoving') {
                 return;
             }
             clearPushArray(this.workerData, pixels);
 
-            
+
 
             this.createMarkLine(pixels);
             this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
