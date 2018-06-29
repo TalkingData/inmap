@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>根据count设置线的颜色和粗细</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="../dist/inmap.js"></script>
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        skin: "Blueness",
+        center: [105.403119, 38.028658],
+        zoom: {
+            value: 6,
+            show: true,
+            max: 18,
+            min: 5
+        },
+    });
+
+    var data = [{
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+                [115.661434, 38.61384],
+                [116.395645, 39.929986]
+            ]
+        },
+        "count": 1
+    }, {
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+                [117.210813, 39.14393],
+                [116.395645, 39.929986]
+            ]
+        },
+        "count": 2
+    }, {
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+                [118.527663, 36.09929],
+                [116.395645, 39.929986]
+            ]
+        },
+        "count": 3
+    }, {
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+                [112.515496, 37.866566],
+                [116.395645, 39.929986]
+            ]
+        },
+        "count": 4
+    }, {
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+                [122.753592, 41.6216],
+                [116.395645, 39.929986]
+            ]
+        },
+        "count": 5
+    }, {
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+                [113.486804, 34.157184],
+                [116.395645, 39.929986]
+            ]
+        },
+        "count": 6
+    }, {
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+                [119.368489, 33.013797],
+                [116.395645, 39.929986]
+            ]
+        },
+        "count": 2
+    }, {
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+                [121.487899, 31.249162],
+                [116.395645, 39.929986]
+            ]
+        },
+        "count": 1
+    }, {
+        "geometry": {
+            "type": "LineString",
+            "coordinates": [
+                [113.394818, 23.408004],
+                [116.395645, 39.929986]
+            ]
+        },
+        "count": 5
+    }];
+
+
+
+
+    var overlay = new inMap.LineStringOverlay({
+        style: {
+            normal: {
+                borderColor: 'rgba(200, 200, 50, 1)',
+                borderWidth: 1,
+                shadowColor: 'rgba(255, 250, 50, 1)',
+                shadowBlur: 20,
+                lineCurive: "curve"
+            },
+            splitList: [{
+                    start: 0,
+                    end: 1,
+                    borderWidth: 1,
+                    borderColor: "rgba(156,200,249,1)"
+                },
+                {
+                    start: 1,
+                    end: 2,
+                    borderWidth: 2,
+                    borderColor: "rgba(93,158,247,1)"
+                },
+                {
+                    start: 3,
+                    end: 4,
+                    borderWidth: 3,
+                    borderColor: "rgba(134,207,55,1)"
+                },
+                {
+                    start: 5,
+                    borderWidth: 4,
+                    borderColor: "rgba(252,198,10,1)"
+                }
+            ]
+        },
+        data: data,
+
+    });
+    inmap.add(overlay);
+</script>

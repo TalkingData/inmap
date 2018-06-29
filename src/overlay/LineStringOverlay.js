@@ -1,39 +1,25 @@
 /**
  * draw cireuit
  */
-
 import {
-    merge,
     isArray,
     clearPushArray
 } from './../common/util';
-import CanvasOverlay from './base/CanvasOverlay';
+import Parameter from './base/Parameter';
 import LineStringConfig from '../config/LineStringConfig';
 import State from './../config/OnState';
 
-export default class LineStringOverlay extends CanvasOverlay {
+export default class LineStringOverlay extends Parameter {
     constructor(ops) {
-        super(ops);
+        super(LineStringConfig, ops);
         this.points = [];
         this.styleConfig = {};
         this._setStyle(LineStringConfig, ops);
         this.state = null;
         this.workerData = [];
     }
-    _setStyle(config, ops) {
-        let option = merge(config, ops);
-        if (ops.data) {
-            this.setData(ops.data);
-        } else {
-            this.map && this.refresh();
-        }
-        this.styleConfig = option.style;
-        this.eventConfig = option.event;
-        this.tMapStyle(option.skin);
-    }
     setOptionStyle(ops) {
-        this._setStyle(LineStringConfig, ops);
-        this.map && this.drawMap();
+        this._setStyle(this.LineStringConfig, ops);
     }
     setState(val) {
         this.state = val;
@@ -111,17 +97,18 @@ export default class LineStringOverlay extends CanvasOverlay {
         if (normal.shadowBlur) {
             ctx.shadowBlur = normal.shadowBlur;
         }
-
+       
         for (let i = 0; i < this.workerData.length; i++) {
             let item = this.workerData[i];
-            this.ctx.strokeStyle = normal.borderColor;
+            let style = this.setDrawStyle(item);
+            this.ctx.strokeStyle = style.borderColor;
             let pixels = item.geometry.pixels;
             ctx.beginPath();
             ctx.moveTo(pixels[0][0], pixels[0][1]);
             for (let j = 1; j < pixels.length; j++) {
                 ctx.lineTo(pixels[j][0], pixels[j][1]);
             }
-            ctx.lineWidth = normal.borderWidth;
+            ctx.lineWidth = style.borderWidth;
             pixels = null;
             ctx.stroke();
         }

@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 54);
+/******/ 	return __webpack_require__(__webpack_require__.s = 55);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -262,8 +262,7 @@ function clearPushArray(a, b) {
 
 /***/ }),
 /* 1 */,
-/* 2 */,
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1126,9 +1125,10 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
   }]);
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(59)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(60)(module)))
 
 /***/ }),
+/* 3 */,
 /* 4 */,
 /* 5 */,
 /* 6 */,
@@ -1451,7 +1451,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
 var GriddingOverlay = {
     toRecGrids: function toRecGrids(webObj) {
@@ -1580,7 +1580,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
 var HeatOverlay = {
     pointsToPixels: function pointsToPixels(webObj) {
@@ -1608,7 +1608,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
 var HoneycombOverlay = {
     toRecGrids: function toRecGrids(webObj) {
@@ -1804,7 +1804,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
 var _Curive = __webpack_require__(31);
 
@@ -1927,7 +1927,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
 var _Point = __webpack_require__(32);
 
@@ -1979,7 +1979,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(3);
+var _pointToPixel = __webpack_require__(2);
 
 var PolymeOverlay = {
     mergeCount: 0,
@@ -2471,7 +2471,8 @@ TinyQueue.prototype = {
 /* 51 */,
 /* 52 */,
 /* 53 */,
-/* 54 */
+/* 54 */,
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2571,11 +2572,11 @@ var TDpost = exports.TDpost = function TDpost(client) {
 };
 
 /***/ }),
-/* 55 */,
 /* 56 */,
 /* 57 */,
 /* 58 */,
-/* 59 */
+/* 59 */,
+/* 60 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
