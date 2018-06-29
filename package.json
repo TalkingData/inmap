@@ -5,7 +5,7 @@
   "main": "dist/inmap.min.js",
   "scripts": {
  
-    "dev": "webpack-dev-server --content-base ./ --open --inline --hot --compress --history-api-fallback --port 8085 --open-page 'examples/index.html' --config webpack.inmap.js",
+    "dev": "webpack-dev-server --content-base ./ --open --inline --hot --compress --history-api-fallback --port 8088 --open-page 'examples/index.html' --config webpack.inmap.js",
     "build": "webpack --config webpack.inmap.pro.js && node build-worker",
     "lint": "eslint --fix --ext .js src",
     "test": "npm run lint",
