@@ -2164,36 +2164,50 @@ var _GeoUtils = __webpack_require__(47);
 
 var _GeoUtils2 = _interopRequireDefault(_GeoUtils);
 
+var _MultiOverlay2 = __webpack_require__(60);
+
+var _MultiOverlay3 = _interopRequireDefault(_MultiOverlay2);
+
 var _util = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var PolygonEditorOverlay = function () {
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var PolygonEditorOverlay = function (_MultiOverlay) {
+    _inherits(PolygonEditorOverlay, _MultiOverlay);
+
     function PolygonEditorOverlay(opts) {
         _classCallCheck(this, PolygonEditorOverlay);
 
+        var _this = _possibleConstructorReturn(this, (PolygonEditorOverlay.__proto__ || Object.getPrototypeOf(PolygonEditorOverlay)).call(this));
+
         var option = (0, _util.merge)(_PolygonEditor2.default, opts);
-        this.toolTipConfig = option.tooltip;
-        this.points = this._geoJsonToPoint(option.data || []);
-        this.overlay = null;
-        this.map = null;
-        this.isDispose = false;
-        this.option = option.style;
-        this._vectisWidth = 10;
-        this.drawPoint = [];
-        this.pixels = null;
-        this._isBinded = false;
-        this.isClick = this.points.length > 0 ? false : true;
-        this.overlay = new BMap.Polygon([], this.option);
-        this.startAction = this.startAction.bind(this);
-        this.mousemoveAction = this.mousemoveAction.bind(this);
-        this.dblclickAction = this.dblclickAction.bind(this);
-        this.clickAction = this.clickAction.bind(this);
-        this.getAreaByPolygon = this.getAreaByPolygon.bind(this);
-        this.setTimeout = null;
-        this._first = new Date(), this._second = null, this._interval = 250;
+        _this.toolTipConfig = option.tooltip;
+        _this.points = _this._geoJsonToPoint(option.data || []);
+        _this.overlay = null;
+        _this.map = null;
+        _this.isDispose = false;
+        _this.option = option.style;
+        _this._vectisWidth = 10;
+        _this.drawPoint = [];
+        _this.pixels = null;
+        _this._isBinded = false;
+        _this.isClick = _this.points.length > 0 ? false : true;
+        _this.overlay = new BMap.Polygon([], _this.option);
+        _this.startAction = _this.startAction.bind(_this);
+        _this.mousemoveAction = _this.mousemoveAction.bind(_this);
+        _this.dblclickAction = _this.dblclickAction.bind(_this);
+        _this.clickAction = _this.clickAction.bind(_this);
+        _this.getAreaByPolygon = _this.getAreaByPolygon.bind(_this);
+        _this.setTimeout = null;
+        _this._first = new Date(), _this._second = null, _this._interval = 250;
+
+        return _this;
     }
 
     _createClass(PolygonEditorOverlay, [{
@@ -2235,7 +2249,7 @@ var PolygonEditorOverlay = function () {
     }, {
         key: 'getAreaByPolygon',
         value: function getAreaByPolygon() {
-            var _this = this;
+            var _this2 = this;
 
             if (!this.isClick && this.toolTipConfig.show) {
                 var geos = this.overlay.getPath();
@@ -2247,10 +2261,10 @@ var PolygonEditorOverlay = function () {
                 this.ToolTip && this.ToolTip.hide();
             }
             this.setTimeout = setTimeout(function () {
-                if (_this.getAreaByPolygon) {
-                    _this.getAreaByPolygon();
+                if (_this2.getAreaByPolygon) {
+                    _this2.getAreaByPolygon();
                 } else {
-                    clearTimeout(_this.setTimeout);
+                    clearTimeout(_this2.setTimeout);
                 }
             }, 800);
         }
@@ -2302,13 +2316,13 @@ var PolygonEditorOverlay = function () {
     }, {
         key: 'findIndexVectis',
         value: function findIndexVectis(_ref) {
-            var _this2 = this;
+            var _this3 = this;
 
             var x = _ref.x,
                 y = _ref.y;
 
             this.pixels = this.overlay.getPath().map(function (item) {
-                return _this2.map.pointToOverlayPixel(item);
+                return _this3.map.pointToOverlayPixel(item);
             });
 
             var r = this._vectisWidth / 2;
@@ -2357,10 +2371,10 @@ var PolygonEditorOverlay = function () {
     }, {
         key: 'translation',
         value: function translation(x, y) {
-            var _this3 = this;
+            var _this4 = this;
 
             this.pixels = this.overlay.getPath().map(function (item) {
-                return _this3.map.pointToOverlayPixel(item);
+                return _this4.map.pointToOverlayPixel(item);
             });
             for (var i = 0; i < this.pixels.length; i++) {
                 var item = this.pixels[i];
@@ -2369,7 +2383,7 @@ var PolygonEditorOverlay = function () {
             }
 
             this.drawPoint = this.pixels.map(function (item) {
-                return _this3.map.overlayPixelToPoint(item);
+                return _this4.map.overlayPixelToPoint(item);
             });
 
             this.overlay.setPath(this.drawPoint);
@@ -2397,10 +2411,10 @@ var PolygonEditorOverlay = function () {
     }, {
         key: 'copy',
         value: function copy() {
-            var _this4 = this;
+            var _this5 = this;
 
             ['setStrokeColor', 'getStrokeColor', 'setFillColor', 'getFillColor', 'setStrokeOpacity', 'getStrokeOpacity', 'setFillOpacity', 'getFillOpacity', 'setStrokeWeight', 'getStrokeWeight', 'setStrokeStyle', 'getStrokeStyle', 'getBounds', 'enableEditing', 'disableEditing', 'enableMassClear', 'disableMassClear', 'setPositionAt', 'getMap', 'addEventListener', 'removeEventListener'].forEach(function (key) {
-                _this4[key] = _this4.overlay[key].bind(_this4.overlay);
+                _this5[key] = _this5.overlay[key].bind(_this5.overlay);
             });
         }
     }, {
@@ -2440,7 +2454,7 @@ var PolygonEditorOverlay = function () {
     }]);
 
     return PolygonEditorOverlay;
-}();
+}(_MultiOverlay3.default);
 
 exports.default = PolygonEditorOverlay;
 
@@ -2646,9 +2660,9 @@ var _InmapConfig = __webpack_require__(38);
 
 var _InmapConfig2 = _interopRequireDefault(_InmapConfig);
 
-var _PolygonEditorOverlay = __webpack_require__(10);
+var _MultiOverlay = __webpack_require__(60);
 
-var _PolygonEditorOverlay2 = _interopRequireDefault(_PolygonEditorOverlay);
+var _MultiOverlay2 = _interopRequireDefault(_MultiOverlay);
 
 __webpack_require__(58);
 
@@ -2661,9 +2675,7 @@ var Map = function () {
         _classCallCheck(this, Map);
 
         this.map = null;
-
         this.option = (0, _util.merge)(_InmapConfig2.default, ops);
-
         this.create();
     }
 
@@ -2720,7 +2732,7 @@ var Map = function () {
         value: function add(overlay) {
             if (overlay.isDispose) {
                 throw new TypeError('inMap: overlay has been destroyed.');
-            } else if (overlay instanceof _PolygonEditorOverlay2.default) {
+            } else if (overlay instanceof _MultiOverlay2.default) {
                 overlay._init(this.map);
             } else {
                 this.map.addOverlay(overlay);
@@ -4389,422 +4401,150 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _CanvasOverlay = __webpack_require__(2);
+var _MultiOverlay2 = __webpack_require__(60);
 
-var _CanvasOverlay2 = _interopRequireDefault(_CanvasOverlay);
+var _MultiOverlay3 = _interopRequireDefault(_MultiOverlay2);
 
-var _util = __webpack_require__(0);
+var _PointOverlay = __webpack_require__(22);
 
-var _MapStyle = __webpack_require__(6);
+var _PointOverlay2 = _interopRequireDefault(_PointOverlay);
+
+var _LineStringOverlay = __webpack_require__(19);
+
+var _LineStringOverlay2 = _interopRequireDefault(_LineStringOverlay);
+
+var _LineStringAnimationOverlay = __webpack_require__(18);
+
+var _LineStringAnimationOverlay2 = _interopRequireDefault(_LineStringAnimationOverlay);
 
 var _MoveLineConfig = __webpack_require__(42);
 
 var _MoveLineConfig2 = _interopRequireDefault(_MoveLineConfig);
 
-var _BaseClass2 = __webpack_require__(12);
-
-var _BaseClass3 = _interopRequireDefault(_BaseClass2);
+var _util = __webpack_require__(0);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var Marker = function () {
-    function Marker(opts) {
-        _classCallCheck(this, Marker);
-
-        this.styleConfig = {
-            markerColor: opts.markerColor || opts.color,
-            markerRadius: opts.markerRadius,
-            fontColor: opts.color
-        };
-        this.text = opts.name;
-        this.point = opts.point;
-    }
-
-    _createClass(Marker, [{
-        key: 'draw',
-        value: function draw(ctx, map) {
-            var _map$pointToPixel = map.pointToPixel(this.point),
-                x = _map$pointToPixel.x,
-                y = _map$pointToPixel.y;
-
-            var _styleConfig = this.styleConfig,
-                markerColor = _styleConfig.markerColor,
-                markerRadius = _styleConfig.markerRadius,
-                fontColor = _styleConfig.fontColor;
-
-
-            ctx.save();
-            ctx.beginPath();
-            ctx.fillStyle = markerColor;
-            ctx.arc(x, y, markerRadius, 0, Math.PI * 2, true);
-            ctx.closePath();
-            ctx.fill();
-
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.font = '12px Microsoft YaHei';
-            ctx.fillStyle = fontColor || markerColor;
-            ctx.fillText(this.text, x, y - 10);
-            ctx.restore();
-        }
-    }]);
-
-    return Marker;
-}();
-
-var MarkLine = function () {
-    function MarkLine(opts) {
-        _classCallCheck(this, MarkLine);
-
-        this.from = opts.from;
-        this.to = opts.to;
-        this.id = opts.id;
-        this.step = 0;
-        this.path = null;
-    }
-
-    _createClass(MarkLine, [{
-        key: 'getPointList',
-        value: function getPointList(from, to) {
-            var points = [[from.x, from.y], [to.x, to.y]];
-            var ex = points[1][0];
-            var ey = points[1][1];
-            points[3] = [ex, ey];
-            points[1] = this.getOffsetPoint(points[0], points[3]);
-            points[2] = this.getOffsetPoint(points[3], points[0]);
-            points = this.smoothSpline(points, false);
-            points[points.length - 1] = [ex, ey];
-            return points;
-        }
-    }, {
-        key: 'getOffsetPoint',
-        value: function getOffsetPoint(start, end) {
-            var distance = this.getDistance(start, end) / 3;
-            var angle = void 0,
-                dX = void 0,
-                dY = void 0;
-            var mp = [start[0], start[1]];
-            var deltaAngle = -0.2;
-            if (start[0] != end[0] && start[1] != end[1]) {
-                var k = (end[1] - start[1]) / (end[0] - start[0]);
-                angle = Math.atan(k);
-            } else if (start[0] == end[0]) {
-                angle = (start[1] <= end[1] ? 1 : -1) * Math.PI / 2;
-            } else {
-                angle = 0;
-            }
-            if (start[0] <= end[0]) {
-                angle -= deltaAngle;
-                dX = Math.round(Math.cos(angle) * distance);
-                dY = Math.round(Math.sin(angle) * distance);
-                mp[0] += dX;
-                mp[1] += dY;
-            } else {
-                angle += deltaAngle;
-                dX = Math.round(Math.cos(angle) * distance);
-                dY = Math.round(Math.sin(angle) * distance);
-                mp[0] -= dX;
-                mp[1] -= dY;
-            }
-            return mp;
-        }
-    }, {
-        key: 'smoothSpline',
-        value: function smoothSpline(points, isLoop) {
-            var len = points.length;
-            var ret = [];
-            var distance = 0;
-            for (var i = 1; i < len; i++) {
-                distance += this.getDistance(points[i - 1], points[i]);
-            }
-            var segs = distance / 2;
-            segs = segs < len ? len : segs;
-            for (var _i = 0; _i < segs; _i++) {
-                var pos = _i / (segs - 1) * (isLoop ? len : len - 1);
-                var idx = Math.floor(pos);
-                var w = pos - idx;
-                var p0 = void 0;
-                var p1 = points[idx % len];
-                var p2 = void 0;
-                var p3 = void 0;
-                if (!isLoop) {
-                    p0 = points[idx === 0 ? idx : idx - 1];
-                    p2 = points[idx > len - 2 ? len - 1 : idx + 1];
-                    p3 = points[idx > len - 3 ? len - 1 : idx + 2];
-                } else {
-                    p0 = points[(idx - 1 + len) % len];
-                    p2 = points[(idx + 1) % len];
-                    p3 = points[(idx + 2) % len];
-                }
-                var w2 = w * w;
-                var w3 = w * w2;
-
-                ret.push([this.interpolate(p0[0], p1[0], p2[0], p3[0], w, w2, w3), this.interpolate(p0[1], p1[1], p2[1], p3[1], w, w2, w3)]);
-            }
-            return ret;
-        }
-    }, {
-        key: 'interpolate',
-        value: function interpolate(p0, p1, p2, p3, t, t2, t3) {
-            var v0 = (p2 - p0) * 0.5;
-            var v1 = (p3 - p1) * 0.5;
-            return (2 * (p1 - p2) + v0 + v1) * t3 + (-3 * (p1 - p2) - 2 * v0 - v1) * t2 + v0 * t + p1;
-        }
-    }, {
-        key: 'getDistance',
-        value: function getDistance(p1, p2) {
-            return Math.sqrt((p1[0] - p2[0]) * (p1[0] - p2[0]) + (p1[1] - p2[1]) * (p1[1] - p2[1]));
-        }
-    }, {
-        key: 'drawMarker',
-        value: function drawMarker(context, map) {
-            this.from.draw(context, map);
-            this.to.draw(context, map);
-        }
-    }, {
-        key: 'drawLinePath',
-        value: function drawLinePath(context, styleConfig, map) {
-            var pointList = this.path = this.getPointList(map.pointToPixel(this.from.point), map.pointToPixel(this.to.point));
-            var len = pointList.length;
-            context.save();
-            context.beginPath();
-            context.lineWidth = styleConfig.lineWidth;
-            context.strokeStyle = styleConfig.colors[this.id];
-
-            if (!styleConfig.lineType || styleConfig.lineType == 'solid') {
-                context.moveTo(pointList[0][0], pointList[0][1]);
-                for (var i = 0; i < len; i++) {
-                    context.lineTo(pointList[i][0], pointList[i][1]);
-                }
-            } else if (styleConfig.lineType == 'dashed' || styleConfig.lineType == 'dotted') {
-                for (var _i2 = 1; _i2 < len; _i2 += 2) {
-                    context.moveTo(pointList[_i2 - 1][0], pointList[_i2 - 1][1]);
-                    context.lineTo(pointList[_i2][0], pointList[_i2][1]);
-                }
-            }
-            context.stroke();
-            context.restore();
-            this.step = 0;
-        }
-    }, {
-        key: 'drawMoveCircle',
-        value: function drawMoveCircle(context, styleConfig, map) {
-            var pointList = this.path || this.getPointList(map.pointToPixel(this.from.point), map.pointToPixel(this.to.point));
-            context.save();
-            context.fillStyle = styleConfig.fillColor;
-            context.shadowColor = styleConfig.shadowColor;
-            context.shadowBlur = styleConfig.shadowBlur;
-            context.beginPath();
-            context.arc(pointList[this.step][0], pointList[this.step][1], styleConfig.moveRadius, 0, Math.PI * 2, true);
-            context.fill();
-            context.closePath();
-            context.restore();
-            this.step += 1;
-            if (this.step >= pointList.length) {
-                this.step = 0;
-            }
-        }
-    }]);
-
-    return MarkLine;
-}();
-
-var MoveLineOverlay = function (_BaseClass) {
-    _inherits(MoveLineOverlay, _BaseClass);
+var MoveLineOverlay = function (_MultiOverlay) {
+    _inherits(MoveLineOverlay, _MultiOverlay);
 
     function MoveLineOverlay(opts) {
         _classCallCheck(this, MoveLineOverlay);
 
         var _this = _possibleConstructorReturn(this, (MoveLineOverlay.__proto__ || Object.getPrototypeOf(MoveLineOverlay)).call(this));
 
-        _this.markLines = [];
-        _this.map = null;
-        _this.styleConfig = null;
+        _this.isDispose = false;
         _this.data = opts.data || [];
-        _this.baseLayer = null;
-        _this.animationLayer = null;
-        _this.setOptionStyle(opts);
-        _this.render = _this.render.bind(_this);
-        _this.animationDraw = null;
+        var option = (0, _util.merge)(_MoveLineConfig2.default, opts);
+        _this.PointOverlay = _this.creataPointOverlay(option);
+        _this.LineStringOverlay = _this.createLineStringOverlay(option);
+        _this.LineStringAnimationOverlay = _this.createLineStringAnimationOverlay(option);
         return _this;
     }
 
     _createClass(MoveLineOverlay, [{
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-            var option = (0, _util.merge)(_MoveLineConfig2.default, ops);
-            this.styleConfig = option.style.normal;
-            this.data = ops.data ? option.data : this.data;
-            this.tMapStyle(option.skin);
-            if (this.baseLayer) {
-                this.markLines.length = 0;
-                this.draw();
-            }
+        key: '_init',
+        value: function _init(map) {
+            map.addOverlay(this.LineStringOverlay);
+            map.addOverlay(this.LineStringAnimationOverlay);
+            map.addOverlay(this.PointOverlay);
         }
     }, {
-        key: 'tMapStyle',
-        value: function tMapStyle(skin) {
-
-            var styleJson = null;
-            if ((0, _util.isString)(skin)) {
-                styleJson = skin == 'Blueness' ? _MapStyle.Blueness : _MapStyle.WhiteLover;
-            } else if ((0, _util.isArray)(skin)) {
-                styleJson = skin;
-            }
-            skin && this.map && this.map.setMapStyle({
-                styleJson: styleJson
+        key: '_findIndex',
+        value: function _findIndex(data, name) {
+            return data.findIndex(function (item) {
+                return item.name == name;
             });
         }
     }, {
-        key: 'initialize',
-        value: function initialize(map) {
-            this.map = map;
-            this.baseLayer = new _CanvasOverlay2.default({
-                repaintEnd: this.draw.bind(this)
-            });
-            this.animationLayer = new _CanvasOverlay2.default();
-            map.addOverlay(this.baseLayer);
-            map.addOverlay(this.animationLayer);
+        key: 'creataPointOverlay',
+        value: function creataPointOverlay(opts) {
+            var _this2 = this;
 
-            var now = void 0;
-            var then = Date.now();
-            var interval = 1000 / this.styleConfig.fps;
-            var delta = void 0;
-            var me = this;
-
-            function drawFrame() {
-                requestAnimationFrame(drawFrame);
-                now = Date.now();
-                delta = now - then;
-                if (delta > interval) {
-                    then = now - delta % interval;
-                    me.render();
+            var data = [];
+            this.data.forEach(function (item) {
+                if (_this2._findIndex(data, item.from.name) == -1) {
+                    data.push({
+                        name: item.from.name,
+                        count: item.count,
+                        geometry: {
+                            type: 'Point',
+                            coordinates: item.from.coordinates
+                        },
+                        style: {}
+                    });
                 }
-            }
-            this.animationDraw = drawFrame;
-            this.animationDraw();
-        }
-    }, {
-        key: 'render',
-        value: function render() {
-            var markLines = this.markLines,
-                animationLayer = this.animationLayer,
-                styleConfig = this.styleConfig;
-
-            var animationCtx = animationLayer.ctx;
-            if (!animationCtx) {
-                return;
-            }
-
-            if (!animationLayer.animationFlag) {
-                animationLayer.clearCanvas();
-                return;
-            }
-            animationCtx.fillStyle = 'rgba(0,0,0,0.93)';
-            var prev = animationCtx.globalCompositeOperation;
-            animationCtx.globalCompositeOperation = 'destination-in';
-            var size = this.map.getSize();
-            animationCtx.fillRect(0, 0, size.width, size.height);
-            animationCtx.globalCompositeOperation = prev;
-
-            for (var i = 0; i < markLines.length; i++) {
-                var markLine = markLines[i];
-                markLine.drawMoveCircle(animationCtx, styleConfig, this.map);
-            }
-        }
-    }, {
-        key: 'drawBaseLayer',
-        value: function drawBaseLayer() {
-            var baseCtx = this.baseLayer.ctx;
-            if (!baseCtx) {
-                return;
-            }
-            if (this.markLines.length == 0) {
-                this.addMarkLine();
-            }
-            var styleConfig = this.styleConfig,
-                map = this.map;
-
-            this.baseLayer.clearCanvas();
-            this.markLines.forEach(function (line) {
-                line.drawMarker(baseCtx, map);
-                line.drawLinePath(baseCtx, styleConfig, map);
+                if (_this2._findIndex(data, item.to.name) == -1) {
+                    data.push({
+                        name: item.to.name,
+                        count: item.count,
+                        geometry: {
+                            type: 'Point',
+                            coordinates: item.to.coordinates
+                        },
+                        style: {}
+                    });
+                }
             });
+
+            opts.style.point['data'] = data;
+            return new _PointOverlay2.default(opts.style.point);
         }
     }, {
-        key: 'addMarkLine',
-        value: function addMarkLine() {
-            var styleConfig = this.styleConfig,
-                markLines = this.markLines,
-                data = this.data;
-
-            markLines.length = 0;
-
-            data.forEach(function (line, i) {
-                markLines.push(new MarkLine({
-                    id: i,
-                    from: new Marker({
-                        name: line.from.city,
-                        markerColor: styleConfig.markerColor,
-                        markerRadius: styleConfig.markerRadius,
-                        point: new BMap.Point(line.from.lnglat[0], line.from.lnglat[1]),
-                        color: styleConfig.markerColor || styleConfig.colors[i]
-                    }),
-                    to: new Marker({
-                        name: line.to.city,
-                        markerColor: styleConfig.markerColor,
-                        markerRadius: styleConfig.markerRadius,
-                        point: new BMap.Point(line.to.lnglat[0], line.to.lnglat[1]),
-                        color: styleConfig.markerColor || styleConfig.colors[i]
-                    })
-                }));
+        key: 'createLineStringOverlay',
+        value: function createLineStringOverlay(opts) {
+            var data = this.data.map(function (item) {
+                return {
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: [item.from.coordinates, item.to.coordinates]
+                    },
+                    properties: item,
+                    count: item.count
+                };
             });
+            opts.style.line['data'] = data;
+            return new _LineStringOverlay2.default(opts.style.line);
         }
     }, {
-        key: 'setData',
-        value: function setData(points) {
-            this.setPoints(points);
-        }
-    }, {
-        key: 'getData',
-        value: function getData() {
-            return this.data;
-        }
-    }, {
-        key: 'setPoints',
-        value: function setPoints(points) {
-            if (!(0, _util.isArray)(points)) {
-                throw new TypeError('inMap: data must be a Array');
-            }
-            this.data = points;
-            this.markLines.length = 0;
-            this.draw();
-        }
-    }, {
-        key: 'draw',
-        value: function draw() {
-            this.baseLayer.canvasResize();
-            this.animationLayer.canvasResize();
-            this.drawBaseLayer();
+        key: 'createLineStringAnimationOverlay',
+        value: function createLineStringAnimationOverlay(opts) {
+            var data = this.data.map(function (item) {
+                return {
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: [item.from.coordinates, item.to.coordinates]
+                    },
+                    count: item.count
+                };
+            });
+            opts.style.lineAnimation['data'] = data;
+            return new _LineStringAnimationOverlay2.default(opts.style.lineAnimation);
         }
     }, {
         key: 'dispose',
         value: function dispose() {
-            window.requestAnimationFrame(this.animationDraw);
-            this.markLines = [];
-            this.map.removeOverlay(this.animationLayer);
-            this.map.removeOverlay(this.baseLayer);
+            this.PointOverlay.dispose();
+            this.LineStringOverlay.dispose();
+            var me = this;
+            for (var key in me) {
+                if (!(0, _util.isFunction)(me[key])) {
+                    me[key] = null;
+                }
+            }
+            me.isDispose = true;
+            me = null;
         }
     }]);
 
     return MoveLineOverlay;
-}(_BaseClass3.default);
+}(_MultiOverlay3.default);
 
 exports.default = MoveLineOverlay;
 
@@ -5317,12 +5057,14 @@ var PointOverlay = function (_Parameter) {
                 return b.x - a.x;
             });
             var meet = void 0;
+
             do {
                 meet = false;
                 for (var i = 0; i < labels.length; i++) {
                     var temp = labels[i];
                     for (var j = 0; j < labels.length; j++) {
-                        if (i != j && temp.show && temp.isAnchorMeet(labels[j])) {
+                        var temp2 = labels[j];
+                        if (temp2 != temp && temp.show && temp.isAnchorMeet(temp2)) {
                             temp.next();
                             meet = true;
                             break;
@@ -6083,26 +5825,60 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = {
     style: {
-        normal: {
-            markerRadius: 3,
+        point: {
+            tooltip: {
+                show: true,
+                formatter: '{name}'
+            },
+            style: {
+                normal: {
+                    backgroundColor: 'rgba(200, 200, 50, 1)',
+                    borderWidth: 1,
+                    borderColor: 'rgba(255,255,255,1)',
+                    size: 6,
+                    label: {
+                        show: true,
+                        color: 'rgba(255,255,255,1)'
 
-            markerColor: '#fff',
+                    }
+                },
+                mouseOver: {
+                    backgroundColor: 'rgba(200, 200, 200, 1)',
+                    borderColor: 'rgba(255,255,255,1)',
+                    borderWidth: 4
+                },
+                selected: {
+                    backgroundColor: 'rgba(184,0,0,1)',
+                    borderColor: 'rgba(255,255,255,1)'
+                }
+            },
+            event: {
+                onMouseClick: function onMouseClick() {}
+            }
+        },
+        line: {
+            style: {
+                normal: {
+                    borderColor: 'rgba(200, 200, 50, 1)',
+                    borderWidth: 1,
 
-            lineType: 'solid',
+                    lineCurive: 'curve'
+                }
+            }
+        },
+        lineAnimation: {
+            style: {
+                size: 2,
 
-            lineWidth: 1,
+                fillColor: '#fff',
 
-            colors: ['#F9815C', '#F8AB60', '#EDCC72', '#E2F194', '#94E08A', '#4ECDA5'],
+                shadowColor: '#fff',
 
-            moveRadius: 2,
+                shadowBlur: 10,
+                lineOrCurve: 'curve'
+            }
 
-            fillColor: '#fff',
-
-            shadowColor: '#fff',
-
-            shadowBlur: 5,
-            fps: 30,
-            skin: null }
+        }
     },
     data: []
 };
@@ -6901,6 +6677,25 @@ var ToolTip = function () {
             this.dom.style.display = 'block';
         }
     }, {
+        key: 'showCenterText',
+        value: function showCenterText(text, x, y) {
+            this.dom.innerHTML = text;
+            this.dom.style.display = 'block';
+            this.dom.style.visibility = 'hidden';
+            var width = this.dom.offsetWidth;
+            this.dom.style.left = x - width / 2 + 'px';
+            this.dom.style.top = y + 'px';
+            this.dom.style.visibility = 'visible';
+        }
+    }, {
+        key: 'showText',
+        value: function showText(text, x, y) {
+            this.dom.innerHTML = text;
+            this.dom.style.left = x + 'px';
+            this.dom.style.top = y + 'px';
+            this.dom.style.display = 'block';
+        }
+    }, {
         key: 'hide',
         value: function hide() {
             this.dom.style.display = 'none';
@@ -7452,6 +7247,40 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+/* 59 */,
+/* 60 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MultiOverlay = function () {
+    function MultiOverlay() {
+        _classCallCheck(this, MultiOverlay);
+    }
+
+    _createClass(MultiOverlay, [{
+        key: "_init",
+        value: function _init() {}
+    }, {
+        key: "dispose",
+        value: function dispose() {}
+    }]);
+
+    return MultiOverlay;
+}();
+
+exports.default = MultiOverlay;
 
 /***/ })
 /******/ ]);

@@ -1,12 +1,13 @@
 import config from './../config/PolygonEditor';
 import GeoUtils from './../lib/GeoUtils';
-
+import MultiOverlay from './base/MultiOverlay';
 import {
     merge
 } from './../common/util';
 
-export default class PolygonEditorOverlay {
+export default class PolygonEditorOverlay extends MultiOverlay {
     constructor(opts) {
+        super();
         let option = merge(config, opts);
         this.toolTipConfig = option.tooltip;
         this.points = this._geoJsonToPoint(option.data || []);
@@ -212,7 +213,6 @@ export default class PolygonEditorOverlay {
         ['setStrokeColor', 'getStrokeColor', 'setFillColor', 'getFillColor', 'setStrokeOpacity', 'getStrokeOpacity', 'setFillOpacity', 'getFillOpacity', 'setStrokeWeight', 'getStrokeWeight', 'setStrokeStyle', 'getStrokeStyle', 'getBounds', 'enableEditing', 'disableEditing', 'enableMassClear', 'disableMassClear', 'setPositionAt', 'getMap', 'addEventListener', 'removeEventListener'].forEach((key) => {
             this[key] = this.overlay[key].bind(this.overlay);
         });
-
     }
     _geoJsonToPoint(data) {
         if (data.geometry) {

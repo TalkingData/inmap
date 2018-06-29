@@ -7,7 +7,7 @@ export default {
         //移动点阴影大小
         shadowBlur: 0,
         fps: 20,
-        lineOrCurve: 'curve',//cure or line
+        lineOrCurve: 'curve',//curve or line
         deltaAngle: -0.2 // 偏移角度或切分间隔
 
     },

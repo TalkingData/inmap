@@ -10,15 +10,13 @@ import {
 import MapZoom from './mapZoom';
 import Toolbar from './Toolbar';
 import inmapConfig from './../config/InmapConfig';
-import PolygonEditor from '../overlay/PolygonEditorOverlay';
+import MultiOverlay from '../overlay/base/MultiOverlay';
 import './map.less';
 
 export default class Map {
     constructor(ops) {
         this.map = null;
-
         this.option = merge(inmapConfig, ops);
-
         this.create();
     }
     tMapStyle(map, skin) {
@@ -68,7 +66,7 @@ export default class Map {
     add(overlay) {
         if (overlay.isDispose) {
             throw new TypeError('inMap: overlay has been destroyed.');
-        } else if (overlay instanceof PolygonEditor) {
+        } else if (overlay instanceof MultiOverlay) {
             overlay._init(this.map);
         } else {
             this.map.addOverlay(overlay);
@@ -85,3 +83,4 @@ export default class Map {
     }
 
 }
+

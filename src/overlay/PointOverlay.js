@@ -282,12 +282,14 @@ export default class PointOverlay extends Parameter {
             return b.x - a.x;
         });
         let meet;
+
         do {
             meet = false; //本轮是否有相交
             for (let i = 0; i < labels.length; i++) {
                 let temp = labels[i];
                 for (let j = 0; j < labels.length; j++) {
-                    if (i != j && temp.show && temp.isAnchorMeet(labels[j])) {
+                    let temp2 = labels[j];
+                    if (temp2 != temp && temp.show && temp.isAnchorMeet(temp2)) {
                         temp.next();
                         meet = true;
                         break;

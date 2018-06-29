@@ -45,54 +45,60 @@
             max: 18,
             min: 5
         },
-    })
+    });
 
     var data = [{
             from: {
-                city: '广州',
-                lnglat: [113.270793, 23.135308]
+                name: '广州',
+                coordinates: [113.270793, 23.135308]
             },
             to: {
-                city: '衡山',
-                lnglat: [112.612787, 27.317599]
+                name: '衡山',
+                coordinates: [112.612787, 27.317599]
             },
+            count: 1,
 
         }, {
             from: {
-                city: '广州',
-                lnglat: [113.270793, 23.135308]
+                name: '广州',
+                coordinates: [113.270793, 23.135308]
             },
             to: {
-                city: '北京',
-                lnglat: [116.413554, 39.911013]
-            }
+                name: '北京',
+                coordinates: [116.413554, 39.911013]
+            },
+            count: 2,
+
         }, {
             from: {
-                city: '广州',
-                lnglat: [113.270793, 23.135308]
+                name: '广州',
+                coordinates: [113.270793, 23.135308]
             },
             to: {
-                city: '三亚',
-                lnglat: [109.518646, 18.258217]
-            }
+                name: '三亚',
+                coordinates: [109.518646, 18.258217]
+            },
+            count: 3,
         }, {
             from: {
-                city: '广州',
-                lnglat: [113.270793, 23.135308]
+                name: '广州',
+                coordinates: [113.270793, 23.135308]
             },
             to: {
-                city: '上海',
-                lnglat: [121.480237, 31.236305]
-            }
+                name: '上海',
+                coordinates: [121.480237, 31.236305]
+            },
+            count: 4,
         }, {
             from: {
-                city: '广州',
-                lnglat: [113.270793, 23.135308]
+                name: '广州',
+                coordinates: [113.270793, 23.135308]
             },
             to: {
-                city: '韶关',
-                lnglat: [113.603757, 24.816174]
-            }
+                name: '韶关',
+                coordinates: [113.603757, 24.816174]
+            },
+            count: 4,
         }
 
     ];
@@ -100,29 +106,64 @@
 
     var overlay = new inMap.MoveLineOverlay({
         style: {
-            normal: {
-                markerRadius: 3,
-                //marker点颜色,为空或null则默认取线条颜色
-                markerColor: null,
-                //线条类型 solid、dashed、dotted
-                lineType: 'solid',
-                //线条宽度
-                lineWidth: 1,
-                //线条颜色
-                colors: ['#F9815C', '#F8AB60', '#EDCC72', '#E2F194', '#94E08A', '#4ECDA5'],
-                //移动点半径
-                moveRadius: 2,
-                //移动点颜色
-                fillColor: '#fff',
-                //移动点阴影颜色
-                shadowColor: '#fff',
-                //移动点阴影大小
-                shadowBlur: 10,
-            }
+            point: { //散点配置
+                tooltip: {
+                    show: true,
+                    formatter: "{name}"
+                },
+                style: {
+                    normal: {
+                        backgroundColor: 'rgba(200, 200, 50, 1)',
+                        borderWidth: 1,
+                        borderColor: "rgba(255,255,255,1)",
+                        size: 6,
+                        label: {
+                            show: true,
+                            color: 'rgba(255,255,255,1)'
+
+                        },
+                    },
+                    mouseOver: {
+                        backgroundColor: 'rgba(200, 200, 200, 1)',
+                        borderColor: "rgba(255,255,255,1)",
+                        borderWidth: 4,
+                    },
+                    selected: {
+                        backgroundColor: 'rgba(184,0,0,1)',
+                        borderColor: "rgba(255,255,255,1)"
+                    },
+                },
+                event: {
+                    onMouseClick: function (item) {}
+                }
+            },
+            line: { //线的配置
+                style: {
+                    normal: {
+                        borderColor: 'rgba(200, 200, 50, 1)',
+                        borderWidth: 1,
+                        // shadowColor: 'rgba(255, 250, 50, 1)',
+                        // shadowBlur: 20,
+                        lineCurive: "curve"
+                    }
+                }
+            },
+            lineAnimation: {
+                style: {
+                    size: 2,
+                    //移动点颜色
+                    fillColor: '#fff',
+                    //移动点阴影颜色
+                    shadowColor: '#fff',
+                    //移动点阴影大小
+                    shadowBlur: 10,
+                    lineOrCurve: 'curve',
+                }
+
+            },
         },
         data: data,
+
     });
     inmap.add(overlay);
-
-    
 </script>
