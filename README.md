@@ -75,7 +75,7 @@ npm run dev
 |[cheekahao](https://github.com/cheekahao) |  ![](https://avatars3.githubusercontent.com/u/11977758?v=3&s=60)|
 |[chenli8](https://github.com/chenli8) |  ![](https://avatars3.githubusercontent.com/u/24763413?v=3&s=60)|
 
-Welcome to join our QQ group to discuss questions: 618308202
+欢迎加入QQ反馈问题: 618308202
 
 ## Links
 - [TalkingData](https://github.com/TalkingData)
