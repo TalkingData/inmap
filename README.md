@@ -12,35 +12,33 @@
 [![NPM downloads](https://img.shields.io/npm/dt/inmap.svg?style=flat-square)](https://npmjs.org/package/inmap)
 
 
-## Introduce
-inMap is a big data visualization library based on Baidu map. It focuses on the scatter, heat map, grid and aggregation algorithm. Make it easy to use.
+## 介绍
+inMap 是一款基于百度地图的大数据可视化库，专注于大数据方向的散点、热力图、网格、聚合等方式展示，致力于让大数据可视化变得简单易用。
 
 ## Features
-- High performance.
-- Worker.
-- Multi-layer overlay.
-- Friendly API.
-- Themes.
+- 高性能.
+- 多线程.
+- 多图层叠加.
+- 友好的 API.
+- 可以自定义主题.
 
-## Docs
+## 文档
 [http://inmap.talkingdata.com/](http://inmap.talkingdata.com/)
 
-## Overview
-![](https://raw.githubusercontent.com/TalkingData/inmap/master/assets/overview.jpg)
 
-## Install
+## 安装
 Using npm:
 ```
 npm install inmap --save
 ```
 
-Using a script tag for global use:
+或使用 <script> 全局引用，inMap 会被注册为一个全局变量:
 ```html
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
 <script type="text/javascript" src="http://unpkg.com/inmap/dist/inmap.min.js"></script>
 ```
 
-## Usage
+## 示例
 ```html
 <script>
 var inmap = new inMap.Map({
@@ -56,6 +54,17 @@ var inmap = new inMap.Map({
 })
 </script>
 ```
+## 预览当前项目所有demo
+```shell
+# 从 GitHub 下载后，安装依赖
+npm install
+
+# 编译组件
+npm run dev
+
+在浏览器地址栏输入：http://localhost:8085/examples/index.html
+```
+
 
 ## Major Contributors
 |Name|Avatar|
