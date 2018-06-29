@@ -81,7 +81,6 @@ export default class LineStringOverlay extends CanvasOverlay {
             lineOrCurve: this.styleConfig.normal.lineCurive,
             deltaAngle: this.styleConfig.normal.deltaAngle
         };
-
         this.setState(State.computeBefore);
         this.postMessage('LineStringOverlay.calculatePixel', params, (pixels, margin) => {
             if (this.eventType == 'onmoving') {
