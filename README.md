@@ -59,7 +59,7 @@ var inmap = new inMap.Map({
 # 从 GitHub 下载后，安装依赖
 npm install
 
-# 编译组件
+# 编译代码
 npm run dev
 
 在浏览器地址栏输入：http://localhost:8085/examples/index.html
