@@ -1,12 +1,13 @@
 import config from './../config/PolygonEditor';
 import GeoUtils from './../lib/GeoUtils';
-
+import MultiOverlay from './base/MultiOverlay';
 import {
     merge
 } from './../common/util';
 
-export default class PolygonEditorOverlay {
+export default class PolygonEditorOverlay  extends MultiOverlay {
     constructor(opts) {
+        super();
         let option = merge(config, opts);
         this.toolTipConfig = option.tooltip;
         this.points = this._geoJsonToPoint(option.data || []);
