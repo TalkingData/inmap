@@ -38,7 +38,7 @@
         <button onclick="translation()">平移</button>
         <button onclick="getpath()">获得围栏路径</button>
         <button onclick="hideArea()">隐藏面积</button>
-        
+
     </div>
 </body>
 
@@ -71,6 +71,9 @@
             data: [],
         });
         inmap.add(overlay);
+        overlay.addEventListener('change', function (e) {
+            console.log(e);
+        })
     }
 
     function addEditorOverLay() {
@@ -118,7 +121,9 @@
             }
         });
         inmap.add(overlay);
-
+        overlay.addEventListener('change', function (e) {
+            console.log(e);
+        })
     }
 
     function openEdit() {
@@ -138,7 +143,8 @@
         console.log(data);
         alert(data);
     }
-    function hideArea(){
+
+    function hideArea() {
         overlay.hideAreaText();
     }
 </script>
