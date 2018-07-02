@@ -10,14 +10,24 @@ export default class BatchesData {
         this.intervalId = null;
         this.splitArray = [];
         this.index = 0;
+        this.usable = true;
     }
     setOption({
-        interval =  400,
+        interval = 400,
         splitCount = 1500
     }) {
         this.clear();
         this.interval = interval;
         this.splitCount = splitCount;
+    }
+    /**
+     *是否可用
+     *
+     * @param {*} Boolean
+     * @memberof BatchesData
+     */
+    setUsable(val) {
+        this.usable = val;
     }
     clear() {
         this.splitArray = [];
@@ -25,18 +35,27 @@ export default class BatchesData {
         if (this.intervalId) {
             clearInterval(this.intervalId);
         }
-      
+
     }
     action(data, callback, ctx) {
-        this.clear();
+       
+        if (this.usable) {
+            this.clear();
+        } else {
+            return;
+        }
         let {
             splitCount,
             interval,
         } = this;
-       
+
         this.splitArray = chunk(data, splitCount);
 
         let loop = () => {
+            if (!this.usable) {
+                this.clear();
+                return;
+            }
             let item = this.splitArray[this.index];
             item && callback(ctx, item);
 

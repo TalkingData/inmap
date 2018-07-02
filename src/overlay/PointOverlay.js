@@ -57,13 +57,16 @@ export default class PointOverlay extends Parameter {
         this.drawMap();
     }
     translation(distanceX, distanceY) {
-        this.batchesData && this.batchesData.clear();
+        if (this.batchesData && !this.batchesData.usable) return;
         for (let i = 0; i < this.workerData.length; i++) {
             let pixel = this.workerData[i].geometry.pixel;
             pixel.x = pixel.x + distanceX;
             pixel.y = pixel.y + distanceY;
         }
+
         this.refresh();
+
+
     }
     drawMouseLayer() {
         let overArr = this.overItem ? [this.overItem] : [];
@@ -71,19 +74,32 @@ export default class PointOverlay extends Parameter {
         this._loopDraw(this.mouseLayer.ctx, this.selectItem.concat(overArr));
 
     }
+    clearAll() {
+        this.mouseLayer.clearCanvas();
+        this.clearCanvas();
+    }
     drawMap() {
-        this.batchesData && this.batchesData.clear();
+        if (this.batchesData) {
+            this.batchesData.clear();
+            this.batchesData.setUsable(false);
+        }
 
+        this.clearAll();
         this.setState(State.computeBefore);
-        this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), (pixels, margin) => {
-            if (this.eventType == 'onmoving') {
-                return;
-            }
+        this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), (pixels, margin, zoom) => {
 
             this.setState(State.conputeAfter);
             this.setWorkerData(pixels);
             this.updateOverClickItem();
-            this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
+
+            if (this.batchesData) {
+                this.batchesData.setUsable(true);
+            }
+            if (this.map.getZoom() == zoom) {
+                this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
+            } else {
+                this.translation(0, 0);
+            }
             margin = null;
             pixels = null;
 
@@ -199,6 +215,7 @@ export default class PointOverlay extends Parameter {
         if (this.batchesData) {
             this.batchesData.clear();
             this.batchesData.action(this.workerData, this._loopDraw, this.ctx);
+
         } else {
             this._loopDraw(this.ctx, this.workerData);
         }
@@ -217,8 +234,11 @@ export default class PointOverlay extends Parameter {
     _loopDraw(ctx, pixels) {
         let mapSize = this.map.getSize();
         for (let i = 0, len = pixels.length; i < len; i++) {
+
+
             let item = pixels[i];
             let pixel = item.geometry.pixel;
+
             let {
                 x,
                 y

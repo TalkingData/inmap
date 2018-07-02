@@ -1859,7 +1859,7 @@ var WorkerMrg = function () {
             var key1 = classPath + '_' + hashCode,
                 key2 = hashCode + '_' + msgId;
             if (instances[key1] && instances[key1] == key2) {
-                instances[key2](data.request.data, data.request.map.margin);
+                instances[key2](data.request.data, data.request.map.margin, data.request.map.zoom);
             }
             data = null, hashCode = null, msgId = null, classPath = null, instances[key2] = null;
         }
@@ -2445,12 +2445,13 @@ var PointOverlay = function (_Parameter) {
     }, {
         key: 'translation',
         value: function translation(distanceX, distanceY) {
-            this.batchesData && this.batchesData.clear();
+            if (this.batchesData && !this.batchesData.usable) return;
             for (var i = 0; i < this.workerData.length; i++) {
                 var pixel = this.workerData[i].geometry.pixel;
                 pixel.x = pixel.x + distanceX;
                 pixel.y = pixel.y + distanceY;
             }
+
             this.refresh();
         }
     }, {
@@ -2461,22 +2462,37 @@ var PointOverlay = function (_Parameter) {
             this._loopDraw(this.mouseLayer.ctx, this.selectItem.concat(overArr));
         }
     }, {
+        key: 'clearAll',
+        value: function clearAll() {
+            this.mouseLayer.clearCanvas();
+            this.clearCanvas();
+        }
+    }, {
         key: 'drawMap',
         value: function drawMap() {
             var _this2 = this;
 
-            this.batchesData && this.batchesData.clear();
+            if (this.batchesData) {
+                this.batchesData.clear();
+                this.batchesData.setUsable(false);
+            }
 
+            this.clearAll();
             this.setState(_OnState2.default.computeBefore);
-            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin) {
-                if (_this2.eventType == 'onmoving') {
-                    return;
-                }
+            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin, zoom) {
 
                 _this2.setState(_OnState2.default.conputeAfter);
                 _this2.setWorkerData(pixels);
                 _this2.updateOverClickItem();
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+
+                if (_this2.batchesData) {
+                    _this2.batchesData.setUsable(true);
+                }
+                if (_this2.map.getZoom() == zoom) {
+                    _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                } else {
+                    _this2.translation(0, 0);
+                }
                 margin = null;
                 pixels = null;
             });
@@ -2621,8 +2637,10 @@ var PointOverlay = function (_Parameter) {
         value: function _loopDraw(ctx, pixels) {
             var mapSize = this.map.getSize();
             for (var i = 0, len = pixels.length; i < len; i++) {
+
                 var _item2 = pixels[i];
                 var pixel = _item2.geometry.pixel;
+
                 var x = pixel.x,
                     y = pixel.y;
 
@@ -6871,6 +6889,7 @@ var BatchesData = function () {
         this.intervalId = null;
         this.splitArray = [];
         this.index = 0;
+        this.usable = true;
     }
 
     _createClass(BatchesData, [{
@@ -6886,6 +6905,11 @@ var BatchesData = function () {
             this.splitCount = splitCount;
         }
     }, {
+        key: 'setUsable',
+        value: function setUsable(val) {
+            this.usable = val;
+        }
+    }, {
         key: 'clear',
         value: function clear() {
             this.splitArray = [];
@@ -6899,7 +6923,11 @@ var BatchesData = function () {
         value: function action(data, callback, ctx) {
             var _this = this;
 
-            this.clear();
+            if (this.usable) {
+                this.clear();
+            } else {
+                return;
+            }
             var splitCount = this.splitCount,
                 interval = this.interval;
 
@@ -6907,6 +6935,10 @@ var BatchesData = function () {
             this.splitArray = (0, _util.chunk)(data, splitCount);
 
             var loop = function loop() {
+                if (!_this.usable) {
+                    _this.clear();
+                    return;
+                }
                 var item = _this.splitArray[_this.index];
                 item && callback(ctx, item);
 
