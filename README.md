@@ -62,7 +62,7 @@ npm install
 # 编译代码
 npm run dev
 
-在浏览器地址栏输入：http://localhost:8085/examples/index.html
+在浏览器地址栏输入：http://localhost:8088/examples/index.html
 ```
 
 
