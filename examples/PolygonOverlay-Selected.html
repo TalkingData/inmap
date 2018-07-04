@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>初始化设置选中围栏</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="./data/geojson.js"></script>
+    <script src="../dist/inmap.js"></script>
+
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        skin: "Blueness",
+        center: ["114.16248337214269", "22.559515429553684"],
+        zoom: {
+            value: 11,
+            show: true,
+            max: 22
+        }
+    });
+
+    var overlay = new inMap.PolygonOverlay({
+        style: {
+            normal: {
+                borderWidth: 1.5,
+                backgroundColor: "rgba(0,184,255,0.80)",
+                label: {
+                    show: true, // 是否显示
+                    font: "10px bold ",
+                    color: "rgba(224, 238, 251,1)"
+                }
+            },
+            mouseOver: {
+                shadowColor: "rgba(0, 0, 0, 1)",
+                shadowBlur: 10,
+                borderWidth: 1.5,
+                label: {
+                    color: "rgba(0, 0, 0, 1)"
+                }
+            },
+            selected: {
+                backgroundColor: "rgba(184,0,0,1)",
+                borderColor: "rgba(255,255,255,1)"
+            }
+        },
+        data: data.features,
+        selected: [data.features[1]],
+        event: {
+            onState(state) {
+                console.log(state);
+            }
+        }
+    });
+    inmap.add(overlay);
+</script>
