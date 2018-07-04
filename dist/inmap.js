@@ -4826,7 +4826,7 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
         _this.isDispose = false;
         _this.option = option.style;
         _this._vectisWidth = 10;
-        _this.drawPoint = [];
+        _this.drawPoint = _this.points;
         _this.pixels = null;
         _this._isBinded = false;
         _this.isClick = _this.points.length > 0 ? false : true;
@@ -4836,8 +4836,13 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
         _this.dblclickAction = _this.dblclickAction.bind(_this);
         _this.clickAction = _this.clickAction.bind(_this);
         _this.getAreaByPolygon = _this.getAreaByPolygon.bind(_this);
-        _this.setTimeout = null;
+        _this.lineupdate = _this.lineupdate.bind(_this);
+
         _this._first = new Date(), _this._second = null, _this._interval = 250;
+        _this.changeHanderList = [];
+        _this.copy();
+
+        _this.lineupdateTimeout = null;
 
         return _this;
     }
@@ -4849,7 +4854,7 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
             this.map.addOverlay(this.overlay);
             this.overlay.setPath(this.points);
             this.bingMoveEvent();
-            this.copy();
+
             if (this.map.inmapToolBar) {
                 this.ToolTip = this.map.inmapToolBar.toolTip;
                 this.ToolTip.setOption(this.toolTipConfig);
@@ -4861,12 +4866,38 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
         value: function bingMoveEvent() {
             this.map.addEventListener('click', this.clickAction);
             this.map.addEventListener('mousemove', this.mousemoveAction);
+            this.overlay.addEventListener('lineupdate', this.lineupdate);
+            this.map.addEventListener('resize', this.getAreaByPolygon);
+            this.map.addEventListener('moveend', this.getAreaByPolygon);
+            this.map.addEventListener('moving', this.getAreaByPolygon);
+            this.map.addEventListener('zoomend', this.getAreaByPolygon);
         }
     }, {
         key: 'removeMoveEvent',
         value: function removeMoveEvent() {
             this.map.removeEventListener('mousedown', this.startAction);
             this.map.removeEventListener('click', this.clickAction);
+            this.map.removeEventListener('resize', this.getAreaByPolygon);
+            this.map.removeEventListener('moveend', this.getAreaByPolygon);
+            this.map.removeEventListener('moving', this.getAreaByPolygon);
+            this.map.removeEventListener('zoomend', this.getAreaByPolygon);
+            this.overlay.removeEventListener('lineupdate', this.lineupdate);
+        }
+    }, {
+        key: 'lineupdate',
+        value: function lineupdate(e) {
+            var _this2 = this;
+
+            if (!this.isClick) {
+                if (this.lineupdateTimeout) {
+                    clearTimeout(this.lineupdateTimeout);
+                }
+                this.lineupdateTimeout = setTimeout(function () {
+                    for (var i = 0; i < _this2.changeHanderList.length; i++) {
+                        _this2.changeHanderList[i](e);
+                    }
+                }, 800);
+            }
         }
     }, {
         key: 'showAreaText',
@@ -4881,7 +4912,6 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
     }, {
         key: 'getAreaByPolygon',
         value: function getAreaByPolygon() {
-            var _this2 = this;
 
             if (!this.isClick && this.toolTipConfig.show) {
                 var geos = this.overlay.getPath();
@@ -4892,13 +4922,6 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
             } else {
                 this.ToolTip && this.ToolTip.hide();
             }
-            this.setTimeout = setTimeout(function () {
-                if (_this2.getAreaByPolygon) {
-                    _this2.getAreaByPolygon();
-                } else {
-                    clearTimeout(_this2.setTimeout);
-                }
-            }, 800);
         }
     }, {
         key: 'getGeoCenter',
@@ -4932,10 +4955,17 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
                     this.startAction(e);
                 }
             } else {
+
                 if (this._second - this._first <= this._interval) {
                     this._first = new Date();
-                    var index = this.findIndexVectis(e.pixel);
+                    var x = e.pixel.x - this.map.offsetX;
+                    var y = e.pixel.y - this.map.offsetY;
+                    var index = this.findIndexVectis({
+                        x: x,
+                        y: y
+                    });
                     if (index > -1) {
+                        this.drawPoint = this.overlay.getPath();
                         this.drawPoint.splice(index, 1);
                         this.overlay.setPath(this.drawPoint);
                     }
@@ -4975,7 +5005,7 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
     }, {
         key: 'dispose',
         value: function dispose() {
-            clearTimeout(this.setTimeout);
+
             this.ToolTip && this.ToolTip.hide();
             this.removeMoveEvent();
             this.map.removeOverlay(this.overlay);
@@ -5041,11 +5071,34 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
             this.overlay.setPath(this.drawPoint);
         }
     }, {
+        key: 'addEventListener',
+        value: function addEventListener(eventStr, handler) {
+
+            if (eventStr == 'change') {
+                this.changeHanderList.push(handler);
+            } else {
+                this.overlay.addEventListener(eventStr, handler);
+            }
+        }
+    }, {
+        key: 'removeEventListener',
+        value: function removeEventListener(eventStr, handler) {
+            if (eventStr == 'change') {
+                for (var i = 0; i < this.changeHanderList.length; i++) {
+                    if (this.changeHanderList[i] == handler) {
+                        this.changeHanderList.splice(i--, 1);
+                    }
+                }
+            } else {
+                this.overlay.removeEventListener(eventStr, handler);
+            }
+        }
+    }, {
         key: 'copy',
         value: function copy() {
             var _this5 = this;
 
-            ['setStrokeColor', 'getStrokeColor', 'setFillColor', 'getFillColor', 'setStrokeOpacity', 'getStrokeOpacity', 'setFillOpacity', 'getFillOpacity', 'setStrokeWeight', 'getStrokeWeight', 'setStrokeStyle', 'getStrokeStyle', 'getBounds', 'enableEditing', 'disableEditing', 'enableMassClear', 'disableMassClear', 'setPositionAt', 'getMap', 'addEventListener', 'removeEventListener'].forEach(function (key) {
+            ['setStrokeColor', 'getStrokeColor', 'setFillColor', 'getFillColor', 'setStrokeOpacity', 'getStrokeOpacity', 'setFillOpacity', 'getFillOpacity', 'setStrokeWeight', 'getStrokeWeight', 'setStrokeStyle', 'getStrokeStyle', 'getBounds', 'enableEditing', 'disableEditing', 'enableMassClear', 'disableMassClear', 'setPositionAt', 'getMap'].forEach(function (key) {
                 _this5[key] = _this5.overlay[key].bind(_this5.overlay);
             });
         }
@@ -5067,6 +5120,8 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
         key: 'setPath',
         value: function setPath(data) {
             var point = this._geoJsonToPoint(data);
+            this.drawPoint = point;
+
             this.overlay.setPath(point);
         }
     }, {
