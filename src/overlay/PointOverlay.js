@@ -235,7 +235,6 @@ export default class PointOverlay extends Parameter {
         let mapSize = this.map.getSize();
         for (let i = 0, len = pixels.length; i < len; i++) {
 
-
             let item = pixels[i];
             let pixel = item.geometry.pixel;
 

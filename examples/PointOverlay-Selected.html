@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>初始化设置选中元素</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="data/data.js"></script>
+    <script src="../dist/inmap.js"></script>
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        skin: "Blueness",
+        center: [105.403119, 38.028658],
+        zoom: {
+            value: 5,
+            show: true,
+            max: 6,
+            min: 5
+        },
+    })
+
+
+    var overlay = new inMap.PointOverlay({
+        tooltip: {
+            show: true,
+            formatter: "{count}",
+            offsets: {
+                top: 5,
+                left: 12,
+            }
+        },
+        legend: {
+            show: true,
+            title: "标题",
+            formatter: function (start, end, index, item) {
+                return start + "万~" + (end || "max") + "万";
+            },
+        },
+        style: {
+            normal: {
+                backgroundColor: 'rgba(200, 200, 50, 1)',
+                borderWidth: 1,
+                borderColor: "rgba(255,255,255,1)",
+                size: 10,
+            },
+            mouseOver: {
+                backgroundColor: 'rgba(200, 200, 200, 1)',
+                borderColor: "rgba(255,255,255,1)",
+                borderWidth: 4,
+            },
+            selected: {
+                backgroundColor: 'rgba(184,0,0,1)',
+                borderColor: "rgba(255,255,255,1)"
+            },
+            splitList: [{ //设置区间颜色
+                    start: 0,
+                    end: 2,
+                    size: 3,
+                },
+                {
+                    start: 2,
+                    end: 5,
+                    size: 6,
+                },
+                {
+                    start: 5,
+                    end: 7,
+                    size: 9,
+                },
+                {
+                    start: 7,
+                    size: 12,
+                }
+            ],
+        },
+        data: data,
+        selected:[data[0]],
+        event: {
+            onState(state) {
+                console.log(state);
+            }
+            // multiSelect: true,
+            // onMouseClick: function (item, event) {
+            //     //能获取当前点的信息
+            // }
+        }
+    });
+    inmap.add(overlay);
+</script>

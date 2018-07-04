@@ -7,5 +7,6 @@ export default {
             speed: 0.15 //动画速度
         }
     },
-    data: []
+    data: [],
+    selected:[]  //设置选中
 };

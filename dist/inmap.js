@@ -343,13 +343,13 @@ var Parameter = function (_CanvasOverlay) {
             this.legendConfig = option.legend;
             this.eventConfig = option.event;
             this.styleConfig = option.style;
-
             if (ops.data) {
                 this.setData(ops.data);
             } else {
                 this.onOptionChange();
                 this.map && this.refresh();
             }
+            Array.prototype.push.apply(this.selectItem, option.selected);
 
             this.tMapStyle(option.skin);
             this.toolTip && this.toolTip.setOption(this.tooltipConfig);
@@ -5968,8 +5968,8 @@ exports.default = {
             radius: 20,
             speed: 0.15 }
     },
-    data: []
-};
+    data: [],
+    selected: [] };
 
 /***/ }),
 /* 44 */
