@@ -25,7 +25,7 @@
         }
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
-    <script src="./data/shenzhen.js"></script>
+    <script src="./data/geojson.js"></script>
     <script src="../dist/inmap.js"></script>
 
 </head>
@@ -46,21 +46,32 @@
             max: 22
         }
     });
+  
     var overlay = new inMap.PolygonOverlay({
         style: {
             normal: {
                 borderWidth: 1.5,
-                // borderColor: "rgba(18,65,114,1)",
-                backgroundColor: "rgba(252,196,95,0.71)",
+                backgroundColor: "rgba(0,184,255,0.80)",
                 label: {
                     show: true, // 是否显示
-                    font: "13px bold ",
+                    font: "10px bold ",
                     color: "rgba(224, 238, 251,1)"
                 }
             },
-
+            mouseOver: {
+                shadowColor: "rgba(0, 0, 0, 1)",
+                shadowBlur: 10,
+                borderWidth: 1.5,
+                label: {
+                    color: "rgba(0, 0, 0, 1)"
+                }
+            },
+            selected: {
+                backgroundColor: "rgba(184,0,0,1)",
+                borderColor: "rgba(255,255,255,1)"
+            }
         },
-        data: data,
+        data: data.features,
         event: {
             onState(state) {
                 console.log(state);

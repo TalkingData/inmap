@@ -5175,18 +5175,32 @@ var PolygonOverlay = function (_Parameter) {
             for (var i = 0; i < this.workerData.length; i++) {
                 var geometry = this.workerData[i].geometry;
                 var pixels = geometry.pixels;
-                for (var j = 0; j < pixels.length; j++) {
-                    var pixelItem = pixels[j];
-                    for (var k = 0, len = pixelItem.length; k < len; k++) {
-                        var pixel = pixelItem[k];
-                        pixel[0] = pixel[0] + distanceX;
-                        pixel[1] = pixel[1] + distanceY;
+                if (geometry.type == 'MultiPolygon') {
+                    for (var j = 0; j < pixels.length; j++) {
+                        var pixelItem = pixels[j];
+                        for (var k = 0, len = pixelItem.length; k < len; k++) {
+                            var _pixels = pixelItem[k];
+                            for (var n = 0; n < _pixels.length; n++) {
+                                var pixel = _pixels[n];
+                                pixel[0] = pixel[0] + distanceX;
+                                pixel[1] = pixel[1] + distanceY;
+                            }
+                        }
+                    }
+                } else {
+                    for (var _j = 0; _j < pixels.length; _j++) {
+                        var _pixelItem = pixels[_j];
+                        for (var _k = 0, _len = _pixelItem.length; _k < _len; _k++) {
+                            var _pixel = _pixelItem[_k];
+                            _pixel[0] = _pixel[0] + distanceX;
+                            _pixel[1] = _pixel[1] + distanceY;
+                        }
                     }
                 }
 
                 var labelPixels = geometry.labelPixels;
-                for (var _j = 0; _j < labelPixels.length; _j++) {
-                    var bestCell = labelPixels[_j];
+                for (var _j2 = 0; _j2 < labelPixels.length; _j2++) {
+                    var bestCell = labelPixels[_j2];
                     if (bestCell) {
                         bestCell.x = bestCell.x + distanceX;
                         bestCell.y = bestCell.y + distanceY;
@@ -5344,7 +5358,6 @@ var PolygonOverlay = function (_Parameter) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
-
                 _this2.setState(_OnState2.default.conputeAfter);
                 _this2.setWorkerData(pixels);
                 _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
@@ -5360,21 +5373,22 @@ var PolygonOverlay = function (_Parameter) {
                 var geometry = item.geometry;
                 var pixels = geometry.pixels;
 
-                this.ctx.beginPath();
-                for (var j = 0; j < pixels.length; j++) {
-                    var pixelItem = pixels[j];
-                    this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
-                    for (var k = 1, len = pixelItem.length; k < len; k++) {
-                        this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+                if (geometry.type == 'MultiPolygon') {
+                    for (var k = 0; k < pixels.length; k++) {
+                        if (this.containPolygon(x, y, pixels[k])) {
+                            return {
+                                index: i,
+                                item: item
+                            };
+                        }
                     }
-                    this.ctx.closePath();
-                    if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
+                } else {
+                    if (this.containPolygon(x, y, pixels)) {
                         return {
                             index: i,
                             item: item
                         };
                     }
-                    pixelItem = null;
                 }
 
                 pixels = null, geometry = null, item = null;
@@ -5384,6 +5398,64 @@ var PolygonOverlay = function (_Parameter) {
                 index: -1,
                 item: null
             };
+        }
+    }, {
+        key: 'drawData',
+        value: function drawData(pixelItem) {
+            this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
+            for (var k = 1, len = pixelItem.length; k < len; k++) {
+                this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+            }
+        }
+    }, {
+        key: 'containPolygon',
+        value: function containPolygon(x, y, pixels) {
+            var outerRace = false;
+            for (var j = 0; j < pixels.length; j++) {
+                this.ctx.beginPath();
+                var pixelItem = pixels[j];
+                if (j == 0) {
+                    this.drawData(pixelItem);
+                    this.ctx.closePath();
+                    if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
+                        outerRace = true;
+                    } else {
+                        return false;
+                    }
+                } else {
+
+                    this.drawData(pixelItem);
+                    this.ctx.closePath();
+
+                    if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
+                        return false;
+                    }
+                }
+            }
+            return outerRace;
+        }
+    }, {
+        key: 'drawPolygon',
+        value: function drawPolygon(pixels, style) {
+            for (var j = 0; j < pixels.length; j++) {
+                this.ctx.save();
+                this.ctx.beginPath();
+                var pixelItem = pixels[j];
+                if (j == 0) {
+                    this.drawData(pixelItem);
+                    this.ctx.closePath();
+                    this.ctx.fill();
+                } else {
+                    this.drawData(pixelItem);
+                    this.ctx.clip();
+                    this.clearCanvas();
+                }
+                this.ctx.strokeStyle = style.borderColor;
+                this.ctx.lineWidth = style.borderWidth;
+                this.ctx.stroke();
+                this.ctx.restore();
+                pixelItem = null;
+            }
         }
     }, {
         key: 'drawLine',
@@ -5402,20 +5474,13 @@ var PolygonOverlay = function (_Parameter) {
                 this.ctx.shadowOffsetX = 0;
                 this.ctx.shadowOffsetY = 0;
                 this.ctx.fillStyle = style.backgroundColor;
-
-                for (var j = 0; j < pixels.length; j++) {
-                    var pixelItem = pixels[j];
-                    this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
-                    for (var k = 1, len = pixelItem.length; k < len; k++) {
-                        this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+                if (geometry.type == 'MultiPolygon') {
+                    for (var k = 0; k < pixels.length; k++) {
+                        this.drawPolygon(pixels[k], style);
                     }
-                    pixelItem = null;
-                    this.ctx.closePath();
-                    this.ctx.fill();
+                } else {
+                    this.drawPolygon(pixels, style);
                 }
-                this.ctx.strokeStyle = style.borderColor;
-                this.ctx.lineWidth = style.borderWidth;
-                this.ctx.stroke();
 
                 if (this.styleConfig.normal.label.show) {
                     var labelPixels = geometry.labelPixels;
@@ -5423,13 +5488,30 @@ var PolygonOverlay = function (_Parameter) {
                     this.ctx.lineWidth = style.label.lineWidth;
                     this.ctx.font = style.label.font;
                     this.ctx.fillStyle = style.label.color;
-                    for (var _j2 = 0; _j2 < labelPixels.length; _j2++) {
-                        var bestCell = labelPixels[_j2];
+                    for (var j = 0; j < labelPixels.length; j++) {
+                        var bestCell = labelPixels[j];
                         this.ctx.beginPath();
                         var width = this.ctx.measureText(item.name).width;
-                        if (bestCell && item.name && this.getMaxWidth(pixels[_j2]) > width) {
-                            this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
+                        if (geometry.type == 'MultiPolygon') {
+                            var maxPixels = [];
+                            for (var _k2 = 0; _k2 < pixels.length; _k2++) {
+                                var _item = pixels[_k2][0];
+                                if (_item.length > maxPixels.length) {
+                                    maxPixels = _item;
+                                    bestCell = labelPixels[_k2];
+                                }
+                                _item = null;
+                            }
+                            if (bestCell && item.name && this.getMaxWidth(maxPixels) > width) {
+                                this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
+                            }
+                            maxPixels = null;
+                        } else {
+                            if (bestCell && item.name && this.getMaxWidth(pixels[j]) > width) {
+                                this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
+                            }
                         }
+
                         bestCell = null, width = null;
                     }
                     labelPixels = null;

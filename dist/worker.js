@@ -1939,32 +1939,48 @@ var _polylabel2 = _interopRequireDefault(_polylabel);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function transfrom(coordinates, map, pixels, labelPixels) {
+    for (var i = 0; i < coordinates.length; i++) {
+        var geo = coordinates[i];
+        var tmp = [];
+        for (var k = 0; k < geo.length; k++) {
+            var pixel = (0, _pointToPixel.pointToPixelWorker)(new _Point2.default(geo[k][0], geo[k][1]), map);
+            tmp.push([pixel.x, pixel.y]);
+        }
+        pixels.push(tmp);
+        if (i == 0) {
+            labelPixels.push((0, _polylabel2.default)([tmp]));
+        }
+    }
+}
 var PolygonOverlay = {
     calculatePixel: function calculatePixel(webObj) {
         var data = webObj.request.data.data;
 
         var map = webObj.request.map;
         for (var j = 0; j < data.length; j++) {
-            var coordinates = data[j].geometry.coordinates;
+            var geometry = data[j].geometry;
+            var type = geometry.type;
+            var coordinates = geometry.coordinates;
             var pixels = [],
                 labelPixels = [];
-            for (var i = 0; i < coordinates.length; i++) {
-                var geo = coordinates[i];
-                var tmp = [];
-                for (var k = 0; k < geo.length; k++) {
-                    var pixel = (0, _pointToPixel.pointToPixelWorker)(new _Point2.default(geo[k][0], geo[k][1]), map);
-                    tmp.push([pixel.x, pixel.y]);
+            if (type == 'MultiPolygon') {
+                for (var k = 0; k < coordinates.length; k++) {
+                    var p = [];
+                    transfrom(coordinates[k], map, p, labelPixels);
+                    pixels.push(p);
                 }
-                pixels.push(tmp);
-                labelPixels.push((0, _polylabel2.default)([tmp]));
+            } else {
+                transfrom(coordinates, map, pixels, labelPixels);
             }
-            data[j].geometry['pixels'] = pixels;
 
+            data[j].geometry['pixels'] = pixels;
             data[j].geometry['labelPixels'] = labelPixels;
         }
         webObj.request.data = data;
         return webObj;
     }
+
 };
 exports.default = PolygonOverlay;
 

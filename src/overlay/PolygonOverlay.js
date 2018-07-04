@@ -39,12 +39,26 @@ export default class PolygonOverlay extends Parameter {
         for (let i = 0; i < this.workerData.length; i++) {
             let geometry = this.workerData[i].geometry;
             let pixels = geometry.pixels;
-            for (let j = 0; j < pixels.length; j++) {
-                let pixelItem = pixels[j];
-                for (let k = 0, len = pixelItem.length; k < len; k++) {
-                    let pixel = pixelItem[k];
-                    pixel[0] = pixel[0] + distanceX;
-                    pixel[1] = pixel[1] + distanceY;
+            if (geometry.type == 'MultiPolygon') {
+                for (let j = 0; j < pixels.length; j++) {
+                    let pixelItem = pixels[j];
+                    for (let k = 0, len = pixelItem.length; k < len; k++) {
+                        let pixels = pixelItem[k];
+                        for (let n = 0; n < pixels.length; n++) {
+                            let pixel = pixels[n];
+                            pixel[0] = pixel[0] + distanceX;
+                            pixel[1] = pixel[1] + distanceY;
+                        }
+                    }
+                }
+            } else {
+                for (let j = 0; j < pixels.length; j++) {
+                    let pixelItem = pixels[j];
+                    for (let k = 0, len = pixelItem.length; k < len; k++) {
+                        let pixel = pixelItem[k];
+                        pixel[0] = pixel[0] + distanceX;
+                        pixel[1] = pixel[1] + distanceY;
+                    }
                 }
             }
 
@@ -192,7 +206,6 @@ export default class PolygonOverlay extends Parameter {
             if (this.eventType == 'onmoving') {
                 return;
             }
-
             this.setState(State.conputeAfter);
             this.setWorkerData(pixels);
             this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
@@ -206,21 +219,24 @@ export default class PolygonOverlay extends Parameter {
             let geometry = item.geometry;
             let pixels = geometry.pixels;
 
-            this.ctx.beginPath();
-            for (let j = 0; j < pixels.length; j++) {
-                let pixelItem = pixels[j];
-                this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
-                for (let k = 1, len = pixelItem.length; k < len; k++) {
-                    this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+            if (geometry.type == 'MultiPolygon') {
+                for (let k = 0; k < pixels.length; k++) {
+                    if (this.containPolygon(x, y, pixels[k])) {
+                        return {
+                            index: i,
+                            item: item
+                        };
+                    }
                 }
-                this.ctx.closePath();
-                if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
+
+            } else {
+                if (this.containPolygon(x, y, pixels)) {
                     return {
                         index: i,
                         item: item
                     };
                 }
-                pixelItem = null;
+
             }
 
             pixels = null, geometry = null, item = null;
@@ -230,6 +246,60 @@ export default class PolygonOverlay extends Parameter {
             index: -1,
             item: null
         };
+    }
+    drawData(pixelItem) {
+        this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
+        for (let k = 1, len = pixelItem.length; k < len; k++) {
+            this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+        }
+    }
+    containPolygon(x, y, pixels) {
+        let outerRace = false;
+        for (let j = 0; j < pixels.length; j++) {
+            this.ctx.beginPath();
+            let pixelItem = pixels[j];
+            if (j == 0) {
+                this.drawData(pixelItem);
+                this.ctx.closePath();
+                if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
+                    outerRace = true;
+                } else {
+                    return false;
+                }
+            } else {
+
+                this.drawData(pixelItem);
+                this.ctx.closePath();
+                //内环包含
+                if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
+                    return false;
+                }
+            }
+
+        }
+        return outerRace;
+    }
+    drawPolygon(pixels, style) {
+        for (let j = 0; j < pixels.length; j++) {
+            this.ctx.save();
+            this.ctx.beginPath();
+            let pixelItem = pixels[j];
+            if (j == 0) {
+                this.drawData(pixelItem);
+                this.ctx.closePath();
+                this.ctx.fill();
+            } else {
+                this.drawData(pixelItem);
+                this.ctx.clip();
+                this.clearCanvas();
+            }
+            this.ctx.strokeStyle = style.borderColor;
+            this.ctx.lineWidth = style.borderWidth;
+            this.ctx.stroke();
+            this.ctx.restore();
+            pixelItem = null;
+
+        }
     }
     drawLine(data) {
         this.ctx.lineCap = 'round';
@@ -246,20 +316,14 @@ export default class PolygonOverlay extends Parameter {
             this.ctx.shadowOffsetX = 0;
             this.ctx.shadowOffsetY = 0;
             this.ctx.fillStyle = style.backgroundColor;
-
-            for (let j = 0; j < pixels.length; j++) {
-                let pixelItem = pixels[j];
-                this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
-                for (let k = 1, len = pixelItem.length; k < len; k++) {
-                    this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+            if (geometry.type == 'MultiPolygon') {
+                for (let k = 0; k < pixels.length; k++) {
+                    this.drawPolygon(pixels[k], style);
                 }
-                pixelItem = null;
-                this.ctx.closePath();
-                this.ctx.fill();
+
+            } else {
+                this.drawPolygon(pixels, style);
             }
-            this.ctx.strokeStyle = style.borderColor;
-            this.ctx.lineWidth = style.borderWidth;
-            this.ctx.stroke();
 
             if (this.styleConfig.normal.label.show) {
                 let labelPixels = geometry.labelPixels;
@@ -271,9 +335,26 @@ export default class PolygonOverlay extends Parameter {
                     let bestCell = labelPixels[j];
                     this.ctx.beginPath();
                     let width = this.ctx.measureText(item.name).width;
-                    if (bestCell && item.name && this.getMaxWidth(pixels[j]) > width) {
-                        this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
+                    if (geometry.type == 'MultiPolygon') {
+                        let maxPixels = [];
+                        for (let k = 0; k < pixels.length; k++) {
+                            let item = pixels[k][0];
+                            if (item.length > maxPixels.length) {
+                                maxPixels = item;
+                                bestCell = labelPixels[k];
+                            }
+                            item = null;
+                        }
+                        if (bestCell && item.name && this.getMaxWidth(maxPixels) > width) {
+                            this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
+                        }
+                        maxPixels = null;
+                    } else {
+                        if (bestCell && item.name && this.getMaxWidth(pixels[j]) > width) {
+                            this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
+                        }
                     }
+
                     bestCell = null, width = null;
                 }
                 labelPixels = null;
