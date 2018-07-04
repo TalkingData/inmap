@@ -19,7 +19,7 @@ export default class LineStringOverlay extends Parameter {
         this.workerData = [];
     }
     setOptionStyle(ops) {
-        this._setStyle(this.LineStringConfig, ops);
+        this._setStyle(LineStringConfig, ops);
     }
     setState(val) {
         this.state = val;
