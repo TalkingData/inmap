@@ -23,6 +23,7 @@
   "author": "TalkingData",
   "license": "Apache-2.0",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "deepmerge": "^1.5.2"
   },
   "devDependencies": {

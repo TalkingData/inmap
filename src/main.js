@@ -1,3 +1,5 @@
+import 'babel-polyfill';
+
 import PointOverlay from './overlay/PointOverlay';
 
 import GriddingOverlay from './overlay/GriddingOverlay';

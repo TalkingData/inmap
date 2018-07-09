@@ -17,7 +17,18 @@ export default class ToolTip {
         return dom;
     }
     compileTooltipTemplate(formatter) {
-        formatter = '`' + formatter.replace(/\{/g, '${overItem.') + '`';
+        let RexStr = /\{|\}/g;
+        formatter = formatter.replace(RexStr, function (MatchStr) {
+            switch (MatchStr) {
+                case '{':
+                    return 'overItem.';
+                case '}':
+                    return '';
+                default:
+                    break;
+            }
+
+        });
         this.tooltipTemplate = new Function('overItem', 'return ' + formatter);
     }
     show(x, y) {
