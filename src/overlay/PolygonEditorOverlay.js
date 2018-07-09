@@ -19,15 +19,17 @@ export default class PolygonEditorOverlay extends MultiOverlay {
         this.drawPoint = this.points;
         this.pixels = null;
         this._isBinded = false;
-        this.isClick = this.points.length > 0 ? false : true;
-        this.overlay = new BMap.Polygon([], this.option);
+
+        this.overlay = new BMap.Polygon([], merge(this.option, {
+            enableEditing: true
+        }));
         this.startAction = this.startAction.bind(this);
         this.mousemoveAction = this.mousemoveAction.bind(this);
         this.dblclickAction = this.dblclickAction.bind(this);
         this.clickAction = this.clickAction.bind(this);
         this.getAreaByPolygon = this.getAreaByPolygon.bind(this);
         this.lineupdate = this.lineupdate.bind(this);
-        
+
         this._first = new Date(),
             this._second = null,
             this._interval = 250;
@@ -43,7 +45,7 @@ export default class PolygonEditorOverlay extends MultiOverlay {
         this.map.addOverlay(this.overlay);
         this.overlay.setPath(this.points);
         this.bingMoveEvent();
-
+        this.option.enableEditing ? this.enableEditing() : this.disableEditing();
         if (this.map.inmapToolBar) {
             this.ToolTip = this.map.inmapToolBar.toolTip;
             this.ToolTip.setOption(this.toolTipConfig);
@@ -54,24 +56,24 @@ export default class PolygonEditorOverlay extends MultiOverlay {
         this.map.addEventListener('click', this.clickAction);
         this.map.addEventListener('mousemove', this.mousemoveAction);
         this.overlay.addEventListener('lineupdate', this.lineupdate);
-        this.map.addEventListener('resize',  this.getAreaByPolygon);
-        this.map.addEventListener('moveend',this.getAreaByPolygon);
-        this.map.addEventListener('moving',this.getAreaByPolygon);
+        this.map.addEventListener('resize', this.getAreaByPolygon);
+        this.map.addEventListener('moveend', this.getAreaByPolygon);
+        this.map.addEventListener('moving', this.getAreaByPolygon);
         this.map.addEventListener('zoomend', this.getAreaByPolygon);
 
     }
     removeMoveEvent() {
         this.map.removeEventListener('mousedown', this.startAction);
         this.map.removeEventListener('click', this.clickAction);
-        this.map.removeEventListener('resize',  this.getAreaByPolygon);
-        this.map.removeEventListener('moveend',this.getAreaByPolygon);
-        this.map.removeEventListener('moving',this.getAreaByPolygon);
+        this.map.removeEventListener('resize', this.getAreaByPolygon);
+        this.map.removeEventListener('moveend', this.getAreaByPolygon);
+        this.map.removeEventListener('moving', this.getAreaByPolygon);
         this.map.removeEventListener('zoomend', this.getAreaByPolygon);
         this.overlay.removeEventListener('lineupdate', this.lineupdate);
 
     }
     lineupdate(e) {
-        if (!this.isClick) {
+        if (!this.isCreate) {
             if (this.lineupdateTimeout) {
                 clearTimeout(this.lineupdateTimeout);
             }
@@ -85,14 +87,15 @@ export default class PolygonEditorOverlay extends MultiOverlay {
     }
     showAreaText() {
         this.toolTipConfig.show = true;
+        this.getAreaByPolygon();
     }
     hideAreaText() {
         this.toolTipConfig.show = false;
+        this.getAreaByPolygon();
     }
     getAreaByPolygon() {
-
-        if (!this.isClick && this.toolTipConfig.show) {
-            let geos = this.overlay.getPath();
+        let geos = this.overlay.getPath();
+        if (!this.isCreate && this.toolTipConfig.show && geos.length > 0) {
             let areas = GeoUtils.getPolygonArea(geos);
             let center = this.getGeoCenter(geos);
             let pixel = this.map.pointToOverlayPixel(new BMap.Point(center.lng, center.lat));
@@ -123,7 +126,8 @@ export default class PolygonEditorOverlay extends MultiOverlay {
     clickAction(e) {
         this._second = new Date();
 
-        if (this.isClick) {
+        if (this.isCreate) {
+            console.log(this.option);
             if (this._second - this._first <= this._interval) {
                 this._first = new Date();
                 this.dblclickAction(e);
@@ -132,7 +136,6 @@ export default class PolygonEditorOverlay extends MultiOverlay {
                 this.startAction(e);
             }
         } else {
-
             if (this._second - this._first <= this._interval) {
                 this._first = new Date();
                 let x = e.pixel.x - this.map.offsetX;
@@ -176,7 +179,9 @@ export default class PolygonEditorOverlay extends MultiOverlay {
         return !(mouseX < x || mouseX > x + w || mouseY < y || mouseY > y + h);
     }
     dispose() {
-       
+        if (this.lineupdateTimeout) {
+            clearTimeout(this.lineupdateTimeout);
+        }
         this.ToolTip && this.ToolTip.hide();
         this.removeMoveEvent();
         this.map.removeOverlay(this.overlay);
@@ -230,7 +235,7 @@ export default class PolygonEditorOverlay extends MultiOverlay {
         }
         this.map.removeEventListener('mousemove', this.mousemoveAction);
         this._isBinded = false;
-        this.isClick = false;
+        this.isCreate = false;
         this.drawPoint.pop();
         this.overlay.setPath(this.drawPoint);
 
@@ -258,10 +263,20 @@ export default class PolygonEditorOverlay extends MultiOverlay {
     }
 
     copy() {
-        ['setStrokeColor', 'getStrokeColor', 'setFillColor', 'getFillColor', 'setStrokeOpacity', 'getStrokeOpacity', 'setFillOpacity', 'getFillOpacity', 'setStrokeWeight', 'getStrokeWeight', 'setStrokeStyle', 'getStrokeStyle', 'getBounds', 'enableEditing', 'disableEditing', 'enableMassClear', 'disableMassClear', 'setPositionAt', 'getMap'].forEach((key) => {
+        ['setStrokeColor', 'getStrokeColor', 'setFillColor', 'getFillColor', 'setStrokeOpacity', 'getStrokeOpacity', 'setFillOpacity', 'getFillOpacity', 'setStrokeWeight', 'getStrokeWeight', 'setStrokeStyle', 'getStrokeStyle', 'getBounds', 'enableMassClear', 'disableMassClear', 'setPositionAt', 'getMap'].forEach((key) => {
             this[key] = this.overlay[key].bind(this.overlay);
         });
 
+    }
+    enableEditing() {
+        this.isCreate = this.overlay.getPath().length <= 0;
+        this.overlay.enableEditing();
+    }
+    disableEditing() {
+        if (this.overlay.getPath().length > 0) {
+            this.overlay.disableEditing();
+        }
+        this.isCreate = false;
     }
     _geoJsonToPoint(data) {
         if (data.geometry) {
@@ -278,9 +293,8 @@ export default class PolygonEditorOverlay extends MultiOverlay {
     setPath(data) {
         let point = this._geoJsonToPoint(data);
         this.drawPoint = point;
-
         this.overlay.setPath(point);
-
+        this.option.enableEditing ? this.enableEditing() : this.disableEditing();
     }
     getPath() {
         let data = this.overlay.getPath();

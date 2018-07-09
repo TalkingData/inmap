@@ -63,67 +63,62 @@
             inmap.remove(overlay);
         }
     }
+    overlay = new inMap.PolygonEditorOverlay({
+        style: {
+            enableEditing: true
+        },
+        data: [],
+    });
+    inmap.add(overlay);
+    overlay.addEventListener('change', function (e) {
+        console.log(e);
+    })
 
     function addOverlay() {
-        this.removeOverlay();
-        overlay = new inMap.PolygonEditorOverlay({
-            style: {},
-            data: [],
-        });
-        inmap.add(overlay);
-        overlay.addEventListener('change', function (e) {
-            console.log(e);
-        })
+        overlay.setPath([]);
     }
 
     function addEditorOverLay() {
-        this.removeOverlay();
-        overlay = new inMap.PolygonEditorOverlay({
-            style: {},
-            data: {
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [
-                        [
-                            89.066319,
-                            42.015565
-                        ],
-                        [
-                            91.494763,
-                            35.573006
-                        ],
-                        [
-                            94.291152,
-                            30.683971
-                        ],
-                        [
-                            101.355714,
-                            31.759106
-                        ],
-                        [
-                            108.861811,
-                            34.848232
-                        ],
-                        [
-                            106.874903,
-                            39.212162
-                        ],
-                        [
-                            102.901087,
-                            42.398553
-                        ],
-                        [
-                            95.542168,
-                            43.853853
-                        ]
+        overlay.setPath({
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        89.066319,
+                        42.015565
+                    ],
+                    [
+                        91.494763,
+                        35.573006
+                    ],
+                    [
+                        94.291152,
+                        30.683971
+                    ],
+                    [
+                        101.355714,
+                        31.759106
+                    ],
+                    [
+                        108.861811,
+                        34.848232
+                    ],
+                    [
+                        106.874903,
+                        39.212162
+                    ],
+                    [
+                        102.901087,
+                        42.398553
+                    ],
+                    [
+                        95.542168,
+                        43.853853
                     ]
-                }
+                ]
             }
         });
-        inmap.add(overlay);
-        overlay.addEventListener('change', function (e) {
-            console.log(e);
-        })
+        overlay.enableEditing();
     }
 
     function openEdit() {
