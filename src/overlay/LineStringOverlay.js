@@ -12,19 +12,23 @@ let isMobile = detectmob();
 export default class LineStringOverlay extends Parameter {
     constructor(ops) {
         super(LineStringConfig, ops);
-        this.points = [];
-        this.styleConfig = {};
-        this._setStyle(LineStringConfig, ops);
+        // this.styleConfig = {};
         this.state = null;
         this.mouseLayer = new CanvasOverlay();
-        this.workerData = [];
         this.selectItemIndex = -1;
+        this.onDataChange();
     }
     setOptionStyle(ops) {
         this._setStyle(LineStringConfig, ops);
     }
     onDataChange() {
         this.selectItemIndex = -1;
+        if (this.selectItem.length > 0) {
+            this.selectItemIndex = this.points.findIndex((item) => {
+                return this.selectItem[0] == item;
+            });
+        }
+
     }
 
     parameterInit() {

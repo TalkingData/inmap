@@ -3030,7 +3030,7 @@ var Parameter = function (_CanvasOverlay) {
                 this.onOptionChange();
                 this.map && this.refresh();
             }
-            Array.prototype.push.apply(this.selectItem, option.selected);
+            this.selectItem = option.selected || [];
 
             this.tMapStyle(option.skin);
             this.toolTip && this.toolTip.setOption(this.tooltipConfig);
@@ -11157,13 +11157,10 @@ var LineStringOverlay = function (_Parameter) {
 
         var _this = _possibleConstructorReturn(this, (LineStringOverlay.__proto__ || Object.getPrototypeOf(LineStringOverlay)).call(this, _LineStringConfig2.default, ops));
 
-        _this.points = [];
-        _this.styleConfig = {};
-        _this._setStyle(_LineStringConfig2.default, ops);
         _this.state = null;
         _this.mouseLayer = new _CanvasOverlay2.default();
-        _this.workerData = [];
         _this.selectItemIndex = -1;
+        _this.onDataChange();
         return _this;
     }
 
@@ -11175,7 +11172,14 @@ var LineStringOverlay = function (_Parameter) {
     }, {
         key: 'onDataChange',
         value: function onDataChange() {
+            var _this2 = this;
+
             this.selectItemIndex = -1;
+            if (this.selectItem.length > 0) {
+                this.selectItemIndex = this.points.findIndex(function (item) {
+                    return _this2.selectItem[0] == item;
+                });
+            }
         }
     }, {
         key: 'parameterInit',
@@ -11307,7 +11311,7 @@ var LineStringOverlay = function (_Parameter) {
     }, {
         key: 'drawMap',
         value: function drawMap() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.clearAll();
             var zoomUnit = Math.pow(2, 18 - this.map.getZoom());
@@ -11323,12 +11327,12 @@ var LineStringOverlay = function (_Parameter) {
             };
             this.setState(_OnState2.default.computeBefore);
             this.postMessage('LineStringOverlay.calculatePixel', params, function (pixels, margin) {
-                if (_this2.eventType == 'onmoving') {
+                if (_this3.eventType == 'onmoving') {
                     return;
                 }
-                _this2.setState(_OnState2.default.conputeAfter);
-                (0, _util.clearPushArray)(_this2.workerData, pixels);
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                _this3.setState(_OnState2.default.conputeAfter);
+                (0, _util.clearPushArray)(_this3.workerData, pixels);
+                _this3.translation(margin.left - _this3.margin.left, margin.top - _this3.margin.top);
 
                 params = null;
                 margin = null;
@@ -15291,6 +15295,7 @@ exports.default = {
         splitList: []
     },
     data: [],
+    selected: [],
     event: {
         onMouseClick: function onMouseClick() {},
         onState: function onState() {}
@@ -15429,6 +15434,7 @@ exports.default = {
 
     },
     data: [],
+    selected: [],
     event: {
         multiSelect: false, onMouseClick: function onMouseClick() {},
         onState: function onState() {}

@@ -17,8 +17,9 @@ export default {
         splitList: [],
     },
     data: [],
+    selected: [], //设置选中
     event: {
-        onMouseClick(){},
+        onMouseClick() {},
         onState() {
 
         }

@@ -41,7 +41,7 @@ export default class Parameter extends CanvasOverlay {
             this.onOptionChange();
             this.map && this.refresh();
         }
-        Array.prototype.push.apply(this.selectItem, option.selected);
+        this.selectItem = option.selected || [];
         // this.points = ops.data ? option.data : this.points;
         this.tMapStyle(option.skin);
         this.toolTip && this.toolTip.setOption(this.tooltipConfig);
