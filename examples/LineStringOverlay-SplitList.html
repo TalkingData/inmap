@@ -48,6 +48,7 @@
     });
 
     var data = [{
+        name: "线路一",
         "geometry": {
             "type": "LineString",
             "coordinates": [
@@ -57,6 +58,7 @@
         },
         "count": 1
     }, {
+        name: "线路二",
         "geometry": {
             "type": "LineString",
             "coordinates": [
@@ -66,6 +68,7 @@
         },
         "count": 2
     }, {
+        name: "线路三",
         "geometry": {
             "type": "LineString",
             "coordinates": [
@@ -75,6 +78,7 @@
         },
         "count": 3
     }, {
+        name: "线路四",
         "geometry": {
             "type": "LineString",
             "coordinates": [
@@ -84,6 +88,7 @@
         },
         "count": 4
     }, {
+        name: "线路五",
         "geometry": {
             "type": "LineString",
             "coordinates": [
@@ -93,6 +98,7 @@
         },
         "count": 5
     }, {
+        name: "线路六",
         "geometry": {
             "type": "LineString",
             "coordinates": [
@@ -102,6 +108,7 @@
         },
         "count": 6
     }, {
+        name: "线路七",
         "geometry": {
             "type": "LineString",
             "coordinates": [
@@ -111,6 +118,7 @@
         },
         "count": 2
     }, {
+        name: "线路八",
         "geometry": {
             "type": "LineString",
             "coordinates": [
@@ -120,6 +128,7 @@
         },
         "count": 1
     }, {
+        name: "线路九",
         "geometry": {
             "type": "LineString",
             "coordinates": [
@@ -130,10 +139,11 @@
         "count": 5
     }];
 
-
-
-
     var overlay = new inMap.LineStringOverlay({
+        tooltip: {
+            show: true,
+            formatter: '{name}',
+        },
         style: {
             normal: {
                 borderColor: 'rgba(200, 200, 50, 1)',
@@ -142,23 +152,29 @@
                 shadowBlur: 20,
                 lineCurive: "curve"
             },
+            mouseOver: {
+                borderColor: 'rgba(255, 255, 255, 1)'
+            },
+            selected: {
+                borderColor: 'rgba(184,0,0,1)',
+            },
             splitList: [{
                     start: 0,
                     end: 1,
                     borderWidth: 1,
-                    borderColor: "rgba(156,200,249,1)"
+                    borderColor: 'rgba(156,200,249,1)'
                 },
                 {
                     start: 1,
                     end: 2,
                     borderWidth: 2,
-                    borderColor: "rgba(93,158,247,1)"
+                    borderColor: 'rgba(93,158,247,1)'
                 },
                 {
                     start: 3,
                     end: 4,
                     borderWidth: 3,
-                    borderColor: "rgba(134,207,55,1)"
+                    borderColor: 'rgba(134,207,55,1)'
                 },
                 {
                     start: 5,
