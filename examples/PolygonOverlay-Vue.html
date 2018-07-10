@@ -94,7 +94,7 @@
     var overlay = new inMap.PolygonOverlay({
         tooltip: {
             show: true,
-            // formatter: "{name}~{count}",
+            // formatter: "{name}+'~<br/>'+{count}",
             formatter: function (params) {
                 return params.count;
             }

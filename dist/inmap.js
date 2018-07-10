@@ -15829,8 +15829,17 @@ var ToolTip = function () {
     }, {
         key: 'compileTooltipTemplate',
         value: function compileTooltipTemplate(formatter) {
-            formatter = '`' + formatter.replace(/\{/g, '${overItem.') + '`';
-
+            var RexStr = /\{|\}/g;
+            formatter = formatter.replace(RexStr, function (MatchStr) {
+                switch (MatchStr) {
+                    case '{':
+                        return 'overItem.';
+                    case '}':
+                        return '';
+                    default:
+                        break;
+                }
+            });
             this.tooltipTemplate = new Function('overItem', 'return ' + formatter);
         }
     }, {
