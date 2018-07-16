@@ -2613,7 +2613,16 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
                 });
             }
 
-            this.styleConfig.splitList = split;
+            var result = [];
+            for (var _i = 0; _i < split.length; _i++) {
+                var item = split[_i];
+                if (item.start != item.end) {
+                    item.backgroundColor = colors[result.length];
+                    result.push(item);
+                }
+            }
+
+            this.styleConfig.splitList = result;
         }
     }, {
         key: 'patchSplitList',
@@ -2763,8 +2772,8 @@ var BoundaryOverlay = exports.BoundaryOverlay = function (_Parameter) {
                 this.ctx.stroke();
             }
 
-            for (var _i = 0, _len = data.length; _i < _len; _i++) {
-                var _item = data[_i];
+            for (var _i2 = 0, _len = data.length; _i2 < _len; _i2++) {
+                var _item = data[_i2];
                 var _pixel = _item.pixels;
                 var bestCell = _item.bestCell;
                 var label = this.setDrawStyle(_item).label;
@@ -3202,7 +3211,16 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
                 });
             }
 
-            this.styleConfig.splitList = split;
+            var result = [];
+            for (var _i = 0; _i < split.length; _i++) {
+                var _item = split[_i];
+                if (_item.start != _item.end) {
+                    _item.backgroundColor = colors[result.length];
+                    result.push(_item);
+                }
+            }
+
+            this.styleConfig.splitList = result;
             this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
     }, {
@@ -3212,12 +3230,12 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
                 ctx = this.ctx;
             var mapSize = this.map.getSize();
             for (var i = 0, len = pixels.length; i < len; i++) {
-                var _item = pixels[i];
-                var _item$pixel = _item.pixel,
-                    x = _item$pixel.x,
-                    y = _item$pixel.y;
+                var _item2 = pixels[i];
+                var _item2$pixel = _item2.pixel,
+                    x = _item2$pixel.x,
+                    y = _item2$pixel.y;
 
-                var style = this.setDrawStyle(_item);
+                var style = this.setDrawStyle(_item2);
                 var r = style.size + this.styleConfig.normal.borderWidth;
                 if (x > -r && y > -r && x < mapSize.width + r && y < mapSize.height + r) {
                     ctx.beginPath();
@@ -3225,7 +3243,7 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
                     if (ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
                         return {
                             index: i,
-                            item: _item
+                            item: _item2
                         };
                     }
                 }
@@ -3277,13 +3295,13 @@ var DotOverlay = exports.DotOverlay = function (_Parameter) {
         value: function _loopDraw(ctx, pixels) {
             var mapSize = this.map.getSize();
             for (var i = 0, len = pixels.length; i < len; i++) {
-                var _item2 = pixels[i];
-                var pixel = _item2.pixel;
+                var _item3 = pixels[i];
+                var pixel = _item3.pixel;
                 var x = pixel.x,
                     y = pixel.y;
 
 
-                var style = this.setDrawStyle(_item2);
+                var style = this.setDrawStyle(_item3);
                 var size = style.size;
                 if (this.styleConfig.normal.label.show) {
                     pixel['radius'] = size;
@@ -6403,7 +6421,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.6.5";
+var version = "1.6.6";
 console.log('inMap v' + version);
 
 var inMap = {
