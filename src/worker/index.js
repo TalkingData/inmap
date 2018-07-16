@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import HeatOverlay from './transform/HeatOverlay';
 import GriddingOverlay from './transform/GriddingOverlay';
 import PolygonOverlay from './transform/PolygonOverlay';

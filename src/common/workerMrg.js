@@ -17,8 +17,8 @@
 
          this.worker = new Worker(workerUrl);
          this.worker.addEventListener('message', this.message);
-         this.worker.onerror = function () {
-             throw new TypeError('inMap : worker.onerror');
+         this.worker.onerror = function (e) {
+             throw new TypeError('inMap : worker.onerror',e);
 
          };
      }

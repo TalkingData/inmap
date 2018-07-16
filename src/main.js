@@ -1,4 +1,4 @@
-import 'babel-polyfill';
+import './lib/require-babel-polyfill.js';
 
 import PointOverlay from './overlay/PointOverlay';
 
