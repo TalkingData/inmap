@@ -47,7 +47,7 @@
             min: 5
         },
     });
-    
+
     var overlay = new inMap.PointOverlay({
         tooltip: {
             show: true,
@@ -59,25 +59,8 @@
         },
         legend: {
             show: true,
-            title: "标题"
-        },
-        style: {
-            normal: {
-                backgroundColor: 'rgba(200, 200, 50, 1)',
-                borderWidth: 1,
-                borderColor: "rgba(255,255,255,1)",
-                size: 10,
-            },
-            mouseOver: {
-                backgroundColor: 'rgba(200, 200, 200, 1)',
-                borderColor: "rgba(255,255,255,1)",
-                borderWidth: 4,
-            },
-            selected: {
-                backgroundColor: 'rgba(184,0,0,1)',
-                borderColor: "rgba(255,255,255,1)"
-            },
-            splitList: [{ //设置区间颜色
+            title: "标题",
+            list: [{ //设置区间颜色
                     start: 0,
                     end: 2,
                     size: 3,
@@ -104,9 +87,27 @@
                     text: "描述四",
                     backgroundColor: 'rgba(252,198,10,0.7)',
                 }
-            ],
+            ]
         },
-        data: data
+        style: {
+            normal: {
+                backgroundColor: 'rgba(200, 200, 50, 1)',
+                borderWidth: 1,
+                borderColor: "rgba(255,255,255,1)",
+                size: 10,
+            },
+            mouseOver: {
+                backgroundColor: 'rgba(200, 200, 200, 1)',
+                borderColor: "rgba(255,255,255,1)",
+                borderWidth: 4,
+            },
+            selected: {
+                backgroundColor: 'rgba(184,0,0,1)',
+                borderColor: "rgba(255,255,255,1)"
+            },
+
+        },
+        data: []
     });
     inmap.add(overlay);
 </script>

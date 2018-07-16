@@ -1,4 +1,4 @@
- let CircuitOverlay = {
+ const CircuitOverlay = {
      transferCoordinate(_coordinates, nwMc, zoomUnit) {
          return _coordinates.map(function (item) {
              let x = (item[0] - nwMc.x) / zoomUnit;

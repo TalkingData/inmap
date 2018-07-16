@@ -2,7 +2,7 @@ import {
     pointToPixelWorker
 } from '../../lib/pointToPixel';
 
-let GriddingOverlay = {
+const GriddingOverlay = {
     toRecGrids(webObj) {
         let {
             points,

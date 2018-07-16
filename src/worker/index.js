@@ -42,6 +42,7 @@ let callbackFun = function (data) {
         callback = callbackList;
     while (p[index]) {
         callback = callback[p[index]];
+        
         index++;
         if (index >= p.length) {
             //唯一生效队列控制
