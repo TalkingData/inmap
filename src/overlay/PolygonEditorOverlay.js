@@ -223,6 +223,7 @@ export default class PolygonEditorOverlay extends MultiOverlay {
 
     }
     mousemoveAction(e) {
+
         if (!this._isBinded) {
             return;
         }
@@ -270,6 +271,9 @@ export default class PolygonEditorOverlay extends MultiOverlay {
     }
     enableEditing() {
         this.isCreate = this.overlay.getPath().length <= 0;
+        if (this.isCreate) {
+            this.map.addEventListener('mousemove', this.mousemoveAction);
+        }
         this.overlay.enableEditing();
     }
     disableEditing() {
@@ -291,9 +295,9 @@ export default class PolygonEditorOverlay extends MultiOverlay {
         }
     }
     setPath(data) {
-        let point = this._geoJsonToPoint(data);
-        this.drawPoint = point;
-        this.overlay.setPath(point);
+        let points = this._geoJsonToPoint(data);
+        this.drawPoint = this.points = points;
+        this.overlay.setPath(points);
         this.option.enableEditing ? this.enableEditing() : this.disableEditing();
     }
     getPath() {
@@ -301,11 +305,16 @@ export default class PolygonEditorOverlay extends MultiOverlay {
         let coordinates = data.map((item) => {
             return [item.lng, item.lat];
         });
-        return {
-            geometry: {
-                type: 'Polygon',
-                coordinates: coordinates
-            }
-        };
+        if (coordinates.length > 0) {
+            return {
+                geometry: {
+                    type: 'Polygon',
+                    coordinates: coordinates
+                }
+            };
+        } else {
+            return [];
+        }
+
     }
 }

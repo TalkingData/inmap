@@ -5504,6 +5504,7 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
     }, {
         key: 'mousemoveAction',
         value: function mousemoveAction(e) {
+
             if (!this._isBinded) {
                 return;
             }
@@ -5557,6 +5558,9 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
         key: 'enableEditing',
         value: function enableEditing() {
             this.isCreate = this.overlay.getPath().length <= 0;
+            if (this.isCreate) {
+                this.map.addEventListener('mousemove', this.mousemoveAction);
+            }
             this.overlay.enableEditing();
         }
     }, {
@@ -5584,9 +5588,9 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
     }, {
         key: 'setPath',
         value: function setPath(data) {
-            var point = this._geoJsonToPoint(data);
-            this.drawPoint = point;
-            this.overlay.setPath(point);
+            var points = this._geoJsonToPoint(data);
+            this.drawPoint = this.points = points;
+            this.overlay.setPath(points);
             this.option.enableEditing ? this.enableEditing() : this.disableEditing();
         }
     }, {
@@ -5596,12 +5600,16 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
             var coordinates = data.map(function (item) {
                 return [item.lng, item.lat];
             });
-            return {
-                geometry: {
-                    type: 'Polygon',
-                    coordinates: coordinates
-                }
-            };
+            if (coordinates.length > 0) {
+                return {
+                    geometry: {
+                        type: 'Polygon',
+                        coordinates: coordinates
+                    }
+                };
+            } else {
+                return [];
+            }
         }
     }]);
 
@@ -6421,7 +6429,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.6.6";
+var version = "1.6.7";
 console.log('inMap v' + version);
 
 var inMap = {
