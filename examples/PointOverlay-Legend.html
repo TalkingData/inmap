@@ -47,67 +47,129 @@
             min: 5
         },
     });
-
     var overlay = new inMap.PointOverlay({
         tooltip: {
             show: true,
-            formatter: "{count}",
-            offsets: {
-                top: 5,
-                left: 12,
-            }
+            formatter: "{count}"
         },
         legend: {
-            show: true,
-            title: "标题",
-            list: [{ //设置区间颜色
+            show: true,  
+            data: ["描述1", "描述2", "描述3", "描述4"],
+            //legned 回调
+            formatter: function (start, end, index, item) {
+                return start + "万~" + (end || "max") + "万";
+            }
+        },
+        style: {
+            normal: {
+                backgroundColor: "rgba(200, 200, 50, 1)",
+                borderWidth: 1,
+                borderColor: "rgba(255,255,255,1)",
+                size: 3,
+                label: {
+                    show: true,
+                    color: "rgba(255,255,255,1)"
+                }
+            },
+            mouseOver: {
+                backgroundColor: "rgba(200, 200, 200, 1)",
+                borderColor: "rgba(255,255,255,1)",
+                borderWidth: 4
+            },
+            selected: {
+                backgroundColor: "rgba(184,0,0,1)",
+                borderColor: "rgba(255,255,255,1)"
+            },
+            splitList: [{
+                    //设置区间颜色
                     start: 0,
                     end: 2,
-                    size: 3,
-                    text: "描述一",
-                    backgroundColor: 'rgba(156,200,249,0.7)',
+                    size: 3
                 },
                 {
                     start: 2,
                     end: 5,
-                    size: 6,
-                    text: "描述二",
-                    backgroundColor: 'rgba(93,158,247,0.7)',
+                    size: 6
                 },
                 {
                     start: 5,
                     end: 7,
-                    size: 9,
-                    text: "描述三",
-                    backgroundColor: 'rgba(134,207,55,0.7)',
+                    size: 9
                 },
                 {
                     start: 7,
-                    size: 12,
-                    text: "描述四",
-                    backgroundColor: 'rgba(252,198,10,0.7)',
+                    size: 12
                 }
             ]
         },
-        style: {
-            normal: {
-                backgroundColor: 'rgba(200, 200, 50, 1)',
-                borderWidth: 1,
-                borderColor: "rgba(255,255,255,1)",
-                size: 10,
-            },
-            mouseOver: {
-                backgroundColor: 'rgba(200, 200, 200, 1)',
-                borderColor: "rgba(255,255,255,1)",
-                borderWidth: 4,
-            },
-            selected: {
-                backgroundColor: 'rgba(184,0,0,1)',
-                borderColor: "rgba(255,255,255,1)"
-            },
-
+        event: {
+            onMouseClick: function (item) {
+                //能获取当前点的信息
+            }
         },
-        data: []
+        data: data
     });
+
+    // var overlay = new inMap.PointOverlay({
+    //     tooltip: {
+    //         show: true,
+    //         formatter: "{count}",
+    //         offsets: {
+    //             top: 5,
+    //             left: 12,
+    //         }
+    //     },
+    //     legend: {
+    //         show: true,
+    //         title: "标题",
+    //         list: [{ //设置区间颜色
+    //                 start: 0,
+    //                 end: 2,
+    //                 size: 3,
+    //                 text: "描述一",
+    //                 backgroundColor: 'rgba(156,200,249,0.7)',
+    //             },
+    //             {
+    //                 start: 2,
+    //                 end: 5,
+    //                 size: 6,
+    //                 text: "描述二",
+    //                 backgroundColor: 'rgba(93,158,247,0.7)',
+    //             },
+    //             {
+    //                 start: 5,
+    //                 end: 7,
+    //                 size: 9,
+    //                 text: "描述三",
+    //                 backgroundColor: 'rgba(134,207,55,0.7)',
+    //             },
+    //             {
+    //                 start: 7,
+    //                 size: 12,
+    //                 text: "描述四",
+    //                 backgroundColor: 'rgba(252,198,10,0.7)',
+    //             }
+    //         ]
+    //     },
+    //     style: {
+    //         normal: {
+    //             backgroundColor: 'rgba(200, 200, 50, 1)',
+    //             borderWidth: 1,
+    //             borderColor: "rgba(255,255,255,1)",
+    //             size: 10,
+    //         },
+    //         mouseOver: {
+    //             backgroundColor: 'rgba(200, 200, 200, 1)',
+    //             borderColor: "rgba(255,255,255,1)",
+    //             borderWidth: 4,
+    //         },
+    //         selected: {
+    //             backgroundColor: 'rgba(184,0,0,1)',
+    //             borderColor: "rgba(255,255,255,1)"
+    //         },
+
+    //     },
+    //     data: []
+    // });
     inmap.add(overlay);
 </script>

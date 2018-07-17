@@ -27,7 +27,7 @@
     <script>
     </script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
-    <script src="./data/flowTrack.js"></script>
+    <script src="./data/lineString.js"></script>
     <script src="../dist/inmap.js"></script>
 
 </head>
@@ -41,30 +41,49 @@
     var map = new inMap.Map({
         id: 'allmap',
         skin: 'Blueness',
-        center: [-22.053354, 27.353393],
+        center: [105.403119, 38.028658],
         zoom: {
-            value: 3,
+            value: 5,
             show: true,
-            max: 22,
-            min: 3,
-        }
+            max: 6,
+            min: 5
+        },
     });
     data.length = 100;
-
-    var overlay = new inMap.LineStringAnimationOverlay({
-        style: { 
-            //移动点半径
-            size: 0.5,
-            //移动点颜色
-            fillColor: 'rgba(255, 250, 250, 0.9)',    
-            //移动点阴影大小
-            shadowBlur: 0,
-            fps: 20,
-            lineOrCurve: 'curve',//curve or line
-               // deltaAngle: 0  
+    var overlay1 = new inMap.LineStringOverlay({
+        style: {
+            normal: {
+                globalCompositeOperation: 'lighter',
+                borderColor: 'rgba(55, 50, 250, 0.6)',
+                borderWidth: 1.2,
+                shadowColor: 'rgba(55, 50, 250, 0.5)',
+                shadowBlur: 10,
+            },
         },
         data: data,
-         
+        event: {
+            onState(state) {
+                console.log(state);
+            }
+        }
     });
-    map.add(overlay);
+    map.add(overlay1);
+    var data2 = [].concat(data);
+    var overlay2 = new inMap.LineStringAnimationOverlay({
+        style: {
+            globalCompositeOperation: 'lighter',
+            //移动点半径
+            size: 1.5,
+            //移动点颜色
+            fillColor: 'rgba(255, 250, 250, 0.9)',
+            //移动点阴影大小
+            shadowBlur: 10,
+            fps: 100,
+            lineOrCurve: 'curve', //curve or line
+            // deltaAngle: 0  
+        },
+        data: data2,
+
+    });
+    map.add(overlay2);
 </script>

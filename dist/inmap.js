@@ -3330,6 +3330,7 @@ var Label = function () {
         this.radius = radius + 2;
         this.padding = 0;
         this.aIndex = 0;
+        if (!name) return;
         this._getRectangle(height * 1.1, byteWidth - 0.6);
     }
 
@@ -5542,6 +5543,7 @@ var PointOverlay = function (_Parameter) {
             ctx.fillStyle = fontStyle.color;
             var byteWidth = ctx.measureText('a').width;
 
+            var isName = true;
             var labels = pixels.map(function (val) {
                 var _val$geometry$pixel = val.geometry.pixel,
                     radius = _val$geometry$pixel.radius,
@@ -5549,8 +5551,10 @@ var PointOverlay = function (_Parameter) {
                     y = _val$geometry$pixel.y;
 
                 var r = radius + _this4.styleConfig.normal.borderWidth;
+                isName = val.name ? true : false;
                 return new _Label2.default(x, y, r, fontSize, byteWidth, val.name);
             });
+            if (!isName) return;
 
             labels.sort(function (a, b) {
                 return b.x - a.x;

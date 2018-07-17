@@ -286,7 +286,7 @@ export default class PointOverlay extends Parameter {
         //         ctx.fill();
         //     });
         // });
-
+        let isName = true;
         let labels = pixels.map((val) => {
             let {
                 radius,
@@ -294,8 +294,11 @@ export default class PointOverlay extends Parameter {
                 y
             } = val.geometry.pixel;
             let r = radius + this.styleConfig.normal.borderWidth;
+            isName = val.name ? true : false;
             return new Label(x, y, r, fontSize, byteWidth, val.name);
         });
+        if (!isName) return;
+
         //x排序从小到大
         labels.sort((a, b) => {
             return b.x - a.x;

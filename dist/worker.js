@@ -2153,6 +2153,7 @@ var Label = function () {
         this.radius = radius + 2;
         this.padding = 0;
         this.aIndex = 0;
+        if (!name) return;
         this._getRectangle(height * 1.1, byteWidth - 0.6);
     }
 
