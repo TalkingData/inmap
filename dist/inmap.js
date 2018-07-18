@@ -2125,7 +2125,7 @@ var Parameter = function (_CanvasOverlay) {
         value: function setlegend(legendConfig, list) {
             if (!this.map) return;
 
-            if (list.length > 0) {
+            if (list && list.length > 0) {
                 legendConfig['list'] = list;
             } else {
                 legendConfig['list'] = legendConfig['list'] || [];
@@ -5347,6 +5347,7 @@ var PointOverlay = function (_Parameter) {
             this.clearAll();
             this.setState(_OnState2.default.computeBefore);
             this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin, zoom) {
+
                 _this2.setState(_OnState2.default.conputeAfter);
                 _this2.setWorkerData(pixels);
                 _this2.updateOverClickItem();

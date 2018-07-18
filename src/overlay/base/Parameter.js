@@ -260,7 +260,7 @@ export default class Parameter extends CanvasOverlay {
     setlegend(legendConfig, list) {
         if (!this.map) return;
 
-        if (list.length > 0) {
+        if (list && list.length > 0) {
             legendConfig['list'] = list;
         } else {
             legendConfig['list'] = legendConfig['list'] || [];
