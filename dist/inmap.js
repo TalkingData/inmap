@@ -7920,7 +7920,7 @@ var HoneycombOverlay = function (_Parameter) {
                 var item = this.workerData[i];
                 var x = item.x;
                 var y = item.y;
-                if (item.count > 0 && x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
+                if (item.list.length > 0 && x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
                     this.ctx.beginPath();
                     this.ctx.moveTo(x, y - gridStep / 2);
                     this.ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
@@ -7957,8 +7957,7 @@ var HoneycombOverlay = function (_Parameter) {
                 var item = this.workerData[i];
                 var x = item.x;
                 var y = item.y;
-                var count = item.count;
-                if (count > 0 && x > -gridsW && y > -gridsW && x < mapSize.width + gridsW && y < mapSize.height + gridsW) {
+                if (item.list.length > 0 && x > -gridsW && y > -gridsW && x < mapSize.width + gridsW && y < mapSize.height + gridsW) {
                     var drawStyle = this.getStyle(item);
                     this.drawLine(x, y, gridsW - style.padding, drawStyle, this.ctx);
                 }

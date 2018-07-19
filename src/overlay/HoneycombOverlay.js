@@ -197,7 +197,7 @@ export default class HoneycombOverlay extends Parameter {
             let item = this.workerData[i];
             let x = item.x;
             let y = item.y;
-            if (item.count > 0 && x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
+            if (item.list.length > 0 && x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
                 this.ctx.beginPath();
                 this.ctx.moveTo(x, y - gridStep / 2);
                 this.ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
@@ -232,8 +232,7 @@ export default class HoneycombOverlay extends Parameter {
             let item = this.workerData[i];
             let x = item.x;
             let y = item.y;
-            let count = item.count;
-            if (count > 0 && x > -gridsW && y > -gridsW && x < mapSize.width + gridsW && y < mapSize.height + gridsW) {
+            if (item.list.length > 0 && x > -gridsW && y > -gridsW && x < mapSize.width + gridsW && y < mapSize.height + gridsW) {
                 let drawStyle = this.getStyle(item);
                 this.drawLine(x, y, gridsW - style.padding, drawStyle, this.ctx);
             }

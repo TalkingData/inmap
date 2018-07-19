@@ -289,12 +289,12 @@ var HoneycombOverlay = {
         }
 
         var grids = {};
-        var gridStep = Math.round(size / zoomUnit);
+        var gridStep = parseInt(Math.round(size / zoomUnit), 10);
         var depthX = gridStep;
-        var depthY = gridStep * 3 / 4;
+        var depthY = parseInt(gridStep * 3 / 4, 10);
         var sizeY = 2 * size * 3 / 4;
         var startYMc = parseInt(nwMc.y / sizeY + 1, 10) * sizeY;
-        var startY = (nwMc.y - startYMc) / zoomUnit;
+        var startY = parseInt((nwMc.y - startYMc) / zoomUnit, 10);
         startY = parseInt(startY, 10);
         var startXMc = parseInt(nwMc.x / size, 10) * size;
         var startX = (startXMc - nwMc.x) / zoomUnit;
@@ -304,7 +304,7 @@ var HoneycombOverlay = {
         var endY = parseInt(mapSize.height + depthY, 10);
 
         var pointX = startX;
-        var pointY = startY;
+        var pointY = parseInt(startY, 10);
 
         var odd = false;
 
@@ -327,11 +327,13 @@ var HoneycombOverlay = {
             pointY += depthY;
         }
 
-        for (var i in data) {
+        for (var i = 0; i < data.length; i++) {
+
             var item = data[i];
             var pX = item.geometry.pixel.x;
             var pY = item.geometry.pixel.y;
             if (pX >= startX && pX <= endX && pY >= startY && pY <= endY) {
+
                 var fixYIndex = Math.round((pY - startY) / depthY);
                 var fixY = fixYIndex * depthY + startY;
                 var fixXIndex = Math.round((pX - startX) / depthX);
@@ -343,20 +345,22 @@ var HoneycombOverlay = {
                 if (fixX < startX || fixX > endX || fixY < startY || fixY > endY) {
                     continue;
                 }
-                if (grids[fixX + '|' + fixY]) {
-                    grids[fixX + '|' + fixY].list.push(item);
-                    grids[fixX + '|' + fixY].count += item.count;
+                var key = parseInt(fixX, 10) + '|' + parseInt(fixY, 10);
+                if (grids[key]) {
+
+                    grids[key].list.push(item);
+                    grids[key].count += item.count;
                 }
             }
         }
 
         var result = [];
-        for (var key in grids) {
-            var _item = grids[key];
+        for (var _key in grids) {
+            var _item = grids[_key];
             if (type == 'avg' && _item.count > 0) {
                 _item.count = _item.count / _item.list.length;
             }
-            if (_item.count > 0) {
+            if (_item.list.length > 0) {
                 result.push(_item);
             }
         }

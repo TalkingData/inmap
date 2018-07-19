@@ -42,12 +42,12 @@ const HoneycombOverlay = {
         }
 
         let grids = {};
-        let gridStep = Math.round(size / zoomUnit);
+        let gridStep = parseInt(Math.round(size / zoomUnit), 10);
         let depthX = gridStep;
-        let depthY = gridStep * 3 / 4;
+        let depthY = parseInt(gridStep * 3 / 4, 10);
         let sizeY = 2 * size * 3 / 4;
         let startYMc = parseInt(nwMc.y / sizeY + 1, 10) * sizeY;
-        let startY = (nwMc.y - startYMc) / zoomUnit;
+        let startY = parseInt((nwMc.y - startYMc) / zoomUnit, 10);
         startY = parseInt(startY, 10);
         let startXMc = parseInt(nwMc.x / size, 10) * size;
         let startX = (startXMc - nwMc.x) / zoomUnit;
@@ -57,7 +57,7 @@ const HoneycombOverlay = {
         let endY = parseInt(mapSize.height + depthY, 10);
 
         let pointX = startX;
-        let pointY = startY;
+        let pointY = parseInt(startY, 10);
 
         let odd = false;
 
@@ -80,11 +80,13 @@ const HoneycombOverlay = {
             pointY += depthY;
         }
 
-        for (let i in data) {
+        for (let i = 0; i < data.length; i++) {
+
             let item = data[i];
             let pX = item.geometry.pixel.x;
             let pY = item.geometry.pixel.y;
             if (pX >= startX && pX <= endX && pY >= startY && pY <= endY) {
+
                 let fixYIndex = Math.round((pY - startY) / depthY);
                 let fixY = fixYIndex * depthY + startY;
                 let fixXIndex = Math.round((pX - startX) / depthX);
@@ -96,13 +98,16 @@ const HoneycombOverlay = {
                 if (fixX < startX || fixX > endX || fixY < startY || fixY > endY) {
                     continue;
                 }
-                if (grids[fixX + '|' + fixY]) {
-                    grids[fixX + '|' + fixY].list.push(item);
-                    grids[fixX + '|' + fixY].count += item.count;
+                let key = parseInt(fixX, 10) + '|' + parseInt(fixY, 10);
+                if (grids[key]) {
+
+                    grids[key].list.push(item);
+                    grids[key].count += item.count;
                 }
             }
 
         }
+
 
         let result = [];
         for (let key in grids) {
@@ -110,7 +115,7 @@ const HoneycombOverlay = {
             if (type == 'avg' && item.count > 0) {
                 item.count = item.count / item.list.length;
             }
-            if (item.count > 0) {
+            if (item.list.length > 0) {
                 result.push(item);
             }
         }
