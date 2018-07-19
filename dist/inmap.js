@@ -5574,8 +5574,8 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
     }, {
         key: '_geoJsonToPoint',
         value: function _geoJsonToPoint(data) {
-            if (data.geometry) {
-                return data.geometry.coordinates.map(function (item) {
+            if (data.geometry && data.geometry.coordinates && data.geometry.coordinates[0]) {
+                return data.geometry.coordinates[0].map(function (item) {
                     return {
                         lng: item[0],
                         lat: item[1]
@@ -5604,7 +5604,7 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
                 return {
                     geometry: {
                         type: 'Polygon',
-                        coordinates: coordinates
+                        coordinates: [coordinates]
                     }
                 };
             } else {
@@ -6429,7 +6429,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.6.7";
+var version = "1.6.8";
 console.log('inMap v' + version);
 
 var inMap = {

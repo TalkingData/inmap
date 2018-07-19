@@ -283,8 +283,8 @@ export default class PolygonEditorOverlay extends MultiOverlay {
         this.isCreate = false;
     }
     _geoJsonToPoint(data) {
-        if (data.geometry) {
-            return data.geometry.coordinates.map((item) => {
+        if (data.geometry && data.geometry.coordinates && data.geometry.coordinates[0]) {
+            return data.geometry.coordinates[0].map((item) => {
                 return {
                     lng: item[0],
                     lat: item[1]
@@ -309,7 +309,7 @@ export default class PolygonEditorOverlay extends MultiOverlay {
             return {
                 geometry: {
                     type: 'Polygon',
-                    coordinates: coordinates
+                    coordinates: [coordinates]
                 }
             };
         } else {
