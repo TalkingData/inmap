@@ -7514,7 +7514,7 @@ var HeatOverlay = function (_CanvasOverlay) {
     }, {
         key: 'getMax',
         value: function getMax() {
-            var normal = this.styleConfig.normal;
+            var normal = this.styleConfig;
             normal.maxValue = 0;
             for (var i = 0, len = this.points.length; i < len; i++) {
                 if (this.points[i].count > normal.maxValue) {
@@ -7565,7 +7565,7 @@ var HeatOverlay = function (_CanvasOverlay) {
         key: 'refresh',
         value: function refresh() {
             this.clearCanvas();
-            var normal = this.styleConfig.normal;
+            var normal = this.styleConfig;
             var container = this.container;
             if (normal.maxValue == 0) {
                 this.getMax();

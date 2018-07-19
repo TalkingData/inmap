@@ -65,7 +65,7 @@ export default class HeatOverlay extends CanvasOverlay {
         this.drawMap();
     }
     getMax() {
-        let normal = this.styleConfig.normal;
+        let normal = this.styleConfig;
         normal.maxValue = 0;
         for (let i = 0, len = this.points.length; i < len; i++) {
             if (this.points[i].count > normal.maxValue) {
@@ -108,7 +108,7 @@ export default class HeatOverlay extends CanvasOverlay {
     }
     refresh() {
         this.clearCanvas();
-        let normal = this.styleConfig.normal;
+        let normal = this.styleConfig;
         let container = this.container;
         if (normal.maxValue == 0) {
             this.getMax();
