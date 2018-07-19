@@ -27,7 +27,7 @@
 
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="../dist/inmap.js"></script>
-    <script src="data/data.js"></script>
+    <script src="./data/heatData.js"></script>
 </head>
 
 <body>
@@ -38,13 +38,13 @@
 <script>
     var map = new inMap.Map({
         id: document.getElementById('allmap'),
-        center: [105.403119, 38.028658],
+        center: [117.294036, 39.43691],
         zoom: {
-            value: 5,
+            value: 11,
             show: true,
-            max: 18,
-            min: 5
-        },
+            max: 11,
+            min: 8
+        }
     })
 
     var overlay = new inMap.HoneycombOverlay({
@@ -71,7 +71,7 @@
             normal: {
                 backgroundColor: 'rgba(200, 200, 200, 0.5)',
                 padding: 1,
-                size: 300000,
+                size: 3000,
                 unit: 'm', //地理属性单位，米
             },
             mouseOver: {
@@ -79,7 +79,7 @@
                 shadowBlur: 20,
             },
             selected: {
-              
+
             },
 
         },
@@ -94,4 +94,51 @@
         }
     });
     map.add(overlay)
+
+    var overlay2 = new inMap.PointOverlay({
+        tooltip: {
+            show: true,
+            formatter: "{count}",
+            offsets: {
+                top: 5,
+                left: 12,
+            }
+        },
+        legend: {
+            show: true,
+            title: "标题",
+            formatter: function (start, end, index, item) {
+                return start + "万~" + (end || "max") + "万";
+            },
+        },
+        style: {
+            normal: {
+                backgroundColor: 'rgba(200, 200, 50, 1)',
+                borderWidth: 0,
+                borderColor: "rgba(255,255,255,1)",
+                size: 2,
+            },
+            mouseOver: {
+                backgroundColor: 'rgba(200, 200, 200, 1)',
+                borderColor: "rgba(255,255,255,1)",
+                borderWidth: 4,
+            },
+            selected: {
+                backgroundColor: 'rgba(184,0,0,1)',
+                borderColor: "rgba(255,255,255,1)"
+            },
+            
+        },
+        data: data,
+        event: {
+            onState(state) {
+                console.log(state);
+            }
+            // multiSelect: true,
+            // onMouseClick: function (item, event) {
+            //     //能获取当前点的信息
+            // }
+        }
+    });
+    map.add(overlay2);
 </script>
