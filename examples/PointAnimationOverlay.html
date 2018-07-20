@@ -26,7 +26,6 @@
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="../dist/inmap.js"></script>
-
 </head>
 
 <body>
@@ -107,12 +106,10 @@
     ]
     var overlay = new inMap.PointAnimationOverlay({
         style: {
-            normal: {
-                fps: 25, //动画帧数
-                color: "#FAFA32",
-                size: 20,
-                speed: 0.15
-            }
+            fps: 90, //动画帧数
+            color: "#FAFA32",
+            size: 20,
+            speed: 0.15
         },
         data: data
     });

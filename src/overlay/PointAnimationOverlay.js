@@ -60,7 +60,7 @@ export default class PointAnimationOverlay extends CanvasOverlay {
     }
     setOptionStyle(ops) {
         let option = merge(config, ops);
-        this.styleConfig = option.style.normal;
+        this.styleConfig = option.style;
         this.data = ops.data ? option.data : this.data;
         this.tMapStyle(option.skin);
         this.map && this.addMarker();
@@ -77,7 +77,7 @@ export default class PointAnimationOverlay extends CanvasOverlay {
     addMarker() {
         this.markers = [];
         for (let i = 0; i < this.data.length; i++) {
-            let style = merge(this.styleConfig, this.data[i].style);
+            let style = merge(this.styleConfig, this.data[i].style || {});
             this.markers.push(new Marker(style, this.data[i], this.map));
         }
 

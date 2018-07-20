@@ -107,12 +107,12 @@
     ]
     var overlay = new inMap.PointAnimationOverlay({
         style: {
-            normal: {
-                fps: 25, //动画帧数
-                color: "#FAFA32",
-                size: 20,
-                speed: 0.15
-            }
+
+            fps: 25, //动画帧数
+            color: "#FAFA32",
+            size: 20,
+            speed: 0.15
+
         },
         data: data
     });
@@ -122,11 +122,9 @@
         overlay.setOptionStyle({
             skin: "WhiteLover",
             style: {
-                normal: {
-                    color: "red",
-                    size: 40,
-                    speed: 0.15
-                }
+                color: "red",
+                size: 40,
+                speed: 0.15
             }
         })
     }, 2000);
