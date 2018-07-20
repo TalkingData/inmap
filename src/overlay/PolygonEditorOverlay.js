@@ -1,5 +1,5 @@
 import config from './../config/PolygonEditor';
-import GeoUtils from './../lib/GeoUtils';
+// import GeoUtils from './../lib/GeoUtils';
 import MultiOverlay from './base/MultiOverlay';
 import {
     merge
@@ -56,19 +56,19 @@ export default class PolygonEditorOverlay extends MultiOverlay {
         this.map.addEventListener('click', this.clickAction);
         this.map.addEventListener('mousemove', this.mousemoveAction);
         this.overlay.addEventListener('lineupdate', this.lineupdate);
-        this.map.addEventListener('resize', this.getAreaByPolygon);
-        this.map.addEventListener('moveend', this.getAreaByPolygon);
-        this.map.addEventListener('moving', this.getAreaByPolygon);
-        this.map.addEventListener('zoomend', this.getAreaByPolygon);
+        // this.map.addEventListener('resize', this.getAreaByPolygon);
+        // this.map.addEventListener('moveend', this.getAreaByPolygon);
+        // this.map.addEventListener('moving', this.getAreaByPolygon);
+        // this.map.addEventListener('zoomend', this.getAreaByPolygon);
 
     }
     removeMoveEvent() {
-        this.map.removeEventListener('mousedown', this.startAction);
+        this.map.removeEventListener('mousemove', this.mousemoveAction);
         this.map.removeEventListener('click', this.clickAction);
-        this.map.removeEventListener('resize', this.getAreaByPolygon);
-        this.map.removeEventListener('moveend', this.getAreaByPolygon);
-        this.map.removeEventListener('moving', this.getAreaByPolygon);
-        this.map.removeEventListener('zoomend', this.getAreaByPolygon);
+        // this.map.removeEventListener('resize', this.getAreaByPolygon);
+        // this.map.removeEventListener('moveend', this.getAreaByPolygon);
+        // this.map.removeEventListener('moving', this.getAreaByPolygon);
+        // this.map.removeEventListener('zoomend', this.getAreaByPolygon);
         this.overlay.removeEventListener('lineupdate', this.lineupdate);
 
     }
@@ -94,16 +94,15 @@ export default class PolygonEditorOverlay extends MultiOverlay {
         this.getAreaByPolygon();
     }
     getAreaByPolygon() {
-        let geos = this.overlay.getPath();
-        if (!this.isCreate && this.toolTipConfig.show && geos.length > 0) {
-            let areas = GeoUtils.getPolygonArea(geos);
-            let center = this.getGeoCenter(geos);
-            let pixel = this.map.pointToOverlayPixel(new BMap.Point(center.lng, center.lat));
-            this.ToolTip && this.ToolTip.showCenterText(`面积：${parseInt(areas)}平方米`, pixel.x + this.map.offsetX, pixel.y + this.map.offsetY);
-        } else {
-            this.ToolTip && this.ToolTip.hide();
-        }
-
+        // let geos = this.overlay.getPath();
+        // if (!this.isCreate && this.toolTipConfig.show && geos.length > 0) {
+        //     let areas = GeoUtils.getPolygonArea(geos);
+        //     let center = this.getGeoCenter(geos);
+        //     let pixel = this.map.pointToOverlayPixel(new BMap.Point(center.lng, center.lat));
+        //     this.ToolTip && this.ToolTip.showCenterText(`面积：${parseInt(areas)}平方米`, pixel.x + this.map.offsetX, pixel.y + this.map.offsetY);
+        // } else {
+        //     this.ToolTip && this.ToolTip.hide();
+        // }
     }
 
     getGeoCenter(geo) {
@@ -124,10 +123,11 @@ export default class PolygonEditorOverlay extends MultiOverlay {
     }
 
     clickAction(e) {
+        event.returnValue = false;
         this._second = new Date();
 
         if (this.isCreate) {
-            console.log(this.option);
+
             if (this._second - this._first <= this._interval) {
                 this._first = new Date();
                 this.dblclickAction(e);
@@ -149,12 +149,12 @@ export default class PolygonEditorOverlay extends MultiOverlay {
                     this.drawPoint.splice(index, 1);
                     this.overlay.setPath(this.drawPoint);
                 }
-
+                this.getAreaByPolygon();
             } else {
                 this._first = new Date();
             }
         }
-        this.getAreaByPolygon();
+        return false;
     }
     findIndexVectis({
         x,
@@ -194,12 +194,16 @@ export default class PolygonEditorOverlay extends MultiOverlay {
         this.isDispose = true;
     }
     startAction(e) {
-
         let points = this.points;
         points.push(e.point);
-        this.drawPoint = points.concat(points[points.length - 1]);
-        this.overlay.setPath(this.drawPoint);
+        this.drawPoint = points;
 
+        if (this.drawPoint.length.length > 2) {
+            this.overlay.setPositionAt(this.drawPoint.length - 1, e.point);
+        } else {
+            this.drawPoint = points.concat(points[points.length - 1]);
+            this.overlay.setPath(this.drawPoint);
+        }
         if (!this._isBinded) {
             this._isBinded = true;
         }
@@ -223,7 +227,6 @@ export default class PolygonEditorOverlay extends MultiOverlay {
 
     }
     mousemoveAction(e) {
-
         if (!this._isBinded) {
             return;
         }
@@ -234,6 +237,7 @@ export default class PolygonEditorOverlay extends MultiOverlay {
         if (!this._isBinded) {
             return;
         }
+        this.enableEditing();
         this.map.removeEventListener('mousemove', this.mousemoveAction);
         this._isBinded = false;
         this.isCreate = false;
@@ -272,6 +276,7 @@ export default class PolygonEditorOverlay extends MultiOverlay {
     enableEditing() {
         this.isCreate = this.overlay.getPath().length <= 0;
         if (this.isCreate) {
+            this.overlay.disableEditing();
             this.map.addEventListener('mousemove', this.mousemoveAction);
         }
         this.overlay.enableEditing();
