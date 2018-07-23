@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PointOverlayay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+
+    <script src="../dist/inmap.js"></script>
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    let data = [{
+        "count": 6,
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                116.337006,
+                39.918805
+            ],
+        },
+        style: {
+            size: 2500
+        }
+
+    }, {
+        "count": 6,
+        "geometry": {
+            "type": "Point",
+            "coordinates": [
+                116.401972,
+                39.921682
+            ]
+        }
+    }];
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        skin: "Blueness",
+        center: [
+            116.363596,
+            39.916481
+        ],
+        zoom: {
+            value: 14,
+            show: true,
+            max: 18,
+            min: 1
+        },
+    })
+
+
+    var overlay = new inMap.PointOverlay({
+
+        legend: {
+            show: true,
+            title: "标题",
+            formatter: function (start, end, index, item) {
+                return start + "万~" + (end || "max") + "万";
+            },
+        },
+        style: {
+            normal: {
+                backgroundColor: 'rgba(24,144,255,0.4)',
+                borderWidth: 1,
+                borderColor: "rgba(24,144,255,1)",
+                size: 1000,
+                unit: "m"
+            },
+            mouseOver: {
+                backgroundColor: 'rgba(24,144,255,0.5)'
+            }
+
+        },
+        data: data,
+        event: {
+            onState(state) {
+                console.log(state);
+            },
+            onMouseClick: function (item, event) {
+                console.log(event);
+            }
+        }
+    });
+    inmap.add(overlay);
+</script>

@@ -5260,6 +5260,7 @@ var PointOverlay = function (_Parameter) {
         }
         _this.mouseLayer = new _CanvasOverlay2.default();
         _this.state = null;
+        _this.mpp = {};
         return _this;
     }
 
@@ -5308,6 +5309,26 @@ var PointOverlay = function (_Parameter) {
         key: 'resize',
         value: function resize() {
             this.drawMap();
+        }
+    }, {
+        key: '_calculateMpp',
+        value: function _calculateMpp() {
+            var zoom = this.map.getZoom();
+            if (this.mpp[zoom]) {
+                return this.mpp[zoom];
+            } else {
+                this.mpp[zoom] = this.getMpp();
+                return this.mpp[zoom];
+            }
+        }
+    }, {
+        key: 'getMpp',
+        value: function getMpp() {
+            var mapCenter = this.map.getCenter();
+            var assistValue = 10;
+            var cpt = new BMap.Point(mapCenter.lng, mapCenter.lat + assistValue);
+            var dpx = Math.abs(this.map.pointToPixel(mapCenter).y - this.map.pointToPixel(cpt).y);
+            return this.map.getDistance(mapCenter, cpt) / dpx;
         }
     }, {
         key: 'translation',
@@ -5445,6 +5466,7 @@ var PointOverlay = function (_Parameter) {
             var pixels = this.workerData,
                 ctx = this.ctx;
             var mapSize = this.map.getSize();
+            var normal = this.styleConfig.normal;
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var _item2 = pixels[i];
                 var style = this.setDrawStyle(_item2);
@@ -5452,10 +5474,24 @@ var PointOverlay = function (_Parameter) {
                     x = _item2$geometry$pixel.x,
                     y = _item2$geometry$pixel.y;
 
-                var r = style.size + this.styleConfig.normal.borderWidth;
-                if (x > -r && y > -r && x < mapSize.width + r && y < mapSize.height + r) {
+                var r = style.size,
+                    size = void 0;
+
+                if (normal.unit == 'px') {
+                    size = r;
+                } else if (normal.unit == 'm') {
+                    var mpp = this._calculateMpp();
+                    if (mpp == 0 || isNaN(mpp)) {
+                        return;
+                    }
+                    size = r / mpp;
+                } else {
+                    throw new TypeError('inMap: style.normal.unit must be is "meters" or "px" .');
+                }
+                size += normal.borderWidth;
+                if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
                     ctx.beginPath();
-                    ctx.arc(x, y, r, 0, 2 * Math.PI, true);
+                    ctx.arc(x, y, size, 0, 2 * Math.PI, true);
                     if (ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
                         return {
                             index: i,
@@ -5512,6 +5548,9 @@ var PointOverlay = function (_Parameter) {
         key: '_loopDraw',
         value: function _loopDraw(ctx, pixels) {
             var mapSize = this.map.getSize();
+            var normal = this.styleConfig.normal;
+
+
             for (var i = 0, len = pixels.length; i < len; i++) {
 
                 var _item3 = pixels[i];
@@ -5520,11 +5559,24 @@ var PointOverlay = function (_Parameter) {
                 var x = pixel.x,
                     y = pixel.y;
 
-                var style = this.setDrawStyle(_item3);
-                var size = style.size;
-                if (this.styleConfig.normal.label.show) {
-                    pixel['radius'] = size;
+                var style = this.setDrawStyle(_item3),
+                    size = style.size;
+                if (normal.unit == 'px') {
+                    size = normal.size;
+
+                    if (normal.label.show) {
+                        pixel['radius'] = size;
+                    }
+                } else if (normal.unit == 'm') {
+                    var mpp = this._calculateMpp();
+                    if (mpp == 0 || isNaN(mpp)) {
+                        return;
+                    }
+                    size = style.size / mpp;
+                } else {
+                    throw new TypeError('inMap: style.normal.unit must be is "meters" or "px" .');
                 }
+
                 if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
                     if (style.shadowColor) {
                         ctx.shadowColor = style.shadowColor || 'transparent';
@@ -9847,13 +9899,13 @@ exports.default = {
             borderWidth: 0.1,
             backgroundColor: 'rgba(200, 200, 200, 0.5)',
             mergeCount: 1.5,
+            unit: 'px',
             label: {
                 show: false,
                 color: 'rgba(0,0,0,1)',
                 font: '13px Arial'
             }
         },
-
         colors: [],
         splitList: []
 

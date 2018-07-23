@@ -25,13 +25,13 @@
              borderWidth: 0.1,
              backgroundColor: 'rgba(200, 200, 200, 0.5)',
              mergeCount: 1.5,
+             unit: 'px', // px or m
              label: {
                  show: false,
                  color: 'rgba(0,0,0,1)',
                  font: '13px Arial'
              },
          },
-
          colors: [
 
          ],
@@ -39,7 +39,7 @@
 
      },
      data: [],
-     selected:[],  //设置选中
+     selected: [], //设置选中
      event: {
          multiSelect: false, //是否支持多选
          onMouseClick() {},

@@ -22,6 +22,7 @@ export default class PointOverlay extends Parameter {
         }
         this.mouseLayer = new CanvasOverlay();
         this.state = null;
+        this.mpp = {};
     }
     initLegend() {
         if (this.styleConfig.colors.length > 0) {
@@ -56,6 +57,26 @@ export default class PointOverlay extends Parameter {
     resize() {
         this.drawMap();
     }
+    _calculateMpp() {
+        let zoom = this.map.getZoom();
+        if (this.mpp[zoom]) {
+            return this.mpp[zoom];
+        } else {
+            this.mpp[zoom] = this.getMpp();
+            return this.mpp[zoom];
+        }
+    }
+    /**
+     * 获得每个像素对应多少米	
+     */
+    getMpp() {
+        let mapCenter = this.map.getCenter();
+        let assistValue = 10;
+        let cpt = new BMap.Point(mapCenter.lng, mapCenter.lat + assistValue);
+        let dpx = Math.abs(this.map.pointToPixel(mapCenter).y - this.map.pointToPixel(cpt).y);
+        return this.map.getDistance(mapCenter, cpt) / dpx;
+    }
+
     translation(distanceX, distanceY) {
         if (this.batchesData && !this.batchesData.usable) return;
         for (let i = 0; i < this.workerData.length; i++) {
@@ -65,8 +86,6 @@ export default class PointOverlay extends Parameter {
         }
 
         this.refresh();
-
-
     }
     drawMouseLayer() {
         let overArr = this.overItem ? [this.overItem] : [];
@@ -83,6 +102,7 @@ export default class PointOverlay extends Parameter {
             this.batchesData.clear();
             this.batchesData.setUsable(false);
         }
+
 
         this.clearAll();
         this.setState(State.computeBefore);
@@ -163,7 +183,7 @@ export default class PointOverlay extends Parameter {
 
         }
 
-       
+
         let result = [];
         for (let i = 0; i < split.length; i++) {
             let item = split[i];
@@ -172,7 +192,7 @@ export default class PointOverlay extends Parameter {
                 result.push(item);
             }
         }
-    
+
         this.styleConfig.splitList = result;
         this.setlegend(this.legendConfig, this.styleConfig.splitList);
     }
@@ -181,6 +201,7 @@ export default class PointOverlay extends Parameter {
         let pixels = this.workerData,
             ctx = this.ctx;
         let mapSize = this.map.getSize();
+        let normal = this.styleConfig.normal;
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let style = this.setDrawStyle(item);
@@ -188,10 +209,24 @@ export default class PointOverlay extends Parameter {
                 x,
                 y,
             } = item.geometry.pixel;
-            let r = style.size + this.styleConfig.normal.borderWidth;
-            if (x > -r && y > -r && x < mapSize.width + r && y < mapSize.height + r) {
+            let r = style.size,
+                size;
+
+            if (normal.unit == 'px') {
+                size = r;
+            } else if (normal.unit == 'm') {
+                let mpp = this._calculateMpp();
+                if (mpp == 0 || isNaN(mpp)) {
+                    return;
+                }
+                size = r / mpp;
+            } else {
+                throw new TypeError('inMap: style.normal.unit must be is "meters" or "px" .');
+            }
+            size += normal.borderWidth;
+            if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
                 ctx.beginPath();
-                ctx.arc(x, y, r, 0, 2 * Math.PI, true);
+                ctx.arc(x, y, size, 0, 2 * Math.PI, true);
                 if (ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
                     return {
                         index: i,
@@ -204,8 +239,6 @@ export default class PointOverlay extends Parameter {
             index: -1,
             item: null
         };
-
-
     }
     findIndexSelectItem(item) {
         let index = -1;
@@ -243,6 +276,11 @@ export default class PointOverlay extends Parameter {
     }
     _loopDraw(ctx, pixels) {
         let mapSize = this.map.getSize();
+        let {
+            normal
+        } = this.styleConfig;
+
+
         for (let i = 0, len = pixels.length; i < len; i++) {
 
             let item = pixels[i];
@@ -252,11 +290,24 @@ export default class PointOverlay extends Parameter {
                 x,
                 y
             } = pixel;
-            let style = this.setDrawStyle(item);
-            let size = style.size;
-            if (this.styleConfig.normal.label.show) {
-                pixel['radius'] = size;
+            let style = this.setDrawStyle(item), size = style.size;
+            if (normal.unit == 'px') {
+                size = normal.size;
+
+                if (normal.label.show) {
+                    pixel['radius'] = size;
+                }
+
+            } else if (normal.unit == 'm') {
+                let mpp = this._calculateMpp();
+                if (mpp == 0 || isNaN(mpp)) {
+                    return;
+                }
+                size = (style.size / mpp);
+            } else {
+                throw new TypeError('inMap: style.normal.unit must be is "meters" or "px" .');
             }
+
             if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
                 if (style.shadowColor) {
                     ctx.shadowColor = style.shadowColor || 'transparent';
