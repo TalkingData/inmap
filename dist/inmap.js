@@ -7069,7 +7069,7 @@ var Map = function () {
     }, {
         key: 'remove',
         value: function remove(overlay) {
-            if (overlay.map) {
+            if (overlay && !overlay.isDispose) {
                 overlay.dispose();
             }
             overlay = null;

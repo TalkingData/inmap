@@ -13,10 +13,12 @@
             margin: 0;
             font-family: "微软雅黑";
         }
+
         #allmap {
             width: 100%;
             height: 100%;
         }
+
         p {
             margin-left: 5px;
             font-size: 14px;
@@ -35,8 +37,6 @@
         <button onclick="closeEdit()">关闭编辑</button>
         <button onclick="translation()">平移</button>
         <button onclick="getpath()">获得围栏路径</button>
-        <button onclick="hideArea()">隐藏面积</button>
-        
     </div>
 </body>
 
@@ -54,11 +54,13 @@
         },
     });
     var overlay = null;
+
     function removeOverlay() {
         if (overlay) {
             inmap.remove(overlay);
         }
     }
+
     function addOverlay() {
         this.removeOverlay();
         overlay = new inMap.PolygonEditorOverlay({
@@ -67,6 +69,7 @@
         });
         inmap.add(overlay);
     }
+
     function addEditorOverLay() {
         this.removeOverlay();
         overlay = new inMap.PolygonEditorOverlay({
@@ -76,36 +79,38 @@
                     "type": "Polygon",
                     "coordinates": [
                         [
-                            89.066319,
-                            42.015565
-                        ],
-                        [
-                            91.494763,
-                            35.573006
-                        ],
-                        [
-                            94.291152,
-                            30.683971
-                        ],
-                        [
-                            101.355714,
-                            31.759106
-                        ],
-                        [
-                            108.861811,
-                            34.848232
-                        ],
-                        [
-                            106.874903,
-                            39.212162
-                        ],
-                        [
-                            102.901087,
-                            42.398553
-                        ],
-                        [
-                            95.542168,
-                            43.853853
+                            [
+                                89.066319,
+                                42.015565
+                            ],
+                            [
+                                91.494763,
+                                35.573006
+                            ],
+                            [
+                                94.291152,
+                                30.683971
+                            ],
+                            [
+                                101.355714,
+                                31.759106
+                            ],
+                            [
+                                108.861811,
+                                34.848232
+                            ],
+                            [
+                                106.874903,
+                                39.212162
+                            ],
+                            [
+                                102.901087,
+                                42.398553
+                            ],
+                            [
+                                95.542168,
+                                43.853853
+                            ]
                         ]
                     ]
                 }
@@ -113,21 +118,24 @@
         });
         inmap.add(overlay);
     }
+
     function openEdit() {
         overlay.enableEditing();
     }
+
     function closeEdit() {
         overlay.disableEditing();
     }
+
     function translation() {
         overlay.translation(2, 2);
     }
+
     function getpath() {
         let data = JSON.stringify(overlay.getPath(), null, 2);
         console.log(data);
         alert(data);
     }
-    function hideArea(){
-        overlay.hideAreaText();
-    }
+
+  
 </script>
