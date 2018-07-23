@@ -163,7 +163,17 @@ export default class PointOverlay extends Parameter {
 
         }
 
-        this.styleConfig.splitList = split;
+       
+        let result = [];
+        for (let i = 0; i < split.length; i++) {
+            let item = split[i];
+            if (item.start != item.end) {
+                item.backgroundColor = colors[result.length];
+                result.push(item);
+            }
+        }
+    
+        this.styleConfig.splitList = result;
         this.setlegend(this.legendConfig, this.styleConfig.splitList);
     }
 

@@ -5427,7 +5427,16 @@ var PointOverlay = function (_Parameter) {
                 });
             }
 
-            this.styleConfig.splitList = split;
+            var result = [];
+            for (var _i = 0; _i < split.length; _i++) {
+                var _item = split[_i];
+                if (_item.start != _item.end) {
+                    _item.backgroundColor = colors[result.length];
+                    result.push(_item);
+                }
+            }
+
+            this.styleConfig.splitList = result;
             this.setlegend(this.legendConfig, this.styleConfig.splitList);
         }
     }, {
@@ -5437,11 +5446,11 @@ var PointOverlay = function (_Parameter) {
                 ctx = this.ctx;
             var mapSize = this.map.getSize();
             for (var i = 0, len = pixels.length; i < len; i++) {
-                var _item = pixels[i];
-                var style = this.setDrawStyle(_item);
-                var _item$geometry$pixel = _item.geometry.pixel,
-                    x = _item$geometry$pixel.x,
-                    y = _item$geometry$pixel.y;
+                var _item2 = pixels[i];
+                var style = this.setDrawStyle(_item2);
+                var _item2$geometry$pixel = _item2.geometry.pixel,
+                    x = _item2$geometry$pixel.x,
+                    y = _item2$geometry$pixel.y;
 
                 var r = style.size + this.styleConfig.normal.borderWidth;
                 if (x > -r && y > -r && x < mapSize.width + r && y < mapSize.height + r) {
@@ -5450,7 +5459,7 @@ var PointOverlay = function (_Parameter) {
                     if (ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
                         return {
                             index: i,
-                            item: _item
+                            item: _item2
                         };
                     }
                 }
@@ -5505,13 +5514,13 @@ var PointOverlay = function (_Parameter) {
             var mapSize = this.map.getSize();
             for (var i = 0, len = pixels.length; i < len; i++) {
 
-                var _item2 = pixels[i];
-                var pixel = _item2.geometry.pixel;
+                var _item3 = pixels[i];
+                var pixel = _item3.geometry.pixel;
 
                 var x = pixel.x,
                     y = pixel.y;
 
-                var style = this.setDrawStyle(_item2);
+                var style = this.setDrawStyle(_item3);
                 var size = style.size;
                 if (this.styleConfig.normal.label.show) {
                     pixel['radius'] = size;
