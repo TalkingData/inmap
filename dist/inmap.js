@@ -9797,7 +9797,6 @@ exports.default = {
         fps: 25,
         size: 50,
         color: '#FAFA32',
-        radius: 20,
         speed: 0.15 },
     data: []
 };
