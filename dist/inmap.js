@@ -9795,6 +9795,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = {
     style: {
         fps: 25,
+        size: 50,
         color: '#FAFA32',
         radius: 20,
         speed: 0.15 },

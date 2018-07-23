@@ -248,15 +248,13 @@
             },
             addFlashDot: function () {
                 this.clear();
+
                 var overlay = new inMap.PointAnimationOverlay({
                     style: {
-                        normal: {
-                            fps: 25, //动画帧数
-                            color: "#f18080",
-                            size: 20,
-                            speed: 0.15
-                        }
-
+                        fps: 25, //动画帧数
+                        color: "#f18080",
+                        size: 20,
+                        speed: 0.15
                     },
                     data: data2
                 });
@@ -264,16 +262,14 @@
                 overlays.push(overlay);
             },
             addFlashDot2: function () {
-                this.clear();
+
+                console.log(JSON.stringify(data3, null, 2));
                 var overlay = new inMap.PointAnimationOverlay({
                     style: {
-                        normal: {
-                            fps: 25, //动画帧数
-                            color: "#f18080",
-                            size: 30,
-                            speed: 0.4
-                        }
-
+                        fps: 25, //动画帧数
+                        color: "#f18080",
+                        size: 30,
+                        speed: 0.4
                     },
                     data: data3
                 });
