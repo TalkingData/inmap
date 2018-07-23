@@ -131,9 +131,16 @@ export default class PolygonOverlay extends Parameter {
             });
 
         }
+        let result = [];
+        for (let i = 0; i < split.length; i++) {
+            let item = split[i];
+            if (item.start != item.end) {
+                item.backgroundColor = colors[result.length];
+                result.push(item);
+            }
+        }
 
-        this.styleConfig.splitList = split;
-
+        this.styleConfig.splitList = result;
     }
     patchSplitList() {
         let normal = this.styleConfig.normal;

@@ -9167,8 +9167,16 @@ var PolygonOverlay = function (_Parameter) {
                     backgroundColor: colors[colorIndex]
                 });
             }
+            var result = [];
+            for (var _i = 0; _i < split.length; _i++) {
+                var item = split[_i];
+                if (item.start != item.end) {
+                    item.backgroundColor = colors[result.length];
+                    result.push(item);
+                }
+            }
 
-            this.styleConfig.splitList = split;
+            this.styleConfig.splitList = result;
         }
     }, {
         key: 'patchSplitList',
