@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 48);
+/******/ 	return __webpack_require__(__webpack_require__.s = 47);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -295,7 +295,7 @@ var _BaseClass2 = __webpack_require__(13);
 
 var _BaseClass3 = _interopRequireDefault(_BaseClass2);
 
-var _Legend = __webpack_require__(49);
+var _Legend = __webpack_require__(48);
 
 var _Legend2 = _interopRequireDefault(_Legend);
 
@@ -2148,7 +2148,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ToolTip = __webpack_require__(50);
+var _ToolTip = __webpack_require__(49);
 
 var _ToolTip2 = _interopRequireDefault(_ToolTip);
 
@@ -2355,7 +2355,7 @@ var _util = __webpack_require__(0);
 
 var _MapStyle = __webpack_require__(7);
 
-var _mapZoom = __webpack_require__(51);
+var _mapZoom = __webpack_require__(50);
 
 var _Toolbar = __webpack_require__(12);
 
@@ -2369,7 +2369,7 @@ var _InmapConfig = __webpack_require__(42);
 
 var _InmapConfig2 = _interopRequireDefault(_InmapConfig);
 
-__webpack_require__(57);
+__webpack_require__(56);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -3026,7 +3026,7 @@ var _Parameter2 = __webpack_require__(4);
 
 var _util = __webpack_require__(0);
 
-var _BatchesData = __webpack_require__(52);
+var _BatchesData = __webpack_require__(51);
 
 var _BatchesData2 = _interopRequireDefault(_BatchesData);
 
@@ -5276,7 +5276,7 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
             enableEditing: true
         }));
         _this.startAction = _this.startAction.bind(_this);
-        _this.mousemoveAction = _this.mousemoveAction.bind(_this);
+        _this.mousemoveAction = _this._mousemoveAction.bind(_this);
         _this.dblclickAction = _this.dblclickAction.bind(_this);
         _this.clickAction = _this.clickAction.bind(_this);
         _this.getAreaByPolygon = _this.getAreaByPolygon.bind(_this);
@@ -5308,6 +5308,7 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
     }, {
         key: 'bingMoveEvent',
         value: function bingMoveEvent() {
+            this.removeMoveEvent();
             this.map.addEventListener('click', this.clickAction);
             this.map.addEventListener('mousemove', this.mousemoveAction);
             this.overlay.addEventListener('lineupdate', this.lineupdate);
@@ -5315,9 +5316,9 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
     }, {
         key: 'removeMoveEvent',
         value: function removeMoveEvent() {
+
             this.map.removeEventListener('mousemove', this.mousemoveAction);
             this.map.removeEventListener('click', this.clickAction);
-
             this.overlay.removeEventListener('lineupdate', this.lineupdate);
         }
     }, {
@@ -5487,9 +5488,13 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
             this.overlay.setPath(this.drawPoint);
         }
     }, {
-        key: 'mousemoveAction',
-        value: function mousemoveAction(e) {
+        key: '_mousemoveAction',
+        value: function _mousemoveAction(e) {
             if (!this._isBinded) {
+                return;
+            }
+            if (!this.isCreate) {
+                this.map.removeEventListener('mousemove', this.mousemoveAction);
                 return;
             }
             this.overlay.setPositionAt(this.drawPoint.length - 1, e.point);
@@ -5545,8 +5550,10 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
             this.isCreate = this.overlay.getPath().length <= 0;
             if (this.isCreate) {
                 this.overlay.disableEditing();
+                this.map.removeEventListener('mousemove', this.mousemoveAction);
                 this.map.addEventListener('mousemove', this.mousemoveAction);
             }
+
             this.overlay.enableEditing();
         }
     }, {
@@ -5577,6 +5584,7 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
             var points = this._geoJsonToPoint(data);
             this.drawPoint = this.points = points;
             this.overlay.setPath(points);
+            this.map.removeEventListener('mousemove', this.mousemoveAction);
             this.option.enableEditing ? this.enableEditing() : this.disableEditing();
         }
     }, {
@@ -6049,8 +6057,7 @@ exports.default = {
 
 /***/ }),
 /* 46 */,
-/* 47 */,
-/* 48 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6097,7 +6104,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.6.9";
+var version = "1.7.0";
 console.log('inMap v' + version);
 
 var inMap = {
@@ -6133,7 +6140,7 @@ exports.PolygonEditorOverlay = _PolygonEditorOverlay2.default;
 exports.default = inMap;
 
 /***/ }),
-/* 49 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6298,7 +6305,7 @@ var Legend = function () {
 exports.default = Legend;
 
 /***/ }),
-/* 50 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6417,7 +6424,7 @@ var ToolTip = function () {
 exports.default = ToolTip;
 
 /***/ }),
-/* 51 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6491,7 +6498,7 @@ var MapZoom = exports.MapZoom = function () {
 }();
 
 /***/ }),
-/* 52 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -6572,11 +6579,11 @@ var BatchesData = function () {
 exports.default = BatchesData;
 
 /***/ }),
-/* 53 */,
-/* 54 */
+/* 52 */,
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(55)();
+exports = module.exports = __webpack_require__(54)();
 // imports
 
 
@@ -6587,7 +6594,7 @@ exports.push([module.i, ".inmap-container {\n  opacity: 1;\n  font-family: Helve
 
 
 /***/ }),
-/* 55 */
+/* 54 */
 /***/ (function(module, exports) {
 
 /*
@@ -6643,7 +6650,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 56 */
+/* 55 */
 /***/ (function(module, exports) {
 
 /*
@@ -6895,16 +6902,16 @@ function updateLink(linkElement, obj) {
 
 
 /***/ }),
-/* 57 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(54);
+var content = __webpack_require__(53);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(56)(content, {});
+var update = __webpack_require__(55)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
