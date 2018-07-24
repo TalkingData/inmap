@@ -57,14 +57,28 @@ export default class PointOverlay extends Parameter {
     resize() {
         this.drawMap();
     }
-    _calculateMpp() {
-        let zoom = this.map.getZoom();
-        if (this.mpp[zoom]) {
-            return this.mpp[zoom];
+    _calculateMpp(size) {
+        let normal = this.styleConfig.normal,
+            result;
+        if (normal.unit == 'px') {
+            result = size;
+        } else if (normal.unit == 'm') {
+            let zoom = this.map.getZoom();
+            let mpp;
+            if (this.mpp[zoom]) {
+                mpp = this.mpp[zoom];
+            } else {
+                this.mpp[zoom] = this.getMpp();
+                mpp = this.mpp[zoom];
+            }
+            if (mpp == 0 || isNaN(mpp)) {
+                return;
+            }
+            result = size / mpp;
         } else {
-            this.mpp[zoom] = this.getMpp();
-            return this.mpp[zoom];
+            throw new TypeError('inMap: style.normal.unit must be is "m" or "px" .');
         }
+        return result;
     }
     /**
      * 获得每个像素对应多少米	
@@ -201,29 +215,15 @@ export default class PointOverlay extends Parameter {
         let pixels = this.workerData,
             ctx = this.ctx;
         let mapSize = this.map.getSize();
-        let normal = this.styleConfig.normal;
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
-            let style = this.setDrawStyle(item);
             let {
                 x,
                 y,
             } = item.geometry.pixel;
-            let r = style.size,
-                size;
-
-            if (normal.unit == 'px') {
-                size = r;
-            } else if (normal.unit == 'm') {
-                let mpp = this._calculateMpp();
-                if (mpp == 0 || isNaN(mpp)) {
-                    return;
-                }
-                size = r / mpp;
-            } else {
-                throw new TypeError('inMap: style.normal.unit must be is "meters" or "px" .');
-            }
-            size += normal.borderWidth;
+            let style = this.setDrawStyle(item);
+            let size = this._calculateMpp(style.size);
+            size += style.borderWidth || 0;
             if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
                 ctx.beginPath();
                 ctx.arc(x, y, size, 0, 2 * Math.PI, true);
@@ -276,38 +276,20 @@ export default class PointOverlay extends Parameter {
     }
     _loopDraw(ctx, pixels) {
         let mapSize = this.map.getSize();
-        let {
-            normal
-        } = this.styleConfig;
-
-
         for (let i = 0, len = pixels.length; i < len; i++) {
-
             let item = pixels[i];
             let pixel = item.geometry.pixel;
-
             let {
                 x,
                 y
             } = pixel;
-            let style = this.setDrawStyle(item), size = style.size;
-            if (normal.unit == 'px') {
-                size = normal.size;
-
-                if (normal.label.show) {
-                    pixel['radius'] = size;
-                }
-
-            } else if (normal.unit == 'm') {
-                let mpp = this._calculateMpp();
-                if (mpp == 0 || isNaN(mpp)) {
-                    return;
-                }
-                size = (style.size / mpp);
-            } else {
-                throw new TypeError('inMap: style.normal.unit must be is "meters" or "px" .');
+            
+            //重构
+            let style = this.setDrawStyle(item);
+            let size = this._calculateMpp(style.size);
+            if (this.styleConfig.normal.label.show) {
+                pixel['radius'] = size;
             }
-
             if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
                 if (style.shadowColor) {
                     ctx.shadowColor = style.shadowColor || 'transparent';
