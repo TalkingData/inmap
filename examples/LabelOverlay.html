@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PointOverlayay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="data/labelData.js"></script>
+    <script src="../dist/inmap.js"></script>
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        skin: "Blueness",
+        center: [105.439914, 27.25478],
+        zoom: {
+            value: 6,
+            show: true,
+            max: 17,
+            min: 5
+        },
+    });
+
+    var overlay = new inMap.LabelOverlay({
+        tooltip: {
+            show: true,
+            formatter: "'打分：'+{count}",
+            offsets: {
+                top: 5,
+                left: 12,
+            }
+        },
+        style: {
+            normal: {
+                font: '18px Arial',
+                color: 'rgba(255, 250, 50, 1)',
+                shadowColor: 'rgba(255, 250, 50, 1)',
+                shadowBlur: 10
+            },
+            mouseOver: {
+                color: 'rgba(255, 250, 255, 1)',
+            },
+            selected: {
+                color: 'rgba(184,0,0,1)'
+            },
+        },
+        data: data,
+        event: {
+            onMouseClick: function (item, event) {
+                console.log(item);
+                //能获取当前点的信息
+            }
+        }
+    });
+    inmap.add(overlay);
+</script>

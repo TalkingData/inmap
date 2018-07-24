@@ -73,12 +73,12 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 180);
+/******/ 	return __webpack_require__(__webpack_require__.s = 182);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 150:
+/***/ 151:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -88,7 +88,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(44);
+var _pointToPixel = __webpack_require__(45);
 
 var GriddingOverlay = {
     toRecGrids: function toRecGrids(webObj) {
@@ -208,7 +208,7 @@ exports.default = GriddingOverlay;
 
 /***/ }),
 
-/***/ 151:
+/***/ 152:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -218,7 +218,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(44);
+var _pointToPixel = __webpack_require__(45);
 
 var HeatOverlay = {
     pointsToPixels: function pointsToPixels(webObj) {
@@ -237,7 +237,7 @@ exports.default = HeatOverlay;
 
 /***/ }),
 
-/***/ 152:
+/***/ 153:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -247,7 +247,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(44);
+var _pointToPixel = __webpack_require__(45);
 
 var HoneycombOverlay = {
     toRecGrids: function toRecGrids(webObj) {
@@ -374,7 +374,7 @@ exports.default = HoneycombOverlay;
 
 /***/ }),
 
-/***/ 153:
+/***/ 154:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -384,7 +384,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _Label = __webpack_require__(70);
+var _Label = __webpack_require__(54);
 
 var LablEvading = {
     merge: function merge(webObj) {
@@ -439,7 +439,7 @@ exports.default = LablEvading;
 
 /***/ }),
 
-/***/ 154:
+/***/ 155:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -449,9 +449,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(44);
+var _pointToPixel = __webpack_require__(45);
 
-var _Curive = __webpack_require__(157);
+var _Curive = __webpack_require__(158);
 
 var LineStringOverlay = {
     transferCoordinate: function transferCoordinate(_coordinates, nwMc, zoomUnit) {
@@ -563,7 +563,7 @@ exports.default = LineStringOverlay;
 
 /***/ }),
 
-/***/ 155:
+/***/ 156:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -573,13 +573,13 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(44);
+var _pointToPixel = __webpack_require__(45);
 
-var _Point = __webpack_require__(158);
+var _Point = __webpack_require__(159);
 
 var _Point2 = _interopRequireDefault(_Point);
 
-var _polylabel = __webpack_require__(159);
+var _polylabel = __webpack_require__(160);
 
 var _polylabel2 = _interopRequireDefault(_polylabel);
 
@@ -632,7 +632,7 @@ exports.default = PolygonOverlay;
 
 /***/ }),
 
-/***/ 156:
+/***/ 157:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -642,7 +642,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(44);
+var _pointToPixel = __webpack_require__(45);
 
 var PolymeOverlay = {
     mergeCount: 0,
@@ -723,7 +723,7 @@ exports.default = PolymeOverlay;
 
 /***/ }),
 
-/***/ 157:
+/***/ 158:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -833,7 +833,7 @@ function getPointList(start, end, deltaAngle) {
 
 /***/ }),
 
-/***/ 158:
+/***/ 159:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -873,7 +873,7 @@ exports.default = Point;
 
 /***/ }),
 
-/***/ 159:
+/***/ 160:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -884,7 +884,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = polylabel;
 
-var _tinyqueue = __webpack_require__(173);
+var _tinyqueue = __webpack_require__(175);
 
 var _tinyqueue2 = _interopRequireDefault(_tinyqueue);
 
@@ -1022,7 +1022,7 @@ function polylabel(polygon) {
 
 /***/ }),
 
-/***/ 173:
+/***/ 175:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1120,7 +1120,7 @@ TinyQueue.prototype = {
 
 /***/ }),
 
-/***/ 180:
+/***/ 182:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1131,31 +1131,31 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.TDpost = undefined;
 
-var _HeatOverlay = __webpack_require__(151);
+var _HeatOverlay = __webpack_require__(152);
 
 var _HeatOverlay2 = _interopRequireDefault(_HeatOverlay);
 
-var _GriddingOverlay = __webpack_require__(150);
+var _GriddingOverlay = __webpack_require__(151);
 
 var _GriddingOverlay2 = _interopRequireDefault(_GriddingOverlay);
 
-var _PolygonOverlay = __webpack_require__(155);
+var _PolygonOverlay = __webpack_require__(156);
 
 var _PolygonOverlay2 = _interopRequireDefault(_PolygonOverlay);
 
-var _LineStringOverlay = __webpack_require__(154);
+var _LineStringOverlay = __webpack_require__(155);
 
 var _LineStringOverlay2 = _interopRequireDefault(_LineStringOverlay);
 
-var _HoneycombOverlay = __webpack_require__(152);
+var _HoneycombOverlay = __webpack_require__(153);
 
 var _HoneycombOverlay2 = _interopRequireDefault(_HoneycombOverlay);
 
-var _PolymeOverlay = __webpack_require__(156);
+var _PolymeOverlay = __webpack_require__(157);
 
 var _PolymeOverlay2 = _interopRequireDefault(_PolymeOverlay);
 
-var _LablEvading = __webpack_require__(153);
+var _LablEvading = __webpack_require__(154);
 
 var _LablEvading2 = _interopRequireDefault(_LablEvading);
 
@@ -1222,7 +1222,7 @@ var TDpost = exports.TDpost = function TDpost(client) {
 
 /***/ }),
 
-/***/ 387:
+/***/ 389:
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -1251,7 +1251,7 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ 44:
+/***/ 45:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2114,11 +2114,11 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
   }]);
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(387)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(389)(module)))
 
 /***/ }),
 
-/***/ 70:
+/***/ 54:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
