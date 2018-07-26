@@ -43,7 +43,7 @@ export default {
         selected: {
           
         },
-
+        splitList:[]
     },
     data: [],
     event: {

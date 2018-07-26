@@ -9782,8 +9782,8 @@ exports.default = {
             }
         },
         mouseOver: {},
-        selected: {}
-
+        selected: {},
+        splitList: []
     },
     data: [],
     event: {
@@ -9874,7 +9874,8 @@ exports.default = {
             }
         },
         mouseOver: {},
-        selected: {}
+        selected: {},
+        splitList: []
 
     },
     data: [],
