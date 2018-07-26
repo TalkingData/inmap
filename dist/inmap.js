@@ -8958,10 +8958,10 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
             enableEditing: true
         }));
         _this.startAction = _this.startAction.bind(_this);
-        _this.mousemoveAction = _this.mousemoveAction.bind(_this);
+        _this.mousemoveAction = _this._mousemoveAction.bind(_this);
         _this.dblclickAction = _this.dblclickAction.bind(_this);
         _this.clickAction = _this.clickAction.bind(_this);
-        _this.getAreaByPolygon = _this.getAreaByPolygon.bind(_this);
+
         _this.lineupdate = _this.lineupdate.bind(_this);
 
         _this._first = new Date(), _this._second = null, _this._interval = 250;
@@ -8984,12 +8984,12 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
             if (this.map.inmapToolBar) {
                 this.ToolTip = this.map.inmapToolBar.toolTip;
                 this.ToolTip.setOption(this.toolTipConfig);
-                this.getAreaByPolygon();
             }
         }
     }, {
         key: 'bingMoveEvent',
         value: function bingMoveEvent() {
+            this.removeMoveEvent();
             this.map.addEventListener('click', this.clickAction);
             this.map.addEventListener('mousemove', this.mousemoveAction);
             this.overlay.addEventListener('lineupdate', this.lineupdate);
@@ -8997,9 +8997,9 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
     }, {
         key: 'removeMoveEvent',
         value: function removeMoveEvent() {
+
             this.map.removeEventListener('mousemove', this.mousemoveAction);
             this.map.removeEventListener('click', this.clickAction);
-
             this.overlay.removeEventListener('lineupdate', this.lineupdate);
         }
     }, {
@@ -9022,17 +9022,12 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
         key: 'showAreaText',
         value: function showAreaText() {
             this.toolTipConfig.show = true;
-            this.getAreaByPolygon();
         }
     }, {
         key: 'hideAreaText',
         value: function hideAreaText() {
             this.toolTipConfig.show = false;
-            this.getAreaByPolygon();
         }
-    }, {
-        key: 'getAreaByPolygon',
-        value: function getAreaByPolygon() {}
     }, {
         key: 'getGeoCenter',
         value: function getGeoCenter(geo) {
@@ -9080,7 +9075,6 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
                         this.drawPoint.splice(index, 1);
                         this.overlay.setPath(this.drawPoint);
                     }
-                    this.getAreaByPolygon();
                 } else {
                     this._first = new Date();
                 }
@@ -9169,9 +9163,13 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
             this.overlay.setPath(this.drawPoint);
         }
     }, {
-        key: 'mousemoveAction',
-        value: function mousemoveAction(e) {
+        key: '_mousemoveAction',
+        value: function _mousemoveAction(e) {
             if (!this._isBinded) {
+                return;
+            }
+            if (!this.isCreate) {
+                this.map.removeEventListener('mousemove', this.mousemoveAction);
                 return;
             }
             this.overlay.setPositionAt(this.drawPoint.length - 1, e.point);
@@ -9227,8 +9225,10 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
             this.isCreate = this.overlay.getPath().length <= 0;
             if (this.isCreate) {
                 this.overlay.disableEditing();
+                this.map.removeEventListener('mousemove', this.mousemoveAction);
                 this.map.addEventListener('mousemove', this.mousemoveAction);
             }
+
             this.overlay.enableEditing();
         }
     }, {
@@ -9259,6 +9259,7 @@ var PolygonEditorOverlay = function (_MultiOverlay) {
             var points = this._geoJsonToPoint(data);
             this.drawPoint = this.points = points;
             this.overlay.setPath(points);
+            this.map.removeEventListener('mousemove', this.mousemoveAction);
             this.option.enableEditing ? this.enableEditing() : this.disableEditing();
         }
     }, {
