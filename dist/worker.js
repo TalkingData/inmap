@@ -384,7 +384,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _Label = __webpack_require__(54);
+var _Label = __webpack_require__(70);
 
 var LablEvading = {
     merge: function merge(webObj) {
@@ -2118,7 +2118,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 /***/ }),
 
-/***/ 54:
+/***/ 70:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -1,12 +1,37 @@
 import Parameter from './base/Parameter.js';
 import GriddingConfig from './../config/GriddingConfig.js';
 import State from './../config/OnState';
+import {
+    merge,
+} from './../common/util';
 export default class GriddingOverlay extends Parameter {
     constructor(ops) {
         super(GriddingConfig, ops);
         this.state = null;
         this._drawSize = 0;
         this.mpp = {};
+    }
+    _setStyle(config, ops) {
+        ops = ops || {};
+        let option = merge(config, ops);
+        if (option.style.splitList.length > 0) {
+            option.style.colors = [];
+        }
+        this.toRgba(option.style);
+        this._option = option;
+        this.tooltipConfig = option.tooltip;
+        this.legendConfig = option.legend;
+        this.eventConfig = option.event;
+        this.styleConfig = option.style;
+        if (ops.data) {
+            this.setData(ops.data);
+        } else {
+            this.onOptionChange();
+            this.map && this.refresh();
+        }
+        this.selectItem = option.selected || [];
+        this.tMapStyle(option.skin);
+        this.toolTip && this.toolTip.setOption(this.tooltipConfig);
     }
     parameterInit() {
 

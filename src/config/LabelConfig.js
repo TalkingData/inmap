@@ -12,7 +12,6 @@ export default {
     },
     style: {
         normal: {
-            avoid: false, //文字避让
             font: '18px Arial',
             color: 'yellow',
             shadowColor: 'yellow',
