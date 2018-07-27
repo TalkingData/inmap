@@ -4,8 +4,8 @@
   "description": "Map visualization",
   "main": "dist/inmap.min.js",
   "scripts": {
-    "dev2": "webpack --watch --config  webpack.inmap.js",
-    "dev": "webpack-dev-server --content-base ./ --open --inline --hot --compress --history-api-fallback --port 8088 --open-page 'examples/index.html' --config webpack.inmap.js",
+    "start": "node openServer.js",
+    "dev": "webpack --watch --config  webpack.inmap.js & npm run start",
     "build": "webpack --config webpack.inmap.pro.js && node build-worker",
     "lint": "eslint --fix --ext .js src",
     "test": "npm run lint",
@@ -24,7 +24,9 @@
   "license": "Apache-2.0",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "deepmerge": "^1.5.2"
+    "deepmerge": "^1.5.2",
+    "http-server": "^0.11.1",
+    "opn": "^5.3.0"
   },
   "devDependencies": {
     "autoprefixer-loader": "^2.0.0",
