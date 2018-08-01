@@ -26,6 +26,9 @@ inMap 是一款基于百度地图的大数据可视化库，专注于大数据�
 ## 文档
 [http://inmap.talkingdata.com/](http://inmap.talkingdata.com/)
 
+## 示例效果图
+![image](http://ozjyavyki.bkt.clouddn.com/demo/demoe%E6%88%AA%E5%9B%BE.jpg)
+![image](http://ozjyavyki.bkt.clouddn.com/demo/demo%E6%88%AA%E5%9B%BE2.jpg)
 
 ## 安装
 Using npm:
