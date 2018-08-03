@@ -18,7 +18,7 @@ export default class LabelOverlay extends Parameter {
     }
     setState(val) {
         this.state = val;
-        this.eventConfig.onState(this.state);
+        this.eventConfig.onState.call(this, this.state);
     }
     resize() {
         this.drawMap();

@@ -38,7 +38,7 @@ export default class HoneycombOverlay extends Parameter {
     }
     setState(val) {
         this.state = val;
-        this.eventConfig.onState(this.state);
+        this.eventConfig.onState.call(this, this.state);
     }
     draw() {
         this.resize();

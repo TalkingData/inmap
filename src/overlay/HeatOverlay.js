@@ -41,7 +41,7 @@ export default class HeatOverlay extends CanvasOverlay {
     }
     setState(val) {
         this.state = val;
-        this.eventConfig.onState(this.state);
+        this.eventConfig.onState.call(this, this.state);
     }
     /**
      * 屏蔽参数

@@ -21,7 +21,7 @@ export default class ImgOverlay extends Parameter {
     }
     setState(val) {
         this.state = val;
-        this.eventConfig.onState(this.state);
+        this.eventConfig.onState.call(this,this.state);
     }
     translation(distanceX, distanceY) {
         for (let i = 0; i < this.workerData.length; i++) {

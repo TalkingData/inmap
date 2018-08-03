@@ -105,11 +105,12 @@
         event: {
             onState(state) {
                 console.log(state);
-            }
+            },
             // multiSelect: true,
-            // onMouseClick: function (item, event) {
-            //     //能获取当前点的信息
-            // }
+            onMouseClick: function (item, event) {
+                console.log(item);
+                //能获取当前点的信息
+            }
         }
     });
     inmap.add(overlay);

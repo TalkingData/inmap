@@ -336,7 +336,7 @@ export default class Parameter extends CanvasOverlay {
         }
 
         this.swopData(result.index, item);
-        this.eventConfig.onMouseClick(this.selectItem, event);
+        this.eventConfig.onMouseClick.call(this,this.selectItem, event);
 
         this.refresh();
         if (isMobile) {

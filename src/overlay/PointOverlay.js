@@ -52,7 +52,7 @@ export default class PointOverlay extends Parameter {
     }
     setState(val) {
         this.state = val;
-        this.eventConfig.onState(this.state);
+        this.eventConfig.onState.call(this, this.state);
     }
     resize() {
         this.drawMap();
@@ -283,7 +283,7 @@ export default class PointOverlay extends Parameter {
                 x,
                 y
             } = pixel;
-            
+
             //重构
             let style = this.setDrawStyle(item);
             let size = this._calculateMpp(style.size);

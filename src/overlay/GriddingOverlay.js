@@ -45,7 +45,7 @@ export default class GriddingOverlay extends Parameter {
 
     setState(val) {
         this.state = val;
-        this.eventConfig.onState(this.state);
+        this.eventConfig.onState.call(this, this.state);
     }
 
     refresh() {
