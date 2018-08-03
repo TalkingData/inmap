@@ -117,7 +117,7 @@ export default class LabelOverlay extends Parameter {
             let item = pixels[i];
             let pixel = item.geometry.pixel;
             ctx.beginPath();
-            let style = this.setDrawStyle(item);
+            let style = this.setDrawStyle(item,true);
             ctx.font = style.font;
             ctx.fillStyle = style.color;
 

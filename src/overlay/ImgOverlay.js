@@ -60,7 +60,7 @@ export default class ImgOverlay extends Parameter {
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.geometry.pixel;
-            let style = this.setDrawStyle(item);
+            let style = this.setDrawStyle(item,true);
             let img;
             if (isString(img)) {
                 img = this.cacheImg[style.icon];

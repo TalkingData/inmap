@@ -243,7 +243,7 @@ export default class GriddingOverlay extends Parameter {
                 backgroundColor: 'rgba(255,255,255,0)'
             };
         } else {
-            return this.setDrawStyle(item);
+            return this.setDrawStyle(item,true);
         }
 
     }

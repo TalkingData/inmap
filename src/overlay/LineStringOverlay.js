@@ -38,7 +38,7 @@ export default class LineStringOverlay extends Parameter {
         let overArr = this.overItem ? [this.overItem] : [];
 
         this.mouseLayer.clearCanvas();
-        this.drawLine(this.mouseLayer.ctx, this.selectItem.concat(overArr));
+        this.drawLine(this.mouseLayer.ctx, this.selectItem.concat(overArr), true);
     }
     clearAll() {
         this.mouseLayer.clearCanvas();
@@ -115,7 +115,7 @@ export default class LineStringOverlay extends Parameter {
         this.setState(State.drawBefore);
         this.mouseLayer.canvasResize();
         this.clearCanvas();
-        this.drawLine(this.ctx, this.workerData);
+        this.drawLine(this.ctx, this.workerData, false);
         this.anewSelectItem();
         this.drawMouseLayer();
         this.setState(State.drawAfter);
@@ -159,8 +159,13 @@ export default class LineStringOverlay extends Parameter {
             margin = null;
         });
     }
-
-    drawLine(ctx, data) {
+    /**
+     * 
+     * @param {*} ctx 上下文
+     * @param {*} data 数据集
+     * @param {*} otherMode 是否绘画选中数据样式
+     */
+    drawLine(ctx, data, otherMode) {
         let normal = this.styleConfig.normal;
         ctx.shadowBlur = 0;
         ctx.shadowOffsetX = 0;
@@ -179,7 +184,7 @@ export default class LineStringOverlay extends Parameter {
 
         for (let i = 0; i < data.length; i++) {
             let item = data[i];
-            let style = this.setDrawStyle(item, i);
+            let style = this.setDrawStyle(item, otherMode);
             ctx.strokeStyle = style.borderColor;
             let pixels = item.geometry.pixels;
             ctx.beginPath();

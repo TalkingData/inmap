@@ -104,7 +104,7 @@ export default class PointOverlay extends Parameter {
     drawMouseLayer() {
         let overArr = this.overItem ? [this.overItem] : [];
         this.mouseLayer.clearCanvas();
-        this._loopDraw(this.mouseLayer.ctx, this.selectItem.concat(overArr));
+        this._loopDraw(this.mouseLayer.ctx, this.selectItem.concat(overArr), true);
 
     }
     clearAll() {
@@ -260,7 +260,7 @@ export default class PointOverlay extends Parameter {
             this.batchesData.action(this.workerData, this._loopDraw, this.ctx);
 
         } else {
-            this._loopDraw(this.ctx, this.workerData);
+            this._loopDraw(this.ctx, this.workerData, false);
         }
         if (this.styleConfig.normal.label.show) {
             this._drawLabel(this.ctx, this.workerData);
@@ -274,7 +274,13 @@ export default class PointOverlay extends Parameter {
             this.workerData[this.workerData.length - 1] = item;
         }
     }
-    _loopDraw(ctx, pixels) {
+    /**
+     * 
+     * @param {*} ctx 上下文
+     * @param {*} pixels 数据集
+     * @param {*} otherMode 是否绘画选中数据
+     */
+    _loopDraw(ctx, pixels, otherMode) {
         let mapSize = this.map.getSize();
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
@@ -285,7 +291,7 @@ export default class PointOverlay extends Parameter {
             } = pixel;
 
             //重构
-            let style = this.setDrawStyle(item);
+            let style = this.setDrawStyle(item, otherMode);
             let size = this._calculateMpp(style.size);
             if (this.styleConfig.normal.label.show) {
                 pixel['radius'] = size;

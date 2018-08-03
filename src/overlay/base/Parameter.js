@@ -126,9 +126,10 @@ export default class Parameter extends CanvasOverlay {
     }
     /**
      * 根据用户配置，设置用户绘画样式
-     * @param {*} item 
+     * @param {*} item 数据行
+     * @param {*} otherMode  是否返回选中数据集的样式
      */
-    setDrawStyle(item, index) {
+    setDrawStyle(item, otherMode) {
         let normal = this.styleConfig.normal, //正常样式
             mouseOverStyle = this.styleConfig.mouseOver, //悬浮样式
             selectedStyle = this.styleConfig.selected; //选中样式
@@ -162,7 +163,7 @@ export default class Parameter extends CanvasOverlay {
                 backgroundColor: mouseOverStyle.backgroundColor || this.brightness(result.backgroundColor, 0.1)
             });
         }
-        if (selectedStyle && this.selectItemContains(item, index)) {
+        if (otherMode && selectedStyle && this.selectItemContains(item)) {
             result = merge(result, selectedStyle);
         }
         //如果设置了shadowBlur的范围长度，并且也没有设置shadowColor，则shadowColor默认取backgroundColor值
@@ -204,15 +205,15 @@ export default class Parameter extends CanvasOverlay {
      * 选中的数据集里面是否包含
      * @param {*} item 
      */
-    selectItemContains(item, index) {
-        return this.findIndexSelectItem(item, index) > -1;
+    selectItemContains(item) {
+        return this.findIndexSelectItem(item) > -1;
     }
     /*eslint-disable */
     /**
      * 查询选中列表的索引
      * @param {*} item 
      */
-    findIndexSelectItem(item, index) {
+    findIndexSelectItem(item) {
         //这个需要子类去实现  
         //原因 点 线  面 的数据结构不同  判断依据也不相同
         return -1;
@@ -336,7 +337,7 @@ export default class Parameter extends CanvasOverlay {
         }
 
         this.swopData(result.index, item);
-        this.eventConfig.onMouseClick.call(this,this.selectItem, event);
+        this.eventConfig.onMouseClick.call(this, this.selectItem, event);
 
         this.refresh();
         if (isMobile) {
