@@ -153,7 +153,7 @@ export default class CanvasOverlay extends BaseClass {
     }
     translationIf(oldLeft, oldTop, newLeft, newTop) {
         if (oldLeft != newLeft || oldTop != newTop) {
-            this.translation(oldLeft - newLeft, oldTop - newTop);
+            this.translation(parseInt(oldLeft - newLeft, 10), parseInt(oldTop - newTop, 10));
         }
     }
     /*eslint-disable */
