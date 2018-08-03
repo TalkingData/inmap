@@ -316,7 +316,7 @@ export default class PolygonOverlay extends Parameter {
             let item = data[i];
             let geometry = item.geometry;
             let pixels = geometry.pixels;
-            let style = this.setDrawStyle(item);
+            let style = this.setDrawStyle(item,true);
             this.ctx.beginPath();
             this.ctx.shadowColor = style.shadowColor || 'transparent';
             this.ctx.shadowBlur = style.shadowBlur || 10;
