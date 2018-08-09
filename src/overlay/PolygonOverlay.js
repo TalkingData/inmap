@@ -1,10 +1,10 @@
 import Parameter from './base/Parameter.js';
-import Color from './../common/Color';
+import Color from '../common/Color.js';
 import {
     clearPushArray
-} from './../common/util';
-import PolygonConfig from '../config/PolygonConfig';
-import State from './../config/OnState';
+} from '../common/util.js';
+import PolygonConfig from '../config/PolygonConfig.js';
+import State from '../config/OnState.js';
 
 
 export default class PolygonOverlay extends Parameter {
@@ -80,7 +80,7 @@ export default class PolygonOverlay extends Parameter {
     }
     setState(val) {
         this.state = val;
-        this.eventConfig.onState.call(this,this.state);
+        this.eventConfig.onState.call(this, this.state);
     }
     onOptionChange() {
         this.map && this.initLegend();
@@ -255,8 +255,11 @@ export default class PolygonOverlay extends Parameter {
         };
     }
     drawData(pixelItem) {
+        if (pixelItem.length == 0)
+            return;
         this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
         for (let k = 1, len = pixelItem.length; k < len; k++) {
+
             this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
         }
     }
@@ -316,7 +319,7 @@ export default class PolygonOverlay extends Parameter {
             let item = data[i];
             let geometry = item.geometry;
             let pixels = geometry.pixels;
-            let style = this.setDrawStyle(item,true);
+            let style = this.setDrawStyle(item, true);
             this.ctx.beginPath();
             this.ctx.shadowColor = style.shadowColor || 'transparent';
             this.ctx.shadowBlur = style.shadowBlur || 10;
