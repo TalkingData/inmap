@@ -61,6 +61,7 @@ export default class HeatOverlay extends CanvasOverlay {
         if (!isArray(points)) {
             throw new TypeError('inMap :data must be a Array');
         }
+        clearPushArray(this.workerData, []);
         this.points = points;
         this.drawMap();
     }

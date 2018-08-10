@@ -1454,7 +1454,7 @@ var CanvasOverlay = function (_BaseClass) {
         value: function canvasInit() {}
     }, {
         key: 'draw',
-        value: function draw(event) {
+        value: function draw() {
 
             var eventType = this.eventType;
 
@@ -8030,6 +8030,7 @@ var HeatOverlay = function (_CanvasOverlay) {
             if (!(0, _util.isArray)(points)) {
                 throw new TypeError('inMap :data must be a Array');
             }
+            (0, _util.clearPushArray)(this.workerData, []);
             this.points = points;
             this.drawMap();
         }
@@ -9173,6 +9174,7 @@ var MoveLineOverlay = function (_MultiOverlay) {
         value: function dispose() {
             this.PointOverlay.dispose();
             this.LineStringOverlay.dispose();
+            this.LineStringAnimationOverlay.dispose();
             var me = this;
             for (var key in me) {
                 if (!(0, _util.isFunction)(me[key])) {
