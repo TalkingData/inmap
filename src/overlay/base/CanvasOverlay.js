@@ -1,16 +1,16 @@
 import BaseClass from './BaseClass';
-import Legend from './../../map/Legend';
+import Legend from '../../map/Legend';
 import {
     setDevicePixelRatio,
     isString,
     isArray,
     isFunction
-} from './../../common/util';
+} from '../../common/util';
 import {
     WhiteLover,
     Blueness
-} from './../../config/MapStyle';
-import Toolbar from './../../map/Toolbar';
+} from '../../config/MapStyle';
+import Toolbar from '../../map/Toolbar';
 let zIndex = 1;
 
 export default class CanvasOverlay extends BaseClass {
@@ -104,8 +104,8 @@ export default class CanvasOverlay extends BaseClass {
     canvasInit() {
         //抽象方法 子类去实现
     }
-    draw() {
-
+    draw(event) {
+        
         let eventType = this.eventType;
         // if (eventType == 'onzoomend' || eventType == 'onmoveend' || eventType == 'onresize') {
         //     this.resize();
@@ -122,7 +122,7 @@ export default class CanvasOverlay extends BaseClass {
     }
     tDraw(me, event) {
         this.eventType = event.type;
-        me.draw();
+        me.draw(event);
         this.repaintEnd && this.repaintEnd(this); //重绘回调
         me.keysss = true;
     }
@@ -135,10 +135,9 @@ export default class CanvasOverlay extends BaseClass {
         let point = map.getCenter();
         let size = map.getSize();
         let pixel = map.pointToOverlayPixel(point);
-        let left = pixel.x - size.width / 2;
-        let top = pixel.y - size.height / 2;
+        let left = parseInt(pixel.x - size.width / 2, 10);
+        let top = parseInt(pixel.y - size.height / 2, 10);
         let containerDomStyle = container.style;
-
         this.translationIf(this.margin.left, this.margin.top, left, top);
 
         this.margin.left = left;
@@ -153,7 +152,7 @@ export default class CanvasOverlay extends BaseClass {
     }
     translationIf(oldLeft, oldTop, newLeft, newTop) {
         if (oldLeft != newLeft || oldTop != newTop) {
-            this.translation(parseInt(oldLeft - newLeft, 10), parseInt(oldTop - newTop, 10));
+            this.translation(oldLeft - newLeft, oldTop - newTop);
         }
     }
     /*eslint-disable */
