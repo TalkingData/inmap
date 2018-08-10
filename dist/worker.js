@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 182);
+/******/ 	return __webpack_require__(__webpack_require__.s = 184);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -88,7 +88,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(45);
+var _pointToPixel = __webpack_require__(46);
 
 var GriddingOverlay = {
     toRecGrids: function toRecGrids(webObj) {
@@ -218,7 +218,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(45);
+var _pointToPixel = __webpack_require__(46);
 
 var HeatOverlay = {
     pointsToPixels: function pointsToPixels(webObj) {
@@ -247,7 +247,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(45);
+var _pointToPixel = __webpack_require__(46);
 
 var HoneycombOverlay = {
     toRecGrids: function toRecGrids(webObj) {
@@ -384,7 +384,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _Label = __webpack_require__(70);
+var _Label = __webpack_require__(69);
 
 var LablEvading = {
     merge: function merge(webObj) {
@@ -449,7 +449,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(45);
+var _pointToPixel = __webpack_require__(46);
 
 var _Curive = __webpack_require__(158);
 
@@ -573,7 +573,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(45);
+var _pointToPixel = __webpack_require__(46);
 
 var _Point = __webpack_require__(159);
 
@@ -585,7 +585,7 @@ var _polylabel2 = _interopRequireDefault(_polylabel);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function transfrom(coordinates, map, pixels, labelPixels) {
+function transfrom(coordinates, map, pixels, labelPixels, enable) {
     for (var i = 0; i < coordinates.length; i++) {
         var geo = coordinates[i];
         var tmp = [];
@@ -594,14 +594,16 @@ function transfrom(coordinates, map, pixels, labelPixels) {
             tmp.push([pixel.x, pixel.y]);
         }
         pixels.push(tmp);
-        if (i == 0) {
+        if (enable && i == 0) {
             labelPixels.push((0, _polylabel2.default)([tmp]));
         }
     }
 }
 var PolygonOverlay = {
     calculatePixel: function calculatePixel(webObj) {
-        var data = webObj.request.data.data;
+        var _webObj$request$data = webObj.request.data,
+            data = _webObj$request$data.data,
+            enable = _webObj$request$data.enable;
 
         var map = webObj.request.map;
         for (var j = 0; j < data.length; j++) {
@@ -613,11 +615,11 @@ var PolygonOverlay = {
             if (type == 'MultiPolygon') {
                 for (var k = 0; k < coordinates.length; k++) {
                     var p = [];
-                    transfrom(coordinates[k], map, p, labelPixels);
+                    transfrom(coordinates[k], map, p, labelPixels, enable);
                     pixels.push(p);
                 }
             } else {
-                transfrom(coordinates, map, pixels, labelPixels);
+                transfrom(coordinates, map, pixels, labelPixels, enable);
             }
 
             data[j].geometry['pixels'] = pixels;
@@ -642,7 +644,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _pointToPixel = __webpack_require__(45);
+var _pointToPixel = __webpack_require__(46);
 
 var PolymeOverlay = {
     mergeCount: 0,
@@ -843,7 +845,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _util = __webpack_require__(9);
+var _util = __webpack_require__(6);
 
 function Point(lng, lat) {
     if (isNaN(lng)) {
@@ -884,7 +886,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = polylabel;
 
-var _tinyqueue = __webpack_require__(175);
+var _tinyqueue = __webpack_require__(176);
 
 var _tinyqueue2 = _interopRequireDefault(_tinyqueue);
 
@@ -1022,7 +1024,7 @@ function polylabel(polygon) {
 
 /***/ }),
 
-/***/ 175:
+/***/ 176:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1120,7 +1122,7 @@ TinyQueue.prototype = {
 
 /***/ }),
 
-/***/ 182:
+/***/ 184:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1222,7 +1224,7 @@ var TDpost = exports.TDpost = function TDpost(client) {
 
 /***/ }),
 
-/***/ 389:
+/***/ 391:
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -1251,7 +1253,7 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ 45:
+/***/ 46:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2114,11 +2116,196 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
     }
   }]);
 });
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(389)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(391)(module)))
 
 /***/ }),
 
-/***/ 70:
+/***/ 6:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.chunk = exports.extend = exports.isPromiseLike = exports.isEmpty = undefined;
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.typeOf = typeOf;
+exports.isNumber = isNumber;
+exports.isBoolean = isBoolean;
+exports.isFunction = isFunction;
+exports.isString = isString;
+exports.isObject = isObject;
+exports.isArray = isArray;
+exports.setDevicePixelRatio = setDevicePixelRatio;
+exports.encodeHTML = encodeHTML;
+exports.isPolyContains = isPolyContains;
+exports.isPolyContainsPt = isPolyContainsPt;
+exports.detectmob = detectmob;
+exports.merge = merge;
+exports.clearPushArray = clearPushArray;
+
+var _deepmerge = __webpack_require__(97);
+
+var _deepmerge2 = _interopRequireDefault(_deepmerge);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function typeOf(obj) {
+    var toString = Object.prototype.toString;
+    var map = {
+        '[object Boolean]': 'boolean',
+        '[object Number]': 'number',
+        '[object String]': 'string',
+        '[object Function]': 'function',
+        '[object Array]': 'array',
+        '[object Date]': 'date',
+        '[object RegExp]': 'regExp',
+        '[object Undefined]': 'undefined',
+        '[object Null]': 'null',
+        '[object Object]': 'object'
+    };
+    return map[toString.call(obj)];
+}
+function isNumber(num) {
+    return typeOf(num) == 'number';
+}
+function isBoolean(obj) {
+    return typeOf(obj) == 'boolean';
+}
+function isFunction(func) {
+    return typeOf(func) == 'function';
+}
+
+function isString(string) {
+    return typeOf(string) == 'string';
+}
+
+function isObject(object) {
+    return typeOf(object) == 'object';
+}
+function isArray(source) {
+    return typeOf(source) == 'array';
+}
+var isEmpty = exports.isEmpty = function isEmpty(val) {
+    return val == null || !(Object.keys(val) || val).length;
+};
+
+var isPromiseLike = exports.isPromiseLike = function isPromiseLike(obj) {
+    return obj !== null && ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
+};
+
+var extend = exports.extend = function extend(target, source) {
+
+    if (target && source && isObject(source)) {
+        for (var p in source) {
+            target[p] = source[p];
+        }
+
+        var prototype_fields = ['constructor', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'valueOf'];
+
+        for (var j = 0, key; j < prototype_fields.length; j++) {
+            key = prototype_fields[j];
+            if (Object.prototype.constructor.call(source, key)) {
+                target[key] = source[key];
+            }
+        }
+    }
+    return target;
+};
+function setDevicePixelRatio(context) {
+    var devicePixelRatio = window.devicePixelRatio;
+    context.canvas.width = context.canvas.width * devicePixelRatio;
+    context.canvas.height = context.canvas.height * devicePixelRatio;
+    context.canvas.style.width = context.canvas.width / devicePixelRatio + 'px';
+    context.canvas.style.height = context.canvas.height / devicePixelRatio + 'px';
+
+    context.scale(devicePixelRatio, devicePixelRatio);
+}
+function encodeHTML(source) {
+    return String(source).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function isPolyContains(lng, lat, pointLat, pointLng) {
+    var ret = false;
+    var latMin = 90.0;
+    var latMax = -90.0;
+    var lngMin = 180.0;
+    var lngMax = -180.0;
+    for (var i = 0; i < lat.length; i++) {
+        if (lat[i] > latMax) latMax = lat[i];
+        if (lat[i] < latMin) latMin = lat[i];
+        if (lng[i] > lngMax) lngMax = lng[i];
+        if (lng[i] < lngMin) lngMin = lng[i];
+    }
+    if (!(pointLat < latMin || pointLat > latMax || pointLng < lngMin || pointLng > lngMax)) {
+
+        for (var _i = 0; _i < lat.length; _i++) {
+            var j = (_i + 1) % lat.length;
+            if (lat[_i] < pointLat != lat[j] < pointLat && pointLng < (lng[j] - lng[_i]) * (pointLat - lat[_i]) / (lat[j] - lat[_i]) + lng[_i]) {
+                ret = !ret;
+            }
+        }
+    }
+    return ret;
+}
+function isPolyContainsPt(lng, lat, geos) {
+    var lats = [];
+    var lngs = [];
+    for (var j = 0, len = geos.length; j < len; j++) {
+        lats.push(parseFloat(geos[j][1]));
+        lngs.push(parseFloat(geos[j][0]));
+    }
+    return isPolyContains(lats, lngs, lng, lat);
+}
+
+function detectmob() {
+    if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+var chunk = exports.chunk = function chunk(arr, size) {
+    return Array.from({
+        length: Math.ceil(arr.length / size)
+    }, function (v, i) {
+        return arr.slice(i * size, i * size + size);
+    });
+};
+
+function merge() {
+    var arr = Array.prototype.slice.call(arguments);
+    return _deepmerge2.default.all(arr, {
+        arrayMerge: function arrayMerge(destinationArray, sourceArray) {
+            if (sourceArray.length > 0) {
+                return sourceArray;
+            } else {
+                return destinationArray;
+            }
+        }
+    });
+}
+function clearPushArray(a, b) {
+    if (Array.isArray(b)) {
+        a.splice(0, a.length);
+        b.forEach(function (val) {
+            a.push(val);
+        });
+    } else if (b != null) {
+        a.splice(0, a.length, b);
+    } else {
+        a.splice(0, a.length);
+    }
+}
+
+/***/ }),
+
+/***/ 69:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2310,192 +2497,7 @@ exports.default = Label;
 
 /***/ }),
 
-/***/ 9:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.chunk = exports.extend = exports.isPromiseLike = exports.isEmpty = undefined;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-exports.typeOf = typeOf;
-exports.isNumber = isNumber;
-exports.isBoolean = isBoolean;
-exports.isFunction = isFunction;
-exports.isString = isString;
-exports.isObject = isObject;
-exports.isArray = isArray;
-exports.setDevicePixelRatio = setDevicePixelRatio;
-exports.encodeHTML = encodeHTML;
-exports.isPolyContains = isPolyContains;
-exports.isPolyContainsPt = isPolyContainsPt;
-exports.detectmob = detectmob;
-exports.merge = merge;
-exports.clearPushArray = clearPushArray;
-
-var _deepmerge = __webpack_require__(98);
-
-var _deepmerge2 = _interopRequireDefault(_deepmerge);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function typeOf(obj) {
-    var toString = Object.prototype.toString;
-    var map = {
-        '[object Boolean]': 'boolean',
-        '[object Number]': 'number',
-        '[object String]': 'string',
-        '[object Function]': 'function',
-        '[object Array]': 'array',
-        '[object Date]': 'date',
-        '[object RegExp]': 'regExp',
-        '[object Undefined]': 'undefined',
-        '[object Null]': 'null',
-        '[object Object]': 'object'
-    };
-    return map[toString.call(obj)];
-}
-function isNumber(num) {
-    return typeOf(num) == 'number';
-}
-function isBoolean(obj) {
-    return typeOf(obj) == 'boolean';
-}
-function isFunction(func) {
-    return typeOf(func) == 'function';
-}
-
-function isString(string) {
-    return typeOf(string) == 'string';
-}
-
-function isObject(object) {
-    return typeOf(object) == 'object';
-}
-function isArray(source) {
-    return typeOf(source) == 'array';
-}
-var isEmpty = exports.isEmpty = function isEmpty(val) {
-    return val == null || !(Object.keys(val) || val).length;
-};
-
-var isPromiseLike = exports.isPromiseLike = function isPromiseLike(obj) {
-    return obj !== null && ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' || typeof obj === 'function') && typeof obj.then === 'function';
-};
-
-var extend = exports.extend = function extend(target, source) {
-
-    if (target && source && isObject(source)) {
-        for (var p in source) {
-            target[p] = source[p];
-        }
-
-        var prototype_fields = ['constructor', 'hasOwnProperty', 'isPrototypeOf', 'propertyIsEnumerable', 'toLocaleString', 'toString', 'valueOf'];
-
-        for (var j = 0, key; j < prototype_fields.length; j++) {
-            key = prototype_fields[j];
-            if (Object.prototype.constructor.call(source, key)) {
-                target[key] = source[key];
-            }
-        }
-    }
-    return target;
-};
-function setDevicePixelRatio(context) {
-    var devicePixelRatio = window.devicePixelRatio;
-    context.canvas.width = context.canvas.width * devicePixelRatio;
-    context.canvas.height = context.canvas.height * devicePixelRatio;
-    context.canvas.style.width = context.canvas.width / devicePixelRatio + 'px';
-    context.canvas.style.height = context.canvas.height / devicePixelRatio + 'px';
-
-    context.scale(devicePixelRatio, devicePixelRatio);
-}
-function encodeHTML(source) {
-    return String(source).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-}
-
-function isPolyContains(lng, lat, pointLat, pointLng) {
-    var ret = false;
-    var latMin = 90.0;
-    var latMax = -90.0;
-    var lngMin = 180.0;
-    var lngMax = -180.0;
-    for (var i = 0; i < lat.length; i++) {
-        if (lat[i] > latMax) latMax = lat[i];
-        if (lat[i] < latMin) latMin = lat[i];
-        if (lng[i] > lngMax) lngMax = lng[i];
-        if (lng[i] < lngMin) lngMin = lng[i];
-    }
-    if (!(pointLat < latMin || pointLat > latMax || pointLng < lngMin || pointLng > lngMax)) {
-
-        for (var _i = 0; _i < lat.length; _i++) {
-            var j = (_i + 1) % lat.length;
-            if (lat[_i] < pointLat != lat[j] < pointLat && pointLng < (lng[j] - lng[_i]) * (pointLat - lat[_i]) / (lat[j] - lat[_i]) + lng[_i]) {
-                ret = !ret;
-            }
-        }
-    }
-    return ret;
-}
-function isPolyContainsPt(lng, lat, geos) {
-    var lats = [];
-    var lngs = [];
-    for (var j = 0, len = geos.length; j < len; j++) {
-        lats.push(parseFloat(geos[j][1]));
-        lngs.push(parseFloat(geos[j][0]));
-    }
-    return isPolyContains(lats, lngs, lng, lat);
-}
-
-function detectmob() {
-    if (navigator.userAgent.match(/Android/i) || navigator.userAgent.match(/webOS/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPod/i) || navigator.userAgent.match(/BlackBerry/i) || navigator.userAgent.match(/Windows Phone/i)) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-var chunk = exports.chunk = function chunk(arr, size) {
-    return Array.from({
-        length: Math.ceil(arr.length / size)
-    }, function (v, i) {
-        return arr.slice(i * size, i * size + size);
-    });
-};
-
-function merge() {
-    var arr = Array.prototype.slice.call(arguments);
-    return _deepmerge2.default.all(arr, {
-        arrayMerge: function arrayMerge(destinationArray, sourceArray) {
-            if (sourceArray.length > 0) {
-                return sourceArray;
-            } else {
-                return destinationArray;
-            }
-        }
-    });
-}
-function clearPushArray(a, b) {
-    if (Array.isArray(b)) {
-        a.splice(0, a.length);
-        b.forEach(function (val) {
-            a.push(val);
-        });
-    } else if (b != null) {
-        a.splice(0, a.length, b);
-    } else {
-        a.splice(0, a.length);
-    }
-}
-
-/***/ }),
-
-/***/ 98:
+/***/ 97:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

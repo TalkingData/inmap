@@ -14,7 +14,7 @@ import ImgOverlay from './overlay/ImgOverlay';
 import MoveLineOverlay from './overlay/MoveLineOverlay';
 import PointAnimationOverlay from './overlay/PointAnimationOverlay';
 import LineStringAnimationOverlay from './overlay/LineStringAnimationOverlay';
-import PolygonEditorOverlay from './overlay/PolygonEditorOverlay';
+import PolygonEditorOverlay from './overlay/PolygonEditorOverlay/index';
 import Map from './map/index';
 import * as utils from './common/util';
 import workerMrg from './common/workerMrg';

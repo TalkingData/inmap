@@ -26,6 +26,7 @@
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="../dist/inmap.js"></script>
+    <script src="./data/neimengGeo.js"></script>
 </head>
 
 <body>
@@ -41,7 +42,7 @@
 </body>
 
 </html>
-<script>
+<script> 
     var inmap = new inMap.Map({
         id: 'allmap',
         // skin: "Blueness",
@@ -93,17 +94,6 @@
             }
         },
         data: null,
-        event: {
-            onCreated(event) {
-                console.log('onCreate', event);
-            },
-            onChange(type, event) {
-                console.log('onChange', type, event);
-            },
-            onDelete(event) {
-                console.log('onDelete', event);
-            }
-        }
     });
     inmap.add(overlay);
 
@@ -118,60 +108,7 @@
     }
 
     function addEditorOverLay() {
-
-        overlay.setPath({
-            "geometry": {
-                "type": "MultiPolygon",
-                "coordinates": [
-                    [
-                        [
-                            [
-                                101.539687,
-                                44.251911
-                            ],
-                            [
-                                95.652552,
-                                36.082425
-                            ],
-                            [
-                                104.188897,
-                                33.348369
-                            ],
-                            [
-                                117.802897,
-                                35.422551
-                            ],
-                            [
-                                116.404702,
-                                41.325844
-                            ]
-                        ],
-                        [
-                            [
-                                104.924789,
-                                39.867432
-                            ],
-                            [
-                                103.08506,
-                                35.060298
-                            ],
-                            [
-                                110.811924,
-                                35.843109
-                            ],
-                            [
-                                109.855265,
-                                40.093888
-                            ],
-                            [
-                                109.781676,
-                                40.093888
-                            ]
-                        ]
-                    ]
-                ]
-            }
-        });
+        overlay.setPath(data);
     }
 
     function openEdit() {
