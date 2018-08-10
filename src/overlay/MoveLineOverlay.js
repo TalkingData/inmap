@@ -95,6 +95,7 @@ export default class MoveLineOverlay extends MultiOverlay {
     dispose() {
         this.PointOverlay.dispose();
         this.LineStringOverlay.dispose();
+        this.LineStringAnimationOverlay.dispose();
         let me = this;
         for (let key in me) {
             if (!isFunction(me[key])) {
