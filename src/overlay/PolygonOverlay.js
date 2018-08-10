@@ -206,7 +206,8 @@ export default class PolygonOverlay extends Parameter {
     drawMap() {
         this.setState(State.computeBefore);
         let parameter = {
-            data: this.getTransformData()
+            data: this.getTransformData(),
+            enable: this.styleConfig.normal.label.enable
         };
 
         this.postMessage('PolygonOverlay.calculatePixel', parameter, (pixels, margin) => {
@@ -255,12 +256,17 @@ export default class PolygonOverlay extends Parameter {
         };
     }
     drawData(pixelItem) {
+
         if (pixelItem.length == 0)
             return;
-        this.ctx.moveTo(pixelItem[0][0], pixelItem[0][1]);
+        let pixel = pixelItem[0];
+        this.ctx.moveTo(pixel[0], pixel[1]);
         for (let k = 1, len = pixelItem.length; k < len; k++) {
-
-            this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+            let item = pixelItem[k];
+            if (pixel[0] != item[0] && pixel[1] != item[1]) {
+                this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+                pixel = item;
+            }
         }
     }
     containPolygon(x, y, pixels) {
@@ -290,6 +296,7 @@ export default class PolygonOverlay extends Parameter {
         return outerRace;
     }
     drawPolygon(pixels, style) {
+
         for (let j = 0; j < pixels.length; j++) {
             this.ctx.save();
             this.ctx.beginPath();

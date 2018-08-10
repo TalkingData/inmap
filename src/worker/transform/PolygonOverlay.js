@@ -5,7 +5,7 @@ import {
 import Point from './../../common/Point';
 import polylabel from './../../common/polylabel';
 
-function transfrom(coordinates, map, pixels, labelPixels) {
+function transfrom(coordinates, map, pixels, labelPixels, enable) {
     for (let i = 0; i < coordinates.length; i++) {
         let geo = coordinates[i];
         let tmp = [];
@@ -14,7 +14,7 @@ function transfrom(coordinates, map, pixels, labelPixels) {
             tmp.push([pixel.x, pixel.y]);
         }
         pixels.push(tmp);
-        if (i == 0) {
+        if (enable && i == 0) {
             labelPixels.push(polylabel([tmp]));
         }
 
@@ -24,6 +24,7 @@ const PolygonOverlay = {
     calculatePixel: function (webObj) {
         let {
             data,
+            enable
         } = webObj.request.data;
         let map = webObj.request.map;
         for (let j = 0; j < data.length; j++) {
@@ -35,11 +36,11 @@ const PolygonOverlay = {
             if (type == 'MultiPolygon') {
                 for (let k = 0; k < coordinates.length; k++) {
                     let p = [];
-                    transfrom(coordinates[k], map, p, labelPixels);
+                    transfrom(coordinates[k], map, p, labelPixels, enable);
                     pixels.push(p);
                 }
             } else {
-                transfrom(coordinates, map, pixels, labelPixels);
+                transfrom(coordinates, map, pixels, labelPixels, enable);
             }
 
             data[j].geometry['pixels'] = pixels;

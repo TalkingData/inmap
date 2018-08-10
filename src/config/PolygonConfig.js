@@ -23,6 +23,7 @@
              backgroundColor: 'rgba(200, 200, 200, 0.5)',
              mergeCount: 1.5,
              label: {
+                 enable: true,
                  show: false,
                  color: 'rgba(0,0,0,1)',
                  font: '13px Arial'
@@ -39,7 +40,7 @@
      event: {
          multiSelect: false, //是否支持多选
          onMouseClick() {},
-         onState() { 
+         onState() {
 
          }
      }
