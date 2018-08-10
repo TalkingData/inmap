@@ -104,7 +104,7 @@ export default class CanvasOverlay extends BaseClass {
     canvasInit() {
         //抽象方法 子类去实现
     }
-    draw(event) {
+    draw() {
         
         let eventType = this.eventType;
         // if (eventType == 'onzoomend' || eventType == 'onmoveend' || eventType == 'onresize') {
