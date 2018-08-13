@@ -9423,7 +9423,6 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
         _this._virtualPointOverlay = null;
         _this._workerData = [];
         _this._pointDataGroup = [];
-        _this._virtualPointGroup = [];
         _this._draggingPointTemp = null;
         _this._draggingVirtualTemp = null;
         _this._createTempCache = null;
@@ -9765,15 +9764,15 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
     }, {
         key: '_setVirtualPointData',
         value: function _setVirtualPointData() {
-            this._virtualPointGroup = [];
+
             var virtualData = [];
             for (var i = 0; i < this._pointDataGroup.length; i++) {
                 var data = this._pointDataGroup[i];
                 if (data.length > 0) {
                     data = data.concat([data[0]]);
                 }
-                var arr = [];
-                for (var j = 0; j < data.length; j++) {
+
+                for (var j = 0, len = data.length; j < len; j++) {
 
                     if (j + 1 > data.length - 1) {
                         break;
@@ -9789,12 +9788,18 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
                                 x: (geometry.pixel.x + nextGeometry.pixel.x) / 2,
                                 y: (geometry.pixel.y + nextGeometry.pixel.y) / 2
                             }
+                        },
+                        pre: {
+                            index: i,
+                            i: j
+                        },
+                        next: {
+                            index: i,
+                            i: j < len - 2 ? j + 1 : 0
                         }
                     };
                     virtualData.push(item);
-                    arr.push(item);
                 }
-                this._virtualPointGroup.push(arr);
             }
 
             this._virtualPointOverlay.selectItem = [];
@@ -9963,23 +9968,9 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
         key: '_draggingVirtual',
         value: function _draggingVirtual(item) {
 
-            if (!this._draggingVirtualTemp) {
-                this._draggingVirtualTemp = this._findPointDataGroup(this._virtualPointGroup, item);
-            }
-
-            var index = this._draggingVirtualTemp.index,
-                virtualLine = [],
-                data = this._pointDataGroup[this._draggingVirtualTemp.i],
-                len = data.length;
-
-            virtualLine.push(data[index]);
-            virtualLine.push(item);
-
-            if (index + 1 < len) {
-                virtualLine.push(data[index + 1]);
-            } else {
-                virtualLine.push(data[0]);
-            }
+            var preItem = this._pointDataGroup[item.pre.index][item.pre.i];
+            var nextItem = this._pointDataGroup[item.next.index][item.next.i];
+            var virtualLine = [preItem, item, nextItem];
             this._drawLine(virtualLine);
         }
     }, {

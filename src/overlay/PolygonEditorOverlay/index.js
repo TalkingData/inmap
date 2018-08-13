@@ -26,7 +26,6 @@
          this._virtualPointOverlay = null;
          this._workerData = [];
          this._pointDataGroup = [];
-         this._virtualPointGroup = [];
          this._draggingPointTemp = null;
          this._draggingVirtualTemp = null;
          this._createTempCache = null;
@@ -360,15 +359,15 @@
          this._virtualPointOverlay.refresh();
      }
      _setVirtualPointData() {
-         this._virtualPointGroup = [];
+        
          let virtualData = [];
          for (let i = 0; i < this._pointDataGroup.length; i++) {
              let data = this._pointDataGroup[i];
              if (data.length > 0) {
                  data = data.concat([data[0]]);
              }
-             let arr = [];
-             for (let j = 0; j < data.length; j++) {
+            
+             for (let j = 0, len = data.length; j < len; j++) {
 
                  if (j + 1 > data.length - 1) {
                      break;
@@ -383,13 +382,21 @@
                          pixel: {
                              x: (geometry.pixel.x + nextGeometry.pixel.x) / 2,
                              y: (geometry.pixel.y + nextGeometry.pixel.y) / 2
-                         }
+                         },
+                     },
+                     pre: {
+                         index: i,
+                         i: j
+                     },
+                     next: {
+                         index: i,
+                         i: j < len - 2 ? j + 1 : 0
                      }
                  };
                  virtualData.push(item);
-                 arr.push(item);
+                
              }
-             this._virtualPointGroup.push(arr);
+            
          }
 
          this._virtualPointOverlay.selectItem = [];
@@ -542,23 +549,9 @@
      }
      _draggingVirtual(item) {
 
-         if (!this._draggingVirtualTemp) {
-             this._draggingVirtualTemp = this._findPointDataGroup(this._virtualPointGroup, item);
-         }
-
-         let index = this._draggingVirtualTemp.index,
-             virtualLine = [],
-             data = this._pointDataGroup[this._draggingVirtualTemp.i],
-             len = data.length;
-
-         virtualLine.push(data[index]);
-         virtualLine.push(item);
-
-         if (index + 1 < len) {
-             virtualLine.push(data[index + 1]);
-         } else {
-             virtualLine.push(data[0]);
-         }
+         let preItem = this._pointDataGroup[item.pre.index][item.pre.i];
+         let nextItem = this._pointDataGroup[item.next.index][item.next.i];
+         let virtualLine = [preItem, item, nextItem];
          this._drawLine(virtualLine);
 
      }
