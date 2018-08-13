@@ -185,11 +185,15 @@
          }
      }
      _toMutilPolygon(data) {
-         if (data && data.geometry.type == 'Polygon') {
-             data.geometry.type = 'MultiPolygon';
-             data.geometry.coordinates = [
-                 data.geometry.coordinates
-             ];
+         try {
+             if (data && data.geometry.type == 'Polygon') {
+                 data.geometry.type = 'MultiPolygon';
+                 data.geometry.coordinates = [
+                     data.geometry.coordinates
+                 ];
+             }
+         } catch (error) {
+             throw new TypeError("inMap :data must be is 'MultiPolygon' or 'Polygon'");
          }
          return data;
 
@@ -359,14 +363,14 @@
          this._virtualPointOverlay.refresh();
      }
      _setVirtualPointData() {
-        
+
          let virtualData = [];
          for (let i = 0; i < this._pointDataGroup.length; i++) {
              let data = this._pointDataGroup[i];
              if (data.length > 0) {
                  data = data.concat([data[0]]);
              }
-            
+
              for (let j = 0, len = data.length; j < len; j++) {
 
                  if (j + 1 > data.length - 1) {
@@ -394,9 +398,9 @@
                      }
                  };
                  virtualData.push(item);
-                
+
              }
-            
+
          }
 
          this._virtualPointOverlay.selectItem = [];

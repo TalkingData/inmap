@@ -1288,7 +1288,23 @@ if (__webpack_require__(7)) {
 
 
 /***/ }),
-/* 30 */,
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    computeBefore: 0,
+    conputeAfter: 1,
+    drawBefore: 2,
+    drawAfter: 3
+};
+
+/***/ }),
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1311,7 +1327,7 @@ var _Legend2 = _interopRequireDefault(_Legend);
 
 var _util = __webpack_require__(6);
 
-var _MapStyleConfig = __webpack_require__(393);
+var _MapStyleConfig = __webpack_require__(104);
 
 var _Toolbar = __webpack_require__(105);
 
@@ -4851,7 +4867,7 @@ var _LineStringConfig = __webpack_require__(169);
 
 var _LineStringConfig2 = _interopRequireDefault(_LineStringConfig);
 
-var _OnStateConfig = __webpack_require__(394);
+var _OnStateConfig = __webpack_require__(30);
 
 var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
@@ -5182,7 +5198,7 @@ var _PointConfig = __webpack_require__(172);
 
 var _PointConfig2 = _interopRequireDefault(_PointConfig);
 
-var _OnStateConfig = __webpack_require__(394);
+var _OnStateConfig = __webpack_require__(30);
 
 var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
@@ -5692,7 +5708,7 @@ var _PolygonConfig = __webpack_require__(174);
 
 var _PolygonConfig2 = _interopRequireDefault(_PolygonConfig);
 
-var _OnStateConfig = __webpack_require__(394);
+var _OnStateConfig = __webpack_require__(30);
 
 var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
@@ -6120,7 +6136,285 @@ var PolygonOverlay = function (_Parameter) {
 exports.default = PolygonOverlay;
 
 /***/ }),
-/* 104 */,
+/* 104 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var WhiteLover = exports.WhiteLover = [{
+    'featureType': 'water',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#dbe0e7'
+    }
+}, {
+    'featureType': 'land',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#f1f3f5'
+    }
+}, {
+    'featureType': 'green',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#e9ecf2'
+    }
+}, {
+    'featureType': 'manmade',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#dde1e8'
+    }
+}, {
+    'featureType': 'building',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#dde1e8'
+    }
+}, {
+    'featureType': 'boundary',
+    'elementType': 'geometry',
+    'stylers': {
+        'color': '#d7dadf'
+    }
+}, {
+    'featureType': 'railway',
+    'elementType': 'geometry',
+    'stylers': {
+        'hue': '#3d85c6',
+        'lightness': 63,
+        'saturation': 21,
+        'visibility': 'on'
+    }
+}, {
+    'featureType': 'local',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#e7ebf2',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'local',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#b5bfc7',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'subway',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#73b1df'
+    }
+}, {
+    'featureType': 'poi',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#b5bfc7',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'subway',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#d9e3ea',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'labels',
+    'stylers': {
+        'color': '#c6d4df',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#c1c9d5'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'geometry.fill',
+    'stylers': {
+        'color': '#d3d8e1',
+        'visibility': 'on'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'labels',
+    'stylers': {
+        'visibility': 'on'
+    }
+}, {
+    'featureType': 'administrative',
+    'elementType': 'labels',
+    'stylers': {
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'background',
+    'elementType': 'labels',
+    'stylers': {
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'geometry.fill',
+    'stylers': {
+        'color': '#e9ecf2'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#d9dce3'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'labels.text.fill',
+    'stylers': {
+        'visibility': 'off'
+    }
+}];
+var Blueness = exports.Blueness = [{
+    'featureType': 'water',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#566382'
+    }
+}, {
+    'featureType': 'land',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#172137'
+    }
+}, {
+    'featureType': 'green',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#282f57'
+    }
+}, {
+    'featureType': 'manmade',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#3f4b8c'
+    }
+}, {
+    'featureType': 'building',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#3f4b8c'
+    }
+}, {
+    'featureType': 'boundary',
+    'elementType': 'geometry',
+    'stylers': {
+        'color': '#4f6b9e'
+    }
+}, {
+    'featureType': 'railway',
+    'elementType': 'geometry',
+    'stylers': {
+        'color': '#4f6b9e'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#202749',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'geometry.fill',
+    'stylers': {
+        'color': '#4f6b9e',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'local',
+    'elementType': 'geometry.fill',
+    'stylers': {
+        'color': '#303a6d'
+    }
+}, {
+    'featureType': 'local',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#2d3667',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'subway',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#445195',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'all',
+    'elementType': 'labels.text.stroke',
+    'stylers': {
+        'color': '#141831'
+    }
+}, {
+    'featureType': 'all',
+    'elementType': 'labels.text.fill',
+    'stylers': {
+        'color': '#5564b2'
+    }
+}, {
+    'featureType': 'poi',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#141831',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'subway',
+    'elementType': 'all',
+    'stylers': {
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#181e3e'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'geometry',
+    'stylers': {
+        'color': '#324160',
+        'weight': '0.9'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'labels',
+    'stylers': {
+        'color': '#172137',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'label',
+    'elementType': 'labels',
+    'stylers': {
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'administrative',
+    'elementType': 'geometry',
+    'stylers': {}
+}];
+
+/***/ }),
 /* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7176,7 +7470,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __webpack_require__(6);
 
-var _MapStyleConfig = __webpack_require__(393);
+var _MapStyleConfig = __webpack_require__(104);
 
 var _mapZoom = __webpack_require__(180);
 
@@ -7304,7 +7598,7 @@ var _GriddingConfig = __webpack_require__(161);
 
 var _GriddingConfig2 = _interopRequireDefault(_GriddingConfig);
 
-var _OnStateConfig = __webpack_require__(394);
+var _OnStateConfig = __webpack_require__(30);
 
 var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
@@ -7652,7 +7946,7 @@ var _HeatConfig = __webpack_require__(162);
 
 var _HeatConfig2 = _interopRequireDefault(_HeatConfig);
 
-var _OnStateConfig = __webpack_require__(394);
+var _OnStateConfig = __webpack_require__(30);
 
 var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
@@ -7912,7 +8206,7 @@ var _HoneycombConfig = __webpack_require__(163);
 
 var _HoneycombConfig2 = _interopRequireDefault(_HoneycombConfig);
 
-var _OnStateConfig = __webpack_require__(394);
+var _OnStateConfig = __webpack_require__(30);
 
 var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
@@ -8270,7 +8564,7 @@ var _ImgConfig2 = _interopRequireDefault(_ImgConfig);
 
 var _util = __webpack_require__(6);
 
-var _OnStateConfig = __webpack_require__(394);
+var _OnStateConfig = __webpack_require__(30);
 
 var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
@@ -8544,7 +8838,7 @@ var _LabelConfig = __webpack_require__(166);
 
 var _LabelConfig2 = _interopRequireDefault(_LabelConfig);
 
-var _OnStateConfig = __webpack_require__(394);
+var _OnStateConfig = __webpack_require__(30);
 
 var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
@@ -9306,9 +9600,13 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
     }, {
         key: '_toMutilPolygon',
         value: function _toMutilPolygon(data) {
-            if (data && data.geometry.type == 'Polygon') {
-                data.geometry.type = 'MultiPolygon';
-                data.geometry.coordinates = [data.geometry.coordinates];
+            try {
+                if (data && data.geometry.type == 'Polygon') {
+                    data.geometry.type = 'MultiPolygon';
+                    data.geometry.coordinates = [data.geometry.coordinates];
+                }
+            } catch (error) {
+                throw new TypeError("inMap :data must be is 'MultiPolygon' or 'Polygon'");
             }
             return data;
         }
@@ -9968,7 +10266,23 @@ exports.default = {
 };
 
 /***/ }),
-/* 167 */,
+/* 167 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    show: false,
+    title: null,
+    formatter: null,
+    list: []
+};
+
+/***/ }),
 /* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10443,7 +10757,7 @@ var _Color = __webpack_require__(68);
 
 var _Color2 = _interopRequireDefault(_Color);
 
-var _LegendConfig = __webpack_require__(392);
+var _LegendConfig = __webpack_require__(167);
 
 var _LegendConfig2 = _interopRequireDefault(_LegendConfig);
 
@@ -17000,320 +17314,6 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
-
-/***/ }),
-/* 391 */,
-/* 392 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    show: false,
-    title: null,
-    formatter: null,
-    list: []
-};
-
-/***/ }),
-/* 393 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var WhiteLover = exports.WhiteLover = [{
-    'featureType': 'water',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#dbe0e7'
-    }
-}, {
-    'featureType': 'land',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#f1f3f5'
-    }
-}, {
-    'featureType': 'green',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#e9ecf2'
-    }
-}, {
-    'featureType': 'manmade',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#dde1e8'
-    }
-}, {
-    'featureType': 'building',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#dde1e8'
-    }
-}, {
-    'featureType': 'boundary',
-    'elementType': 'geometry',
-    'stylers': {
-        'color': '#d7dadf'
-    }
-}, {
-    'featureType': 'railway',
-    'elementType': 'geometry',
-    'stylers': {
-        'hue': '#3d85c6',
-        'lightness': 63,
-        'saturation': 21,
-        'visibility': 'on'
-    }
-}, {
-    'featureType': 'local',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#e7ebf2',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'local',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#b5bfc7',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'subway',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#73b1df'
-    }
-}, {
-    'featureType': 'poi',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#b5bfc7',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'subway',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#d9e3ea',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'labels',
-    'stylers': {
-        'color': '#c6d4df',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#c1c9d5'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'geometry.fill',
-    'stylers': {
-        'color': '#d3d8e1',
-        'visibility': 'on'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'labels',
-    'stylers': {
-        'visibility': 'on'
-    }
-}, {
-    'featureType': 'administrative',
-    'elementType': 'labels',
-    'stylers': {
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'background',
-    'elementType': 'labels',
-    'stylers': {
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'geometry.fill',
-    'stylers': {
-        'color': '#e9ecf2'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#d9dce3'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'labels.text.fill',
-    'stylers': {
-        'visibility': 'off'
-    }
-}];
-var Blueness = exports.Blueness = [{
-    'featureType': 'water',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#566382'
-    }
-}, {
-    'featureType': 'land',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#172137'
-    }
-}, {
-    'featureType': 'green',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#282f57'
-    }
-}, {
-    'featureType': 'manmade',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#3f4b8c'
-    }
-}, {
-    'featureType': 'building',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#3f4b8c'
-    }
-}, {
-    'featureType': 'boundary',
-    'elementType': 'geometry',
-    'stylers': {
-        'color': '#4f6b9e'
-    }
-}, {
-    'featureType': 'railway',
-    'elementType': 'geometry',
-    'stylers': {
-        'color': '#4f6b9e'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#202749',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'geometry.fill',
-    'stylers': {
-        'color': '#4f6b9e',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'local',
-    'elementType': 'geometry.fill',
-    'stylers': {
-        'color': '#303a6d'
-    }
-}, {
-    'featureType': 'local',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#2d3667',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'subway',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#445195',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'all',
-    'elementType': 'labels.text.stroke',
-    'stylers': {
-        'color': '#141831'
-    }
-}, {
-    'featureType': 'all',
-    'elementType': 'labels.text.fill',
-    'stylers': {
-        'color': '#5564b2'
-    }
-}, {
-    'featureType': 'poi',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#141831',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'subway',
-    'elementType': 'all',
-    'stylers': {
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#181e3e'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'geometry',
-    'stylers': {
-        'color': '#324160',
-        'weight': '0.9'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'labels',
-    'stylers': {
-        'color': '#172137',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'label',
-    'elementType': 'labels',
-    'stylers': {
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'administrative',
-    'elementType': 'geometry',
-    'stylers': {}
-}];
-
-/***/ }),
-/* 394 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    computeBefore: 0,
-    conputeAfter: 1,
-    drawBefore: 2,
-    drawAfter: 3
-};
 
 /***/ })
 /******/ ]);
