@@ -1,6 +1,6 @@
 import Parameter from './base/Parameter.js';
 import HoneycombConfig from './../config/HoneycombConfig.js';
-import State from './../config/OnState';
+import State from './../config/OnStateConfig';
 import {
     merge,
 } from './../common/util';

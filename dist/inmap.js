@@ -1288,23 +1288,7 @@ if (__webpack_require__(7)) {
 
 
 /***/ }),
-/* 30 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    computeBefore: 0,
-    conputeAfter: 1,
-    drawBefore: 2,
-    drawAfter: 3
-};
-
-/***/ }),
+/* 30 */,
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1327,7 +1311,7 @@ var _Legend2 = _interopRequireDefault(_Legend);
 
 var _util = __webpack_require__(6);
 
-var _MapStyle = __webpack_require__(104);
+var _MapStyleConfig = __webpack_require__(393);
 
 var _Toolbar = __webpack_require__(105);
 
@@ -1407,7 +1391,7 @@ var CanvasOverlay = function (_BaseClass) {
         value: function tMapStyle(skin) {
             var styleJson = null;
             if ((0, _util.isString)(skin)) {
-                styleJson = skin == 'Blueness' ? _MapStyle.Blueness : _MapStyle.WhiteLover;
+                styleJson = skin == 'Blueness' ? _MapStyleConfig.Blueness : _MapStyleConfig.WhiteLover;
             } else if ((0, _util.isArray)(skin)) {
                 styleJson = skin;
             }
@@ -4867,9 +4851,9 @@ var _LineStringConfig = __webpack_require__(169);
 
 var _LineStringConfig2 = _interopRequireDefault(_LineStringConfig);
 
-var _OnState = __webpack_require__(30);
+var _OnStateConfig = __webpack_require__(394);
 
-var _OnState2 = _interopRequireDefault(_OnState);
+var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5013,13 +4997,13 @@ var LineStringOverlay = function (_Parameter) {
     }, {
         key: 'refresh',
         value: function refresh() {
-            this.setState(_OnState2.default.drawBefore);
+            this.setState(_OnStateConfig2.default.drawBefore);
             this.mouseLayer.canvasResize();
             this.clearCanvas();
             this.drawLine(this.ctx, this.workerData, false);
             this.anewSelectItem();
             this.drawMouseLayer();
-            this.setState(_OnState2.default.drawAfter);
+            this.setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
         key: 'anewSelectItem',
@@ -5057,12 +5041,12 @@ var LineStringOverlay = function (_Parameter) {
                 lineOrCurve: this.styleConfig.normal.lineCurive,
                 deltaAngle: this.styleConfig.normal.deltaAngle
             };
-            this.setState(_OnState2.default.computeBefore);
+            this.setState(_OnStateConfig2.default.computeBefore);
             this.postMessage('LineStringOverlay.calculatePixel', params, function (pixels, margin) {
                 if (_this3.eventType == 'onmoving') {
                     return;
                 }
-                _this3.setState(_OnState2.default.conputeAfter);
+                _this3.setState(_OnStateConfig2.default.conputeAfter);
                 (0, _util.clearPushArray)(_this3.workerData, pixels);
                 _this3.translation(margin.left - _this3.margin.left, margin.top - _this3.margin.top);
 
@@ -5198,9 +5182,9 @@ var _PointConfig = __webpack_require__(172);
 
 var _PointConfig2 = _interopRequireDefault(_PointConfig);
 
-var _OnState = __webpack_require__(30);
+var _OnStateConfig = __webpack_require__(394);
 
-var _OnState2 = _interopRequireDefault(_OnState);
+var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5346,10 +5330,10 @@ var PointOverlay = function (_Parameter) {
             }
 
             this.clearAll();
-            this.setState(_OnState2.default.computeBefore);
+            this.setState(_OnStateConfig2.default.computeBefore);
             this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin, zoom) {
 
-                _this2.setState(_OnState2.default.conputeAfter);
+                _this2.setState(_OnStateConfig2.default.conputeAfter);
                 _this2.setWorkerData(pixels);
                 _this2.updateOverClickItem();
 
@@ -5487,7 +5471,7 @@ var PointOverlay = function (_Parameter) {
     }, {
         key: 'refresh',
         value: function refresh() {
-            this.setState(_OnState2.default.drawBefore);
+            this.setState(_OnStateConfig2.default.drawBefore);
             this.clearCanvas();
             this.mouseLayer.canvasResize();
             if (this.batchesData) {
@@ -5500,7 +5484,7 @@ var PointOverlay = function (_Parameter) {
                 this._drawLabel(this.ctx, this.workerData);
             }
             this.drawMouseLayer();
-            this.setState(_OnState2.default.drawAfter);
+            this.setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
         key: 'swopData',
@@ -5708,9 +5692,9 @@ var _PolygonConfig = __webpack_require__(174);
 
 var _PolygonConfig2 = _interopRequireDefault(_PolygonConfig);
 
-var _OnState = __webpack_require__(30);
+var _OnStateConfig = __webpack_require__(394);
 
-var _OnState2 = _interopRequireDefault(_OnState);
+var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -5938,17 +5922,17 @@ var PolygonOverlay = function (_Parameter) {
         key: 'refresh',
         value: function refresh() {
 
-            this.setState(_OnState2.default.drawBefore);
+            this.setState(_OnStateConfig2.default.drawBefore);
             this.clearCanvas();
             this.drawLine(this.getData());
-            this.setState(_OnState2.default.drawAfter);
+            this.setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
         key: 'drawMap',
         value: function drawMap() {
             var _this2 = this;
 
-            this.setState(_OnState2.default.computeBefore);
+            this.setState(_OnStateConfig2.default.computeBefore);
             var parameter = {
                 data: this.getTransformData(),
                 enable: this.styleConfig.normal.label.enable
@@ -5958,7 +5942,7 @@ var PolygonOverlay = function (_Parameter) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
-                _this2.setState(_OnState2.default.conputeAfter);
+                _this2.setState(_OnStateConfig2.default.conputeAfter);
                 _this2.setWorkerData(pixels);
                 _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
                 pixels = null, margin = null;
@@ -6136,285 +6120,7 @@ var PolygonOverlay = function (_Parameter) {
 exports.default = PolygonOverlay;
 
 /***/ }),
-/* 104 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-var WhiteLover = exports.WhiteLover = [{
-    'featureType': 'water',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#dbe0e7'
-    }
-}, {
-    'featureType': 'land',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#f1f3f5'
-    }
-}, {
-    'featureType': 'green',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#e9ecf2'
-    }
-}, {
-    'featureType': 'manmade',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#dde1e8'
-    }
-}, {
-    'featureType': 'building',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#dde1e8'
-    }
-}, {
-    'featureType': 'boundary',
-    'elementType': 'geometry',
-    'stylers': {
-        'color': '#d7dadf'
-    }
-}, {
-    'featureType': 'railway',
-    'elementType': 'geometry',
-    'stylers': {
-        'hue': '#3d85c6',
-        'lightness': 63,
-        'saturation': 21,
-        'visibility': 'on'
-    }
-}, {
-    'featureType': 'local',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#e7ebf2',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'local',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#b5bfc7',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'subway',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#73b1df'
-    }
-}, {
-    'featureType': 'poi',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#b5bfc7',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'subway',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#d9e3ea',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'labels',
-    'stylers': {
-        'color': '#c6d4df',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#c1c9d5'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'geometry.fill',
-    'stylers': {
-        'color': '#d3d8e1',
-        'visibility': 'on'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'labels',
-    'stylers': {
-        'visibility': 'on'
-    }
-}, {
-    'featureType': 'administrative',
-    'elementType': 'labels',
-    'stylers': {
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'background',
-    'elementType': 'labels',
-    'stylers': {
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'geometry.fill',
-    'stylers': {
-        'color': '#e9ecf2'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#d9dce3'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'labels.text.fill',
-    'stylers': {
-        'visibility': 'off'
-    }
-}];
-var Blueness = exports.Blueness = [{
-    'featureType': 'water',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#566382'
-    }
-}, {
-    'featureType': 'land',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#172137'
-    }
-}, {
-    'featureType': 'green',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#282f57'
-    }
-}, {
-    'featureType': 'manmade',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#3f4b8c'
-    }
-}, {
-    'featureType': 'building',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#3f4b8c'
-    }
-}, {
-    'featureType': 'boundary',
-    'elementType': 'geometry',
-    'stylers': {
-        'color': '#4f6b9e'
-    }
-}, {
-    'featureType': 'railway',
-    'elementType': 'geometry',
-    'stylers': {
-        'color': '#4f6b9e'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#202749',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'geometry.fill',
-    'stylers': {
-        'color': '#4f6b9e',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'local',
-    'elementType': 'geometry.fill',
-    'stylers': {
-        'color': '#303a6d'
-    }
-}, {
-    'featureType': 'local',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#2d3667',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'subway',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#445195',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'all',
-    'elementType': 'labels.text.stroke',
-    'stylers': {
-        'color': '#141831'
-    }
-}, {
-    'featureType': 'all',
-    'elementType': 'labels.text.fill',
-    'stylers': {
-        'color': '#5564b2'
-    }
-}, {
-    'featureType': 'poi',
-    'elementType': 'all',
-    'stylers': {
-        'color': '#141831',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'subway',
-    'elementType': 'all',
-    'stylers': {
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'arterial',
-    'elementType': 'geometry.stroke',
-    'stylers': {
-        'color': '#181e3e'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'geometry',
-    'stylers': {
-        'color': '#324160',
-        'weight': '0.9'
-    }
-}, {
-    'featureType': 'highway',
-    'elementType': 'labels',
-    'stylers': {
-        'color': '#172137',
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'label',
-    'elementType': 'labels',
-    'stylers': {
-        'visibility': 'off'
-    }
-}, {
-    'featureType': 'administrative',
-    'elementType': 'geometry',
-    'stylers': {}
-}];
-
-/***/ }),
+/* 104 */,
 /* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7470,7 +7176,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 var _util = __webpack_require__(6);
 
-var _MapStyle = __webpack_require__(104);
+var _MapStyleConfig = __webpack_require__(393);
 
 var _mapZoom = __webpack_require__(180);
 
@@ -7508,7 +7214,7 @@ var Map = function () {
         value: function tMapStyle(map, skin) {
             var styleJson = null;
             if ((0, _util.isString)(skin)) {
-                styleJson = skin == 'Blueness' ? _MapStyle.Blueness : _MapStyle.WhiteLover;
+                styleJson = skin == 'Blueness' ? _MapStyleConfig.Blueness : _MapStyleConfig.WhiteLover;
             } else if ((0, _util.isArray)(skin)) {
                 styleJson = skin;
             }
@@ -7598,9 +7304,9 @@ var _GriddingConfig = __webpack_require__(161);
 
 var _GriddingConfig2 = _interopRequireDefault(_GriddingConfig);
 
-var _OnState = __webpack_require__(30);
+var _OnStateConfig = __webpack_require__(394);
 
-var _OnState2 = _interopRequireDefault(_OnState);
+var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
 var _util = __webpack_require__(6);
 
@@ -7672,9 +7378,9 @@ var GriddingOverlay = function (_Parameter) {
     }, {
         key: 'refresh',
         value: function refresh() {
-            this.setState(_OnState2.default.drawBefore);
+            this.setState(_OnStateConfig2.default.drawBefore);
             this.drawRec();
-            this.setState(_OnState2.default.drawAfter);
+            this.setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
         key: 'resize',
@@ -7755,17 +7461,17 @@ var GriddingOverlay = function (_Parameter) {
                 zoom: zoom
 
             };
-            this.setState(_OnState2.default.computeBefore);
+            this.setState(_OnStateConfig2.default.computeBefore);
             this.postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
                 _this2.canvasResize();
                 _this2.workerData = gridsObj.grids;
-                _this2.setState(_OnState2.default.conputeAfter);
+                _this2.setState(_OnStateConfig2.default.conputeAfter);
 
                 _this2._drawSize = size / zoomUnit;
-                _this2.setState(_OnState2.default.drawBefore);
+                _this2.setState(_OnStateConfig2.default.drawBefore);
 
                 if (_this2.eventType != 'onmoveend' || _this2.styleConfig.splitList == null || _this2.styleConfig.splitList.length < _this2.styleConfig.colors.length) {
                     _this2.createColorSplit();
@@ -7946,9 +7652,9 @@ var _HeatConfig = __webpack_require__(162);
 
 var _HeatConfig2 = _interopRequireDefault(_HeatConfig);
 
-var _OnState = __webpack_require__(30);
+var _OnStateConfig = __webpack_require__(394);
 
-var _OnState2 = _interopRequireDefault(_OnState);
+var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8053,9 +7759,9 @@ var HeatOverlay = function (_CanvasOverlay) {
                 pixel.x = pixel.x + distanceX;
                 pixel.y = pixel.y + distanceY;
             }
-            this.setState(_OnState2.default.drawBefore);
+            this.setState(_OnStateConfig2.default.drawBefore);
             this.refresh();
-            this.setState(_OnState2.default.drawAfter);
+            this.setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
         key: 'setWorkerData',
@@ -8068,7 +7774,7 @@ var HeatOverlay = function (_CanvasOverlay) {
         value: function drawMap() {
             var _this2 = this;
 
-            this.setState(_OnState2.default.computeBefore);
+            this.setState(_OnStateConfig2.default.computeBefore);
 
             this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin) {
 
@@ -8076,7 +7782,7 @@ var HeatOverlay = function (_CanvasOverlay) {
                     return;
                 }
                 _this2.setWorkerData(pixels);
-                _this2.setState(_OnState2.default.conputeAfter);
+                _this2.setState(_OnStateConfig2.default.conputeAfter);
 
                 _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
 
@@ -8206,9 +7912,9 @@ var _HoneycombConfig = __webpack_require__(163);
 
 var _HoneycombConfig2 = _interopRequireDefault(_HoneycombConfig);
 
-var _OnState = __webpack_require__(30);
+var _OnStateConfig = __webpack_require__(394);
 
-var _OnState2 = _interopRequireDefault(_OnState);
+var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
 var _util = __webpack_require__(6);
 
@@ -8277,9 +7983,9 @@ var HoneycombOverlay = function (_Parameter) {
     }, {
         key: 'refresh',
         value: function refresh() {
-            this.setState(_OnState2.default.drawBefore);
+            this.setState(_OnStateConfig2.default.drawBefore);
             this.drawRec();
-            this.setState(_OnState2.default.drawAfter);
+            this.setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
         key: 'resize',
@@ -8360,14 +8066,14 @@ var HoneycombOverlay = function (_Parameter) {
                 mapCenter: mapCenter,
                 zoom: zoom
             };
-            this.setState(_OnState2.default.computeBefore);
+            this.setState(_OnStateConfig2.default.computeBefore);
 
             this.postMessage('HoneycombOverlay.toRecGrids', params, function (gridsObj) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
                 _this2.canvasResize();
-                _this2.setState(_OnState2.default.conputeAfter);
+                _this2.setState(_OnStateConfig2.default.conputeAfter);
 
                 _this2.workerData = gridsObj.grids;
                 _this2._drawSize = size / zoomUnit;
@@ -8564,9 +8270,9 @@ var _ImgConfig2 = _interopRequireDefault(_ImgConfig);
 
 var _util = __webpack_require__(6);
 
-var _OnState = __webpack_require__(30);
+var _OnStateConfig = __webpack_require__(394);
 
-var _OnState2 = _interopRequireDefault(_OnState);
+var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8622,12 +8328,12 @@ var ImgOverlay = function (_Parameter) {
         value: function drawMap() {
             var _this2 = this;
 
-            this.setState(_OnState2.default.computeBefore);
+            this.setState(_OnStateConfig2.default.computeBefore);
             this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin) {
                 if (_this2.eventType == 'onmoving') {
                     return;
                 }
-                _this2.setState(_OnState2.default.conputeAfter);
+                _this2.setState(_OnStateConfig2.default.conputeAfter);
 
                 _this2.setWorkerData(pixels);
                 _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
@@ -8698,10 +8404,10 @@ var ImgOverlay = function (_Parameter) {
     }, {
         key: 'refresh',
         value: function refresh() {
-            this.setState(_OnState2.default.drawBefore);
+            this.setState(_OnStateConfig2.default.drawBefore);
             this.clearCanvas();
             this._loopDraw(this.ctx, this.workerData);
-            this.setState(_OnState2.default.drawAfter);
+            this.setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
         key: 'loadImg',
@@ -8838,9 +8544,9 @@ var _LabelConfig = __webpack_require__(166);
 
 var _LabelConfig2 = _interopRequireDefault(_LabelConfig);
 
-var _OnState = __webpack_require__(30);
+var _OnStateConfig = __webpack_require__(394);
 
-var _OnState2 = _interopRequireDefault(_OnState);
+var _OnStateConfig2 = _interopRequireDefault(_OnStateConfig);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -8900,9 +8606,9 @@ var LabelOverlay = function (_Parameter) {
             var _this2 = this;
 
             this.clearCanvas();
-            this.setState(_OnState2.default.computeBefore);
+            this.setState(_OnStateConfig2.default.computeBefore);
             this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin, zoom) {
-                _this2.setState(_OnState2.default.conputeAfter);
+                _this2.setState(_OnStateConfig2.default.conputeAfter);
                 _this2.setWorkerData(pixels);
                 _this2.updateOverClickItem();
 
@@ -8979,10 +8685,10 @@ var LabelOverlay = function (_Parameter) {
     }, {
         key: 'refresh',
         value: function refresh() {
-            this.setState(_OnState2.default.drawBefore);
+            this.setState(_OnStateConfig2.default.drawBefore);
             this.clearCanvas();
             this._drawLabel(this.ctx, this.workerData);
-            this.setState(_OnState2.default.drawAfter);
+            this.setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
         key: 'swopData',
@@ -10262,23 +9968,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 167 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = {
-    show: false,
-    title: null,
-    formatter: null,
-    list: []
-};
-
-/***/ }),
+/* 167 */,
 /* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -10753,9 +10443,9 @@ var _Color = __webpack_require__(68);
 
 var _Color2 = _interopRequireDefault(_Color);
 
-var _Legend = __webpack_require__(167);
+var _LegendConfig = __webpack_require__(392);
 
-var _Legend2 = _interopRequireDefault(_Legend);
+var _LegendConfig2 = _interopRequireDefault(_LegendConfig);
 
 var _util = __webpack_require__(6);
 
@@ -10767,7 +10457,7 @@ var Legend = function () {
     function Legend(toolDom, opts) {
         _classCallCheck(this, Legend);
 
-        this.opts = opts || _Legend2.default;
+        this.opts = opts || _LegendConfig2.default;
         this.dom = this.crateDom(toolDom);
         this.hide();
     }
@@ -10804,7 +10494,7 @@ var Legend = function () {
     }, {
         key: 'setOption',
         value: function setOption(opts) {
-            this.opts = (0, _util.merge)(_Legend2.default, this.opts, opts);
+            this.opts = (0, _util.merge)(_LegendConfig2.default, this.opts, opts);
             this.opts.list = this.opts.list || [];
             this.render();
         }
@@ -17310,6 +17000,320 @@ if(false) {
 	// When the module is disposed, remove the <style> tags
 	module.hot.dispose(function() { update(); });
 }
+
+/***/ }),
+/* 391 */,
+/* 392 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    show: false,
+    title: null,
+    formatter: null,
+    list: []
+};
+
+/***/ }),
+/* 393 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var WhiteLover = exports.WhiteLover = [{
+    'featureType': 'water',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#dbe0e7'
+    }
+}, {
+    'featureType': 'land',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#f1f3f5'
+    }
+}, {
+    'featureType': 'green',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#e9ecf2'
+    }
+}, {
+    'featureType': 'manmade',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#dde1e8'
+    }
+}, {
+    'featureType': 'building',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#dde1e8'
+    }
+}, {
+    'featureType': 'boundary',
+    'elementType': 'geometry',
+    'stylers': {
+        'color': '#d7dadf'
+    }
+}, {
+    'featureType': 'railway',
+    'elementType': 'geometry',
+    'stylers': {
+        'hue': '#3d85c6',
+        'lightness': 63,
+        'saturation': 21,
+        'visibility': 'on'
+    }
+}, {
+    'featureType': 'local',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#e7ebf2',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'local',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#b5bfc7',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'subway',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#73b1df'
+    }
+}, {
+    'featureType': 'poi',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#b5bfc7',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'subway',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#d9e3ea',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'labels',
+    'stylers': {
+        'color': '#c6d4df',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#c1c9d5'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'geometry.fill',
+    'stylers': {
+        'color': '#d3d8e1',
+        'visibility': 'on'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'labels',
+    'stylers': {
+        'visibility': 'on'
+    }
+}, {
+    'featureType': 'administrative',
+    'elementType': 'labels',
+    'stylers': {
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'background',
+    'elementType': 'labels',
+    'stylers': {
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'geometry.fill',
+    'stylers': {
+        'color': '#e9ecf2'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#d9dce3'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'labels.text.fill',
+    'stylers': {
+        'visibility': 'off'
+    }
+}];
+var Blueness = exports.Blueness = [{
+    'featureType': 'water',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#566382'
+    }
+}, {
+    'featureType': 'land',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#172137'
+    }
+}, {
+    'featureType': 'green',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#282f57'
+    }
+}, {
+    'featureType': 'manmade',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#3f4b8c'
+    }
+}, {
+    'featureType': 'building',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#3f4b8c'
+    }
+}, {
+    'featureType': 'boundary',
+    'elementType': 'geometry',
+    'stylers': {
+        'color': '#4f6b9e'
+    }
+}, {
+    'featureType': 'railway',
+    'elementType': 'geometry',
+    'stylers': {
+        'color': '#4f6b9e'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#202749',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'geometry.fill',
+    'stylers': {
+        'color': '#4f6b9e',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'local',
+    'elementType': 'geometry.fill',
+    'stylers': {
+        'color': '#303a6d'
+    }
+}, {
+    'featureType': 'local',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#2d3667',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'subway',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#445195',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'all',
+    'elementType': 'labels.text.stroke',
+    'stylers': {
+        'color': '#141831'
+    }
+}, {
+    'featureType': 'all',
+    'elementType': 'labels.text.fill',
+    'stylers': {
+        'color': '#5564b2'
+    }
+}, {
+    'featureType': 'poi',
+    'elementType': 'all',
+    'stylers': {
+        'color': '#141831',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'subway',
+    'elementType': 'all',
+    'stylers': {
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'arterial',
+    'elementType': 'geometry.stroke',
+    'stylers': {
+        'color': '#181e3e'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'geometry',
+    'stylers': {
+        'color': '#324160',
+        'weight': '0.9'
+    }
+}, {
+    'featureType': 'highway',
+    'elementType': 'labels',
+    'stylers': {
+        'color': '#172137',
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'label',
+    'elementType': 'labels',
+    'stylers': {
+        'visibility': 'off'
+    }
+}, {
+    'featureType': 'administrative',
+    'elementType': 'geometry',
+    'stylers': {}
+}];
+
+/***/ }),
+/* 394 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.default = {
+    computeBefore: 0,
+    conputeAfter: 1,
+    drawBefore: 2,
+    drawAfter: 3
+};
 
 /***/ })
 /******/ ]);

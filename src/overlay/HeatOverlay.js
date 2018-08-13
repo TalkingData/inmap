@@ -6,7 +6,7 @@ import {
 } from './../common/util';
 
 import HeatConfig from './../config/HeatConfig';
-import State from './../config/OnState';
+import State from './../config/OnStateConfig';
 export default class HeatOverlay extends CanvasOverlay {
     constructor(ops) {
         super(ops);

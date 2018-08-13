@@ -9,7 +9,7 @@ import {
 import {
     WhiteLover,
     Blueness
-} from '../../config/MapStyle';
+} from '../../config/MapStyleConfig';
 import Toolbar from '../../map/Toolbar';
 let zIndex = 1;
 

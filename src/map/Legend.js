@@ -1,12 +1,12 @@
-import Color from './../common/Color';
-import config from './../config/Legend';
+import Color from '../common/Color';
+import config from '../config/LegendConfig';
 import {
     isArray,
     isString,
     isEmpty,
     isBoolean,
     merge
-} from './../common/util';
+} from '../common/util';
 export default class Legend {
     constructor(toolDom, opts) {
         this.opts = opts || config;

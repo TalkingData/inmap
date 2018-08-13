@@ -6,7 +6,7 @@ import {
 import {
     WhiteLover,
     Blueness
-} from './../config/MapStyle';
+} from './../config/MapStyleConfig';
 import MapZoom from './mapZoom';
 import Toolbar from './Toolbar';
 import inmapConfig from './../config/InmapConfig';

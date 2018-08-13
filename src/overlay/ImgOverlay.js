@@ -3,7 +3,7 @@ import ImgConfig from './../config/ImgConfig';
 import {
     isString
 } from './../common/util';
-import State from './../config/OnState';
+import State from './../config/OnStateConfig';
 /*
  * 点的绘制
  */

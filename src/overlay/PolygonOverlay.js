@@ -4,7 +4,7 @@ import {
     clearPushArray
 } from '../common/util.js';
 import PolygonConfig from '../config/PolygonConfig.js';
-import State from '../config/OnState.js';
+import State from '../config/OnStateConfig.js';
 
 
 export default class PolygonOverlay extends Parameter {

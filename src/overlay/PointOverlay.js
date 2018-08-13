@@ -10,7 +10,7 @@ import {
 } from './../common/util';
 import BatchesData from './base/BatchesData';
 import PointConfig from '../config/PointConfig';
-import State from './../config/OnState';
+import State from './../config/OnStateConfig';
 let isMobile = detectmob();
 export default class PointOverlay extends Parameter {
     constructor(opts) {

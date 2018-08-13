@@ -7,7 +7,7 @@ import {
 import CanvasOverlay from './base/CanvasOverlay.js';
 import Parameter from './base/Parameter';
 import LineStringConfig from '../config/LineStringConfig';
-import State from './../config/OnState';
+import State from './../config/OnStateConfig';
 let isMobile = detectmob();
 export default class LineStringOverlay extends Parameter {
     constructor(ops) {
