@@ -7975,6 +7975,11 @@ var HeatOverlay = function (_CanvasOverlay) {
     }
 
     _createClass(HeatOverlay, [{
+        key: 'setOptionStyle',
+        value: function setOptionStyle(ops) {
+            this._setStyle(_HeatConfig2.default, ops);
+        }
+    }, {
         key: 'resize',
         value: function resize() {
             this.drawMap();
@@ -7992,16 +7997,12 @@ var HeatOverlay = function (_CanvasOverlay) {
             this.styleConfig = option.style;
             this.eventConfig = option.event;
             this.gradient = option.style.gradient;
-            this.points = ops.data ? option.data : this.points;
+            if (ops.data) {
+                this.setData(ops.data);
+            } else {
+                this.map && this.refresh();
+            }
             this.tMapStyle(option.skin);
-        }
-    }, {
-        key: 'setOptionStyle',
-        value: function setOptionStyle(ops) {
-            this._setStyle(_HeatConfig2.default, ops);
-            this.delteOption();
-            (0, _util.clearPushArray)(this.workerData, []);
-            this.drawMap();
         }
     }, {
         key: 'setState',
@@ -8032,7 +8033,7 @@ var HeatOverlay = function (_CanvasOverlay) {
             }
             (0, _util.clearPushArray)(this.workerData, []);
             this.points = points;
-            this.drawMap();
+            this.map && this.drawMap();
         }
     }, {
         key: 'getMax',
@@ -10701,7 +10702,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "2.0.1";
+var version = "2.0.2";
 console.log('inMap v' + version);
 
 var inMap = {

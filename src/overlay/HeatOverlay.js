@@ -16,29 +16,30 @@ export default class HeatOverlay extends CanvasOverlay {
         this.delteOption();
         this.state = null;
     }
+    setOptionStyle(ops) {
+        this._setStyle(HeatConfig, ops);
+    }
     resize() {
         this.drawMap();
     }
     getTransformData() {
         return this.workerData.length > 0 ? this.workerData : this.points;
     }
-
     _setStyle(config, ops) {
         ops = ops || {};
         let option = merge(config, ops);
         this.styleConfig = option.style;
         this.eventConfig = option.event;
         this.gradient = option.style.gradient;
-        this.points = ops.data ? option.data : this.points;
+        if (ops.data) {
+            this.setData(ops.data);
+        } else {
+            this.map && this.refresh();
+        }
         this.tMapStyle(option.skin);
 
     }
-    setOptionStyle(ops) {
-        this._setStyle(HeatConfig, ops);
-        this.delteOption();
-        clearPushArray(this.workerData, []);
-        this.drawMap();
-    }
+
     setState(val) {
         this.state = val;
         this.eventConfig.onState.call(this, this.state);
@@ -63,7 +64,7 @@ export default class HeatOverlay extends CanvasOverlay {
         }
         clearPushArray(this.workerData, []);
         this.points = points;
-        this.drawMap();
+        this.map && this.drawMap();
     }
     getMax() {
         let normal = this.styleConfig;
