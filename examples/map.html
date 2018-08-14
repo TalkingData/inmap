@@ -61,14 +61,8 @@
                     map.setViewport(ply.getPath()); //调整视野
                 }
 
-                //alert(rs.boundaries[0]);
-                let result = {
-                    geometry: {
-                        type: 'Polygon',
-                        coordinates: []
-                    },
-                    count: 1
-                };
+                let coordinates = [];
+
                 for (let i = 0; i < rs.boundaries.length; i++) {
                     var pointArr = rs.boundaries[i].split(";");
                     var geos = [];
@@ -78,9 +72,18 @@
                         var lat = tempArr[1];
                         geos.push([parseFloat(lng), parseFloat(lat)])
                     });
-                    result.geometry.coordinates.push(geos);
+                    coordinates.push([geos])
+
                 }
-                console.log(JSON.stringify(result, null, 0))
+                let result = {
+                    geometry: {
+                        type: 'MultiPolygon',
+                        coordinates: coordinates
+                    },
+                    count: 1
+                };
+
+                console.log(JSON.stringify(result, null, 2))
             });
         }
     </script>
