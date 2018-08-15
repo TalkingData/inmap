@@ -5803,7 +5803,7 @@ var PolygonOverlay = function (_Parameter) {
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
-            this._setStyle(this.baseConfig, ops);
+            this._setStyle(this._option, ops);
         }
     }, {
         key: 'setState',
@@ -9483,6 +9483,45 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
             this.map.addEventListener('rightclick', this._rightclick);
         }
     }, {
+        key: 'setOptionStyle',
+        value: function setOptionStyle(opts) {
+            this._opts = (0, _util.merge)(this._opts, opts);
+            this._eventConfig = this._opts.event;
+
+            var data = [];
+            if (opts.data) {
+                this._workerData = [];
+                this._pointDataGroup = [];
+                this._draggingPointTemp = null;
+                this._draggingVirtualTemp = null;
+                this._createTempCache = null;
+                this._createIndex = -1;
+                this.isCreate = false;
+                this._polygonOverlay.workerData.length = 0;
+                this._pointOverlay.workerData.length = 0;
+                this._virtualPointOverlay.workerData.length = 0;
+
+                data.push(this._toMutilPolygon(opts.data));
+            }
+            this._polygonOverlay.setOptionStyle({
+                style: this._opts.style.polygon
+            });
+
+            this._pointOverlay.setOptionStyle({
+                style: _extends({}, this._opts.style.point, {
+                    isDrag: true
+                })
+            });
+            this._virtualPointOverlay.setOptionStyle({
+                style: _extends({}, this._opts.style.virtualPoint, {
+                    isDrag: true
+                })
+            });
+            if (data.length > 0) {
+                this._polygonOverlay.setData(data);
+            }
+        }
+    }, {
         key: 'create',
         value: function create() {
 
@@ -11187,7 +11226,7 @@ var PointOverlay = function (_Parameter) {
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
-            this._setStyle(this.baseConfig, ops);
+            this._setStyle(this._option, ops);
         }
     }, {
         key: 'resize',

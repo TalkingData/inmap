@@ -76,7 +76,7 @@ export default class PolygonOverlay extends Parameter {
         this.refresh();
     }
     setOptionStyle(ops) {
-        this._setStyle(this.baseConfig, ops);
+        this._setStyle(this._option, ops);
     }
     setState(val) {
         this.state = val;

@@ -4,7 +4,7 @@
  import config from '../../config/PolygonEditorConfig';
  import {
      merge,
-     isPolyContains
+     isPolyContains,
  } from '../../common/util';
 
  export default class PolygonEditorOverlay2 extends CanvasOverlay {
@@ -82,7 +82,47 @@
          this.map.addOverlay(this._virtualPointOverlay);
          this.map.addEventListener('rightclick', this._rightclick);
      }
+     setOptionStyle(opts) {
+         this._opts = merge(this._opts, opts);
+         this._eventConfig = this._opts.event;
 
+         let data = [];
+         if (opts.data) {
+             this._workerData = [];
+             this._pointDataGroup = [];
+             this._draggingPointTemp = null;
+             this._draggingVirtualTemp = null;
+             this._createTempCache = null;
+             this._createIndex = -1;
+             this.isCreate = false;
+             this._polygonOverlay.workerData.length = 0;
+             this._pointOverlay.workerData.length = 0;
+             this._virtualPointOverlay.workerData.length = 0;
+
+             data.push(this._toMutilPolygon(opts.data));
+         }
+         this._polygonOverlay.setOptionStyle({
+             style: this._opts.style.polygon
+         });
+
+         this._pointOverlay.setOptionStyle({
+             style: { ...this._opts.style.point,
+                 ...{
+                     isDrag: true
+                 },
+             }
+         });
+         this._virtualPointOverlay.setOptionStyle({
+             style: { ...this._opts.style.virtualPoint,
+                 ...{
+                     isDrag: true
+                 },
+             }
+         });
+         if (data.length > 0) {
+             this._polygonOverlay.setData(data);
+         }
+     }
      create() {
 
          this.isCreate = true;
@@ -193,7 +233,7 @@
                  ];
              }
          } catch (error) {
-             throw new TypeError("inMap :data must be is 'MultiPolygon' or 'Polygon'");
+             throw new TypeError('inMap :data must be is \'MultiPolygon\' or \'Polygon\'');
          }
          return data;
 

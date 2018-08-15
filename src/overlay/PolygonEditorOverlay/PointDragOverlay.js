@@ -42,7 +42,7 @@ export default class PointOverlay extends Parameter {
     }
 
     setOptionStyle(ops) {
-        this._setStyle(this.baseConfig, ops);
+        this._setStyle(this._option, ops);
     }
     resize() {
 
