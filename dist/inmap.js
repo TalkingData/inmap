@@ -4899,7 +4899,7 @@ var LineStringOverlay = function (_Parameter) {
     _createClass(LineStringOverlay, [{
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
-            this._setStyle(_LineStringConfig2.default, ops);
+            this._setStyle(this._option, ops);
         }
     }, {
         key: 'onDataChange',
@@ -5258,7 +5258,7 @@ var PointOverlay = function (_Parameter) {
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
-            this._setStyle(this.baseConfig, ops);
+            this._setStyle(this._option, ops);
             if (!(0, _util.isEmpty)(this._option.draw)) {
                 this.batchesData = new _BatchesData2.default(this._option.draw);
             } else {
@@ -7656,7 +7656,7 @@ var GriddingOverlay = function (_Parameter) {
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
-            this._setStyle(this.baseConfig, ops);
+            this._setStyle(this._option, ops);
         }
     }, {
         key: 'draw',
@@ -7977,7 +7977,7 @@ var HeatOverlay = function (_CanvasOverlay) {
     _createClass(HeatOverlay, [{
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
-            this._setStyle(_HeatConfig2.default, ops);
+            this._setStyle(this._option, ops);
         }
     }, {
         key: 'resize',
@@ -7994,6 +7994,7 @@ var HeatOverlay = function (_CanvasOverlay) {
         value: function _setStyle(config, ops) {
             ops = ops || {};
             var option = (0, _util.merge)(config, ops);
+            this._option = option;
             this.styleConfig = option.style;
             this.eventConfig = option.event;
             this.gradient = option.style.gradient;
@@ -8262,7 +8263,7 @@ var HoneycombOverlay = function (_Parameter) {
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
-            this._setStyle(this.baseConfig, ops);
+            this._setStyle(this._option, ops);
         }
     }, {
         key: 'setState',
@@ -8598,7 +8599,7 @@ var ImgOverlay = function (_Parameter) {
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
-            this._setStyle(this.baseConfig, ops);
+            this._setStyle(this._option, ops);
         }
     }, {
         key: 'setState',
@@ -8872,7 +8873,7 @@ var LabelOverlay = function (_Parameter) {
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
-            this._setStyle(this.baseConfig, ops);
+            this._setStyle(this._option, ops);
         }
     }, {
         key: 'setState',
@@ -9646,7 +9647,7 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
                     data.geometry.coordinates = [data.geometry.coordinates];
                 }
             } catch (error) {
-                throw new TypeError("inMap :data must be is 'MultiPolygon' or 'Polygon'");
+                throw new TypeError('inMap :data must be is \'MultiPolygon\' or \'Polygon\'');
             }
             return data;
         }

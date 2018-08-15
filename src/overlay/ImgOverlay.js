@@ -17,7 +17,7 @@ export default class ImgOverlay extends Parameter {
         this.drawMap();
     }
     setOptionStyle(ops) {
-        this._setStyle(this.baseConfig, ops);
+        this._setStyle(this._option, ops);
     }
     setState(val) {
         this.state = val;

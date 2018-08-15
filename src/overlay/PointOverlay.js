@@ -43,7 +43,7 @@ export default class PointOverlay extends Parameter {
         this.initLegend();
     }
     setOptionStyle(ops) {
-        this._setStyle(this.baseConfig, ops);
+        this._setStyle(this._option, ops);
         if (!isEmpty(this._option.draw)) {
             this.batchesData = new BatchesData(this._option.draw);
         } else {

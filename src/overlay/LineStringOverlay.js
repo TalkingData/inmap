@@ -19,7 +19,7 @@ export default class LineStringOverlay extends Parameter {
         this.onDataChange();
     }
     setOptionStyle(ops) {
-        this._setStyle(LineStringConfig, ops);
+        this._setStyle(this._option, ops);
     }
     onDataChange() {
         this.selectItemIndex = -1;

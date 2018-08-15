@@ -34,7 +34,7 @@ export default class HoneycombOverlay extends Parameter {
         this.toolTip && this.toolTip.setOption(this.tooltipConfig);
     }
     setOptionStyle(ops) {
-        this._setStyle(this.baseConfig, ops);
+        this._setStyle(this._option, ops);
     }
     setState(val) {
         this.state = val;

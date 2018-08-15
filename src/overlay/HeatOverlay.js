@@ -17,7 +17,7 @@ export default class HeatOverlay extends CanvasOverlay {
         this.state = null;
     }
     setOptionStyle(ops) {
-        this._setStyle(HeatConfig, ops);
+        this._setStyle(this._option, ops);
     }
     resize() {
         this.drawMap();
@@ -28,6 +28,7 @@ export default class HeatOverlay extends CanvasOverlay {
     _setStyle(config, ops) {
         ops = ops || {};
         let option = merge(config, ops);
+        this._option = option;
         this.styleConfig = option.style;
         this.eventConfig = option.event;
         this.gradient = option.style.gradient;
