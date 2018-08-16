@@ -9441,7 +9441,7 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
 
             this._polygonOverlay = new _PolygonOverlay2.default({
                 style: this._opts.style.polygon,
-                data: this._toMutilPolygon(this._opts.data) ? [this._toMutilPolygon(this._opts.data)] : [],
+                data: this._opts.data ? [this._toMutilPolygon(this._opts.data)] : [],
                 event: {
                     onState: function onState(state) {
                         if (state == 3) {
@@ -9486,74 +9486,57 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(opts) {
+            if (opts.data === undefined) {
+                delete opts.data;
+            }
             this._opts = (0, _util.merge)(this._opts, opts);
             this._eventConfig = this._opts.event;
-
-            var data = [];
-            if (opts.data) {
-                this._workerData = [];
-                this._pointDataGroup = [];
-                this._draggingPointTemp = null;
-                this._draggingVirtualTemp = null;
-                this._createTempCache = null;
-                this._createIndex = -1;
-                this.isCreate = false;
-                this._polygonOverlay.workerData.length = 0;
-                this._pointOverlay.workerData.length = 0;
-                this._virtualPointOverlay.workerData.length = 0;
-
-                data.push(this._toMutilPolygon(opts.data));
-            }
-            this._polygonOverlay.setOptionStyle({
+            this._polygonOverlay && this._polygonOverlay.setOptionStyle({
                 style: this._opts.style.polygon
             });
 
-            this._pointOverlay.setOptionStyle({
+            this._pointOverlay && this._pointOverlay.setOptionStyle({
                 style: _extends({}, this._opts.style.point, {
                     isDrag: true
                 })
             });
-            this._virtualPointOverlay.setOptionStyle({
+            this._virtualPointOverlay && this._virtualPointOverlay.setOptionStyle({
                 style: _extends({}, this._opts.style.virtualPoint, {
                     isDrag: true
                 })
             });
-            if (data.length > 0) {
-                this._polygonOverlay.setData(data);
+            if (opts.data !== undefined) {
+                this.setPath(opts.data);
             }
         }
     }, {
         key: 'create',
         value: function create() {
-
             this.isCreate = true;
-            this._workerData = [{
-                geometry: {
-                    type: 'MultiPolygon',
-                    coordinates: [],
-                    pixels: [],
-                    labelPixels: []
-
-                }
-            }];
-
-            this._polygonOverlay.setWorkerData(this._workerData);
-            this._polygonOverlay.refresh();
-
+            this.setPath();
             this._createTempCache = null;
             this._createIndex = -1;
-            this.map.removeEventListener('click', this._clickFun);
-            this.map.removeEventListener('dblclick', this._dblclickFun);
-            this.map.removeEventListener('mousemove', this._mousemoveFun);
-            this.map.addEventListener('click', this._clickFun);
-            this.map.addEventListener('dblclick', this._dblclickFun);
-            this.map.addEventListener('mousemove', this._mousemoveFun);
+            if (this.map) {
+                this.map.removeEventListener('click', this._clickFun);
+                this.map.removeEventListener('dblclick', this._dblclickFun);
+                this.map.removeEventListener('mousemove', this._mousemoveFun);
+                this.map.addEventListener('click', this._clickFun);
+                this.map.addEventListener('dblclick', this._dblclickFun);
+                this.map.addEventListener('mousemove', this._mousemoveFun);
+            }
         }
     }, {
         key: 'setPath',
         value: function setPath(data) {
             this.isCreate = false;
-            this._polygonOverlay.setData(this._toMutilPolygon(data) ? [this._toMutilPolygon(data)] : []);
+            this._opts.data = data;
+            this._workerData = [];
+            this._pointDataGroup = [];
+            this._draggingPointTemp = null;
+            this._draggingVirtualTemp = null;
+            this._createTempCache = null;
+            this._createIndex = -1;
+            this._polygonOverlay && this._polygonOverlay.setData(this._opts.data ? [this._toMutilPolygon(data)] : []);
         }
     }, {
         key: 'enableEditing',
@@ -9601,12 +9584,13 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
                         }
                     }
                 }
-                this._polygonOverlay.refresh();
+                this._polygonOverlay && this._polygonOverlay.refresh();
             }
         }
     }, {
         key: '_removeMoveEvent',
         value: function _removeMoveEvent() {
+            if (!this.map) return;
             this.map.removeEventListener('click', this._clickFun);
             this.map.removeEventListener('dblclick', this._dblclickFun);
             this.map.removeEventListener('mousemove', this._mousemoveFun);
@@ -9635,7 +9619,7 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
                     }
                 };
             } else {
-                return undefined;
+                return null;
             }
         }
     }, {
@@ -9801,6 +9785,7 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
     }, {
         key: '_clearPointOverlay',
         value: function _clearPointOverlay() {
+            if (!this._pointOverlay) return;
             this._pointOverlay.setWorkerData([]);
             this._pointOverlay.refresh();
             this._virtualPointOverlay.setWorkerData([]);
@@ -9846,7 +9831,7 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
                     virtualData.push(item);
                 }
             }
-
+            if (!this._virtualPointOverlay) return;
             this._virtualPointOverlay.selectItem = [];
             this._virtualPointOverlay.setWorkerData(virtualData);
             this._virtualPointOverlay.refresh();
@@ -9868,6 +9853,7 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
             for (var _i = 0; _i < this._pointDataGroup.length; _i++) {
                 pointData = pointData.concat(this._pointDataGroup[_i]);
             }
+            if (!this._pointOverlay) return;
             this._pointOverlay.selectItem = [];
             this._pointOverlay.setWorkerData(pointData);
             this._pointOverlay.refresh();
@@ -10012,7 +9998,6 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
     }, {
         key: '_draggingVirtual',
         value: function _draggingVirtual(item) {
-
             var preItem = this._pointDataGroup[item.pre.index][item.pre.i];
             var nextItem = this._pointDataGroup[item.next.index][item.next.i];
             var virtualLine = [preItem, item, nextItem];

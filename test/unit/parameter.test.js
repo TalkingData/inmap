@@ -1,6 +1,7 @@
-import Parameter from './../../src/overlay/base/Parameter';
+import Parameter from '../../src/overlay/base/Parameter';
 
 describe('Parameter  base class ', () => {
+
   it('color to rgba', () => {
     let style = {
       normal: {
