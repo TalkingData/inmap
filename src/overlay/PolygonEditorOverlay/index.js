@@ -169,7 +169,9 @@
      enableEditing() {
          this.isCreate = false;
          this._opts.style.isEdit = true;
-         this._removeMoveEvent();
+         this.map.removeEventListener('click', this._clickFun);
+         this.map.removeEventListener('dblclick', this._dblclickFun);
+         this.map.removeEventListener('mousemove', this._mousemoveFun);
          this._setPointData();
          this._setVirtualPointData();
      }
@@ -215,7 +217,7 @@
          this.map.removeEventListener('click', this._clickFun);
          this.map.removeEventListener('dblclick', this._dblclickFun);
          this.map.removeEventListener('mousemove', this._mousemoveFun);
-         this.map.removeEventListener('rightclick', this.rightclick);
+         this.map.removeEventListener('rightclick', this._rightclick);
      }
      Tdispose() {
          this._removeMoveEvent();
