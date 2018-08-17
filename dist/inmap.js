@@ -9453,6 +9453,11 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
                                 _this2._clearPointOverlay();
                             }
                         }
+                    },
+                    onMouseClick: function onMouseClick(event) {
+                        if (!_this2.isCreate) {
+                            _this2._eventConfig.onMouseClick.call(_this2, event);
+                        }
                     }
                 }
             });
@@ -10652,6 +10657,7 @@ exports.default = {
     },
     data: null,
     event: {
+        onMouseClick: function onMouseClick() {},
         onCreated: function onCreated() {},
         onChange: function onChange() {},
         onDelete: function onDelete() {}

@@ -48,6 +48,12 @@
                              this._clearPointOverlay();
                          }
                      }
+                 },
+                 onMouseClick: (event) => {
+                     if (!this.isCreate) {
+                         this._eventConfig.onMouseClick.call(this, event);
+                     }
+
                  }
              }
          });

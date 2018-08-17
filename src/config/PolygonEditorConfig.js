@@ -43,6 +43,7 @@ export default {
     },
     data: null,
     event: {
+        onMouseClick() {},
         onCreated() {},
         onChange() {},
         onDelete(){
