@@ -229,12 +229,17 @@
      getPath() {
          if (this._workerData.length > 0) {
              let coordinates = JSON.parse(JSON.stringify(this._workerData[0].geometry.coordinates));
-             return {
-                 geometry: {
-                     type: 'MultiPolygon',
-                     coordinates: coordinates
-                 }
-             };
+             if (coordinates.length > 0) {
+                 return {
+                     geometry: {
+                         type: 'MultiPolygon',
+                         coordinates: coordinates
+                     }
+                 };
+             } else {
+                 return null;
+             }
+
          } else {
              return null;
          }
@@ -369,8 +374,7 @@
          return -1;
      }
      _rightclick(event) {
-         if (this.isCreate) return;
-         if (!this._opts.style.isDel) return;
+         if (this.isCreate || !this._opts.style.isDel || !this._opts.style.isEdit) return;
          let coordinates = this._workerData[0].geometry.coordinates;
          for (let j = 0, len = coordinates.length; j < len; j++) {
 
