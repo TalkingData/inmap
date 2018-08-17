@@ -119,6 +119,8 @@ describe('PolygonEditorOverlay ', () => {
 
     it('create function ', () => {
         let overlay = createOverlay();
+        overlay.setPath(null);
+        overlay.setOptionStyle()
         overlay.create();
     });
 

@@ -89,6 +89,7 @@
          this.map.addEventListener('rightclick', this._rightclick);
      }
      setOptionStyle(opts) {
+         if (!opts) return;
          if (opts.data === undefined) {
              delete opts.data;
          }
