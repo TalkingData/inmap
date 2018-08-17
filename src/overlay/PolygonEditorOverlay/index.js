@@ -112,10 +112,20 @@
      }
      create() {
          this.isCreate = true;
-         this.setPath();
+         this._workerData = [{
+             geometry: {
+                 type: 'MultiPolygon',
+                 coordinates: [],
+                 pixels: [],
+                 labelPixels: []
+
+             }
+         }];
          this._createTempCache = null;
          this._createIndex = -1;
          if (this.map) {
+             this._polygonOverlay.setWorkerData(this._workerData);
+             this._polygonOverlay.refresh();
              this.map.removeEventListener('click', this._clickFun);
              this.map.removeEventListener('dblclick', this._dblclickFun);
              this.map.removeEventListener('mousemove', this._mousemoveFun);
