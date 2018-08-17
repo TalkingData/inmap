@@ -214,8 +214,8 @@ export default class PolygonOverlay extends Parameter {
             if (this.eventType == 'onmoving') {
                 return;
             }
-            this.setState(State.conputeAfter);
             this.setWorkerData(pixels);
+            this.setState(State.conputeAfter);
             this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
             pixels = null, margin = null;
         });

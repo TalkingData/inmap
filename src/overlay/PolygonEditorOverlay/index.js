@@ -41,6 +41,17 @@
                  onState: (state) => {
                      if (state == 3) {
                          this._workerData = this._polygonOverlay.getData();
+                         if (this._workerData.length == 0) {
+                             this._workerData.push({
+                                 geometry: {
+                                     type: 'MultiPolygon',
+                                     coordinates: [],
+                                     pixels: [],
+                                     labelPixels: []
+
+                                 }
+                             });
+                         }
                          if (this._opts.style.isEdit && this.isCreate == false) {
                              this._setPointData();
                              this._setVirtualPointData();
@@ -89,6 +100,7 @@
          this.map.addEventListener('rightclick', this._rightclick);
      }
      setOptionStyle(opts) {
+
          if (!opts) return;
          if (opts.data === undefined) {
              delete opts.data;
@@ -118,6 +130,7 @@
          }
      }
      create() {
+
          this.isCreate = true;
          this._workerData = [{
              geometry: {
