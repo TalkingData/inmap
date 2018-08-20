@@ -169,9 +169,9 @@
      enableEditing() {
          this.isCreate = false;
          this._opts.style.isEdit = true;
-         this.map.removeEventListener('click', this._clickFun);
-         this.map.removeEventListener('dblclick', this._dblclickFun);
-         this.map.removeEventListener('mousemove', this._mousemoveFun);
+         this.map && this.map.removeEventListener('click', this._clickFun);
+         this.map && this.map.removeEventListener('dblclick', this._dblclickFun);
+         this.map && this.map.removeEventListener('mousemove', this._mousemoveFun);
          this._setPointData();
          this._setVirtualPointData();
      }
