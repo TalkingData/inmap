@@ -26,21 +26,19 @@ export default class HeatOverlay extends CanvasOverlay {
         return this.workerData.length > 0 ? this.workerData : this.points;
     }
     _setStyle(config, ops) {
-        ops = ops || {};
+        if (!ops) return;
         let option = merge(config, ops);
         this._option = option;
         this.styleConfig = option.style;
         this.eventConfig = option.event;
         this.gradient = option.style.gradient;
-        if (ops.data) {
+        if (ops.data !== undefined) {
             this.setData(ops.data);
         } else {
             this.map && this.refresh();
         }
         this.tMapStyle(option.skin);
-
     }
-
     setState(val) {
         this.state = val;
         this.eventConfig.onState.call(this, this.state);
@@ -60,11 +58,15 @@ export default class HeatOverlay extends CanvasOverlay {
         this.setPoints(points);
     }
     setPoints(points) {
-        if (!isArray(points)) {
-            throw new TypeError('inMap :data must be a Array');
+        if (points) {
+            if (!isArray(points)) {
+                throw new TypeError('inMap: data must be a Array');
+            }
+            this.points = points;
+        } else {
+            this.points = [];
         }
         clearPushArray(this.workerData, []);
-        this.points = points;
         this.map && this.drawMap();
     }
     getMax() {
