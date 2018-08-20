@@ -19,30 +19,32 @@ export default class Parameter extends CanvasOverlay {
         this.workerData = []; //转换后的数据
         this._option = {};
         this.baseConfig = baseConfig;
-
         this.selectItem = []; //选中
         this.overItem = null; //悬浮
-
         this._setStyle(baseConfig, ops);
-
     }
     _setStyle(config, ops) {
-        ops = ops || {};
+        if (!ops) return;
+
         let option = merge(config, ops);
+        if (option.style.splitList && option.style.splitList.length > 0) {
+            option.style.colors = [];
+        }
+
         this.toRgba(option.style);
         this._option = option;
         this.tooltipConfig = option.tooltip;
         this.legendConfig = option.legend;
         this.eventConfig = option.event;
         this.styleConfig = option.style;
-        if (ops.data) {
+        if (ops.data !== undefined) {
             this.setData(ops.data);
         } else {
             this.onOptionChange();
             this.map && this.refresh();
         }
+        delete this._option.data;
         this.selectItem = option.selected || [];
-        // this.points = ops.data ? option.data : this.points;
         this.tMapStyle(option.skin);
         this.toolTip && this.toolTip.setOption(this.tooltipConfig);
 
@@ -53,9 +55,10 @@ export default class Parameter extends CanvasOverlay {
                 throw new TypeError('inMap: data must be a Array');
             }
             this.points = points;
+            
         } else {
             this.points = [];
-    
+
         }
 
         this.clearData();
