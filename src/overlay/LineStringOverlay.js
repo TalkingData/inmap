@@ -105,10 +105,16 @@ export default class LineStringOverlay extends Parameter {
         }
     }
     setData(points) {
-        if (!isArray(points)) {
-            throw new TypeError('inMap: data must be a Array');
+        if (points) {
+            if (!isArray(points)) {
+                throw new TypeError('inMap: data must be a Array');
+            }
+            this.points = points;
+        } else {
+            this.points = [];
         }
-        this.points = points;
+        this.clearData();
+        this.cancerSelectd();
         this.map && this.drawMap();
     }
     refresh() {
