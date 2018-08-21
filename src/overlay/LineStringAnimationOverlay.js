@@ -66,18 +66,19 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
         this._setStyle(LineStringAnimationConfig, ops);
     }
     setOptionStyle(ops) {
-
-        this._setStyle(LineStringAnimationConfig, ops);
+        this._setStyle(this._option, ops);
         this.map && this.drawMap();
     }
     _setStyle(config, ops) {
-        let option = merge(config, ops);
+        if (!ops) return;
+        let option = this._option = merge(config, ops);
         this.styleConfig = option.style;
         this.eventConfig = option.event;
         this.tMapStyle(option.skin);
 
+        delete this._option.data;
 
-        if (ops.data) {
+        if (ops.data !== undefined) {
             this.setData(ops.data);
         } else {
             this.map && this.refresh();
@@ -96,15 +97,19 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
         this.refresh();
     }
     setData(points) {
-        if (!isArray(points)) {
-            throw new TypeError('inMap: data must be a Array');
+        if (points) {
+            if (!isArray(points)) {
+                throw new TypeError('inMap: data must be a Array');
+            }
+            this.points = points;
+        } else {
+            this.points = [];
         }
-        this.points = points;
+        clearPushArray(this.workerData);
         this.map && this.drawMap();
     }
     resize() {
         if (!this.animationDraw) {
-
             this.initAnimation();
         }
         this.drawMap();
@@ -127,15 +132,14 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
             deltaAngle: this.styleConfig.deltaAngle
         };
 
-
+        this.animationFlag = false;
         this.postMessage('LineStringOverlay.calculatePixel', params, (pixels, margin) => {
             if (this.eventType == 'onmoving') {
+                this.animationFlag = false;
                 return;
             }
+            this.animationFlag = true;
             clearPushArray(this.workerData, pixels);
-
-
-
             this.createMarkLine(pixels);
             this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
             params = null;
