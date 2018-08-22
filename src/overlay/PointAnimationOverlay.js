@@ -60,6 +60,7 @@ export default class PointAnimationOverlay extends CanvasOverlay {
         }());
     }
     setOptionStyle(ops) {
+        if (!ops) return;
         let option = merge(config, ops);
         this.styleConfig = option.style;
         this.tMapStyle(option.skin);
