@@ -352,5 +352,9 @@ describe('MoveLineOverlay ', () => {
                         });
                         expect(overlay.data).to.eql(data);
 
+                        overlay.setOptionStyle();
+                        expect(overlay.data).to.eql(data);
+                        
+
                     });
             });

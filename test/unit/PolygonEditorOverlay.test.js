@@ -226,6 +226,10 @@ describe('PolygonEditorOverlay ', () => {
         option.data = undefined
         overlay.setOptionStyle(option);
         expect(overlay._opts.data).to.eql(data);
+
+
+        overlay.setOptionStyle();
+        expect(overlay._opts.data).to.eql(data);
     });
 
 });

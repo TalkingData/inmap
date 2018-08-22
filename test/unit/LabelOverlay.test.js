@@ -171,6 +171,10 @@ describe('LabelOverlay ', () => {
         });
         expect(overlay.points).to.eql(data);
         expect(overlay.workerData).to.eql([]);
+
+        overlay.setOptionStyle();
+        expect(overlay.points).to.eql(data);
+        expect(overlay.workerData).to.eql([]);
     });
 
 
