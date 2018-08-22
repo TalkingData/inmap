@@ -5,6 +5,7 @@ import LineStringAnimationOverlay from './LineStringAnimationOverlay';
 import config from './../config/MoveLineConfig';
 import {
     merge,
+    isArray,
     isFunction
 } from './../common/util';
 
@@ -13,22 +14,53 @@ export default class MoveLineOverlay extends MultiOverlay {
         super();
         this.isDispose = false;
         this.data = opts.data || [];
-        let option = merge(config, opts);
-        this.PointOverlay = this.creataPointOverlay(option);
-        this.LineStringOverlay = this.createLineStringOverlay(option);
-        this.LineStringAnimationOverlay = this.createLineStringAnimationOverlay(option);
+        this._opts = merge(config, opts);
+        this.PointOverlay = this.creataPointOverlay(this._opts);
+        this.LineStringOverlay = this.createLineStringOverlay(this._opts);
+        this.LineStringAnimationOverlay = this.createLineStringAnimationOverlay(this._opts);
     }
     _init(map) {
         map.addOverlay(this.LineStringOverlay);
         map.addOverlay(this.LineStringAnimationOverlay);
         map.addOverlay(this.PointOverlay);
     }
+    setOptionStyle(opts) {
+        if (!opts) return;
+        this._opts = merge(this._opts, opts);
+        opts.style.point.data && delete opts.style.point.data;
+        opts.style.point.line && delete opts.style.point.line;
+        opts.style.point.lineAnimation && delete opts.style.point.lineAnimation;
+        this.PointOverlay.setOptionStyle(opts.style.point);
+        this.LineStringOverlay.setOptionStyle(opts.style.line);
+        this.LineStringAnimationOverlay.setOptionStyle(opts.style.lineAnimation);
+
+        if (opts.data !== undefined) {
+            this.setData(opts.data);
+        }
+
+    }
+    setData(data) {
+        if (data) {
+            if (!isArray(data)) {
+                throw new TypeError('inMap: data must be a Array');
+            }
+            this.data = data;
+
+        } else {
+            this.data = [];
+        }
+
+        this.PointOverlay.setData(this._getPointData());
+        this.LineStringOverlay.setData(this._getLineStringData());
+        this.LineStringAnimationOverlay.setData(this._getLineStringData());
+
+    }
     _findIndex(data, name) {
         return data.findIndex((item) => {
             return item.name == name;
         });
     }
-    creataPointOverlay(opts) {
+    _getPointData() {
         let data = [];
         this.data.forEach(item => {
             if (this._findIndex(data, item.from.name) == -1) {
@@ -55,12 +87,11 @@ export default class MoveLineOverlay extends MultiOverlay {
             }
 
         });
+        return data;
 
-        opts.style.point['data'] = data;
-        return new PointOverlay(opts.style.point);
     }
-    createLineStringOverlay(opts) {
-        let data = this.data.map(item => {
+    _getLineStringData() {
+        return this.data.map(item => {
             return {
                 geometry: {
                     type: 'LineString',
@@ -73,23 +104,18 @@ export default class MoveLineOverlay extends MultiOverlay {
                 count: item.count
             };
         });
-        opts.style.line['data'] = data;
+    }
+    creataPointOverlay(opts) {
+        opts.style.point['data'] = this._getPointData();
+        return new PointOverlay(opts.style.point);
+    }
+    createLineStringOverlay(opts) {
+
+        opts.style.line['data'] = this._getLineStringData();
         return new LineStringOverlay(opts.style.line);
     }
     createLineStringAnimationOverlay(opts) {
-        let data = this.data.map(item => {
-            return {
-                geometry: {
-                    type: 'LineString',
-                    coordinates: [
-                        item.from.coordinates,
-                        item.to.coordinates
-                    ]
-                },
-                count: item.count
-            };
-        });
-        opts.style.lineAnimation['data'] = data;
+        opts.style.lineAnimation['data'] = this._getLineStringData();
         return new LineStringAnimationOverlay(opts.style.lineAnimation);
     }
     dispose() {
