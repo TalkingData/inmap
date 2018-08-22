@@ -1,6 +1,7 @@
 import CanvasOverlay from './base/CanvasOverlay.js';
 import {
-    merge
+    merge,
+    isArray
 } from './../common/util';
 import config from '../config/PointAnimation';
 
@@ -61,8 +62,24 @@ export default class PointAnimationOverlay extends CanvasOverlay {
     setOptionStyle(ops) {
         let option = merge(config, ops);
         this.styleConfig = option.style;
-        this.data = ops.data ? option.data : this.data;
         this.tMapStyle(option.skin);
+        if (ops.data === null) {
+            option.data = [];
+        } else if (ops.data === undefined) {
+            option.data = this.data;
+        }
+        this.setData(option.data);
+    }
+    setData(points) {
+        if (points) {
+            if (!isArray(points)) {
+                throw new TypeError('inMap: data must be a Array');
+            }
+            this.data = points;
+        } else {
+            this.data = [];
+        }
+
         this.map && this.addMarker();
     }
     translation(distanceX, distanceY) {
