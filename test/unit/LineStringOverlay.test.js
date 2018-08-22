@@ -24,11 +24,17 @@ describe('LineStringOverlay ', () => {
         expect(overlay.points).to.eql([]);
 
         let data = [{
-            "count": 4,
-            "geometry": {
-                "type": "Point",
-                "coordinates": [117.306518554688, 38.5537719726562]
-            }
+            geometry: {
+                type: 'LineString',
+                coordinates: [
+                    [123, 23], 
+                    [124, 24]
+                ]
+            },
+            style:{  //样式配置
+            },
+            name: "",
+            count: 30
         }];
 
         overlay.setData(data);
@@ -57,11 +63,17 @@ describe('LineStringOverlay ', () => {
         expect(overlay.workerData).to.eql([]);
 
         let data = [{
-            "count": 4,
-            "geometry": {
-                "type": "Point",
-                "coordinates": [117.306518554688, 38.5537719726562]
-            }
+            geometry: {
+                type: 'LineString',
+                coordinates: [
+                    [123, 23], 
+                    [124, 24]
+                ]
+            },
+            style:{  //样式配置
+            },
+            name: "",
+            count: 30
         }];
         overlay.setOptionStyle({
             style: {
