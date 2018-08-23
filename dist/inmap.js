@@ -1401,7 +1401,7 @@ var CanvasOverlay = function (_BaseClass) {
             map.addEventListener('mousemove', me.tMousemove);
             map.addEventListener('click', me.tMouseClick);
             if (!map.inmapToolBar) {
-                map.inmapToolBar = new _Toolbar2.default(map.getContainer());
+                map.inmapToolBar = new _Toolbar2.default(map.Va);
             }
             var legendContainer = map.inmapToolBar.legendContainer;
             this.legend = new _Legend2.default(legendContainer);

@@ -1,5 +1,6 @@
 import BaseClass from './BaseClass';
 import Legend from '../../map/Legend';
+import Throttle from '../../common/Throttle';
 import {
     setDevicePixelRatio,
     isString,
@@ -20,6 +21,7 @@ export default class CanvasOverlay extends BaseClass {
         this.eventType = 'moveend';
         this.map = null;
         this.container = null;
+        this._throttle = new Throttle();
         this.tOnResize = this.tOnResize.bind(this);
         this.tOnMoveend = this.tOnMoveend.bind(this);
         this.tOnZoomstart = this.tOnZoomstart.bind(this);
@@ -27,6 +29,8 @@ export default class CanvasOverlay extends BaseClass {
         this.tOnMoving = this.tOnMoving.bind(this);
         this.tMousemove = this.tMousemove.bind(this);
         this.tMouseClick = this.tMouseClick.bind(this);
+        this._resize = this.resize.bind(this);
+        this._throttle.on('throttle', this._resize);
         this.devicePixelRatio = window.devicePixelRatio;
         this.repaintEnd = opts && opts.repaintEnd; //重绘回调
         this.animationFlag = true;
@@ -35,6 +39,7 @@ export default class CanvasOverlay extends BaseClass {
             left: 0,
             top: 0
         };
+
     }
     initialize(map) {
         let me = this;
@@ -76,6 +81,7 @@ export default class CanvasOverlay extends BaseClass {
             styleJson: styleJson
         });
     }
+
     tOnResize(event) {
         this.setCanvasSize();
         this.eventType = event.type;
@@ -105,7 +111,7 @@ export default class CanvasOverlay extends BaseClass {
         //抽象方法 子类去实现
     }
     draw() {
-        
+
         let eventType = this.eventType;
         // if (eventType == 'onzoomend' || eventType == 'onmoveend' || eventType == 'onresize') {
         //     this.resize();
@@ -113,7 +119,8 @@ export default class CanvasOverlay extends BaseClass {
         if (eventType == 'onmoving') {
             this.canvasResize();
         } else {
-            this.resize();
+            this._throttle.throttleEvent();
+            // this.resize();
         }
 
     }
@@ -127,7 +134,7 @@ export default class CanvasOverlay extends BaseClass {
         me.keysss = true;
     }
     resize() {
-        //  抽象方法 子类去实现
+        //抽象方法 子类去实现
     }
     canvasResize() {
         let map = this.map;
@@ -194,7 +201,7 @@ export default class CanvasOverlay extends BaseClass {
      * 对象销毁
      */
     dispose() {
-
+        this._throttle.dispose();
         this.removeWorkerMessage();
         this.map.removeEventListener('resize', this.tOnResize);
         this.map.removeEventListener('moveend', this.tOnMoveend);
