@@ -113,14 +113,10 @@ export default class CanvasOverlay extends BaseClass {
     draw() {
 
         let eventType = this.eventType;
-        // if (eventType == 'onzoomend' || eventType == 'onmoveend' || eventType == 'onresize') {
-        //     this.resize();
-        // }
         if (eventType == 'onmoving') {
             this.canvasResize();
         } else {
             this._throttle.throttleEvent();
-            // this.resize();
         }
 
     }

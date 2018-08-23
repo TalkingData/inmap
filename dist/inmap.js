@@ -1465,7 +1465,6 @@ var CanvasOverlay = function (_BaseClass) {
         value: function draw() {
 
             var eventType = this.eventType;
-
             if (eventType == 'onmoving') {
                 this.canvasResize();
             } else {
