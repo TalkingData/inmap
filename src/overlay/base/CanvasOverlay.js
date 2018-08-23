@@ -59,7 +59,7 @@ export default class CanvasOverlay extends BaseClass {
         map.addEventListener('mousemove', me.tMousemove);
         map.addEventListener('click', me.tMouseClick);
         if (!map.inmapToolBar) {
-            map.inmapToolBar = new Toolbar(map.Va);
+            map.inmapToolBar = new Toolbar(map.getContainer());
         }
         let legendContainer = map.inmapToolBar.legendContainer;
         this.legend = new Legend(legendContainer);
