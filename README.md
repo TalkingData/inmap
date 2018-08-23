@@ -38,7 +38,7 @@ npm install inmap --save
 
 或使用 <script> 全局引用，inMap 会被注册为一个全局变量:
 ```html
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
 <script type="text/javascript" src="http://unpkg.com/inmap/dist/inmap.min.js"></script>
 ```
 
