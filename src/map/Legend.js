@@ -9,44 +9,44 @@ import {
 } from '../common/util';
 export default class Legend {
     constructor(toolDom, opts) {
-        this.opts = opts || config;
-        this.dom = this.crateDom(toolDom);
+        this._opts = opts || config;
+        this._dom = this._crateDom(toolDom);
         this.hide();
     }
-    crateDom(toolDom) {
+    _crateDom(toolDom) {
         let div = document.createElement('div');
         div.classList.add('inmap-legend');
         toolDom.appendChild(div);
         return div;
     }
     show() {
-        this.dom.style.display = 'inline-block';
+        this._dom.style.display = 'inline-block';
     }
     hide() {
-        this.dom.style.display = 'none';
+        this._dom.style.display = 'none';
     }
-    toFixed(num) {
-        return isNaN(num) ? num : parseFloat(num).toFixed(this.opts.toFixed);
+    _toFixed(num) {
+        return isNaN(num) ? num : parseFloat(num).toFixed(this._opts.toFixed);
     }
     setTitle(title) {
-        this.opts.title = title;
-        this.render();
+        this._opts.title = title;
+        this._render();
     }
     setOption(opts) {
-        this.opts = merge(config, this.opts, opts);
-        this.opts.list = this.opts.list || [];
-        this.render();
+        this._opts = merge(config, this._opts, opts);
+        this._opts.list = this._opts.list || [];
+        this._render();
     }
     setItems(list) {
-        this.opts.list = list;
-        this.render();
+        this._opts.list = list;
+        this._render();
     }
     _verify() {
         let {
             show,
             title,
             list,
-        } = this.opts;
+        } = this._opts;
         if (!isBoolean(show)) {
             throw new TypeError('inMap: legend options show must be a Boolean');
         }
@@ -59,13 +59,13 @@ export default class Legend {
 
 
     }
-    render() {
+    _render() {
         this._verify();
         let {
             show,
             title,
             list
-        } = this.opts;
+        } = this._opts;
         if (show) {
             this.show();
         } else {
@@ -95,13 +95,13 @@ export default class Legend {
             } else {
                 opacity = 1;
             }
-            backgroundColor = legendBg.getRgbaStyle(opacity);
+            backgroundColor = legendBg.getRgbaValue(opacity);
             if (val.text) {
                 text = val.text;
-            } else if (this.opts.formatter) {
-                text = this.opts.formatter(this.toFixed(val.start), this.toFixed(val.end), index, val);
+            } else if (this._opts.formatter) {
+                text = this._opts.formatter(this._toFixed(val.start), this._toFixed(val.end), index, val);
             } else {
-                text = `${this.toFixed(val.start)} ~ ${ val.end==null ?'<span class="inmap-infinity"></span>':this.toFixed(val.end)}`;
+                text = `${this._toFixed(val.start)} ~ ${ val.end==null ?'<span class="inmap-infinity"></span>':this._toFixed(val.end)}`;
             }
             let td = isShow ? ` <td style="background:${backgroundColor}; width:17px;"></td>` : '';
             str += `
@@ -117,13 +117,13 @@ export default class Legend {
         if (list.length <= 0) {
             this.hide();
         }
-        this.dom.innerHTML = str;
+        this._dom.innerHTML = str;
 
     }
     dispose(parentDom) {
-        parentDom.removeChild(this.dom);
-        this.opts = null;
-        this.dom = null;
+        parentDom.removeChild(this._dom);
+        this._opts = null;
+        this._dom = null;
 
     }
 }

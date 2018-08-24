@@ -62,13 +62,13 @@ describe('MoveLineOverlay ', () => {
             }
             it('constructor ', () => {
                 let overlay = createOverlay();
-                expect(overlay.data).to.eql([]);
+                expect(overlay._data).to.eql([]);
             });
 
             it('setData', () => {
                 let overlay = createOverlay();
                 overlay.setData(null);
-                expect(overlay.data).to.eql([]);
+                expect(overlay._data).to.eql([]);
 
                 let data = [{
                     "from": {
@@ -82,19 +82,19 @@ describe('MoveLineOverlay ', () => {
                     "count": 1
                 }];
                 overlay.setData(data);
-                expect(overlay.data).to.eql(data);
+                expect(overlay._data).to.eql(data);
 
 
                 overlay.setData(undefined);
-                expect(overlay.data).to.eql([]);
+                expect(overlay._data).to.eql([]);
 
 
                 overlay.setData(data);
-                expect(overlay.data).to.eql(data);
+                expect(overlay._data).to.eql(data);
 
 
                 overlay.setData(null);
-                expect(overlay.data).to.eql([]);
+                expect(overlay._data).to.eql([]);
 
 
             });
@@ -102,7 +102,7 @@ describe('MoveLineOverlay ', () => {
             it('setOptionStyle', () => {
                     let overlay = createOverlay();
 
-                    expect(overlay.data).to.eql([]);
+                    expect(overlay._data).to.eql([]);
 
                     let data = 
                         [{
@@ -174,7 +174,7 @@ describe('MoveLineOverlay ', () => {
                             },
                             data: data,
                         });
-                        expect(overlay.data).to.eql(data);
+                        expect(overlay._data).to.eql(data);
 
                         overlay.setOptionStyle({
                             style: {
@@ -234,7 +234,7 @@ describe('MoveLineOverlay ', () => {
                             data: null,
                         });
 
-                        expect(overlay.data).to.eql([]);
+                        expect(overlay._data).to.eql([]);
 
 
                         overlay.setOptionStyle({
@@ -350,10 +350,10 @@ describe('MoveLineOverlay ', () => {
                                 },
                             },
                         });
-                        expect(overlay.data).to.eql(data);
+                        expect(overlay._data).to.eql(data);
 
                         overlay.setOptionStyle();
-                        expect(overlay.data).to.eql(data);
+                        expect(overlay._data).to.eql(data);
                         
 
                     });

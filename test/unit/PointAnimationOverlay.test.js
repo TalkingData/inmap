@@ -14,13 +14,13 @@ describe('PointAnimationOverlay ', () => {
     }
     it('constructor ', () => {
         let overlay = createOverlay();
-        expect(overlay.data).to.eql([]);
+        expect(overlay._data).to.eql([]);
     });
 
     it('setData', () => {
         let overlay = createOverlay();
         overlay.setData(null);
-        expect(overlay.data).to.eql([]);
+        expect(overlay._data).to.eql([]);
 
         let data = [{
             "count": 4,
@@ -31,27 +31,27 @@ describe('PointAnimationOverlay ', () => {
         }];
 
         overlay.setData(data);
-        expect(overlay.data).to.eql(data);
+        expect(overlay._data).to.eql(data);
     
 
         overlay.setData(undefined);
-        expect(overlay.data).to.eql([]);
+        expect(overlay._data).to.eql([]);
        
 
         overlay.setData(data);
-        expect(overlay.data).to.eql(data);
+        expect(overlay._data).to.eql(data);
      
 
 
         overlay.setData(null);
-        expect(overlay.data).to.eql([]);
+        expect(overlay._data).to.eql([]);
        
 
     });
 
     it('setOptionStyle', () => {
         let overlay = createOverlay();
-        expect(overlay.data).to.eql([]);
+        expect(overlay._data).to.eql([]);
        
 
         let data = [{
@@ -70,7 +70,7 @@ describe('PointAnimationOverlay ', () => {
             },
             data:data
         });
-        expect(overlay.data).to.eql(data);
+        expect(overlay._data).to.eql(data);
       
 
         overlay.setOptionStyle({
@@ -82,7 +82,7 @@ describe('PointAnimationOverlay ', () => {
             },
             data: null,
         });
-        expect(overlay.data).to.eql([]);
+        expect(overlay._data).to.eql([]);
         
 
         overlay.setOptionStyle({
@@ -102,11 +102,11 @@ describe('PointAnimationOverlay ', () => {
                 speed: 0.15
             },
         });
-        expect(overlay.data).to.eql(data);
+        expect(overlay._data).to.eql(data);
 
 
         overlay.setOptionStyle();
-        expect(overlay.data).to.eql(data);
+        expect(overlay._data).to.eql(data);
        
     });
 

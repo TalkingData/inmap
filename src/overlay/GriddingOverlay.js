@@ -5,71 +5,68 @@ import State from './../config/OnStateConfig';
 export default class GriddingOverlay extends Parameter {
     constructor(ops) {
         super(GriddingConfig, ops);
-        this.state = null;
+        this._state = null;
         this._drawSize = 0;
-        this.mpp = {};
+        this._mpp = {};
     }
    
-    parameterInit() {
+    _parameterInit() {
 
     }
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
     }
-    draw() {
-        this.resize();
-    }
 
-    setState(val) {
-        this.state = val;
-        this.eventConfig.onState.call(this, this.state);
+    _setState(val) {
+        this._state = val;
+        this._eventConfig.onState.call(this, this._state);
     }
 
     refresh() {
-        this.setState(State.drawBefore);
-        this.drawRec();
-        this.setState(State.drawAfter);
+        this._setState(State.drawBefore);
+        this._drawRec();
+        this._setState(State.drawAfter);
     }
-    resize() {
-        this.drawMap();
+    _toDraw() {
+        this._drawMap();
     }
-    onOptionChange() {
-        this.map && this.createColorSplit();
+    _onOptionChange() {
+        this._map && this._createColorSplit();
     }
-    onDataChange() {
-        this.map && this.createColorSplit();
+    _onDataChange() {
+        this._map && this._createColorSplit();
     }
     _calculateMpp() {
-        let zoom = this.map.getZoom();
-        if (this.mpp[zoom]) {
-            return this.mpp[zoom];
+        let zoom = this._map.getZoom();
+        if (this._mpp[zoom]) {
+            return this._mpp[zoom];
         } else {
-            this.mpp[zoom] = this.getMpp();
-            return this.mpp[zoom];
+            this._mpp[zoom] = this._getMpp();
+            return this._mpp[zoom];
         }
     }
     /**
      * 获得每个像素对应多少米	
      */
-    getMpp() {
-        let mapCenter = this.map.getCenter();
+    _getMpp() {
+        let mapCenter = this._map.getCenter();
         let assistValue = 10;
         let cpt = new BMap.Point(mapCenter.lng, mapCenter.lat + assistValue);
-        let dpx = Math.abs(this.map.pointToPixel(mapCenter).y - this.map.pointToPixel(cpt).y);
-        return this.map.getDistance(mapCenter, cpt) / dpx;
+        let dpx = Math.abs(this._map.pointToPixel(mapCenter).y - this._map.pointToPixel(cpt).y);
+        return this._map.getDistance(mapCenter, cpt) / dpx;
     }
-    drawMap() {
-        this.clearData();
+    _drawMap() {
+        this._clearData();
         let {
             normal,
             type
-        } = this.styleConfig;
-        let zoom = this.map.getZoom();
-        let mapCenter = this.map.getCenter();
-        let mapSize = this.map.getSize();
+        } = this._styleConfig;
+        let zoom = this._map.getZoom();
+        let mapCenter = this._map.getCenter();
+        let mapSize = this._map.getSize();
 
         let zoomUnit = Math.pow(2, 18 - zoom);
-        let mercatorProjection = this.map.getMapType().getProjection();
+        let mercatorProjection = this._map.getMapType().getProjection();
         let mcCenter = mercatorProjection.lngLatToPoint(mapCenter);
 
         let nwMcX = mcCenter.x - mapSize.width / 2 * zoomUnit;
@@ -88,7 +85,7 @@ export default class GriddingOverlay extends Parameter {
         }
 
         let params = {
-            points: this.points,
+            points: this._data,
             size: size,
             type: type,
             nwMc: nwMc,
@@ -98,20 +95,20 @@ export default class GriddingOverlay extends Parameter {
             zoom: zoom
 
         };
-        this.setState(State.computeBefore);
-        this.postMessage('GriddingOverlay.toRecGrids', params, (gridsObj) => {
-            if (this.eventType == 'onmoving') {
+        this._setState(State.computeBefore);
+        this._postMessage('GriddingOverlay.toRecGrids', params, (gridsObj) => {
+            if (this._eventType == 'onmoving') {
                 return;
             }
-            this.canvasResize();
-            this.workerData = gridsObj.grids;
-            this.setState(State.conputeAfter);
+            this._canvasResize();
+            this._workerData = gridsObj.grids;
+            this._setState(State.conputeAfter);
 
             this._drawSize = size / zoomUnit;
-            this.setState(State.drawBefore);
+            this._setState(State.drawBefore);
 
-            if (this.eventType != 'onmoveend' || this.styleConfig.splitList == null || this.styleConfig.splitList.length < this.styleConfig.colors.length) {
-                this.createColorSplit();
+            if (this._eventType != 'onmoveend' || this._styleConfig.splitList == null || this._styleConfig.splitList.length < this._styleConfig.colors.length) {
+                this._createColorSplit();
             }
             this.refresh();
             gridsObj = null;
@@ -122,21 +119,21 @@ export default class GriddingOverlay extends Parameter {
     _isMouseOver(mouseX, mouseY, x, y, w, h) {
         return !(mouseX < x || mouseX > x + w || mouseY < y || mouseY > y + h);
     }
-    findIndexSelectItem(item) {
+    _findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-            index = this.selectItem.findIndex(function (val) {
+            index = this._selectItem.findIndex(function (val) {
                 return val && val.x == item.x && val.y == item.y;
             });
         }
         return index;
     }
-    getTarget(x, y) {
+    _getTarget(x, y) {
 
         let gridStep = this._drawSize;
-        let mapSize = this.map.getSize();
-        for (let i = 0; i < this.workerData.length; i++) {
-            let item = this.workerData[i];
+        let mapSize = this._map.getSize();
+        for (let i = 0; i < this._workerData.length; i++) {
+            let item = this._workerData[i];
             let x1 = item.x;
             let y1 = item.y;
             if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
@@ -154,9 +151,9 @@ export default class GriddingOverlay extends Parameter {
         };
     }
 
-    compileSplitList(data) {
+    _compileSplitList(data) {
 
-        let colors = this.styleConfig.colors;
+        let colors = this._styleConfig.colors;
         if (colors.length < 0 || data.length <= 0) return;
         data = data.sort((a, b) => {
             return parseFloat(a.count) - parseFloat(b.count);
@@ -200,52 +197,51 @@ export default class GriddingOverlay extends Parameter {
             }
         }
         split = [];
-        this.styleConfig.splitList = result;
+        this._styleConfig.splitList = result;
 
     }
-    createColorSplit() {
+    _createColorSplit() {
 
-        this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
-
-        this.setlegend(this.legendConfig, this.styleConfig.splitList);
+        this._styleConfig.colors.length > 0 && this._compileSplitList(this._workerData);
+        this._setlegend(this._legendConfig, this._styleConfig.splitList);
 
     }
-    setTooltip(event) {
-        let item = this.overItem && this.overItem.list.length > 0 ? this.overItem : null;
+    _setTooltip(event) {
+        let item = this._overItem && this._overItem.list.length > 0 ? this._overItem : null;
         this.toolTip.render(event, item);
     }
-    getStyle(item) {
+    _getStyle(item) {
         if (item.count == 0) {
             return {
                 backgroundColor: 'rgba(255,255,255,0)'
             };
         } else {
-            return this.setDrawStyle(item,true);
+            return this._setDrawStyle(item,true);
         }
 
     }
-    drawRec() {
-        this.clearCanvas();
+    _drawRec() {
+        this._clearCanvas();
         let gridStep = this._drawSize;
-        let style = this.styleConfig.normal;
-        let mapSize = this.map.getSize();
-        this.ctx.shadowOffsetX = 0;
-        this.ctx.shadowOffsetY = 0;
-        for (let i = 0; i < this.workerData.length; i++) {
-            let item = this.workerData[i];
+        let style = this._styleConfig.normal;
+        let mapSize = this._map.getSize();
+        this._ctx.shadowOffsetX = 0;
+        this._ctx.shadowOffsetY = 0;
+        for (let i = 0; i < this._workerData.length; i++) {
+            let item = this._workerData[i];
             let x = item.x;
             let y = item.y;
             if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
-                let drawStyle = this.getStyle(item);
+                let drawStyle = this._getStyle(item);
                 if (drawStyle.shadowColor) {
-                    this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
-                    this.ctx.shadowBlur = drawStyle.shadowBlur || 10;
+                    this._ctx.shadowColor = drawStyle.shadowColor || 'transparent';
+                    this._ctx.shadowBlur = drawStyle.shadowBlur || 10;
                 } else {
-                    this.ctx.shadowColor = 'transparent';
-                    this.ctx.shadowBlur = 0;
+                    this._ctx.shadowColor = 'transparent';
+                    this._ctx.shadowBlur = 0;
                 }
-                this.ctx.fillStyle = drawStyle.backgroundColor;
-                this.ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
+                this._ctx.fillStyle = drawStyle.backgroundColor;
+                this._ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
             }
 
         }

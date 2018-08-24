@@ -15,11 +15,11 @@ import './map.less';
 
 export default class Map {
     constructor(ops) {
-        this.map = null;
-        this.option = merge(inmapConfig, ops);
-        this.create();
+        this._map = null;
+        this._option = merge(inmapConfig, ops);
+        this._create();
     }
-    tMapStyle(map, skin) {
+    _tMapStyle(map, skin) {
         let styleJson = null;
         if (isString(skin)) {
             styleJson = skin == 'Blueness' ? Blueness : WhiteLover;
@@ -30,8 +30,8 @@ export default class Map {
             styleJson: styleJson
         });
     }
-    create() {
-        let id = this.option.id;
+    _create() {
+        let id = this._option.id;
 
         let mapDom = isString(id) ? document.getElementById(id) : id;
         let bmap = new BMap.Map(mapDom, {
@@ -42,39 +42,39 @@ export default class Map {
         bmap.enableKeyboard();
 
         //设置皮肤
-        this.tMapStyle(bmap, this.option.skin);
+        this._tMapStyle(bmap, this._option.skin);
 
-        bmap.inmapToolBar = new Toolbar(mapDom);
-        let center = this.option.center;
+        bmap._inmapToolBar = new Toolbar(mapDom);
+        let center = this._option.center;
 
-        bmap.centerAndZoom(new BMap.Point(center[0], center[1]), this.option.zoom.value);
-        bmap.setMinZoom(this.option.zoom.min);
-        bmap.setMaxZoom(this.option.zoom.max);
-        if (this.option.zoom.show) {
+        bmap.centerAndZoom(new BMap.Point(center[0], center[1]), this._option.zoom.value);
+        bmap.setMinZoom(this._option.zoom.min);
+        bmap.setMaxZoom(this._option.zoom.max);
+        if (this._option.zoom.show) {
             //添加地图级别工具条
-            let mapZoom = new MapZoom(bmap, mapDom, this.option.zoom);
+            let mapZoom = new MapZoom(bmap, mapDom, this._option.zoom);
             bmap.addEventListener('zoomend', () => {
                 mapZoom.setButtonState();
             });
         }
 
-        this.map = bmap;
+        this._map = bmap;
     }
     getMap() {
-        return this.map;
+        return this._map;
     }
     add(overlay) {
-        if (overlay.isDispose) {
+        if (overlay._isDispose) {
             throw new TypeError('inMap: overlay has been destroyed.');
         } else if (overlay instanceof MultiOverlay) {
-            overlay._init(this.map);
+            overlay._init(this._map);
         } else {
-            this.map.addOverlay(overlay);
+            this._map.addOverlay(overlay);
         }
 
     }
     remove(overlay) {
-        if (overlay && !overlay.isDispose) {
+        if (overlay && !overlay._isDispose) {
             overlay.dispose();
         }
         overlay = null;

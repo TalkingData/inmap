@@ -10,22 +10,22 @@ import State from './../config/OnStateConfig';
 export default class ImgOverlay extends Parameter {
     constructor(opts) {
         super(ImgConfig, opts);
-        this.cacheImg = {}; //缓存图片对象
-        this.state = null;
+        this._cacheImg = {}; //缓存图片对象
+        this._state = null;
     }
-    resize() {
-        this.drawMap();
+    _toDraw() {
+        this._drawMap();
     }
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
     }
-    setState(val) {
-        this.state = val;
-        this.eventConfig.onState.call(this,this.state);
+    _setState(val) {
+        this._state = val;
+        this._eventConfig.onState.call(this,this._state);
     }
-    translation(distanceX, distanceY) {
-        for (let i = 0; i < this.workerData.length; i++) {
-            let pixel = this.workerData[i].geometry.pixel;
+    _translation(distanceX, distanceY) {
+        for (let i = 0; i < this._workerData.length; i++) {
+            let pixel = this._workerData[i].geometry.pixel;
             pixel.x = pixel.x + distanceX;
             pixel.y = pixel.y + distanceY;
             pixel = null;
@@ -34,17 +34,17 @@ export default class ImgOverlay extends Parameter {
         this.refresh();
 
     }
-    drawMap() {
+    _drawMap() {
 
-        this.setState(State.computeBefore);
-        this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), (pixels, margin) => {
-            if (this.eventType == 'onmoving') {
+        this._setState(State.computeBefore);
+        this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin) => {
+            if (this._eventType == 'onmoving') {
                 return;
             }
-            this.setState(State.conputeAfter);
+            this._setState(State.conputeAfter);
 
-            this.setWorkerData(pixels);
-            this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
+            this._setWorkerData(pixels);
+            this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             margin = null;
             pixels = null;
 
@@ -54,16 +54,16 @@ export default class ImgOverlay extends Parameter {
     _isMouseOver(x, y, imgX, imgY, imgW, imgH) {
         return !(x < imgX || x > imgX + imgW || y < imgY || y > imgY + imgH);
     }
-    getTarget(x, y) {
-        let pixels = this.workerData;
+    _getTarget(x, y) {
+        let pixels = this._workerData;
 
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.geometry.pixel;
-            let style = this.setDrawStyle(item,true);
+            let style = this._setDrawStyle(item,true);
             let img;
             if (isString(img)) {
-                img = this.cacheImg[style.icon];
+                img = this._cacheImg[style.icon];
             } else {
                 img = style.icon;
             }
@@ -100,10 +100,10 @@ export default class ImgOverlay extends Parameter {
 
 
     }
-    findIndexSelectItem(item) {
+    _findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-            index = this.selectItem.findIndex(function (val) {
+            index = this._selectItem.findIndex(function (val) {
                 return val && val.lat == item.lat && val.lng == item.lng;
             });
         }
@@ -111,21 +111,21 @@ export default class ImgOverlay extends Parameter {
         return index;
     }
     refresh() {
-        this.setState(State.drawBefore);
-        this.clearCanvas();
-        this._loopDraw(this.ctx, this.workerData);
-        this.setState(State.drawAfter);
+        this._setState(State.drawBefore);
+        this._clearCanvas();
+        this._loopDraw(this._ctx, this._workerData);
+        this._setState(State.drawAfter);
 
     }
-    loadImg(img, fun) {
+    _loadImg(img, fun) {
         let me = this;
         if (isString(img)) {
-            let image = me.cacheImg[img];
+            let image = me._cacheImg[img];
             if (!image) {
                 let image = new Image();
                 image.src = img;
                 image.onload = function () {
-                    me.cacheImg[img] = image;
+                    me._cacheImg[img] = image;
                     fun(image);
                 };
             } else {
@@ -136,7 +136,7 @@ export default class ImgOverlay extends Parameter {
             fun(img);
         }
     }
-    isPercent(val) {
+    _isPercent(val) {
         if (val.toString().indexOf('%') > -1) {
             return true;
         } else {
@@ -152,12 +152,12 @@ export default class ImgOverlay extends Parameter {
         let offsetLeft = parseFloat(offsetL);
         let offsetTop = parseFloat(offsetT);
 
-        if (this.isPercent(offsetL)) {
+        if (this._isPercent(offsetL)) {
             x = pixel.x + scaleW * offsetLeft / 100;
         } else {
             x = pixel.x + offsetLeft;
         }
-        if (this.isPercent(offsetT)) {
+        if (this._isPercent(offsetT)) {
             y = pixel.y + scaleH * offsetTop / 100;
         } else {
             y = pixel.y + offsetTop;
@@ -171,13 +171,13 @@ export default class ImgOverlay extends Parameter {
      * 根据用户配置，设置用户绘画样式
      * @param {*} item 
      */
-    setDrawStyle(item) {
-        let normal = this.styleConfig.normal; //正常样式
+    _setDrawStyle(item) {
+        let normal = this._styleConfig.normal; //正常样式
         let result = {};
         Object.assign(result, normal);
         //区间样式
 
-        let splitList = this.styleConfig.splitList;
+        let splitList = this._styleConfig.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];
             if (condition.end == null) {
@@ -199,15 +199,15 @@ export default class ImgOverlay extends Parameter {
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.geometry.pixel;
-            let style = this.setDrawStyle(item);
-            this.loadImg(style.icon, (img) => {
+            let style = this._setDrawStyle(item);
+            this._loadImg(style.icon, (img) => {
                 if (style.width && style.height) {
                     let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height);
-                    this._drawImage(this.ctx, img, xy.x, xy.y, style.width, style.height);
+                    this._drawImage(this._ctx, img, xy.x, xy.y, style.width, style.height);
 
                 } else {
                     let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, img.width, img.height, 1);
-                    this._drawImage(this.ctx, img, xy.x, xy.y, img.width, img.height);
+                    this._drawImage(this._ctx, img, xy.x, xy.y, img.width, img.height);
                 }
             });
 

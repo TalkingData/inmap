@@ -60,34 +60,34 @@ class MarkLine {
 export default class LineStringAnimationOverlay extends CanvasOverlay {
     constructor(ops) {
         super(ops);
-        this.points = [];
-        this.workerData = [];
-        this.markLineData = [];
+        this._data = [];
+        this._workerData = [];
+        this._markLineData = [];
         this._setStyle(LineStringAnimationConfig, ops);
     }
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
-        this.map && this.drawMap();
+        this._map && this._drawMap();
     }
     _setStyle(config, ops) {
         if (!ops) return;
         let option = this._option = merge(config, ops);
-        this.styleConfig = option.style;
-        this.eventConfig = option.event;
-        this.tMapStyle(option.skin);
+        this._styleConfig = option.style;
+        this._eventConfig = option.event;
+        this._tMapStyle(option.skin);
 
         delete this._option.data;
 
         if (ops.data !== undefined) {
             this.setData(ops.data);
         } else {
-            this.map && this.refresh();
+            this._map && this.refresh();
         }
 
     }
-    translation(distanceX, distanceY) {
-        for (let i = 0; i < this.markLineData.length; i++) {
-            let pixels = this.markLineData[i].path;
+    _translation(distanceX, distanceY) {
+        for (let i = 0; i < this._markLineData.length; i++) {
+            let pixels = this._markLineData[i].path;
             for (let j = 0; j < pixels.length; j++) {
                 let pixel = pixels[j];
                 pixel[0] = pixel[0] + distanceX;
@@ -101,64 +101,64 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
             if (!isArray(points)) {
                 throw new TypeError('inMap: data must be a Array');
             }
-            this.points = points;
+            this._data = points;
         } else {
-            this.points = [];
+            this._data = [];
         }
-        clearPushArray(this.workerData);
-        this.map && this.drawMap();
+        clearPushArray(this._workerData);
+        this._map && this._drawMap();
     }
-    resize() {
+    _toDraw() {
         if (!this.animationDraw) {
-            this.initAnimation();
+            this._initAnimation();
         }
-        this.drawMap();
+        this._drawMap();
     }
-    getTransformData() {
-        return this.workerData.length > 0 ? this.workerData : this.points;
+    _getTransformData() {
+        return this._workerData.length > 0 ? this._workerData : this._data;
     }
-    drawMap() {
-        let zoomUnit = Math.pow(2, 18 - this.map.getZoom());
-        let projection = this.map.getMapType().getProjection();
-        let mcCenter = projection.lngLatToPoint(this.map.getCenter());
-        let nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit); //左上角墨卡托坐标
+    _drawMap() {
+        let zoomUnit = Math.pow(2, 18 - this._map.getZoom());
+        let projection = this._map.getMapType().getProjection();
+        let mcCenter = projection.lngLatToPoint(this._map.getCenter());
+        let nwMc = new BMap.Pixel(mcCenter.x - this._map.getSize().width / 2 * zoomUnit, mcCenter.y + this._map.getSize().height / 2 * zoomUnit); //左上角墨卡托坐标
 
         let params = {
-            points: this.getTransformData(),
+            points: this._getTransformData(),
             nwMc: nwMc,
             zoomUnit: zoomUnit,
             isAnimation: true,
-            lineOrCurve: this.styleConfig.lineOrCurve,
-            deltaAngle: this.styleConfig.deltaAngle
+            lineOrCurve: this._styleConfig.lineOrCurve,
+            deltaAngle: this._styleConfig.deltaAngle
         };
 
-        this.animationFlag = false;
-        this.postMessage('LineStringOverlay.calculatePixel', params, (pixels, margin) => {
-            if (this.eventType == 'onmoving') {
-                this.animationFlag = false;
+        this._animationFlag = false;
+        this._postMessage('LineStringOverlay.calculatePixel', params, (pixels, margin) => {
+            if (this._eventType == 'onmoving') {
+                this._animationFlag = false;
                 return;
             }
-            this.animationFlag = true;
-            clearPushArray(this.workerData, pixels);
-            this.createMarkLine(pixels);
-            this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
+            this._animationFlag = true;
+            clearPushArray(this._workerData, pixels);
+            this._createMarkLine(pixels);
+            this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             params = null;
             margin = null;
         });
     }
-    createMarkLine(data) {
-        clearPushArray(this.markLineData);
+    _createMarkLine(data) {
+        clearPushArray(this._markLineData);
         for (let i = 0; i < data.length; i++) {
             let pixels = data[i].geometry.pixels;
-            this.markLineData.push(new MarkLine({
+            this._markLineData.push(new MarkLine({
                 path: pixels
             }));
         }
     }
-    initAnimation() {
+    _initAnimation() {
         let now;
         let then = Date.now();
-        let interval = 1000 / this.styleConfig.fps;
+        let interval = 1000 / this._styleConfig.fps;
         let delta;
         let me = this;
 
@@ -177,28 +177,28 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
     }
     refresh() {
         let {
-            markLineData,
-            styleConfig
+            _markLineData,
+            _styleConfig
         } = this;
 
-        if (!this.ctx) {
+        if (!this._ctx) {
             return;
         }
 
-        if (!this.animationFlag) {
-            this.clearCanvas();
+        if (!this._animationFlag) {
+            this._clearCanvas();
             return;
         }
-        this.ctx.fillStyle = 'rgba(0,0,0,0.93)';
-        let prev = this.ctx.globalCompositeOperation;
-        this.ctx.globalCompositeOperation = 'destination-in';
-        let size = this.map.getSize();
-        this.ctx.fillRect(0, 0, size.width, size.height);
-        this.ctx.globalCompositeOperation = prev;
+        this._ctx.fillStyle = 'rgba(0,0,0,0.93)';
+        let prev = this._ctx.globalCompositeOperation;
+        this._ctx.globalCompositeOperation = 'destination-in';
+        let size = this._map.getSize();
+        this._ctx.fillRect(0, 0, size.width, size.height);
+        this._ctx.globalCompositeOperation = prev;
 
-        for (let i = 0; i < markLineData.length; i++) {
-            let markLine = markLineData[i];
-            markLine.drawMoveCircle(this.ctx, styleConfig, this.map);
+        for (let i = 0; i < _markLineData.length; i++) {
+            let markLine = _markLineData[i];
+            markLine.drawMoveCircle(this._ctx, _styleConfig, this._map);
         }
     }
 }

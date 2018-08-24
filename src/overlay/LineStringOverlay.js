@@ -12,45 +12,44 @@ let isMobile = detectmob();
 export default class LineStringOverlay extends Parameter {
     constructor(ops) {
         super(LineStringConfig, ops);
-        // this.styleConfig = {};
-        this.state = null;
-        this.mouseLayer = new CanvasOverlay();
-        this.selectItemIndex = -1;
-        this.onDataChange();
+        this._state = null;
+        this._mouseLayer = new CanvasOverlay();
+        this._selectItemIndex = -1;
+        this._onDataChange();
     }
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
     }
-    onDataChange() {
-        this.selectItemIndex = -1;
-        if (this.selectItem.length > 0) {
-            this.selectItemIndex = this.points.findIndex((item) => {
-                return this.selectItem[0] == item;
+    _onDataChange() {
+        this._selectItemIndex = -1;
+        if (this._selectItem.length > 0) {
+            this._selectItemIndex = this._data.findIndex((item) => {
+                return this._selectItem[0] == item;
             });
         }
 
     }
 
-    parameterInit() {
-        this.map.addOverlay(this.mouseLayer);
+    _parameterInit() {
+        this._map.addOverlay(this._mouseLayer);
     }
-    drawMouseLayer() {
-        let overArr = this.overItem ? [this.overItem] : [];
+    _drawMouseLayer() {
+        let overArr = this._overItem ? [this._overItem] : [];
 
-        this.mouseLayer.clearCanvas();
-        this.drawLine(this.mouseLayer.ctx, this.selectItem.concat(overArr), true);
+        this._mouseLayer._clearCanvas();
+        this._drawLine(this._mouseLayer._getContext(), this._selectItem.concat(overArr), true);
     }
-    clearAll() {
-        this.mouseLayer.clearCanvas();
-        this.clearCanvas();
+    _clearAll() {
+        this._mouseLayer._clearCanvas();
+        this._clearCanvas();
     }
-    setState(val) {
-        this.state = val;
-        this.eventConfig.onState.call(this, this.state);
+    _setState(val) {
+        this._state = val;
+        this._eventConfig.onState.call(this, this._state);
     }
-    translation(distanceX, distanceY) {
-        for (let i = 0; i < this.workerData.length; i++) {
-            let pixels = this.workerData[i].geometry.pixels;
+    _translation(distanceX, distanceY) {
+        for (let i = 0; i < this._workerData.length; i++) {
+            let pixels = this._workerData[i].geometry.pixels;
             for (let j = 0; j < pixels.length; j++) {
                 let pixel = pixels[j];
                 pixel[0] = pixel[0] + distanceX;
@@ -59,16 +58,16 @@ export default class LineStringOverlay extends Parameter {
         }
         this.refresh();
     }
-    getTarget(mouseX, mouseY) {
+    _getTarget(mouseX, mouseY) {
 
-        for (let i = 0, len = this.workerData.length; i < len; i++) {
-            let item = this.workerData[i];
+        for (let i = 0, len = this._workerData.length; i < len; i++) {
+            let item = this._workerData[i];
             let pixels = item.geometry.pixels;
-            let style = this.setDrawStyle(item);
+            let style = this._setDrawStyle(item);
             for (let k = 0, len = pixels.length; k < len - 1; k++) {
                 let pixel1 = pixels[k];
                 let pixel2 = pixels[k + 1];
-                if (this.calcIsInsideThickLineSegment(pixel1, pixel2, mouseX, mouseY, style.borderWidth)) {
+                if (this._calcIsInsideThickLineSegment(pixel1, pixel2, mouseX, mouseY, style.borderWidth)) {
                     return {
                         index: i,
                         item: item
@@ -81,17 +80,17 @@ export default class LineStringOverlay extends Parameter {
             item: null
         };
     }
-    findIndexSelectItem(item) {
+    _findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-            index = this.selectItem.findIndex(function (val) {
+            index = this._selectItem.findIndex(function (val) {
                 return item == val;
             });
         }
         return index;
     }
 
-    calcIsInsideThickLineSegment(line1, line2, mouseX, mouseY, lineThickness) {
+    _calcIsInsideThickLineSegment(line1, line2, mouseX, mouseY, lineThickness) {
         let L2 = (((line2[0] - line1[0]) * (line2[0] - line1[0])) + ((line2[1] - line1[1]) * (line2[1] - line1[1])));
         if (L2 == 0) return false;
         let r = (((mouseX - line1[0]) * (line2[0] - line1[0])) + ((mouseY - line1[1]) * (line2[1] - line1[1]))) / L2;
@@ -109,57 +108,57 @@ export default class LineStringOverlay extends Parameter {
             if (!isArray(points)) {
                 throw new TypeError('inMap: data must be a Array');
             }
-            this.points = points;
+            this._data = points;
         } else {
-            this.points = [];
+            this._data = [];
         }
-        this.clearData();
-        this.cancerSelectd();
-        this.map && this.drawMap();
+        this._clearData();
+        this._cancerSelectd();
+        this._map && this._drawMap();
     }
     refresh() {
-        this.setState(State.drawBefore);
-        this.mouseLayer.canvasResize();
-        this.clearCanvas();
-        this.drawLine(this.ctx, this.workerData, false);
-        this.anewSelectItem();
-        this.drawMouseLayer();
-        this.setState(State.drawAfter);
+        this._setState(State.drawBefore);
+        this._mouseLayer._canvasResize();
+        this._clearCanvas();
+        this._drawLine(this._ctx, this._workerData, false);
+        this._anewSelectItem();
+        this._drawMouseLayer();
+        this._setState(State.drawAfter);
     }
-    anewSelectItem() {
-        if (this.selectItemIndex > -1) {
-            this.selectItem = [this.workerData[this.selectItemIndex]];
+    _anewSelectItem() {
+        if (this._selectItemIndex > -1) {
+            this._selectItem = [this._workerData[this._selectItemIndex]];
         } else {
-            this.selectItem = [];
+            this._selectItem = [];
         }
     }
-    resize() {
-        this.drawMap();
+    _toDraw() {
+        this._drawMap();
     }
-    getTransformData() {
-        return this.workerData.length > 0 ? this.workerData : this.points;
+    _getTransformData() {
+        return this._workerData.length > 0 ? this._workerData : this._data;
     }
-    drawMap() {
-        this.clearAll();
-        let zoomUnit = Math.pow(2, 18 - this.map.getZoom());
-        let projection = this.map.getMapType().getProjection();
-        let mcCenter = projection.lngLatToPoint(this.map.getCenter());
-        let nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit); //左上角墨卡托坐标
+    _drawMap() {
+        this._clearAll();
+        let zoomUnit = Math.pow(2, 18 - this._map.getZoom());
+        let projection = this._map.getMapType().getProjection();
+        let mcCenter = projection.lngLatToPoint(this._map.getCenter());
+        let nwMc = new BMap.Pixel(mcCenter.x - this._map.getSize().width / 2 * zoomUnit, mcCenter.y + this._map.getSize().height / 2 * zoomUnit); //左上角墨卡托坐标
         let params = {
-            points: this.getTransformData(),
+            points: this._getTransformData(),
             nwMc: nwMc,
             zoomUnit: zoomUnit,
-            lineOrCurve: this.styleConfig.normal.lineCurive,
-            deltaAngle: this.styleConfig.normal.deltaAngle
+            lineOrCurve: this._styleConfig.normal.lineCurive,
+            deltaAngle: this._styleConfig.normal.deltaAngle
         };
-        this.setState(State.computeBefore);
-        this.postMessage('LineStringOverlay.calculatePixel', params, (pixels, margin) => {
-            if (this.eventType == 'onmoving') {
+        this._setState(State.computeBefore);
+        this._postMessage('LineStringOverlay.calculatePixel', params, (pixels, margin) => {
+            if (this._eventTypee == 'onmoving') {
                 return;
             }
-            this.setState(State.conputeAfter);
-            clearPushArray(this.workerData, pixels);
-            this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
+            this._setState(State.conputeAfter);
+            clearPushArray(this._workerData, pixels);
+            this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
 
             params = null;
             margin = null;
@@ -171,8 +170,8 @@ export default class LineStringOverlay extends Parameter {
      * @param {*} data 数据集
      * @param {*} otherMode 是否绘画选中数据样式
      */
-    drawLine(ctx, data, otherMode) {
-        let normal = this.styleConfig.normal;
+    _drawLine(ctx, data, otherMode) {
+        let normal = this._styleConfig.normal;
         ctx.shadowBlur = 0;
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
@@ -190,7 +189,7 @@ export default class LineStringOverlay extends Parameter {
 
         for (let i = 0; i < data.length; i++) {
             let item = data[i];
-            let style = this.setDrawStyle(item, otherMode);
+            let style = this._setDrawStyle(item, otherMode);
             ctx.strokeStyle = style.borderColor;
             let pixels = item.geometry.pixels;
             ctx.beginPath();
@@ -205,52 +204,52 @@ export default class LineStringOverlay extends Parameter {
 
 
     }
-    Tdispose() {
-        this.map.removeOverlay(this.mouseLayer);
-        this.mouseLayer.dispose();
+    _Tdispose() {
+        this._map.removeOverlay(this._mouseLayer);
+        this._mouseLayer.dispose();
     }
-    tMousemove(event) {
-        if (this.eventType == 'onmoving') {
+    _tMousemove(event) {
+        if (this._eventTypee == 'onmoving') {
             return;
         }
-        if (!this.tooltipConfig.show && isEmpty(this.styleConfig.mouseOver)) {
+        if (!this._tooltipConfig.show && isEmpty(this._styleConfig.mouseOver)) {
             return;
         }
-        let result = this.getTarget(event.pixel.x, event.pixel.y);
+        let result = this._getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
 
-        if (temp != this.overItem) { //防止过度重新绘画
-            this.overItem = temp;
-            this.eventType = 'mousemove';
-            if (!isEmpty(this.styleConfig.mouseOver)) {
-                this.drawMouseLayer();
+        if (temp != this._overItem) { //防止过度重新绘画
+            this._overItem = temp;
+            this._eventTypee = 'mousemove';
+            if (!isEmpty(this._styleConfig.mouseOver)) {
+                this._drawMouseLayer();
             }
         }
         if (temp) {
-            this.map.setDefaultCursor('pointer');
+            this._map.setDefaultCursor('pointer');
         } else {
-            this.map.setDefaultCursor('default');
+            this._map.setDefaultCursor('default');
         }
 
-        this.setTooltip(event);
+        this._setTooltip(event);
 
     }
-    tMouseClick(event) {
-        if (this.eventType == 'onmoving') return;
-        let result = this.getTarget(event.pixel.x, event.pixel.y);
+    _tMouseClick(event) {
+        if (this._eventTypee == 'onmoving') return;
+        let result = this._getTarget(event.pixel.x, event.pixel.y);
         if (result.index == -1) {
             return;
         }
 
         let item = result.item;
-        this.selectItem = [result.item];
-        this.selectItemIndex = result.index;
+        this._selectItem = [result.item];
+        this._selectItemIndex = result.index;
 
-        this.eventConfig.onMouseClick(this.selectItem, event);
+        this._eventConfig.onMouseClick(this._selectItem, event);
         if (isMobile) {
-            this.overItem = [item];
-            this.setTooltip(event);
+            this._overItem = [item];
+            this._setTooltip(event);
         }
-        this.drawMouseLayer();
+        this._drawMouseLayer();
     }
 }

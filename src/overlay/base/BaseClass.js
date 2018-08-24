@@ -65,7 +65,7 @@ BaseClass.prototype.dispose = function () {
  * 返回对象的hashCode，如果没有的话，添加一个新的hashCode并将其返回
  * @return {String} 对象的hashCode
  */
-BaseClass.prototype.getHashCode = function () {
+BaseClass.prototype._getHashCode = function () {
     if (!this.hashCode) {
         inmap_instances[(this.hashCode = BaseClass.guid())] = this;
     }
@@ -76,7 +76,7 @@ BaseClass.prototype.getHashCode = function () {
  * 从inmap_instances数组中将对象的引用删除掉。
  * 删除之后就无法使用I()函数获取对象了。
  */
-BaseClass.prototype.decontrol = function () {
+BaseClass.prototype._decontrol = function () {
     inmap_instances[this.hashCode] = null;
 };
 
@@ -91,11 +91,11 @@ BaseClass.inherits(baidu.Overlay, 'BaseClass');
  * @param {json} data提交的json数据
  * @param {Function} callback
  */
-BaseClass.prototype.postMessage = function (workerClassPath, data, callback) {
-    let map = this.map;
+BaseClass.prototype._postMessage = function (workerClassPath, data, callback) {
+    let map = this._map;
     let center = map.getCenter();
     let size = map.getSize();
-    let msgId = this.setMsgId();
+    let msgId = this._setMsgId();
     let request = {
         'type': 'web',
         'data': data,
@@ -113,21 +113,21 @@ BaseClass.prototype.postMessage = function (workerClassPath, data, callback) {
                 height: size.height
             },
             'zoom': map.getZoom(),
-            'margin': this.margin
+            'margin': this._margin
         }
     };
     workerMrg.postMessage({
         request: request
     }, callback);
 };
-BaseClass.prototype.getMsgId = function () {
+BaseClass.prototype._getMsgId = function () {
     return 'msgId' + _count.toString(36);
 };
-BaseClass.prototype.setMsgId = function () {
+BaseClass.prototype._setMsgId = function () {
     _count++;
     return 'msgId' + (_count).toString(36);
 };
-BaseClass.prototype.removeWorkerMessage = function () {
+BaseClass.prototype._removeWorkerMessage = function () {
     workerMrg.removeMessage(this.hashCode);
 };
 

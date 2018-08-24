@@ -5,57 +5,57 @@ import State from './../config/OnStateConfig';
 export default class LabelOverlay extends Parameter {
     constructor(opts) {
         super(PointConfig, opts);
-        this.state = null;
+        this._state = null;
     }
-    onOptionChange() {
+    _onOptionChange() {
 
     }
-    onDataChange() {
+    _onDataChangee() {
 
     }
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
     }
-    setState(val) {
-        this.state = val;
-        this.eventConfig.onState.call(this, this.state);
+    _setState(val) {
+        this._state = val;
+        this._eventConfig.onState.call(this, this._state);
     }
-    resize() {
-        this.drawMap();
+    _toDraw() {
+        this._drawMap();
     }
-    translation(distanceX, distanceY) {
-        for (let i = 0; i < this.workerData.length; i++) {
-            let pixel = this.workerData[i].geometry.pixel;
+    _translation(distanceX, distanceY) {
+        for (let i = 0; i < this._workerData.length; i++) {
+            let pixel = this._workerData[i].geometry.pixel;
             pixel.x = pixel.x + distanceX;
             pixel.y = pixel.y + distanceY;
         }
         this.refresh();
     }
 
-    drawMap() {
-        this.clearCanvas();
-        this.setState(State.computeBefore);
-        this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), (pixels, margin, zoom) => {
-            this.setState(State.conputeAfter);
-            this.setWorkerData(pixels);
-            this.updateOverClickItem();
+    _drawMap() {
+        this._clearCanvas();
+        this._setState(State.computeBefore);
+        this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin, zoom) => {
+            this._setState(State.conputeAfter);
+            this._setWorkerData(pixels);
+            this._updateOverClickItem();
 
-            if (this.map.getZoom() == zoom) {
-                this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
+            if (this._map.getZoom() == zoom) {
+                this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             } else {
-                this.translation(0, 0);
+                this._translation(0, 0);
             }
             margin = null;
             pixels = null;
         });
     }
-    updateOverClickItem() {
-        let overArr = this.overItem ? [this.overItem] : [];
-        let allItems = this.selectItem.concat(overArr);
+    _updateOverClickItem() {
+        let overArr = this._overItem ? [this._overItem] : [];
+        let allItems = this._selectItem.concat(overArr);
 
         for (let i = 0; i < allItems.length; i++) {
             let item = allItems[i];
-            let ret = this.workerData.find(function (val) {
+            let ret = this._workerData.find(function (val) {
                 let itemCoordinates = item.geometry.coordinates;
                 let valCoordinates = val.geometry.coordinates;
                 return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
@@ -65,8 +65,8 @@ export default class LabelOverlay extends Parameter {
     }
 
 
-    getTarget(mouseX, mouseY) {
-        let data = this.workerData;
+    _getTarget(mouseX, mouseY) {
+        let data = this._workerData;
         for (let i = 0, len = data.length; i < len; i++) {
             let item = data[i];
             let pixel = item.geometry.pixel;
@@ -88,10 +88,10 @@ export default class LabelOverlay extends Parameter {
     _isMouseOver(mouseX, mouseY, x, y, w, h) {
         return !(mouseX < x || mouseX > x + w || mouseY < y || mouseY > y + h);
     }
-    findIndexSelectItem(item) {
+    _findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-            index = this.selectItem.findIndex(function (val) {
+            index = this._selectItem.findIndex(function (val) {
                 let itemCoordinates = item.geometry.coordinates;
                 let valCoordinates = val.geometry.coordinates;
                 return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
@@ -100,15 +100,15 @@ export default class LabelOverlay extends Parameter {
         return index;
     }
     refresh() {
-        this.setState(State.drawBefore);
-        this.clearCanvas();
-        this._drawLabel(this.ctx, this.workerData);
-        this.setState(State.drawAfter);
+        this._setState(State.drawBefore);
+        this._clearCanvas();
+        this._drawLabel(this._ctx, this._workerData);
+        this._setState(State.drawAfter);
     }
-    swopData(index, item) {
+    _swopData(index, item) {
         if (index > -1) {
-            this.workerData[index] = this.workerData[this.workerData.length - 1];
-            this.workerData[this.workerData.length - 1] = item;
+            this._workerData[index] = this._workerData[this._workerData.length - 1];
+            this._workerData[this._workerData.length - 1] = item;
         }
     }
     _drawLabel(ctx, pixels) {
@@ -117,7 +117,7 @@ export default class LabelOverlay extends Parameter {
             let item = pixels[i];
             let pixel = item.geometry.pixel;
             ctx.beginPath();
-            let style = this.setDrawStyle(item,true);
+            let style = this._setDrawStyle(item,true);
             ctx.font = style.font;
             ctx.fillStyle = style.color;
 

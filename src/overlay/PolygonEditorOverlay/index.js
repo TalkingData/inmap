@@ -33,7 +33,7 @@
          this.isCreate = false;
 
      }
-     canvasInit() {
+     _canvasInit() {
          this._polygonOverlay = new PolygonOverlay({
              style: this._opts.style.polygon,
              data: this._opts.data ? [this._toMutilPolygon(this._opts.data)] : [],
@@ -69,7 +69,7 @@
              }
          });
 
-         this.map.addOverlay(this._polygonOverlay);
+         this._map.addOverlay(this._polygonOverlay);
 
          this._pointOverlay = new PointDragOverlay({
              style: { ...this._opts.style.point,
@@ -83,7 +83,7 @@
                  onDblclick: this._dblclickPoint,
              }
          });
-         this.map.addOverlay(this._pointOverlay);
+         this._map.addOverlay(this._pointOverlay);
 
          this._virtualPointOverlay = new PointDragOverlay({
              style: { ...this._opts.style.virtualPoint,
@@ -96,8 +96,8 @@
                  onDragging: this._draggingVirtual
              }
          });
-         this.map.addOverlay(this._virtualPointOverlay);
-         this.map.addEventListener('rightclick', this._rightclick);
+         this._map.addOverlay(this._virtualPointOverlay);
+         this._map.addEventListener('rightclick', this._rightclick);
      }
      setOptionStyle(opts) {
 
@@ -143,15 +143,15 @@
          }];
          this._createTempCache = null;
          this._createIndex = -1;
-         if (this.map) {
-             this._polygonOverlay.setWorkerData(this._workerData);
+         if (this._map) {
+             this._polygonOverlay._setWorkerData(this._workerData);
              this._polygonOverlay.refresh();
-             this.map.removeEventListener('click', this._clickFun);
-             this.map.removeEventListener('dblclick', this._dblclickFun);
-             this.map.removeEventListener('mousemove', this._mousemoveFun);
-             this.map.addEventListener('click', this._clickFun);
-             this.map.addEventListener('dblclick', this._dblclickFun);
-             this.map.addEventListener('mousemove', this._mousemoveFun);
+             this._map.removeEventListener('click', this._clickFun);
+             this._map.removeEventListener('dblclick', this._dblclickFun);
+             this._map.removeEventListener('mousemove', this._mousemoveFun);
+             this._map.addEventListener('click', this._clickFun);
+             this._map.addEventListener('dblclick', this._dblclickFun);
+             this._map.addEventListener('mousemove', this._mousemoveFun);
          }
 
      }
@@ -169,9 +169,9 @@
      enableEditing() {
          this.isCreate = false;
          this._opts.style.isEdit = true;
-         this.map && this.map.removeEventListener('click', this._clickFun);
-         this.map && this.map.removeEventListener('dblclick', this._dblclickFun);
-         this.map && this.map.removeEventListener('mousemove', this._mousemoveFun);
+         this._map && this._map.removeEventListener('click', this._clickFun);
+         this._map && this._map.removeEventListener('dblclick', this._dblclickFun);
+         this._map && this._map.removeEventListener('mousemove', this._mousemoveFun);
          this._setPointData();
          this._setVirtualPointData();
      }
@@ -197,7 +197,7 @@
                                  pixel[0] = pixel[0] + x;
                                  pixel[1] = pixel[1] + y;
 
-                                 let latlng = this.map.overlayPixelToPoint({
+                                 let latlng = this._map.overlayPixelToPoint({
                                      x: pixel[0],
                                      y: pixel[1]
                                  });
@@ -213,17 +213,17 @@
          }
      }
      _removeMoveEvent() {
-         if (!this.map) return;
-         this.map.removeEventListener('click', this._clickFun);
-         this.map.removeEventListener('dblclick', this._dblclickFun);
-         this.map.removeEventListener('mousemove', this._mousemoveFun);
-         this.map.removeEventListener('rightclick', this._rightclick);
+         if (!this._map) return;
+         this._map.removeEventListener('click', this._clickFun);
+         this._map.removeEventListener('dblclick', this._dblclickFun);
+         this._map.removeEventListener('mousemove', this._mousemoveFun);
+         this._map.removeEventListener('rightclick', this._rightclick);
      }
-     Tdispose() {
+     _Tdispose() {
          this._removeMoveEvent();
-         this.map.removeOverlay(this._polygonOverlay);
-         this.map.removeOverlay(this._pointOverlay);
-         this.map.removeOverlay(this._virtualPointOverlay);
+         this._map.removeOverlay(this._polygonOverlay);
+         this._map.removeOverlay(this._pointOverlay);
+         this._map.removeOverlay(this._virtualPointOverlay);
          this._polygonOverlay.dispose();
          this._pointOverlay.dispose();
          this._virtualPointOverlay.dispose();
@@ -316,7 +316,7 @@
              return;
          }
 
-         let geoJSON = this._polygonOverlay.workerData[0];
+         let geoJSON = this._polygonOverlay._workerData[0];
 
          let currentCoordinate = geoJSON.geometry.coordinates[this._createIndex];
          if (currentCoordinate[0].length <= 2) {
@@ -402,7 +402,7 @@
      _mousemoveFun(event) {
 
          if (!this.isCreate || !this._createTempCache) return;
-         let data = this._polygonOverlay.workerData[0];
+         let data = this._polygonOverlay._workerData[0];
          let currentCoordinate = data.geometry.coordinates[this._createIndex];
          let currentPixels = data.geometry.pixels[this._createIndex];
 
@@ -414,14 +414,14 @@
              [event.offsetX, event.offsetY]
          ]);
 
-         this._polygonOverlay.selectItem = [];
+         this._polygonOverlay._selectItem = [];
          this._polygonOverlay.refresh();
      }
      _clearPointOverlay() {
          if (!this._pointOverlay) return;
-         this._pointOverlay.setWorkerData([]);
+         this._pointOverlay._setWorkerData([]);
          this._pointOverlay.refresh();
-         this._virtualPointOverlay.setWorkerData([]);
+         this._virtualPointOverlay._setWorkerData([]);
          this._virtualPointOverlay.refresh();
      }
      _setVirtualPointData() {
@@ -465,8 +465,8 @@
 
          }
          if (!this._virtualPointOverlay) return;
-         this._virtualPointOverlay.selectItem = [];
-         this._virtualPointOverlay.setWorkerData(virtualData);
+         this._virtualPointOverlay._selectItem = [];
+         this._virtualPointOverlay._setWorkerData(virtualData);
          this._virtualPointOverlay.refresh();
      }
      _setPointData() {
@@ -487,8 +487,8 @@
              pointData = pointData.concat(this._pointDataGroup[i]);
          }
          if (!this._pointOverlay) return;
-         this._pointOverlay.selectItem = [];
-         this._pointOverlay.setWorkerData(pointData);
+         this._pointOverlay._selectItem = [];
+         this._pointOverlay._setWorkerData(pointData);
          this._pointOverlay.refresh();
      }
      _Andcoordinates(coordinates, pixels, target, Arrindex, coordinatesIndex) {
@@ -520,22 +520,22 @@
          }
      }
      _dragEndVirtual(item, index, event) {
-         let key = this._pointOverlay.workerData[index]._index;
+         let key = this._pointOverlay._workerData[index]._index;
          this._draggingPointTemp = null;
          this._draggingVirtualTemp = null;
          this._updatePolygon(item, key, 'insert', event);
-         this.clearCanvas();
+         this._clearCanvas();
      }
      _dragEndPoint(item, index, event) {
-         let key = this._pointOverlay.workerData[index]._index;
+         let key = this._pointOverlay._workerData[index]._index;
          this._draggingPointTemp = null;
          this._draggingVirtualTemp = null;
-         this.clearCanvas();
+         this._clearCanvas();
          this._updatePolygon(item, key, 'update', event);
      }
      _dblclickPoint(item, index, event) {
-         let key = this._pointOverlay.workerData[index]._index;
-         this.clearCanvas();
+         let key = this._pointOverlay._workerData[index]._index;
+         this._clearCanvas();
          this._updatePolygon(item, key, 'delete', event);
      }
      _updatePolygon(item, key, action, event) {
@@ -621,22 +621,22 @@
          this._drawLine(virtualLine);
      }
      _drawLine(data) {
-         this.clearCanvas();
-         this.ctx.beginPath();
-         this.ctx.save();
-         this.ctx.lineWidth = 4;
-         this.ctx.strokeStyle = 'red';
-         this.ctx.setLineDash([10, 5]);
+         this._clearCanvas();
+         this._ctx.beginPath();
+         this._ctx.save();
+         this._ctx.lineWidth = 4;
+         this._ctx.strokeStyle = 'red';
+         this._ctx.setLineDash([10, 5]);
          for (let i = 0; i < data.length; i++) {
              let geometry = data[i].geometry;
              if (i == 0) {
-                 this.ctx.moveTo(geometry.pixel.x, geometry.pixel.y);
+                 this._ctx.moveTo(geometry.pixel.x, geometry.pixel.y);
              } else {
-                 this.ctx.lineTo(geometry.pixel.x, geometry.pixel.y);
+                 this._ctx.lineTo(geometry.pixel.x, geometry.pixel.y);
              }
          }
-         this.ctx.stroke();
-         this.ctx.restore();
+         this._ctx.stroke();
+         this._ctx.restore();
      }
 
  }

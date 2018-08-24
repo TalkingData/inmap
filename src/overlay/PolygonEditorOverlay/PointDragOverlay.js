@@ -27,46 +27,46 @@ export default class PointOverlay extends Parameter {
 
     }
 
-    onOptionChange() {
+    _onOptionChange() {
 
     }
-    onDataChange() {
+    _onDataChangee() {
 
     }
-    parameterInit() {
-        this.map.addOverlay(this._mouseLayer);
-        this.map.addEventListener('mouseup', this._mouseupFun);
-        this.map.addEventListener('mousedown', this._mousedownFun);
-        this.map.addEventListener('dblclick', this._dblclickFun);
+    _parameterInit() {
+        this._map.addOverlay(this._mouseLayer);
+        this._map.addEventListener('mouseup', this._mouseupFun);
+        this._map.addEventListener('mousedown', this._mousedownFun);
+        this._map.addEventListener('dblclick', this._dblclickFun);
        
     }
 
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
     }
-    resize() {
+    _toDraw() {
 
     }
 
-    drawMouseLayer() {
-        let overArr = this.overItem ? [this.overItem] : [];
-        this._mouseLayer.clearCanvas();
-        this._loopDraw(this._mouseLayer.ctx, this.selectItem.concat(overArr), true);
+    _drawMouseLayer() {
+        let overArr = this._overItem ? [this._overItem] : [];
+        this._mouseLayer._clearCanvas();
+        this._loopDraw(this._mouseLayer._getContext(), this._selectItem.concat(overArr), true);
 
     }
-    clearAll() {
-        this.overItem = [];
-        this._mouseLayer.clearCanvas();
-        this.clearCanvas();
+    _clearAll() {
+        this._overItem = [];
+        this._mouseLayer._clearCanvas();
+        this._clearCanvas();
     }
 
-    updateOverClickItem() {
-        let overArr = this.overItem ? [this.overItem] : [];
-        let allItems = this.selectItem.concat(overArr);
+    _updateOverClickItem() {
+        let overArr = this._overItem ? [this._overItem] : [];
+        let allItems = this._selectItem.concat(overArr);
 
         for (let i = 0; i < allItems.length; i++) {
             let item = allItems[i];
-            let ret = this.workerData.find(function (val) {
+            let ret = this._workerData.find(function (val) {
                 let itemCoordinates = item.geometry.coordinates;
                 let valCoordinates = val.geometry.coordinates;
                 return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
@@ -75,23 +75,23 @@ export default class PointOverlay extends Parameter {
         }
     }
 
-    getTarget(mouseX, mouseY) {
-        let pixels = this.workerData,
-            ctx = this.ctx;
-        let mapSize = this.map.getSize();
+    _getTarget(mouseX, mouseY) {
+        let pixels = this._workerData,
+            ctx = this._ctx;
+        let mapSize = this._map.getSize();
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let {
                 x,
                 y,
             } = item.geometry.pixel;
-            let style = this.setDrawStyle(item);
+            let style = this._setDrawStyle(item);
             let size = style.size;
             size += style.borderWidth || 0;
             if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
                 ctx.beginPath();
                 ctx.arc(x, y, size, 0, 2 * Math.PI, true);
-                if (ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
+                if (ctx.isPointInPath(mouseX * this._devicePixelRatio, mouseY * this._devicePixelRatio)) {
                     return {
                         index: i,
                         item: item
@@ -104,10 +104,10 @@ export default class PointOverlay extends Parameter {
             item: null
         };
     }
-    findIndexSelectItem(item) {
+    _findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-            index = this.selectItem.findIndex(function (val) {
+            index = this._selectItem.findIndex(function (val) {
                 let itemCoordinates = item.geometry.coordinates;
                 let valCoordinates = val.geometry.coordinates;
                 return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
@@ -117,20 +117,20 @@ export default class PointOverlay extends Parameter {
     }
     refresh() {
 
-        this.clearCanvas();
-        this._mouseLayer.canvasResize();
-        this._loopDraw(this.ctx, this.workerData, false);
-        this.drawMouseLayer();
+        this._clearCanvas();
+        this._mouseLayer._canvasResize();
+        this._loopDraw(this._ctx, this._workerData, false);
+        this._drawMouseLayer();
 
     }
-    swopData(index, item) {
+    _swopData(index, item) {
         if (index > -1) { //导致文字闪
-            this.workerData[index] = this.workerData[this.workerData.length - 1];
-            this.workerData[this.workerData.length - 1] = item;
+            this._workerData[index] = this._workerData[this._workerData.length - 1];
+            this._workerData[this._workerData.length - 1] = item;
         }
     }
     _loopDraw(ctx, pixels, otherMode) {
-        let mapSize = this.map.getSize();
+        let mapSize = this._map.getSize();
         let pre = null;
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
@@ -142,7 +142,7 @@ export default class PointOverlay extends Parameter {
                 y
             } = pixel;
             if (pre == null || (pre.x != x && pre.y != y)) {
-                let style = this.setDrawStyle(item, otherMode);
+                let style = this._setDrawStyle(item, otherMode);
                 let size = style.size;
 
                 if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
@@ -178,19 +178,19 @@ export default class PointOverlay extends Parameter {
         }
     }
     _removeMoveEvent() {
-        this.map.removeEventListener('mouseup', this._mouseupFun);
-        this.map.removeEventListener('mousedown', this._mousedownFun);
-        this.map.removeEventListener('dblclick', this._dblclickFun);
+        this._map.removeEventListener('mouseup', this._mouseupFun);
+        this._map.removeEventListener('mousedown', this._mousedownFun);
+        this._map.removeEventListener('dblclick', this._dblclickFun);
        
     }
-    Tdispose() {
+    _Tdispose() {
         this._removeMoveEvent();
-        this.map.removeOverlay(this._mouseLayer);
+        this._map.removeOverlay(this._mouseLayer);
         this._mouseLayer.dispose();
     }
-    tMousemove(event) {
+    _tMousemove(event) {
         if (this._isDragging) {
-            let point = this.selectItem[0];
+            let point = this._selectItem[0];
             if (!point) return;
 
             let dragEndPixel = {
@@ -201,50 +201,50 @@ export default class PointOverlay extends Parameter {
             point.geometry.pixel.y = dragEndPixel.y;
             point.geometry.coordinates = [event.point.lng, event.point.lat];
             this.refresh();
-            this.eventConfig.onDragging.call(this, point, this._selectItemIndex, event);
+            this._eventConfig.onDragging.call(this, point, this._selectItemIndex, event);
         } else {
-            if (this.eventType == 'onmoving') {
+            if (this._eventType == 'onmoving') {
                 return;
             }
-            let result = this.getTarget(event.pixel.x, event.pixel.y);
+            let result = this._getTarget(event.pixel.x, event.pixel.y);
             let temp = result.item;
 
-            if (temp != this.overItem) { //防止过度重新绘画
-                this.overItem = temp;
-                this.eventType = 'mousemove';
-                if (!isEmpty(this.styleConfig.mouseOver)) {
-                    this.drawMouseLayer();
+            if (temp != this._overItem) { //防止过度重新绘画
+                this._overItem = temp;
+                this._eventType = 'mousemove';
+                if (!isEmpty(this._styleConfig.mouseOver)) {
+                    this._drawMouseLayer();
                 }
             }
             if (temp) {
-                this.map.setDefaultCursor('pointer');
+                this._map.setDefaultCursor('pointer');
             } else {
-                this.map.setDefaultCursor('default');
+                this._map.setDefaultCursor('default');
             }
         }
 
 
     }
     _mousedownFun(event) {
-        if (this.eventType == 'onmoving') return;
-        let result = this.getTarget(event.pixel.x, event.pixel.y);
+        if (this._eventType == 'onmoving') return;
+        let result = this._getTarget(event.pixel.x, event.pixel.y);
         this._selectItemIndex = result.index;
         if (result.index == -1) {
             return;
         }
-        this._isDragging = this.styleConfig.isDrag;
+        this._isDragging = this._styleConfig.isDrag;
 
         if (this._isDragging) {
             this._dragStartPixel = {
                 x: event.offsetX,
                 y: event.offsetY
             };
-            this.map.disableDragging();
-            this.eventConfig.onDragStart.call(this, result.item, this._selectItemIndex, event);
+            this._map.disableDragging();
+            this._eventConfig.onDragStart.call(this, result.item, this._selectItemIndex, event);
         }
 
-        this.selectItem = [result.item];
-        this.drawMouseLayer();
+        this._selectItem = [result.item];
+        this._drawMouseLayer();
     }
     _mouseupFun(event) {
 
@@ -254,13 +254,13 @@ export default class PointOverlay extends Parameter {
                 y: event.offsetY
             };
             if (this._dragStartPixel.x == dragEndPixel.x && this._dragStartPixel.y == dragEndPixel.y) {
-                this.map.enableDragging();
+                this._map.enableDragging();
             } else {
-                let point = this.selectItem[0];
+                let point = this._selectItem[0];
                 if (point) {
                     point.geometry.coordinates = [event.point.lng, event.point.lat];
-                    this.map.enableDragging();
-                    this.eventConfig.onDragEnd.call(this, point, this._selectItemIndex, event);
+                    this._map.enableDragging();
+                    this._eventConfig.onDragEnd.call(this, point, this._selectItemIndex, event);
                 }
             }
 
@@ -270,11 +270,11 @@ export default class PointOverlay extends Parameter {
     }
     _dblclickFun(event) {
         if (this._selectItemIndex > -1) {
-            this.eventConfig.onDblclick.call(this, this.selectItem[0], this._selectItemIndex, event);
+            this._eventConfig.onDblclick.call(this, this._selectItem[0], this._selectItemIndex, event);
         }
 
     }
-    tMouseClick() {
+    _tMouseClick() {
 
     }
 }

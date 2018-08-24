@@ -21,7 +21,7 @@ describe('Parameter  base class ', () => {
       splitList: [],
     };
 
-    Parameter.prototype.toRgba(style);
+    Parameter.prototype._toRgba(style);
     ['normal', 'mouseOver', 'selected'].forEach((status) => {
       ['backgroundColor', 'borderColor'].forEach((item) => {
         let statusStyle = style[status];

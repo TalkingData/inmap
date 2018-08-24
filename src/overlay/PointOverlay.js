@@ -15,61 +15,60 @@ let isMobile = detectmob();
 export default class PointOverlay extends Parameter {
     constructor(opts) {
         super(PointConfig, opts);
-
         this._loopDraw = this._loopDraw.bind(this);
         if (!isEmpty(this._option.draw)) {
-            this.batchesData = new BatchesData(this._option.draw);
+            this._batchesData = new BatchesData(this._option.draw);
         }
-        this.mouseLayer = new CanvasOverlay();
-        this.state = null;
-        this.mpp = {};
+        this._mouseLayer = new CanvasOverlay();
+        this._state = null;
+        this._mpp = {};
     }
-    initLegend() {
-        if (this.styleConfig.colors.length > 0) {
-            this.compileSplitList(this.getTransformData());
+    _initLegend() {
+        if (this._styleConfig.colors.length > 0) {
+            this._compileSplitList(this._getTransformData());
         } else {
-            this.setlegend(this.legendConfig, this.styleConfig.splitList);
+            this._setlegend(this._legendConfig, this._styleConfig.splitList);
         }
 
     }
-    onOptionChange() {
-        this.map && this.initLegend();
+    _onOptionChange() {
+        this._map && this._initLegend();
     }
-    onDataChange() {
-        this.map && this.initLegend();
+    _onDataChange() {
+        this._map && this._initLegend();
     }
-    parameterInit() {
-        this.map.addOverlay(this.mouseLayer);
-        this.initLegend();
+    _parameterInit() {
+        this._map.addOverlay(this._mouseLayer);
+        this._initLegend();
     }
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
         if (!isEmpty(this._option.draw)) {
-            this.batchesData = new BatchesData(this._option.draw);
+            this._batchesData = new BatchesData(this._option.draw);
         } else {
-            this.batchesData = null;
+            this._batchesData = null;
         }
     }
-    setState(val) {
-        this.state = val;
-        this.eventConfig.onState.call(this, this.state);
+    _setState(val) {
+        this._state = val;
+        this._eventConfig.onState.call(this, this._state);
     }
-    resize() {
-        this.drawMap();
+    _toDraw() {
+        this._drawMap();
     }
     _calculateMpp(size) {
-        let normal = this.styleConfig.normal,
+        let normal = this._styleConfig.normal,
             result;
         if (normal.unit == 'px') {
             result = size;
         } else if (normal.unit == 'm') {
-            let zoom = this.map.getZoom();
+            let zoom = this._map.getZoom();
             let mpp;
-            if (this.mpp[zoom]) {
-                mpp = this.mpp[zoom];
+            if (this._mpp[zoom]) {
+                mpp = this._mpp[zoom];
             } else {
-                this.mpp[zoom] = this.getMpp();
-                mpp = this.mpp[zoom];
+                this._mpp[zoom] = this._getMpp();
+                mpp = this._mpp[zoom];
             }
             if (mpp == 0 || isNaN(mpp)) {
                 return;
@@ -83,69 +82,69 @@ export default class PointOverlay extends Parameter {
     /**
      * 获得每个像素对应多少米	
      */
-    getMpp() {
-        let mapCenter = this.map.getCenter();
+    _getMpp() {
+        let mapCenter = this._map.getCenter();
         let assistValue = 10;
         let cpt = new BMap.Point(mapCenter.lng, mapCenter.lat + assistValue);
-        let dpx = Math.abs(this.map.pointToPixel(mapCenter).y - this.map.pointToPixel(cpt).y);
-        return this.map.getDistance(mapCenter, cpt) / dpx;
+        let dpx = Math.abs(this._map.pointToPixel(mapCenter).y - this._map.pointToPixel(cpt).y);
+        return this._map.getDistance(mapCenter, cpt) / dpx;
     }
 
-    translation(distanceX, distanceY) {
-        if (this.batchesData && !this.batchesData.usable) return;
-        for (let i = 0; i < this.workerData.length; i++) {
-            let pixel = this.workerData[i].geometry.pixel;
+    _translation(distanceX, distanceY) {
+        if (this._batchesData && !this._batchesData.usable) return;
+        for (let i = 0; i < this._workerData.length; i++) {
+            let pixel = this._workerData[i].geometry.pixel;
             pixel.x = pixel.x + distanceX;
             pixel.y = pixel.y + distanceY;
         }
 
         this.refresh();
     }
-    drawMouseLayer() {
-        let overArr = this.overItem ? [this.overItem] : [];
-        this.mouseLayer.clearCanvas();
-        this._loopDraw(this.mouseLayer.ctx, this.selectItem.concat(overArr), true);
+    _drawMouseLayer() {
+        let overArr = this._overItem ? [this._overItem] : [];
+        this._mouseLayer._clearCanvas();
+        this._loopDraw(this._mouseLayer._getContext(), this._selectItem.concat(overArr), true);
 
     }
-    clearAll() {
-        this.mouseLayer.clearCanvas();
-        this.clearCanvas();
+    _clearAll() {
+        this._mouseLayer._clearCanvas();
+        this._clearCanvas();
     }
-    drawMap() {
-        if (this.batchesData) {
-            this.batchesData.clear();
-            this.batchesData.setUsable(false);
+    _drawMap() {
+        if (this._batchesData) {
+            this._batchesData.clear();
+            this._batchesData.setUsable(false);
         }
 
 
-        this.clearAll();
-        this.setState(State.computeBefore);
-        this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), (pixels, margin, zoom) => {
+        this._clearAll();
+        this._setState(State.computeBefore);
+        this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin, zoom) => {
 
-            this.setState(State.conputeAfter);
-            this.setWorkerData(pixels);
-            this.updateOverClickItem();
+            this._setState(State.conputeAfter);
+            this._setWorkerData(pixels);
+            this._updateOverClickItem();
 
-            if (this.batchesData) {
-                this.batchesData.setUsable(true);
+            if (this._batchesData) {
+                this._batchesData.setUsable(true);
             }
-            if (this.map.getZoom() == zoom) {
-                this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
+            if (this._map.getZoom() == zoom) {
+                this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             } else {
-                this.translation(0, 0);
+                this._translation(0, 0);
             }
             margin = null;
             pixels = null;
 
         });
     }
-    updateOverClickItem() {
-        let overArr = this.overItem ? [this.overItem] : [];
-        let allItems = this.selectItem.concat(overArr);
+    _updateOverClickItem() {
+        let overArr = this._overItem ? [this._overItem] : [];
+        let allItems = this._selectItem.concat(overArr);
 
         for (let i = 0; i < allItems.length; i++) {
             let item = allItems[i];
-            let ret = this.workerData.find(function (val) {
+            let ret = this._workerData.find(function (val) {
                 let itemCoordinates = item.geometry.coordinates;
                 let valCoordinates = val.geometry.coordinates;
                 return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
@@ -157,8 +156,8 @@ export default class PointOverlay extends Parameter {
      * 颜色等分策略
      * @param {} data 
      */
-    compileSplitList(data) {
-        let colors = this.styleConfig.colors;
+    _compileSplitList(data) {
+        let colors = this._styleConfig.colors;
         if (colors.length <= 0) return;
         data = data.sort((a, b) => {
             return parseFloat(a.count) - parseFloat(b.count);
@@ -207,27 +206,27 @@ export default class PointOverlay extends Parameter {
             }
         }
 
-        this.styleConfig.splitList = result;
-        this.setlegend(this.legendConfig, this.styleConfig.splitList);
+        this._styleConfig.splitList = result;
+        this._setlegend(this._legendConfig, this._styleConfig.splitList);
     }
 
-    getTarget(mouseX, mouseY) {
-        let pixels = this.workerData,
-            ctx = this.ctx;
-        let mapSize = this.map.getSize();
+    _getTarget(mouseX, mouseY) {
+        let pixels = this._workerData,
+            ctx = this._ctx;
+        let mapSize = this._map.getSize();
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let {
                 x,
                 y,
             } = item.geometry.pixel;
-            let style = this.setDrawStyle(item);
+            let style = this._setDrawStyle(item);
             let size = this._calculateMpp(style.size);
             size += style.borderWidth || 0;
             if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
                 ctx.beginPath();
                 ctx.arc(x, y, size, 0, 2 * Math.PI, true);
-                if (ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
+                if (ctx.isPointInPath(mouseX * this._devicePixelRatio, mouseY * this._devicePixelRatio)) {
                     return {
                         index: i,
                         item: item
@@ -240,10 +239,10 @@ export default class PointOverlay extends Parameter {
             item: null
         };
     }
-    findIndexSelectItem(item) {
+    _findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-            index = this.selectItem.findIndex(function (val) {
+            index = this._selectItem.findIndex(function (val) {
                 let itemCoordinates = item.geometry.coordinates;
                 let valCoordinates = val.geometry.coordinates;
                 return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
@@ -252,26 +251,26 @@ export default class PointOverlay extends Parameter {
         return index;
     }
     refresh() {
-        this.setState(State.drawBefore);
-        this.clearCanvas();
-        this.mouseLayer.canvasResize();
-        if (this.batchesData) {
-            this.batchesData.clear();
-            this.batchesData.action(this.workerData, this._loopDraw, this.ctx);
+        this._setState(State.drawBefore);
+        this._clearCanvas();
+        this._mouseLayer._canvasResize();
+        if (this._batchesData) {
+            this._batchesData.clear();
+            this._batchesData.action(this._workerData, this._loopDraw, this._ctx);
 
         } else {
-            this._loopDraw(this.ctx, this.workerData, false);
+            this._loopDraw(this._ctx, this._workerData, false);
         }
-        if (this.styleConfig.normal.label.show) {
-            this._drawLabel(this.ctx, this.workerData);
+        if (this._styleConfig.normal.label.show) {
+            this._drawLabel(this._ctx, this._workerData);
         }
-        this.drawMouseLayer();
-        this.setState(State.drawAfter);
+        this._drawMouseLayer();
+        this._setState(State.drawAfter);
     }
-    swopData(index, item) {
-        if (index > -1 && !this.styleConfig.normal.label.show) { //导致文字闪
-            this.workerData[index] = this.workerData[this.workerData.length - 1];
-            this.workerData[this.workerData.length - 1] = item;
+    _swopData(index, item) {
+        if (index > -1 && !this._styleConfig.normal.label.show) { //导致文字闪
+            this._workerData[index] = this._workerData[this._workerData.length - 1];
+            this._workerData[this._workerData.length - 1] = item;
         }
     }
     /**
@@ -281,7 +280,7 @@ export default class PointOverlay extends Parameter {
      * @param {*} otherMode 是否绘画选中数据
      */
     _loopDraw(ctx, pixels, otherMode) {
-        let mapSize = this.map.getSize();
+        let mapSize = this._map.getSize();
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.geometry.pixel;
@@ -291,9 +290,9 @@ export default class PointOverlay extends Parameter {
             } = pixel;
 
             //重构
-            let style = this.setDrawStyle(item, otherMode);
+            let style = this._setDrawStyle(item, otherMode);
             let size = this._calculateMpp(style.size);
-            if (this.styleConfig.normal.label.show) {
+            if (this._styleConfig.normal.label.show) {
                 pixel['radius'] = size;
             }
             if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
@@ -312,7 +311,7 @@ export default class PointOverlay extends Parameter {
         }
     }
     _drawLabel(ctx, pixels) {
-        let fontStyle = this.styleConfig.normal.label;
+        let fontStyle = this._styleConfig.normal.label;
         let fontSize = parseInt(fontStyle.font);
         ctx.font = fontStyle.font;
         ctx.textBaseline = 'top';
@@ -322,11 +321,11 @@ export default class PointOverlay extends Parameter {
         // let param = {
         //     pixels: pixels,
         //     height: fontSize,
-        //     borderWidth: this.styleConfig.normal.borderWidth,
+        //     borderWidth: this._styleConfig.normal.borderWidth,
         //     byteWidth: byteWidth
         // };
-        // this.postMessage('LablEvading.merge', param, (labels) => {
-        //     if (this.eventType == 'onmoving') {
+        // this._postMessage('LablEvading.merge', param, (labels) => {
+        //     if (this._eventType == 'onmoving') {
         //         return;
         //     }
         //     labels.forEach(function (item) {
@@ -342,7 +341,7 @@ export default class PointOverlay extends Parameter {
                 x,
                 y
             } = val.geometry.pixel;
-            let r = radius + this.styleConfig.normal.borderWidth;
+            let r = radius + this._styleConfig.normal.borderWidth;
             isName = val.name ? true : false;
             return new Label(x, y, r, fontSize, byteWidth, val.name);
         });
@@ -393,68 +392,68 @@ export default class PointOverlay extends Parameter {
             ctx.stroke();
         }
     }
-    Tdispose() {
-        this.batchesData && this.batchesData.clear();
-        this.map.removeOverlay(this.mouseLayer);
-        this.mouseLayer.dispose();
+    _Tdispose() {
+        this._batchesData && this._batchesData.clear();
+        this._map.removeOverlay(this._mouseLayer);
+        this._mouseLayer.dispose();
     }
-    tMousemove(event) {
+    _tMousemove(event) {
 
-        if (this.eventType == 'onmoving') {
+        if (this._eventType == 'onmoving') {
             return;
         }
-        if (!this.tooltipConfig.show && isEmpty(this.styleConfig.mouseOver)) {
+        if (!this._tooltipConfig.show && isEmpty(this._styleConfig.mouseOver)) {
             return;
         }
-        let result = this.getTarget(event.pixel.x, event.pixel.y);
+        let result = this._getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
 
-        if (temp != this.overItem) { //防止过度重新绘画
-            this.overItem = temp;
-            this.eventType = 'mousemove';
-            if (!isEmpty(this.styleConfig.mouseOver)) {
-                this.drawMouseLayer();
+        if (temp != this._overItem) { //防止过度重新绘画
+            this._overItem = temp;
+            this._eventType = 'mousemove';
+            if (!isEmpty(this._styleConfig.mouseOver)) {
+                this._drawMouseLayer();
             }
         }
         if (temp) {
-            this.map.setDefaultCursor('pointer');
+            this._map.setDefaultCursor('pointer');
         } else {
-            this.map.setDefaultCursor('default');
+            this._map.setDefaultCursor('default');
         }
 
-        this.setTooltip(event);
+        this._setTooltip(event);
 
     }
-    tMouseClick(event) {
-        if (this.eventType == 'onmoving') return;
+    _tMouseClick(event) {
+        if (this._eventType == 'onmoving') return;
         let {
             multiSelect
-        } = this.eventConfig;
-        let result = this.getTarget(event.pixel.x, event.pixel.y);
+        } = this._eventConfig;
+        let result = this._getTarget(event.pixel.x, event.pixel.y);
         if (result.index == -1) {
             return;
         }
 
         let item = result.item;
         if (multiSelect) {
-            if (this.selectItemContains(item)) {
-                this.deleteSelectItem(item); //二次点击取消选中
+            if (this._selectItemContains(item)) {
+                this._deleteSelectItem(item); //二次点击取消选中
             } else {
-                this.selectItem.push(result.item);
+                this._selectItem.push(result.item);
             }
 
         } else {
-            this.selectItem = [result.item];
+            this._selectItem = [result.item];
         }
 
-        this.eventConfig.onMouseClick(this.selectItem, event);
+        this._eventConfig.onMouseClick(this._selectItem, event);
 
 
         if (isMobile) {
-            this.overItem = [item];
-            this.setTooltip(event);
+            this._overItem = [item];
+            this._setTooltip(event);
         }
-        this.drawMouseLayer();
+        this._drawMouseLayer();
 
 
     }

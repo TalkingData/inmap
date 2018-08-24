@@ -10,47 +10,47 @@ import State from './../config/OnStateConfig';
 export default class HeatOverlay extends CanvasOverlay {
     constructor(ops) {
         super(ops);
-        this.points = [];
-        this.workerData = [];
+        this._data = [];
+        this._workerData = [];
         this._setStyle(HeatConfig, ops);
-        this.delteOption();
-        this.state = null;
+        this._delteOption();
+        this._state = null;
     }
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
     }
-    resize() {
-        this.drawMap();
+    _toDraw() {
+        this._drawMap();
     }
-    getTransformData() {
-        return this.workerData.length > 0 ? this.workerData : this.points;
+    _getTransformData() {
+        return this._workerData.length > 0 ? this._workerData : this._data;
     }
     _setStyle(config, ops) {
         if (!ops) return;
         let option = merge(config, ops);
         this._option = option;
-        this.styleConfig = option.style;
-        this.eventConfig = option.event;
-        this.gradient = option.style.gradient;
+        this._styleConfig = option.style;
+        this._eventConfig = option.event;
+        this._gradient = option.style.gradient;
         if (ops.data !== undefined) {
             this.setData(ops.data);
         } else {
-            this.map && this.refresh();
+            this._map && this.refresh();
         }
-        this.tMapStyle(option.skin);
+        this._tMapStyle(option.skin);
     }
-    setState(val) {
-        this.state = val;
-        this.eventConfig.onState.call(this, this.state);
+    _setState(val) {
+        this._state = val;
+        this._eventConfig.onState.call(this, this._state);
     }
     /**
      * 屏蔽参数
      */
-    delteOption() {
-        this.tooltipConfig = {
+    _delteOption() {
+        this._tooltipConfig = {
             show: false
         };
-        this.legendConfig = {
+        this._legendConfig = {
             show: false
         };
     }
@@ -62,49 +62,49 @@ export default class HeatOverlay extends CanvasOverlay {
             if (!isArray(points)) {
                 throw new TypeError('inMap: data must be a Array');
             }
-            this.points = points;
+            this._data = points;
         } else {
-            this.points = [];
+            this._data = [];
         }
-        clearPushArray(this.workerData, []);
-        this.map && this.drawMap();
+        clearPushArray(this._workerData, []);
+        this._map && this._drawMap();
     }
-    getMax() {
-        let normal = this.styleConfig;
+    _getMax() {
+        let normal = this._styleConfig;
         normal.maxValue = 0;
-        for (let i = 0, len = this.points.length; i < len; i++) {
-            if (this.points[i].count > normal.maxValue) {
-                normal.maxValue = this.points[i].count;
+        for (let i = 0, len = this._data.length; i < len; i++) {
+            if (this._data[i].count > normal.maxValue) {
+                normal.maxValue = this._data[i].count;
             }
         }
     }
-    translation(distanceX, distanceY) {
-        for (let i = 0; i < this.workerData.length; i++) {
-            let pixel = this.workerData[i].geometry.pixel;
+    _translation(distanceX, distanceY) {
+        for (let i = 0; i < this._workerData.length; i++) {
+            let pixel = this._workerData[i].geometry.pixel;
             pixel.x = pixel.x + distanceX;
             pixel.y = pixel.y + distanceY;
         }
-        this.setState(State.drawBefore);
+        this._setState(State.drawBefore);
         this.refresh();
-        this.setState(State.drawAfter);
+        this._setState(State.drawAfter);
 
     }
-    setWorkerData(val) {
-        this.points = []; //优化
-        clearPushArray(this.workerData, val);
+    _setWorkerData(val) {
+        this._data = []; //优化
+        clearPushArray(this._workerData, val);
     }
-    drawMap() {
-        this.setState(State.computeBefore);
+    _drawMap() {
+        this._setState(State.computeBefore);
 
-        this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), (pixels, margin) => {
+        this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin) => {
 
-            if (this.eventType == 'onmoving') {
+            if (this._eventType == 'onmoving') {
                 return;
             }
-            this.setWorkerData(pixels);
-            this.setState(State.conputeAfter);
+            this._setWorkerData(pixels);
+            this._setState(State.conputeAfter);
 
-            this.translation(margin.left - this.margin.left, margin.top - this.margin.top);
+            this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
 
             margin = null;
             pixels = null;
@@ -112,27 +112,27 @@ export default class HeatOverlay extends CanvasOverlay {
         });
     }
     refresh() {
-        this.clearCanvas();
-        let normal = this.styleConfig;
-        let container = this.container;
+        this._clearCanvas();
+        let normal = this._styleConfig;
+        let container = this._container;
         if (normal.maxValue == 0) {
-            this.getMax();
+            this._getMax();
         }
         if (container.width <= 0) {
             return;
         }
 
-        let ctx = this.ctx;
-        for (let i = 0, len = this.workerData.length; i < len; i++) {
-            let item = this.workerData[i];
+        let ctx = this._ctx;
+        for (let i = 0, len = this._workerData.length; i < len; i++) {
+            let item = this._workerData[i];
             let opacity = (item.count - normal.minValue) / (normal.maxValue - normal.minValue);
             opacity = opacity > 1 ? 1 : opacity;
             let pixel = item.geometry.pixel;
-            this.drawPoint(pixel.x, pixel.y, normal.radius, opacity);
+            this._drawPoint(pixel.x, pixel.y, normal.radius, opacity);
             item = null, opacity = null, pixel = null;
         }
 
-        let palette = this.getColorPaint();
+        let palette = this._getColorPaint();
 
         let img = ctx.getImageData(0, 0, container.width, container.height);
         let imgData = img.data;
@@ -174,8 +174,8 @@ export default class HeatOverlay extends CanvasOverlay {
 
         ctx.putImageData(img, 0, 0, 0, 0, container.width, container.height);
     }
-    drawPoint(x, y, radius, opacity) {
-        let ctx = this.ctx;
+    _drawPoint(x, y, radius, opacity) {
+        let ctx = this._ctx;
         ctx.globalAlpha = opacity;
         ctx.beginPath();
         let gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
@@ -187,8 +187,8 @@ export default class HeatOverlay extends CanvasOverlay {
         ctx.fill();
     }
 
-    getColorPaint() {
-        let gradientConfig = this.gradient;
+    _getColorPaint() {
+        let gradientConfig = this._gradient;
         let paletteCanvas = document.createElement('canvas');
         let paletteCtx = paletteCanvas.getContext('2d');
 

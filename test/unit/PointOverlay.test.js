@@ -43,13 +43,13 @@ describe('PointOverlay ', () => {
     }
     it('constructor ', () => {
         let overlay = createOverlay();
-        expect(overlay.points).to.eql([]);
+        expect(overlay._data).to.eql([]);
     });
 
     it('setData', () => {
         let overlay = createOverlay();
         overlay.setData(null);
-        expect(overlay.points).to.eql([]);
+        expect(overlay._data).to.eql([]);
 
         let data = [{
             "count": 4,
@@ -60,28 +60,28 @@ describe('PointOverlay ', () => {
         }];
 
         overlay.setData(data);
-        expect(overlay.points).to.eql(data);
-        expect(overlay.workerData).to.eql([]);
+        expect(overlay._data).to.eql(data);
+        expect(overlay._workerData).to.eql([]);
 
         overlay.setData(undefined);
-        expect(overlay.points).to.eql([]);
-        expect(overlay.workerData).to.eql([]);
+        expect(overlay._data).to.eql([]);
+        expect(overlay._workerData).to.eql([]);
 
         overlay.setData(data);
-        expect(overlay.points).to.eql(data);
-        expect(overlay.workerData).to.eql([]);
+        expect(overlay._data).to.eql(data);
+        expect(overlay._workerData).to.eql([]);
 
 
         overlay.setData(null);
-        expect(overlay.points).to.eql([]);
-        expect(overlay.workerData).to.eql([]);
+        expect(overlay._data).to.eql([]);
+        expect(overlay._workerData).to.eql([]);
 
     });
 
     it('setOptionStyle', () => {
         let overlay = createOverlay();
-        expect(overlay.points).to.eql([]);
-        expect(overlay.workerData).to.eql([]);
+        expect(overlay._data).to.eql([]);
+        expect(overlay._workerData).to.eql([]);
 
         let data = [{
             "count": 4,
@@ -128,8 +128,8 @@ describe('PointOverlay ', () => {
             },
             data: data
         });
-        expect(overlay.points).to.eql(data);
-        expect(overlay.workerData).to.eql([]);
+        expect(overlay._data).to.eql(data);
+        expect(overlay._workerData).to.eql([]);
 
         overlay.setOptionStyle({
             tooltip: {
@@ -170,8 +170,8 @@ describe('PointOverlay ', () => {
             data: null,
         });
 
-        expect(overlay.points).to.eql([]);
-        expect(overlay.workerData).to.eql([]);
+        expect(overlay._data).to.eql([]);
+        expect(overlay._workerData).to.eql([]);
 
         overlay.setOptionStyle({
             tooltip: {
@@ -248,12 +248,12 @@ describe('PointOverlay ', () => {
                 title: "标题"
             },
         });
-        expect(overlay.points).to.eql(data);
-        expect(overlay.workerData).to.eql([]);
+        expect(overlay._data).to.eql(data);
+        expect(overlay._workerData).to.eql([]);
 
         overlay.setOptionStyle();
-        expect(overlay.points).to.eql(data);
-        expect(overlay.workerData).to.eql([]);
+        expect(overlay._data).to.eql(data);
+        expect(overlay._workerData).to.eql([]);
     });
 
 

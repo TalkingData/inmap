@@ -5,66 +5,66 @@ import State from './../config/OnStateConfig';
 export default class HoneycombOverlay extends Parameter {
     constructor(ops) {
         super(HoneycombConfig, ops);
-        this.state = null;
-        this.mpp = {};
+        this._state = null;
+        this._mpp = {};
         this._drawSize = 0;
     }
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
     }
-    setState(val) {
-        this.state = val;
-        this.eventConfig.onState.call(this, this.state);
+    _setState(val) {
+        this._state = val;
+        this._eventConfig.onState.call(this, this._state);
     }
     draw() {
-        this.resize();
+        this._toDraw();
     }
     refresh() {
-        this.setState(State.drawBefore);
-        this.drawRec();
-        this.setState(State.drawAfter);
+        this._setState(State.drawBefore);
+        this._drawRec();
+        this._setState(State.drawAfter);
     }
-    resize() {
-        this.drawMap();
+    _toDraw() {
+        this._drawMap();
     }
-    onOptionChange() {
-        this.map && this.createColorSplit();
+    _onOptionChange() {
+        this._map && this._createColorSplit();
     }
-    onDataChange() {
-        this.map && this.createColorSplit();
+    _onDataChange() {
+        this._map && this._createColorSplit();
     }
 
     _calculateMpp() {
-        let zoom = this.map.getZoom();
-        if (this.mpp[zoom]) {
-            return this.mpp[zoom];
+        let zoom = this._map.getZoom();
+        if (this._mpp[zoom]) {
+            return this._mpp[zoom];
         } else {
-            this.mpp[zoom] = this.getMpp();
-            return this.mpp[zoom];
+            this._mpp[zoom] = this._getMpp();
+            return this._mpp[zoom];
         }
     }
     /**
      * 获得每个像素对应多少米	
      */
-    getMpp() {
-        let mapCenter = this.map.getCenter();
+    _getMpp() {
+        let mapCenter = this._map.getCenter();
         let assistValue = 10;
         let cpt = new BMap.Point(mapCenter.lng, mapCenter.lat + assistValue);
-        let dpx = Math.abs(this.map.pointToPixel(mapCenter).y - this.map.pointToPixel(cpt).y);
-        return this.map.getDistance(mapCenter, cpt) / dpx;
+        let dpx = Math.abs(this._map.pointToPixel(mapCenter).y - this._map.pointToPixel(cpt).y);
+        return this._map.getDistance(mapCenter, cpt) / dpx;
     }
-    drawMap() {
-        this.clearData();
+    _drawMap() {
+        this._clearData();
         let {
             normal,
             type
-        } = this.styleConfig;
-        let zoom = this.map.getZoom();
-        let mapCenter = this.map.getCenter();
-        let mapSize = this.map.getSize();
+        } = this._styleConfig;
+        let zoom = this._map.getZoom();
+        let mapCenter = this._map.getCenter();
+        let mapSize = this._map.getSize();
 
         let zoomUnit = Math.pow(2, 18 - zoom);
-        let mercatorProjection = this.map.getMapType().getProjection();
+        let mercatorProjection = this._map.getMapType().getProjection();
         let mcCenter = mercatorProjection.lngLatToPoint(mapCenter);
 
         let nwMcX = mcCenter.x - mapSize.width / 2 * zoomUnit;
@@ -84,7 +84,7 @@ export default class HoneycombOverlay extends Parameter {
         }
 
         let params = {
-            points: this.points,
+            points: this._data,
             size: size,
             type: type,
             nwMc: nwMc,
@@ -93,33 +93,33 @@ export default class HoneycombOverlay extends Parameter {
             mapCenter: mapCenter,
             zoom: zoom
         };
-        this.setState(State.computeBefore);
+        this._setState(State.computeBefore);
 
-        this.postMessage('HoneycombOverlay.toRecGrids', params, (gridsObj) => {
-            if (this.eventType == 'onmoving') {
+        this._postMessage('HoneycombOverlay.toRecGrids', params, (gridsObj) => {
+            if (this._eventType == 'onmoving') {
                 return;
             }
-            this.canvasResize();
-            this.setState(State.conputeAfter);
+            this._canvasResize();
+            this._setState(State.conputeAfter);
 
-            this.workerData = gridsObj.grids;
+            this._workerData = gridsObj.grids;
             this._drawSize = size / zoomUnit;
 
-            if (this.eventType != 'onmoveend' || this.styleConfig.splitList == null || this.styleConfig.splitList.length < this.styleConfig.colors.length) {
-                this.createColorSplit();
+            if (this._eventType != 'onmoveend' || this._styleConfig.splitList == null || this._styleConfig.splitList.length < this._styleConfig.colors.length) {
+                this._createColorSplit();
             }
             this.refresh();
             gridsObj = null;
 
         });
     }
-    createColorSplit() {
-        this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
-        this.setlegend(this.legendConfig, this.styleConfig.splitList);
+    _createColorSplit() {
+        this._styleConfig.colors.length > 0 && this._compileSplitList(this._workerData);
+        this._setlegend(this._legendConfig, this._styleConfig.splitList);
     }
-    compileSplitList(data) {
+    _compileSplitList(data) {
 
-        let colors = this.styleConfig.colors;
+        let colors = this._styleConfig.colors;
         if (colors.length < 0 || data.length <= 0) return;
         data = data.sort((a, b) => {
             return parseFloat(a.count) - parseFloat(b.count);
@@ -167,47 +167,47 @@ export default class HoneycombOverlay extends Parameter {
         }
         split = [];
 
-        this.styleConfig.splitList = result;
+        this._styleConfig.splitList = result;
 
     }
-    findIndexSelectItem(item) {
+    _findIndexSelectItem(item) {
         let index = -1;
         if (item) {
-            index = this.selectItem.findIndex(function (val) {
+            index = this._selectItem.findIndex(function (val) {
                 return val && val.x == item.x && val.y == item.y;
             });
         }
         return index;
     }
-    getStyle(item) {
+    _getStyle(item) {
         if (item.count == 0) {
             return {
                 backgroundColor: 'rgba(255,255,255,0)'
             };
         } else {
-            return this.setDrawStyle(item,true);
+            return this._setDrawStyle(item,true);
         }
 
     }
-    getTarget(mouseX, mouseY) {
+    _getTarget(mouseX, mouseY) {
         let gridStep = this._drawSize;
-        let mapSize = this.map.getSize();
+        let mapSize = this._map.getSize();
 
-        for (let i = 0; i < this.workerData.length; i++) {
-            let item = this.workerData[i];
+        for (let i = 0; i < this._workerData.length; i++) {
+            let item = this._workerData[i];
             let x = item.x;
             let y = item.y;
             if (item.list.length > 0 && x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
-                this.ctx.beginPath();
-                this.ctx.moveTo(x, y - gridStep / 2);
-                this.ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
-                this.ctx.lineTo(x + gridStep / 2, y + gridStep / 4);
-                this.ctx.lineTo(x, y + gridStep / 2);
-                this.ctx.lineTo(x - gridStep / 2, y + gridStep / 4);
-                this.ctx.lineTo(x - gridStep / 2, y - gridStep / 4);
-                this.ctx.closePath();
+                this._ctx.beginPath();
+                this._ctx.moveTo(x, y - gridStep / 2);
+                this._ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
+                this._ctx.lineTo(x + gridStep / 2, y + gridStep / 4);
+                this._ctx.lineTo(x, y + gridStep / 2);
+                this._ctx.lineTo(x - gridStep / 2, y + gridStep / 4);
+                this._ctx.lineTo(x - gridStep / 2, y - gridStep / 4);
+                this._ctx.closePath();
 
-                if (this.ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
+                if (this._ctx.isPointInPath(mouseX * this._devicePixelRatio, mouseY * this._devicePixelRatio)) {
                     return {
                         index: i,
                         item: item
@@ -220,33 +220,33 @@ export default class HoneycombOverlay extends Parameter {
             item: null
         };
     }
-    drawRec() {
-        this.clearCanvas();
-        let mapSize = this.map.getSize();
+    _drawRec() {
+        this._clearCanvas();
+        let mapSize = this._map.getSize();
         let gridsW = this._drawSize;
 
-        let style = this.styleConfig.normal;
-        this.ctx.shadowOffsetX = 0;
-        this.ctx.shadowOffsetY = 0;
-        for (let i = 0; i < this.workerData.length; i++) {
-            let item = this.workerData[i];
+        let style = this._styleConfig.normal;
+        this._ctx.shadowOffsetX = 0;
+        this._ctx.shadowOffsetY = 0;
+        for (let i = 0; i < this._workerData.length; i++) {
+            let item = this._workerData[i];
             let x = item.x;
             let y = item.y;
             if (item.list.length > 0 && x > -gridsW && y > -gridsW && x < mapSize.width + gridsW && y < mapSize.height + gridsW) {
-                let drawStyle = this.getStyle(item);
-                this.drawLine(x, y, gridsW - style.padding, drawStyle, this.ctx);
+                let drawStyle = this._getStyle(item);
+                this._drawLine(x, y, gridsW - style.padding, drawStyle, this._ctx);
             }
         }
     }
-    drawLine(x, y, gridStep, drawStyle, ctx) {
+    _drawLine(x, y, gridStep, drawStyle, ctx) {
 
         ctx.beginPath();
         if (drawStyle.shadowColor) {
-            this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
-            this.ctx.shadowBlur = drawStyle.shadowBlur || 10;
+            this._ctx.shadowColor = drawStyle.shadowColor || 'transparent';
+            this._ctx.shadowBlur = drawStyle.shadowBlur || 10;
         } else {
-            this.ctx.shadowColor = 'transparent';
-            this.ctx.shadowBlur = 0;
+            this._ctx.shadowColor = 'transparent';
+            this._ctx.shadowBlur = 0;
         }
         ctx.fillStyle = drawStyle.backgroundColor;
         ctx.moveTo(x, y - gridStep / 2);

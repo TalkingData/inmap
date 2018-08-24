@@ -36,38 +36,38 @@ class Marker {
 export default class PointAnimationOverlay extends CanvasOverlay {
     constructor(ops) {
         super();
-        this.data = [];
-        this.styleConfig = null;
-        this.markers = [];
-        this.render = this.render.bind(this);
+        this._data = [];
+        this._styleConfig = null;
+        this._markers = [];
+        this._render = this._render.bind(this);
         this.setOptionStyle(ops);
     }
-    canvasInit() {
-        this.addMarker();
+    _canvasInit() {
+        this._addMarker();
         let now;
         let then = Date.now();
         let interval = 1000 / 25;
         let delta;
-        let render = this.render;
+        let _render = this._render;
         (function drawFrame() {
             requestAnimationFrame(drawFrame);
             now = Date.now();
             delta = now - then;
             if (delta > interval) {
                 then = now - (delta % interval);
-                render();
+                _render();
             }
         }());
     }
     setOptionStyle(ops) {
         if (!ops) return;
         let option = merge(config, ops);
-        this.styleConfig = option.style;
-        this.tMapStyle(option.skin);
+        this._styleConfig = option.style;
+        this._tMapStyle(option.skin);
         if (ops.data === null) {
             option.data = [];
         } else if (ops.data === undefined) {
-            option.data = this.data;
+            option.data = this._data;
         }
         this.setData(option.data);
     }
@@ -76,45 +76,45 @@ export default class PointAnimationOverlay extends CanvasOverlay {
             if (!isArray(points)) {
                 throw new TypeError('inMap: data must be a Array');
             }
-            this.data = points;
+            this._data = points;
         } else {
-            this.data = [];
+            this._data = [];
         }
 
-        this.map && this.addMarker();
+        this._map && this._addMarker();
     }
-    translation(distanceX, distanceY) {
+    _translation(distanceX, distanceY) {
 
-        for (let i = 0; i < this.markers.length; i++) {
-            let pixel = this.markers[i].pixel;
+        for (let i = 0; i < this._markers.length; i++) {
+            let pixel = this._markers[i].pixel;
             pixel.x = pixel.x + distanceX;
             pixel.y = pixel.y + distanceY;
         }
 
     }
-    addMarker() {
-        this.markers = [];
-        for (let i = 0; i < this.data.length; i++) {
-            let style = merge(this.styleConfig, this.data[i].style || {});
-            this.markers.push(new Marker(style, this.data[i], this.map));
+    _addMarker() {
+        this._markers = [];
+        for (let i = 0; i < this._data.length; i++) {
+            let style = merge(this._styleConfig, this._data[i].style || {});
+            this._markers.push(new Marker(style, this._data[i], this._map));
         }
 
     }
-    resize() {
-        this.addMarker();
-        this.canvasResize();
+    _toDraw() {
+        this._addMarker();
+        this._canvasResize();
     }
-    render() {
-        let ctx = this.ctx;
+    _render() {
+        let ctx = this._ctx;
         if (!ctx) {
             return;
         }
-        if (!this.animationFlag) {
-            this.clearCanvas();
+        if (!this._animationFlag) {
+            this._clearCanvas();
             return;
         }
 
-        let size = this.map.getSize();
+        let size = this._map.getSize();
         ctx.fillStyle = 'rgba(0,0,0,.95)';
         let prev = ctx.globalCompositeOperation;
         ctx.globalCompositeOperation = 'destination-in';
@@ -122,8 +122,8 @@ export default class PointAnimationOverlay extends CanvasOverlay {
         ctx.fillRect(0, 0, size.width, size.height);
         ctx.globalCompositeOperation = prev;
 
-        for (let i = 0; i < this.markers.length; i++) {
-            let marker = this.markers[i];
+        for (let i = 0; i < this._markers.length; i++) {
+            let marker = this._markers[i];
             marker.draw(ctx);
         }
     }
