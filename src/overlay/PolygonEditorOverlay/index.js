@@ -40,7 +40,7 @@
              event: {
                  onState: (state) => {
                      if (state == 3) {
-                         this._workerData = this._polygonOverlay.getData();
+                         this._workerData = this._polygonOverlay.getRenderData();
                          if (this._workerData.length == 0) {
                              this._workerData.push({
                                  geometry: {

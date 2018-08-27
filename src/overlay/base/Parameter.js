@@ -75,7 +75,7 @@ export default class Parameter extends CanvasOverlay {
     setPoints(points) {
         this.setData(points);
     }
-    getData() {
+    getRenderData() {
         return this._workerData;
     }
     _getTransformData() {

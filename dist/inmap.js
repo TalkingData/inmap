@@ -1355,25 +1355,25 @@ var CanvasOverlay = function (_BaseClass) {
 
         var _this = _possibleConstructorReturn(this, (CanvasOverlay.__proto__ || Object.getPrototypeOf(CanvasOverlay)).call(this));
 
-        _this.ctx = null;
-        _this.eventType = 'moveend';
-        _this.map = null;
-        _this.container = null;
+        _this._ctx = null;
+        _this._eventType = 'moveend';
+        _this._map = null;
+        _this._container = null;
         _this._throttle = new _Throttle2.default();
-        _this.tOnResize = _this.tOnResize.bind(_this);
-        _this.tOnMoveend = _this.tOnMoveend.bind(_this);
-        _this.tOnZoomstart = _this.tOnZoomstart.bind(_this);
-        _this.tOnZoomend = _this.tOnZoomend.bind(_this);
-        _this.tOnMoving = _this.tOnMoving.bind(_this);
-        _this.tMousemove = _this.tMousemove.bind(_this);
-        _this.tMouseClick = _this.tMouseClick.bind(_this);
-        _this._resize = _this.resize.bind(_this);
+        _this._tOnResize = _this._tOnResize.bind(_this);
+        _this._tOnMoveend = _this._tOnMoveend.bind(_this);
+        _this._tOnZoomstart = _this._tOnZoomstart.bind(_this);
+        _this._tOnZoomend = _this._tOnZoomend.bind(_this);
+        _this._tOnMoving = _this._tOnMoving.bind(_this);
+        _this._tMousemove = _this._tMousemove.bind(_this);
+        _this._tMouseClick = _this._tMouseClick.bind(_this);
+        _this._resize = _this._toDraw.bind(_this);
         _this._throttle.on('throttle', _this._resize);
-        _this.devicePixelRatio = window.devicePixelRatio;
-        _this.repaintEnd = opts && opts.repaintEnd;
-        _this.animationFlag = true;
-        _this.isDispose = false;
-        _this.margin = {
+        _this._devicePixelRatio = window.devicePixelRatio;
+        _this._repaintEnd = opts && opts.repaintEnd;
+        _this._animationFlag = true;
+        _this._isDispose = false;
+        _this._margin = {
             left: 0,
             top: 0
         };
@@ -1384,122 +1384,120 @@ var CanvasOverlay = function (_BaseClass) {
     _createClass(CanvasOverlay, [{
         key: 'initialize',
         value: function initialize(map) {
-            var me = this;
-            this.map = map;
-            this.container = document.createElement('canvas');
-            this.ctx = this.container.getContext('2d');
-            this.margin.left = -this.map.offsetX;
-            this.margin.top = -this.map.offsetY;
-            this.container.style.cssText = 'position:absolute;left:' + this.margin.left + 'px;top:' + this.margin.top + 'px;z-index:' + zIndex++ + ';';
-            map.getPanes().mapPane.appendChild(this.container);
-            this.setCanvasSize();
-            map.addEventListener('resize', me.tOnResize);
-            map.addEventListener('moveend', me.tOnMoveend);
-            map.addEventListener('moving', me.tOnMoving);
-            map.addEventListener('zoomstart', me.tOnZoomstart);
-            map.addEventListener('zoomend', me.tOnZoomend);
-            map.addEventListener('mousemove', me.tMousemove);
-            map.addEventListener('click', me.tMouseClick);
-            if (!map.inmapToolBar) {
-                map.inmapToolBar = new _Toolbar2.default(map.getContainer());
+            this._map = map;
+            this._container = document.createElement('canvas');
+            this._ctx = this._container.getContext('2d');
+            this._margin.left = -this._map.offsetX;
+            this._margin.top = -this._map.offsetY;
+            this._container.style.cssText = 'position:absolute;left:' + this._margin.left + 'px;top:' + this._margin.top + 'px;z-index:' + zIndex++ + ';';
+            map.getPanes().mapPane.appendChild(this._container);
+            this._setCanvasSize();
+            map.addEventListener('resize', this._tOnResize);
+            map.addEventListener('moveend', this._tOnMoveend);
+            map.addEventListener('moving', this._tOnMoving);
+            map.addEventListener('zoomstart', this._tOnZoomstart);
+            map.addEventListener('zoomend', this._tOnZoomend);
+            map.addEventListener('mousemove', this._tMousemove);
+            map.addEventListener('click', this._tMouseClick);
+            if (!map._inmapToolBar) {
+                map._inmapToolBar = new _Toolbar2.default(map.getContainer());
             }
-            var legendContainer = map.inmapToolBar.legendContainer;
+            var legendContainer = map._inmapToolBar.legendContainer;
             this.legend = new _Legend2.default(legendContainer);
-            this.toolTip = map.inmapToolBar.toolTip;
+            this.toolTip = map._inmapToolBar.toolTip;
             legendContainer = null;
-            this.canvasInit();
-            return this.container;
+            this._canvasInit();
+            return this._container;
         }
     }, {
-        key: 'tMapStyle',
-        value: function tMapStyle(skin) {
+        key: '_tMapStyle',
+        value: function _tMapStyle(skin) {
             var styleJson = null;
             if ((0, _util.isString)(skin)) {
                 styleJson = skin == 'Blueness' ? _MapStyleConfig.Blueness : _MapStyleConfig.WhiteLover;
             } else if ((0, _util.isArray)(skin)) {
                 styleJson = skin;
             }
-            skin && this.map && this.map.setMapStyle({
+            skin && this._map && this._map.setMapStyle({
                 styleJson: styleJson
             });
         }
     }, {
-        key: 'tOnResize',
-        value: function tOnResize(event) {
-            this.setCanvasSize();
-            this.eventType = event.type;
-            this.tDraw(this, event);
+        key: '_tOnResize',
+        value: function _tOnResize(event) {
+            this._setCanvasSize();
+            this._eventType = event.type;
+            this._tDraw(this, event);
         }
     }, {
-        key: 'tOnMoveend',
-        value: function tOnMoveend(event) {
-            this.animationFlag = true;
-            this.eventType = event.type;
+        key: '_tOnMoveend',
+        value: function _tOnMoveend(event) {
+            this._animationFlag = true;
+            this._eventType = event.type;
         }
     }, {
-        key: 'tOnZoomstart',
-        value: function tOnZoomstart() {
-            this.animationFlag = false;
-            this.clearCanvas();
+        key: '_tOnZoomstart',
+        value: function _tOnZoomstart() {
+            this._animationFlag = false;
+            this._clearCanvas();
         }
     }, {
-        key: 'tOnZoomend',
-        value: function tOnZoomend(e) {
-            this.animationFlag = true;
-            this.eventType = e.type;
+        key: '_tOnZoomend',
+        value: function _tOnZoomend(e) {
+            this._animationFlag = true;
+            this._eventType = e.type;
         }
     }, {
-        key: 'tOnMoving',
-        value: function tOnMoving(e) {
-            this.animationFlag = false;
-            this.eventType = e.type;
+        key: '_tOnMoving',
+        value: function _tOnMoving(e) {
+            this._animationFlag = false;
+            this._eventType = e.type;
         }
     }, {
-        key: 'tMousemove',
-        value: function tMousemove() {}
+        key: '_tMousemove',
+        value: function _tMousemove() {}
     }, {
-        key: 'canvasInit',
-        value: function canvasInit() {}
+        key: '_canvasInit',
+        value: function _canvasInit() {}
     }, {
         key: 'draw',
         value: function draw() {
-
-            var eventType = this.eventType;
+            var eventType = this._eventType;
             if (eventType == 'onmoving') {
-                this.canvasResize();
+                this._canvasResize();
             } else {
                 this._throttle.throttleEvent();
             }
         }
     }, {
-        key: 'tMouseClick',
-        value: function tMouseClick() {}
+        key: '_tMouseClick',
+        value: function _tMouseClick() {}
     }, {
-        key: 'tDraw',
-        value: function tDraw(me, event) {
-            this.eventType = event.type;
+        key: '_tDraw',
+        value: function _tDraw(me, event) {
+            this._eventType = event.type;
             me.draw(event);
-            this.repaintEnd && this.repaintEnd(this);
+            this._repaintEnd && this._repaintEnd(this);
             me.keysss = true;
         }
     }, {
-        key: 'resize',
-        value: function resize() {}
+        key: '_toDraw',
+        value: function _toDraw() {}
     }, {
-        key: 'canvasResize',
-        value: function canvasResize() {
-            var map = this.map;
-            var container = this.container;
+        key: '_canvasResize',
+        value: function _canvasResize() {
+            var map = this._map;
+            var container = this._container;
             var point = map.getCenter();
             var size = map.getSize();
             var pixel = map.pointToOverlayPixel(point);
             var left = parseInt(pixel.x - size.width / 2, 10);
             var top = parseInt(pixel.y - size.height / 2, 10);
             var containerDomStyle = container.style;
-            this.translationIf(this.margin.left, this.margin.top, left, top);
+            this._translationIf(this._margin.left, this._margin.top, left, top);
 
-            this.margin.left = left;
-            this.margin.top = top;
+            this._margin.left = left;
+            this._margin.top = top;
             containerDomStyle.left = left + 'px';
             containerDomStyle.top = top + 'px';
 
@@ -1508,60 +1506,62 @@ var CanvasOverlay = function (_BaseClass) {
             map = null;
         }
     }, {
-        key: 'translationIf',
-        value: function translationIf(oldLeft, oldTop, newLeft, newTop) {
+        key: '_translationIf',
+        value: function _translationIf(oldLeft, oldTop, newLeft, newTop) {
             if (oldLeft != newLeft || oldTop != newTop) {
-                this.translation(oldLeft - newLeft, oldTop - newTop);
+                this._translation(oldLeft - newLeft, oldTop - newTop);
             }
         }
     }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {}
+        key: '_translation',
+        value: function _translation(distanceX, distanceY) {}
     }, {
-        key: 'clearCanvas',
-        value: function clearCanvas() {
-            var size = this.map.getSize();
-            this.getContext().clearRect(0, 0, size.width, size.height);
+        key: '_clearCanvas',
+        value: function _clearCanvas() {
+            if (!this._map) return;
+
+            var size = this._map.getSize();
+            this._getContext().clearRect(0, 0, size.width, size.height);
         }
     }, {
-        key: 'setCanvasSize',
-        value: function setCanvasSize() {
-            var size = this.map.getSize();
-            this.container.width = size.width;
-            this.container.height = size.height;
-            (0, _util.setDevicePixelRatio)(this.ctx);
+        key: '_setCanvasSize',
+        value: function _setCanvasSize() {
+            var size = this._map.getSize();
+            this._container.width = size.width;
+            this._container.height = size.height;
+            (0, _util.setDevicePixelRatio)(this._ctx);
         }
     }, {
-        key: 'getContext',
-        value: function getContext() {
-            return this.ctx;
+        key: '_getContext',
+        value: function _getContext() {
+            return this._ctx;
         }
     }, {
         key: 'setZIndex',
         value: function setZIndex(_zIndex) {
-            this.container.style.zIndex = _zIndex;
+            this._container.style.zIndex = _zIndex;
         }
     }, {
-        key: 'Tclear',
-        value: function Tclear() {}
+        key: '_Tclear',
+        value: function _Tclear() {}
     }, {
-        key: 'Tdispose',
-        value: function Tdispose() {}
+        key: '_Tdispose',
+        value: function _Tdispose() {}
     }, {
         key: 'dispose',
         value: function dispose() {
             this._throttle.dispose();
-            this.removeWorkerMessage();
-            this.map.removeEventListener('resize', this.tOnResize);
-            this.map.removeEventListener('moveend', this.tOnMoveend);
-            this.map.removeEventListener('zoomstart', this.tOnZoomstart);
-            this.map.removeEventListener('zoomend', this.tOnZoomend);
-            this.map.removeEventListener('moving', this.tOnMoving);
-            this.map.removeEventListener('mousemove', this.tMousemove);
-            this.map.removeEventListener('click', this.tMouseClick);
+            this._removeWorkerMessage();
+            this._map.removeEventListener('resize', this._tOnResize);
+            this._map.removeEventListener('moveend', this._tOnMoveend);
+            this._map.removeEventListener('zoomstart', this._tOnZoomstart);
+            this._map.removeEventListener('zoomend', this._tOnZoomend);
+            this._map.removeEventListener('moving', this._tOnMoving);
+            this._map.removeEventListener('mousemove', this._tMousemove);
+            this._map.removeEventListener('click', this._tMouseClick);
 
             if (this.legend) {
-                this.legend.dispose(this.map.inmapToolBar.legendContainer);
+                this.legend.dispose(this._map._inmapToolBar.legendContainer);
                 this.legend = null;
             }
             if (this.toolTip) {
@@ -1569,17 +1569,17 @@ var CanvasOverlay = function (_BaseClass) {
                 this.toolTip = null;
             }
 
-            this.Tclear();
-            this.Tdispose();
+            this._Tclear();
+            this._Tdispose();
 
-            this.map.removeOverlay(this);
+            this._map.removeOverlay(this);
             var me = this;
             for (var key in me) {
                 if (!(0, _util.isFunction)(me[key])) {
                     me[key] = null;
                 }
             }
-            me.isDispose = true;
+            me._isDispose = true;
             me = null;
         }
     }]);
@@ -1630,12 +1630,12 @@ var Parameter = function (_CanvasOverlay) {
 
         var _this = _possibleConstructorReturn(this, (Parameter.__proto__ || Object.getPrototypeOf(Parameter)).call(this));
 
-        _this.points = [];
-        _this.workerData = [];
+        _this._data = [];
+        _this._workerData = [];
         _this._option = {};
-        _this.baseConfig = baseConfig;
-        _this.selectItem = [];
-        _this.overItem = null;
+        _this._baseConfig = baseConfig;
+        _this._selectItem = [];
+        _this._overItem = null;
         _this._setStyle(baseConfig, ops);
         return _this;
     }
@@ -1650,22 +1650,22 @@ var Parameter = function (_CanvasOverlay) {
                 option.style.colors = [];
             }
 
-            this.toRgba(option.style);
+            this._toRgba(option.style);
             this._option = option;
-            this.tooltipConfig = option.tooltip;
-            this.legendConfig = option.legend;
-            this.eventConfig = option.event;
-            this.styleConfig = option.style;
+            this._tooltipConfig = option.tooltip;
+            this._legendConfig = option.legend;
+            this._eventConfig = option.event;
+            this._styleConfig = option.style;
             if (ops.data !== undefined) {
                 this.setData(ops.data);
             } else {
-                this.onOptionChange();
-                this.map && this.refresh();
+                this._onOptionChange();
+                this._map && this.refresh();
             }
             delete this._option.data;
-            this.selectItem = option.selected || [];
-            this.tMapStyle(option.skin);
-            this.toolTip && this.toolTip.setOption(this.tooltipConfig);
+            this._selectItem = option.selected || [];
+            this._tMapStyle(option.skin);
+            this.toolTip && this.toolTip.setOption(this._tooltipConfig);
         }
     }, {
         key: 'setData',
@@ -1674,140 +1674,140 @@ var Parameter = function (_CanvasOverlay) {
                 if (!(0, _util.isArray)(points)) {
                     throw new TypeError('inMap: data must be a Array');
                 }
-                this.points = points;
+                this._data = points;
             } else {
-                this.points = [];
+                this._data = [];
             }
 
-            this.clearData();
-            this.cancerSelectd();
-            this.onDataChange();
-            this.map && this.resize();
+            this._clearData();
+            this._cancerSelectd();
+            this._onDataChange();
+            this._map && this._toDraw();
         }
     }, {
-        key: 'onOptionChange',
-        value: function onOptionChange() {}
+        key: '_onOptionChange',
+        value: function _onOptionChange() {}
     }, {
-        key: 'onDataChange',
-        value: function onDataChange() {}
+        key: '_onDataChange',
+        value: function _onDataChange() {}
     }, {
         key: 'setPoints',
         value: function setPoints(points) {
             this.setData(points);
         }
     }, {
-        key: 'getData',
-        value: function getData() {
-            return this.workerData;
+        key: 'getRenderData',
+        value: function getRenderData() {
+            return this._workerData;
         }
     }, {
-        key: 'getTransformData',
-        value: function getTransformData() {
-            return this.workerData.length > 0 ? this.workerData : this.points;
+        key: '_getTransformData',
+        value: function _getTransformData() {
+            return this._workerData.length > 0 ? this._workerData : this._data;
         }
     }, {
-        key: 'clearData',
-        value: function clearData() {
-            (0, _util.clearPushArray)(this.workerData);
-            this.overItem = null;
+        key: '_clearData',
+        value: function _clearData() {
+            (0, _util.clearPushArray)(this._workerData);
+            this._overItem = null;
         }
     }, {
-        key: 'cancerSelectd',
-        value: function cancerSelectd() {
-            (0, _util.clearPushArray)(this.selectItem, []);
+        key: '_cancerSelectd',
+        value: function _cancerSelectd() {
+            (0, _util.clearPushArray)(this._selectItem, []);
         }
     }, {
-        key: 'setWorkerData',
-        value: function setWorkerData(val) {
-            this.points = [];
-            this.overItem = null;
-            (0, _util.clearPushArray)(this.workerData, val);
+        key: '_setWorkerData',
+        value: function _setWorkerData(val) {
+            this._data = [];
+            this._overItem = null;
+            (0, _util.clearPushArray)(this._workerData, val);
         }
     }, {
-        key: 'canvasInit',
-        value: function canvasInit() {
-            this.toolTip.setOption(this.tooltipConfig);
-            this.parameterInit();
+        key: '_canvasInit',
+        value: function _canvasInit() {
+            this.toolTip.setOption(this._tooltipConfig);
+            this._parameterInit();
         }
     }, {
-        key: 'parameterInit',
-        value: function parameterInit() {}
+        key: '_parameterInit',
+        value: function _parameterInit() {}
     }, {
-        key: 'toRgba',
-        value: function toRgba(styleConfig) {
+        key: '_toRgba',
+        value: function _toRgba(styleConfig) {
             ['normal', 'mouseOver', 'selected'].forEach(function (status) {
                 var statusStyle = styleConfig[status];
                 if (statusStyle) {
                     ['backgroundColor', 'borderColor', 'shadowColor'].forEach(function (item) {
                         var val = statusStyle[item];
                         if (val && val.indexOf('rgba') == -1) {
-                            styleConfig[status][item] = new _Color2.default(val).getRgbaStyle();
+                            styleConfig[status][item] = new _Color2.default(val).getRgbaValue();
                         }
                     });
                 }
             });
             styleConfig.colors && styleConfig.colors.forEach(function (val, index, arr) {
                 if (val.indexOf('rgba') == -1) {
-                    arr[index] = new _Color2.default(val).getRgbaStyle();
+                    arr[index] = new _Color2.default(val).getRgbaValue();
                 }
             });
         }
     }, {
-        key: 'setDrawStyle',
-        value: function setDrawStyle(item, otherMode) {
-            var normal = this.styleConfig.normal,
-                mouseOverStyle = this.styleConfig.mouseOver,
-                selectedStyle = this.styleConfig.selected;
+        key: '_setDrawStyle',
+        value: function _setDrawStyle(item, otherMode) {
+            var normal = this._styleConfig.normal,
+                mouseOverStyle = this._styleConfig.mouseOver,
+                selectedStyle = this._styleConfig.selected;
             var result = {};
             result = (0, _util.merge)(result, normal);
 
-            var splitList = this.styleConfig.splitList;
+            var splitList = this._styleConfig.splitList;
             for (var i = 0; i < splitList.length; i++) {
                 var condition = splitList[i];
                 if (i == splitList.length - 1) {
                     if (condition.end == null) {
                         if (item.count >= condition.start) {
-                            result = this.mergeCondition(result, condition);
+                            result = this._mergeCondition(result, condition);
                             break;
                         }
                     } else if (item.count >= condition.start && item.count <= condition.end) {
-                        result = this.mergeCondition(result, condition);
+                        result = this._mergeCondition(result, condition);
                         break;
                     }
                 } else {
                     if (item.count >= condition.start && item.count < condition.end) {
-                        result = this.mergeCondition(result, condition);
+                        result = this._mergeCondition(result, condition);
                         break;
                     }
                 }
             }
             result = (0, _util.merge)(result, item.style || {});
 
-            if (mouseOverStyle && this.overItem == item) {
+            if (mouseOverStyle && this._overItem == item) {
                 result = (0, _util.merge)(result, mouseOverStyle, {
-                    backgroundColor: mouseOverStyle.backgroundColor || this.brightness(result.backgroundColor, 0.1)
+                    backgroundColor: mouseOverStyle.backgroundColor || this._brightness(result.backgroundColor, 0.1)
                 });
             }
-            if (otherMode && selectedStyle && this.selectItemContains(item)) {
+            if (otherMode && selectedStyle && this._selectItemContains(item)) {
                 result = (0, _util.merge)(result, selectedStyle);
             }
 
             if (result.shadowBlur != null && result.shadowColor == null) {
-                result['shadowColor'] = new _Color2.default(result.backgroundColor).getStyle();
+                result['shadowColor'] = new _Color2.default(result.backgroundColor).getValue();
             }
             if (result.opacity) {
                 var color = new _Color2.default(result.backgroundColor);
-                result.backgroundColor = color.getRgbaStyle(result.opacity);
+                result.backgroundColor = color.getRgbaValue(result.opacity);
             }
             if (result.borderOpacity) {
                 var _color = new _Color2.default(result.borderColor);
-                result.borderColor = _color.getRgbaStyle(result.borderOpacity);
+                result.borderColor = _color.getRgbaValue(result.borderOpacity);
             }
             return result;
         }
     }, {
-        key: 'mergeCondition',
-        value: function mergeCondition(normal, condition) {
+        key: '_mergeCondition',
+        value: function _mergeCondition(normal, condition) {
             if (condition.opacity == null && normal.opacity != null) {
                 normal.opacity = null;
             }
@@ -1817,62 +1817,62 @@ var Parameter = function (_CanvasOverlay) {
             return (0, _util.merge)(normal, condition);
         }
     }, {
-        key: 'brightness',
-        value: function brightness(rgba, delta) {
+        key: '_brightness',
+        value: function _brightness(rgba, delta) {
 
             var color = new _Color2.default(rgba);
             color.r += delta;
             color.g += delta;
             color.b += delta;
-            return color.getStyle();
+            return color.getValue();
         }
     }, {
-        key: 'selectItemContains',
-        value: function selectItemContains(item) {
-            return this.findIndexSelectItem(item) > -1;
+        key: '_selectItemContains',
+        value: function _selectItemContains(item) {
+            return this._findIndexSelectItem(item) > -1;
         }
     }, {
-        key: 'findIndexSelectItem',
-        value: function findIndexSelectItem(item) {
+        key: '_findIndexSelectItem',
+        value: function _findIndexSelectItem(item) {
             return -1;
         }
     }, {
-        key: 'getTarget',
-        value: function getTarget(x, y) {
+        key: '_getTarget',
+        value: function _getTarget(x, y) {
             return {
                 item: null,
                 index: -1
             };
         }
     }, {
-        key: 'deleteSelectItem',
-        value: function deleteSelectItem(item) {
-            var index = this.findIndexSelectItem(item);
-            index > -1 && this.selectItem.splice(index, 1);
+        key: '_deleteSelectItem',
+        value: function _deleteSelectItem(item) {
+            var index = this._findIndexSelectItem(item);
+            index > -1 && this._selectItem.splice(index, 1);
         }
     }, {
-        key: 'setTooltip',
-        value: function setTooltip(event) {
-            this.toolTip.render(event, this.overItem);
+        key: '_setTooltip',
+        value: function _setTooltip(event) {
+            this.toolTip.render(event, this._overItem);
         }
     }, {
-        key: 'Tclear',
-        value: function Tclear() {
-            this.points = null;
-            this.workerData = null;
-            this.baseConfig = null;
-            this.selectItem = null;
-            this.overItem = null;
+        key: '_Tclear',
+        value: function _Tclear() {
+            this._data = null;
+            this._workerData = null;
+            this._baseConfig = null;
+            this._selectItem = null;
+            this._overItem = null;
             this._option = null;
-            this.tooltipConfig = null;
-            this.legendConfig = null;
-            this.eventConfig = null;
-            this.styleConfig = null;
+            this._tooltipConfig = null;
+            this._legendConfig = null;
+            this._eventConfig = null;
+            this._styleConfig = null;
         }
     }, {
-        key: 'setlegend',
-        value: function setlegend(legendConfig, list) {
-            if (!this.map) return;
+        key: '_setlegend',
+        value: function _setlegend(legendConfig, list) {
+            if (!this._map) return;
 
             if (list && list.length > 0) {
                 legendConfig['list'] = list;
@@ -1886,77 +1886,77 @@ var Parameter = function (_CanvasOverlay) {
         key: 'refresh',
         value: function refresh() {}
     }, {
-        key: 'swopData',
-        value: function swopData(index, item) {
+        key: '_swopData',
+        value: function _swopData(index, item) {
             if ((0, _util.isNumber)(index) && index > -1) {
-                this.workerData[index] = this.workerData[this.workerData.length - 1];
-                this.workerData[this.workerData.length - 1] = item;
+                this._workerData[index] = this._workerData[this._workerData.length - 1];
+                this._workerData[this._workerData.length - 1] = item;
             }
         }
     }, {
-        key: 'tMouseleave',
-        value: function tMouseleave() {
+        key: '_tMouseleave',
+        value: function _tMouseleave() {
             this.tooltip.hide();
         }
     }, {
-        key: 'tMousemove',
-        value: function tMousemove(event) {
-            if (this.eventType == 'onmoving') {
+        key: '_tMousemove',
+        value: function _tMousemove(event) {
+            if (this._eventType == 'onmoving') {
                 return;
             }
-            if (!this.tooltipConfig.show && (0, _util.isEmpty)(this.styleConfig.mouseOver)) {
+            if (!this._tooltipConfig.show && (0, _util.isEmpty)(this._styleConfig.mouseOver)) {
                 return;
             }
 
-            var result = this.getTarget(event.pixel.x, event.pixel.y);
+            var result = this._getTarget(event.pixel.x, event.pixel.y);
             var temp = result.item;
 
-            if (temp != this.overItem) {
-                this.overItem = temp;
+            if (temp != this._overItem) {
+                this._overItem = temp;
                 if (temp) {
-                    this.swopData(result.index, result.item);
+                    this._swopData(result.index, result.item);
                 }
-                this.eventType = 'mousemove';
-                if (!(0, _util.isEmpty)(this.styleConfig.mouseOver)) {
+                this._eventType = 'mousemove';
+                if (!(0, _util.isEmpty)(this._styleConfig.mouseOver)) {
                     this.refresh();
                 }
             }
             if (temp) {
-                this.map.setDefaultCursor('pointer');
+                this._map.setDefaultCursor('pointer');
             } else {
-                this.map.setDefaultCursor('default');
+                this._map.setDefaultCursor('default');
             }
 
-            this.setTooltip(event);
+            this._setTooltip(event);
         }
     }, {
-        key: 'tMouseClick',
-        value: function tMouseClick(event) {
-            if (this.eventType == 'onmoving') return;
-            var multiSelect = this.eventConfig.multiSelect;
+        key: '_tMouseClick',
+        value: function _tMouseClick(event) {
+            if (this._eventType == 'onmoving') return;
+            var multiSelect = this._eventConfig.multiSelect;
 
-            var result = this.getTarget(event.pixel.x, event.pixel.y);
+            var result = this._getTarget(event.pixel.x, event.pixel.y);
             if (result.index == -1) {
                 return;
             }
             var item = JSON.parse(JSON.stringify(result.item));
             if (multiSelect) {
-                if (this.selectItemContains(item)) {
-                    this.deleteSelectItem(item);
+                if (this._selectItemContains(item)) {
+                    this._deleteSelectItem(item);
                 } else {
-                    this.selectItem.push(result.item);
+                    this._selectItem.push(result.item);
                 }
             } else {
-                (0, _util.clearPushArray)(this.selectItem, result.item);
+                (0, _util.clearPushArray)(this._selectItem, result.item);
             }
 
-            this.swopData(result.index, item);
-            this.eventConfig.onMouseClick.call(this, this.selectItem, event);
+            this._swopData(result.index, item);
+            this._eventConfig.onMouseClick.call(this, this._selectItem, event);
 
             this.refresh();
             if (isMobile) {
-                this.overItem = item;
-                this.setTooltip(event);
+                this._overItem = item;
+                this._setTooltip(event);
             }
         }
     }]);
@@ -3155,10 +3155,10 @@ Colors.prototype = {
         return hsl;
     },
 
-    getStyle: function getStyle() {
+    getValue: function getValue() {
         return 'rgb(' + (this.r * 255 | 0) + ',' + (this.g * 255 | 0) + ',' + (this.b * 255 | 0) + ')';
     },
-    getRgbaStyle: function getRgbaStyle(opacity) {
+    getRgbaValue: function getRgbaValue(opacity) {
         return 'rgba(' + (this.r * 255 | 0) + ',' + (this.g * 255 | 0) + ',' + (this.b * 255 | 0) + ',' + (opacity || 1) + ')';
     },
 
@@ -4693,9 +4693,9 @@ var LineStringAnimationOverlay = function (_CanvasOverlay) {
 
         var _this = _possibleConstructorReturn(this, (LineStringAnimationOverlay.__proto__ || Object.getPrototypeOf(LineStringAnimationOverlay)).call(this, ops));
 
-        _this.points = [];
-        _this.workerData = [];
-        _this.markLineData = [];
+        _this._data = [];
+        _this._workerData = [];
+        _this._markLineData = [];
         _this._setStyle(_LineStringAnimationConfig2.default, ops);
         return _this;
     }
@@ -4704,30 +4704,30 @@ var LineStringAnimationOverlay = function (_CanvasOverlay) {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
             this._setStyle(this._option, ops);
-            this.map && this.drawMap();
+            this._map && this._drawMap();
         }
     }, {
         key: '_setStyle',
         value: function _setStyle(config, ops) {
             if (!ops) return;
             var option = this._option = (0, _util.merge)(config, ops);
-            this.styleConfig = option.style;
-            this.eventConfig = option.event;
-            this.tMapStyle(option.skin);
+            this._styleConfig = option.style;
+            this._eventConfig = option.event;
+            this._tMapStyle(option.skin);
 
             delete this._option.data;
 
             if (ops.data !== undefined) {
                 this.setData(ops.data);
             } else {
-                this.map && this.refresh();
+                this._map && this.refresh();
             }
         }
     }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            for (var i = 0; i < this.markLineData.length; i++) {
-                var pixels = this.markLineData[i].path;
+        key: '_translation',
+        value: function _translation(distanceX, distanceY) {
+            for (var i = 0; i < this._markLineData.length; i++) {
+                var pixels = this._markLineData[i].path;
                 for (var j = 0; j < pixels.length; j++) {
                     var pixel = pixels[j];
                     pixel[0] = pixel[0] + distanceX;
@@ -4743,76 +4743,76 @@ var LineStringAnimationOverlay = function (_CanvasOverlay) {
                 if (!(0, _util.isArray)(points)) {
                     throw new TypeError('inMap: data must be a Array');
                 }
-                this.points = points;
+                this._data = points;
             } else {
-                this.points = [];
+                this._data = [];
             }
-            (0, _util.clearPushArray)(this.workerData);
-            this.map && this.drawMap();
+            (0, _util.clearPushArray)(this._workerData);
+            this._map && this._drawMap();
         }
     }, {
-        key: 'resize',
-        value: function resize() {
+        key: '_toDraw',
+        value: function _toDraw() {
             if (!this.animationDraw) {
-                this.initAnimation();
+                this._initAnimation();
             }
-            this.drawMap();
+            this._drawMap();
         }
     }, {
-        key: 'getTransformData',
-        value: function getTransformData() {
-            return this.workerData.length > 0 ? this.workerData : this.points;
+        key: '_getTransformData',
+        value: function _getTransformData() {
+            return this._workerData.length > 0 ? this._workerData : this._data;
         }
     }, {
-        key: 'drawMap',
-        value: function drawMap() {
+        key: '_drawMap',
+        value: function _drawMap() {
             var _this2 = this;
 
-            var zoomUnit = Math.pow(2, 18 - this.map.getZoom());
-            var projection = this.map.getMapType().getProjection();
-            var mcCenter = projection.lngLatToPoint(this.map.getCenter());
-            var nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
+            var zoomUnit = Math.pow(2, 18 - this._map.getZoom());
+            var projection = this._map.getMapType().getProjection();
+            var mcCenter = projection.lngLatToPoint(this._map.getCenter());
+            var nwMc = new BMap.Pixel(mcCenter.x - this._map.getSize().width / 2 * zoomUnit, mcCenter.y + this._map.getSize().height / 2 * zoomUnit);
 
             var params = {
-                points: this.getTransformData(),
+                points: this._getTransformData(),
                 nwMc: nwMc,
                 zoomUnit: zoomUnit,
                 isAnimation: true,
-                lineOrCurve: this.styleConfig.lineOrCurve,
-                deltaAngle: this.styleConfig.deltaAngle
+                lineOrCurve: this._styleConfig.lineOrCurve,
+                deltaAngle: this._styleConfig.deltaAngle
             };
 
-            this.animationFlag = false;
-            this.postMessage('LineStringOverlay.calculatePixel', params, function (pixels, margin) {
-                if (_this2.eventType == 'onmoving') {
-                    _this2.animationFlag = false;
+            this._animationFlag = false;
+            this._postMessage('LineStringOverlay.calculatePixel', params, function (pixels, margin) {
+                if (_this2._eventType == 'onmoving') {
+                    _this2._animationFlag = false;
                     return;
                 }
-                _this2.animationFlag = true;
-                (0, _util.clearPushArray)(_this2.workerData, pixels);
-                _this2.createMarkLine(pixels);
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                _this2._animationFlag = true;
+                (0, _util.clearPushArray)(_this2._workerData, pixels);
+                _this2._createMarkLine(pixels);
+                _this2._translation(margin.left - _this2._margin.left, margin.top - _this2._margin.top);
                 params = null;
                 margin = null;
             });
         }
     }, {
-        key: 'createMarkLine',
-        value: function createMarkLine(data) {
-            (0, _util.clearPushArray)(this.markLineData);
+        key: '_createMarkLine',
+        value: function _createMarkLine(data) {
+            (0, _util.clearPushArray)(this._markLineData);
             for (var i = 0; i < data.length; i++) {
                 var pixels = data[i].geometry.pixels;
-                this.markLineData.push(new MarkLine({
+                this._markLineData.push(new MarkLine({
                     path: pixels
                 }));
             }
         }
     }, {
-        key: 'initAnimation',
-        value: function initAnimation() {
+        key: '_initAnimation',
+        value: function _initAnimation() {
             var now = void 0;
             var then = Date.now();
-            var interval = 1000 / this.styleConfig.fps;
+            var interval = 1000 / this._styleConfig.fps;
             var delta = void 0;
             var me = this;
 
@@ -4831,28 +4831,28 @@ var LineStringAnimationOverlay = function (_CanvasOverlay) {
     }, {
         key: 'refresh',
         value: function refresh() {
-            var markLineData = this.markLineData,
-                styleConfig = this.styleConfig;
+            var _markLineData = this._markLineData,
+                _styleConfig = this._styleConfig;
 
 
-            if (!this.ctx) {
+            if (!this._ctx) {
                 return;
             }
 
-            if (!this.animationFlag) {
-                this.clearCanvas();
+            if (!this._animationFlag) {
+                this._clearCanvas();
                 return;
             }
-            this.ctx.fillStyle = 'rgba(0,0,0,0.93)';
-            var prev = this.ctx.globalCompositeOperation;
-            this.ctx.globalCompositeOperation = 'destination-in';
-            var size = this.map.getSize();
-            this.ctx.fillRect(0, 0, size.width, size.height);
-            this.ctx.globalCompositeOperation = prev;
+            this._ctx.fillStyle = 'rgba(0,0,0,0.93)';
+            var prev = this._ctx.globalCompositeOperation;
+            this._ctx.globalCompositeOperation = 'destination-in';
+            var size = this._map.getSize();
+            this._ctx.fillRect(0, 0, size.width, size.height);
+            this._ctx.globalCompositeOperation = prev;
 
-            for (var i = 0; i < markLineData.length; i++) {
-                var markLine = markLineData[i];
-                markLine.drawMoveCircle(this.ctx, styleConfig, this.map);
+            for (var i = 0; i < _markLineData.length; i++) {
+                var markLine = _markLineData[i];
+                markLine.drawMoveCircle(this._ctx, _styleConfig, this._map);
             }
         }
     }]);
@@ -4911,10 +4911,10 @@ var LineStringOverlay = function (_Parameter) {
 
         var _this = _possibleConstructorReturn(this, (LineStringOverlay.__proto__ || Object.getPrototypeOf(LineStringOverlay)).call(this, _LineStringConfig2.default, ops));
 
-        _this.state = null;
-        _this.mouseLayer = new _CanvasOverlay2.default();
-        _this.selectItemIndex = -1;
-        _this.onDataChange();
+        _this._state = null;
+        _this._mouseLayer = new _CanvasOverlay2.default();
+        _this._selectItemIndex = -1;
+        _this._onDataChange();
         return _this;
     }
 
@@ -4924,47 +4924,47 @@ var LineStringOverlay = function (_Parameter) {
             this._setStyle(this._option, ops);
         }
     }, {
-        key: 'onDataChange',
-        value: function onDataChange() {
+        key: '_onDataChange',
+        value: function _onDataChange() {
             var _this2 = this;
 
-            this.selectItemIndex = -1;
-            if (this.selectItem.length > 0) {
-                this.selectItemIndex = this.points.findIndex(function (item) {
-                    return _this2.selectItem[0] == item;
+            this._selectItemIndex = -1;
+            if (this._selectItem.length > 0) {
+                this._selectItemIndex = this._data.findIndex(function (item) {
+                    return _this2._selectItem[0] == item;
                 });
             }
         }
     }, {
-        key: 'parameterInit',
-        value: function parameterInit() {
-            this.map.addOverlay(this.mouseLayer);
+        key: '_parameterInit',
+        value: function _parameterInit() {
+            this._map.addOverlay(this._mouseLayer);
         }
     }, {
-        key: 'drawMouseLayer',
-        value: function drawMouseLayer() {
-            var overArr = this.overItem ? [this.overItem] : [];
+        key: '_drawMouseLayer',
+        value: function _drawMouseLayer() {
+            var overArr = this._overItem ? [this._overItem] : [];
 
-            this.mouseLayer.clearCanvas();
-            this.drawLine(this.mouseLayer.ctx, this.selectItem.concat(overArr), true);
+            this._mouseLayer._clearCanvas();
+            this._drawLine(this._mouseLayer._getContext(), this._selectItem.concat(overArr), true);
         }
     }, {
-        key: 'clearAll',
-        value: function clearAll() {
-            this.mouseLayer.clearCanvas();
-            this.clearCanvas();
+        key: '_clearAll',
+        value: function _clearAll() {
+            this._mouseLayer._clearCanvas();
+            this._clearCanvas();
         }
     }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState.call(this, this.state);
+        key: '_setState',
+        value: function _setState(val) {
+            this._state = val;
+            this._eventConfig.onState.call(this, this._state);
         }
     }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            for (var i = 0; i < this.workerData.length; i++) {
-                var pixels = this.workerData[i].geometry.pixels;
+        key: '_translation',
+        value: function _translation(distanceX, distanceY) {
+            for (var i = 0; i < this._workerData.length; i++) {
+                var pixels = this._workerData[i].geometry.pixels;
                 for (var j = 0; j < pixels.length; j++) {
                     var pixel = pixels[j];
                     pixel[0] = pixel[0] + distanceX;
@@ -4974,17 +4974,17 @@ var LineStringOverlay = function (_Parameter) {
             this.refresh();
         }
     }, {
-        key: 'getTarget',
-        value: function getTarget(mouseX, mouseY) {
+        key: '_getTarget',
+        value: function _getTarget(mouseX, mouseY) {
 
-            for (var i = 0, len = this.workerData.length; i < len; i++) {
-                var item = this.workerData[i];
+            for (var i = 0, len = this._workerData.length; i < len; i++) {
+                var item = this._workerData[i];
                 var pixels = item.geometry.pixels;
-                var style = this.setDrawStyle(item);
+                var style = this._setDrawStyle(item);
                 for (var k = 0, _len = pixels.length; k < _len - 1; k++) {
                     var pixel1 = pixels[k];
                     var pixel2 = pixels[k + 1];
-                    if (this.calcIsInsideThickLineSegment(pixel1, pixel2, mouseX, mouseY, style.borderWidth)) {
+                    if (this._calcIsInsideThickLineSegment(pixel1, pixel2, mouseX, mouseY, style.borderWidth)) {
                         return {
                             index: i,
                             item: item
@@ -4998,19 +4998,19 @@ var LineStringOverlay = function (_Parameter) {
             };
         }
     }, {
-        key: 'findIndexSelectItem',
-        value: function findIndexSelectItem(item) {
+        key: '_findIndexSelectItem',
+        value: function _findIndexSelectItem(item) {
             var index = -1;
             if (item) {
-                index = this.selectItem.findIndex(function (val) {
+                index = this._selectItem.findIndex(function (val) {
                     return item == val;
                 });
             }
             return index;
         }
     }, {
-        key: 'calcIsInsideThickLineSegment',
-        value: function calcIsInsideThickLineSegment(line1, line2, mouseX, mouseY, lineThickness) {
+        key: '_calcIsInsideThickLineSegment',
+        value: function _calcIsInsideThickLineSegment(line1, line2, mouseX, mouseY, lineThickness) {
             var L2 = (line2[0] - line1[0]) * (line2[0] - line1[0]) + (line2[1] - line1[1]) * (line2[1] - line1[1]);
             if (L2 == 0) return false;
             var r = ((mouseX - line1[0]) * (line2[0] - line1[0]) + (mouseY - line1[1]) * (line2[1] - line1[1])) / L2;
@@ -5030,78 +5030,78 @@ var LineStringOverlay = function (_Parameter) {
                 if (!(0, _util.isArray)(points)) {
                     throw new TypeError('inMap: data must be a Array');
                 }
-                this.points = points;
+                this._data = points;
             } else {
-                this.points = [];
+                this._data = [];
             }
-            this.clearData();
-            this.cancerSelectd();
-            this.map && this.drawMap();
+            this._clearData();
+            this._cancerSelectd();
+            this._map && this._drawMap();
         }
     }, {
         key: 'refresh',
         value: function refresh() {
-            this.setState(_OnStateConfig2.default.drawBefore);
-            this.mouseLayer.canvasResize();
-            this.clearCanvas();
-            this.drawLine(this.ctx, this.workerData, false);
-            this.anewSelectItem();
-            this.drawMouseLayer();
-            this.setState(_OnStateConfig2.default.drawAfter);
+            this._setState(_OnStateConfig2.default.drawBefore);
+            this._mouseLayer._canvasResize();
+            this._clearCanvas();
+            this._drawLine(this._ctx, this._workerData, false);
+            this._anewSelectItem();
+            this._drawMouseLayer();
+            this._setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
-        key: 'anewSelectItem',
-        value: function anewSelectItem() {
-            if (this.selectItemIndex > -1) {
-                this.selectItem = [this.workerData[this.selectItemIndex]];
+        key: '_anewSelectItem',
+        value: function _anewSelectItem() {
+            if (this._selectItemIndex > -1) {
+                this._selectItem = [this._workerData[this._selectItemIndex]];
             } else {
-                this.selectItem = [];
+                this._selectItem = [];
             }
         }
     }, {
-        key: 'resize',
-        value: function resize() {
-            this.drawMap();
+        key: '_toDraw',
+        value: function _toDraw() {
+            this._drawMap();
         }
     }, {
-        key: 'getTransformData',
-        value: function getTransformData() {
-            return this.workerData.length > 0 ? this.workerData : this.points;
+        key: '_getTransformData',
+        value: function _getTransformData() {
+            return this._workerData.length > 0 ? this._workerData : this._data;
         }
     }, {
-        key: 'drawMap',
-        value: function drawMap() {
+        key: '_drawMap',
+        value: function _drawMap() {
             var _this3 = this;
 
-            this.clearAll();
-            var zoomUnit = Math.pow(2, 18 - this.map.getZoom());
-            var projection = this.map.getMapType().getProjection();
-            var mcCenter = projection.lngLatToPoint(this.map.getCenter());
-            var nwMc = new BMap.Pixel(mcCenter.x - this.map.getSize().width / 2 * zoomUnit, mcCenter.y + this.map.getSize().height / 2 * zoomUnit);
+            this._clearAll();
+            var zoomUnit = Math.pow(2, 18 - this._map.getZoom());
+            var projection = this._map.getMapType().getProjection();
+            var mcCenter = projection.lngLatToPoint(this._map.getCenter());
+            var nwMc = new BMap.Pixel(mcCenter.x - this._map.getSize().width / 2 * zoomUnit, mcCenter.y + this._map.getSize().height / 2 * zoomUnit);
             var params = {
-                points: this.getTransformData(),
+                points: this._getTransformData(),
                 nwMc: nwMc,
                 zoomUnit: zoomUnit,
-                lineOrCurve: this.styleConfig.normal.lineCurive,
-                deltaAngle: this.styleConfig.normal.deltaAngle
+                lineOrCurve: this._styleConfig.normal.lineCurive,
+                deltaAngle: this._styleConfig.normal.deltaAngle
             };
-            this.setState(_OnStateConfig2.default.computeBefore);
-            this.postMessage('LineStringOverlay.calculatePixel', params, function (pixels, margin) {
-                if (_this3.eventType == 'onmoving') {
+            this._setState(_OnStateConfig2.default.computeBefore);
+            this._postMessage('LineStringOverlay.calculatePixel', params, function (pixels, margin) {
+                if (_this3._eventTypee == 'onmoving') {
                     return;
                 }
-                _this3.setState(_OnStateConfig2.default.conputeAfter);
-                (0, _util.clearPushArray)(_this3.workerData, pixels);
-                _this3.translation(margin.left - _this3.margin.left, margin.top - _this3.margin.top);
+                _this3._setState(_OnStateConfig2.default.conputeAfter);
+                (0, _util.clearPushArray)(_this3._workerData, pixels);
+                _this3._translation(margin.left - _this3._margin.left, margin.top - _this3._margin.top);
 
                 params = null;
                 margin = null;
             });
         }
     }, {
-        key: 'drawLine',
-        value: function drawLine(ctx, data, otherMode) {
-            var normal = this.styleConfig.normal;
+        key: '_drawLine',
+        value: function _drawLine(ctx, data, otherMode) {
+            var normal = this._styleConfig.normal;
             ctx.shadowBlur = 0;
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 0;
@@ -5118,7 +5118,7 @@ var LineStringOverlay = function (_Parameter) {
 
             for (var i = 0; i < data.length; i++) {
                 var item = data[i];
-                var style = this.setDrawStyle(item, otherMode);
+                var style = this._setDrawStyle(item, otherMode);
                 ctx.strokeStyle = style.borderColor;
                 var pixels = item.geometry.pixels;
                 ctx.beginPath();
@@ -5132,57 +5132,57 @@ var LineStringOverlay = function (_Parameter) {
             }
         }
     }, {
-        key: 'Tdispose',
-        value: function Tdispose() {
-            this.map.removeOverlay(this.mouseLayer);
-            this.mouseLayer.dispose();
+        key: '_Tdispose',
+        value: function _Tdispose() {
+            this._map.removeOverlay(this._mouseLayer);
+            this._mouseLayer.dispose();
         }
     }, {
-        key: 'tMousemove',
-        value: function tMousemove(event) {
-            if (this.eventType == 'onmoving') {
+        key: '_tMousemove',
+        value: function _tMousemove(event) {
+            if (this._eventTypee == 'onmoving') {
                 return;
             }
-            if (!this.tooltipConfig.show && (0, _util.isEmpty)(this.styleConfig.mouseOver)) {
+            if (!this._tooltipConfig.show && (0, _util.isEmpty)(this._styleConfig.mouseOver)) {
                 return;
             }
-            var result = this.getTarget(event.pixel.x, event.pixel.y);
+            var result = this._getTarget(event.pixel.x, event.pixel.y);
             var temp = result.item;
 
-            if (temp != this.overItem) {
-                this.overItem = temp;
-                this.eventType = 'mousemove';
-                if (!(0, _util.isEmpty)(this.styleConfig.mouseOver)) {
-                    this.drawMouseLayer();
+            if (temp != this._overItem) {
+                this._overItem = temp;
+                this._eventTypee = 'mousemove';
+                if (!(0, _util.isEmpty)(this._styleConfig.mouseOver)) {
+                    this._drawMouseLayer();
                 }
             }
             if (temp) {
-                this.map.setDefaultCursor('pointer');
+                this._map.setDefaultCursor('pointer');
             } else {
-                this.map.setDefaultCursor('default');
+                this._map.setDefaultCursor('default');
             }
 
-            this.setTooltip(event);
+            this._setTooltip(event);
         }
     }, {
-        key: 'tMouseClick',
-        value: function tMouseClick(event) {
-            if (this.eventType == 'onmoving') return;
-            var result = this.getTarget(event.pixel.x, event.pixel.y);
+        key: '_tMouseClick',
+        value: function _tMouseClick(event) {
+            if (this._eventTypee == 'onmoving') return;
+            var result = this._getTarget(event.pixel.x, event.pixel.y);
             if (result.index == -1) {
                 return;
             }
 
             var item = result.item;
-            this.selectItem = [result.item];
-            this.selectItemIndex = result.index;
+            this._selectItem = [result.item];
+            this._selectItemIndex = result.index;
 
-            this.eventConfig.onMouseClick(this.selectItem, event);
+            this._eventConfig.onMouseClick(this._selectItem, event);
             if (isMobile) {
-                this.overItem = [item];
-                this.setTooltip(event);
+                this._overItem = [item];
+                this._setTooltip(event);
             }
-            this.drawMouseLayer();
+            this._drawMouseLayer();
         }
     }]);
 
@@ -5250,75 +5250,75 @@ var PointOverlay = function (_Parameter) {
 
         _this._loopDraw = _this._loopDraw.bind(_this);
         if (!(0, _util.isEmpty)(_this._option.draw)) {
-            _this.batchesData = new _BatchesData2.default(_this._option.draw);
+            _this._batchesData = new _BatchesData2.default(_this._option.draw);
         }
-        _this.mouseLayer = new _CanvasOverlay2.default();
-        _this.state = null;
-        _this.mpp = {};
+        _this._mouseLayer = new _CanvasOverlay2.default();
+        _this._state = null;
+        _this._mpp = {};
         return _this;
     }
 
     _createClass(PointOverlay, [{
-        key: 'initLegend',
-        value: function initLegend() {
-            if (this.styleConfig.colors.length > 0) {
-                this.compileSplitList(this.getTransformData());
+        key: '_initLegend',
+        value: function _initLegend() {
+            if (this._styleConfig.colors.length > 0) {
+                this._compileSplitList(this._getTransformData());
             } else {
-                this.setlegend(this.legendConfig, this.styleConfig.splitList);
+                this._setlegend(this._legendConfig, this._styleConfig.splitList);
             }
         }
     }, {
-        key: 'onOptionChange',
-        value: function onOptionChange() {
-            this.map && this.initLegend();
+        key: '_onOptionChange',
+        value: function _onOptionChange() {
+            this._map && this._initLegend();
         }
     }, {
-        key: 'onDataChange',
-        value: function onDataChange() {
-            this.map && this.initLegend();
+        key: '_onDataChange',
+        value: function _onDataChange() {
+            this._map && this._initLegend();
         }
     }, {
-        key: 'parameterInit',
-        value: function parameterInit() {
-            this.map.addOverlay(this.mouseLayer);
-            this.initLegend();
+        key: '_parameterInit',
+        value: function _parameterInit() {
+            this._map.addOverlay(this._mouseLayer);
+            this._initLegend();
         }
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
             this._setStyle(this._option, ops);
             if (!(0, _util.isEmpty)(this._option.draw)) {
-                this.batchesData = new _BatchesData2.default(this._option.draw);
+                this._batchesData = new _BatchesData2.default(this._option.draw);
             } else {
-                this.batchesData = null;
+                this._batchesData = null;
             }
         }
     }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState.call(this, this.state);
+        key: '_setState',
+        value: function _setState(val) {
+            this._state = val;
+            this._eventConfig.onState.call(this, this._state);
         }
     }, {
-        key: 'resize',
-        value: function resize() {
-            this.drawMap();
+        key: '_toDraw',
+        value: function _toDraw() {
+            this._drawMap();
         }
     }, {
         key: '_calculateMpp',
         value: function _calculateMpp(size) {
-            var normal = this.styleConfig.normal,
+            var normal = this._styleConfig.normal,
                 result = void 0;
             if (normal.unit == 'px') {
                 result = size;
             } else if (normal.unit == 'm') {
-                var zoom = this.map.getZoom();
+                var zoom = this._map.getZoom();
                 var mpp = void 0;
-                if (this.mpp[zoom]) {
-                    mpp = this.mpp[zoom];
+                if (this._mpp[zoom]) {
+                    mpp = this._mpp[zoom];
                 } else {
-                    this.mpp[zoom] = this.getMpp();
-                    mpp = this.mpp[zoom];
+                    this._mpp[zoom] = this._getMpp();
+                    mpp = this._mpp[zoom];
                 }
                 if (mpp == 0 || isNaN(mpp)) {
                     return;
@@ -5330,20 +5330,20 @@ var PointOverlay = function (_Parameter) {
             return result;
         }
     }, {
-        key: 'getMpp',
-        value: function getMpp() {
-            var mapCenter = this.map.getCenter();
+        key: '_getMpp',
+        value: function _getMpp() {
+            var mapCenter = this._map.getCenter();
             var assistValue = 10;
             var cpt = new BMap.Point(mapCenter.lng, mapCenter.lat + assistValue);
-            var dpx = Math.abs(this.map.pointToPixel(mapCenter).y - this.map.pointToPixel(cpt).y);
-            return this.map.getDistance(mapCenter, cpt) / dpx;
+            var dpx = Math.abs(this._map.pointToPixel(mapCenter).y - this._map.pointToPixel(cpt).y);
+            return this._map.getDistance(mapCenter, cpt) / dpx;
         }
     }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            if (this.batchesData && !this.batchesData.usable) return;
-            for (var i = 0; i < this.workerData.length; i++) {
-                var pixel = this.workerData[i].geometry.pixel;
+        key: '_translation',
+        value: function _translation(distanceX, distanceY) {
+            if (this._batchesData && !this._batchesData.usable) return;
+            for (var i = 0; i < this._workerData.length; i++) {
+                var pixel = this._workerData[i].geometry.pixel;
                 pixel.x = pixel.x + distanceX;
                 pixel.y = pixel.y + distanceY;
             }
@@ -5351,59 +5351,59 @@ var PointOverlay = function (_Parameter) {
             this.refresh();
         }
     }, {
-        key: 'drawMouseLayer',
-        value: function drawMouseLayer() {
-            var overArr = this.overItem ? [this.overItem] : [];
-            this.mouseLayer.clearCanvas();
-            this._loopDraw(this.mouseLayer.ctx, this.selectItem.concat(overArr), true);
+        key: '_drawMouseLayer',
+        value: function _drawMouseLayer() {
+            var overArr = this._overItem ? [this._overItem] : [];
+            this._mouseLayer._clearCanvas();
+            this._loopDraw(this._mouseLayer._getContext(), this._selectItem.concat(overArr), true);
         }
     }, {
-        key: 'clearAll',
-        value: function clearAll() {
-            this.mouseLayer.clearCanvas();
-            this.clearCanvas();
+        key: '_clearAll',
+        value: function _clearAll() {
+            this._mouseLayer._clearCanvas();
+            this._clearCanvas();
         }
     }, {
-        key: 'drawMap',
-        value: function drawMap() {
+        key: '_drawMap',
+        value: function _drawMap() {
             var _this2 = this;
 
-            if (this.batchesData) {
-                this.batchesData.clear();
-                this.batchesData.setUsable(false);
+            if (this._batchesData) {
+                this._batchesData.clear();
+                this._batchesData.setUsable(false);
             }
 
-            this.clearAll();
-            this.setState(_OnStateConfig2.default.computeBefore);
-            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin, zoom) {
+            this._clearAll();
+            this._setState(_OnStateConfig2.default.computeBefore);
+            this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), function (pixels, margin, zoom) {
 
-                _this2.setState(_OnStateConfig2.default.conputeAfter);
-                _this2.setWorkerData(pixels);
-                _this2.updateOverClickItem();
+                _this2._setState(_OnStateConfig2.default.conputeAfter);
+                _this2._setWorkerData(pixels);
+                _this2._updateOverClickItem();
 
-                if (_this2.batchesData) {
-                    _this2.batchesData.setUsable(true);
+                if (_this2._batchesData) {
+                    _this2._batchesData.setUsable(true);
                 }
-                if (_this2.map.getZoom() == zoom) {
-                    _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                if (_this2._map.getZoom() == zoom) {
+                    _this2._translation(margin.left - _this2._margin.left, margin.top - _this2._margin.top);
                 } else {
-                    _this2.translation(0, 0);
+                    _this2._translation(0, 0);
                 }
                 margin = null;
                 pixels = null;
             });
         }
     }, {
-        key: 'updateOverClickItem',
-        value: function updateOverClickItem() {
+        key: '_updateOverClickItem',
+        value: function _updateOverClickItem() {
             var _this3 = this;
 
-            var overArr = this.overItem ? [this.overItem] : [];
-            var allItems = this.selectItem.concat(overArr);
+            var overArr = this._overItem ? [this._overItem] : [];
+            var allItems = this._selectItem.concat(overArr);
 
             var _loop = function _loop(i) {
                 var item = allItems[i];
-                var ret = _this3.workerData.find(function (val) {
+                var ret = _this3._workerData.find(function (val) {
                     var itemCoordinates = item.geometry.coordinates;
                     var valCoordinates = val.geometry.coordinates;
                     return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
@@ -5416,9 +5416,9 @@ var PointOverlay = function (_Parameter) {
             }
         }
     }, {
-        key: 'compileSplitList',
-        value: function compileSplitList(data) {
-            var colors = this.styleConfig.colors;
+        key: '_compileSplitList',
+        value: function _compileSplitList(data) {
+            var colors = this._styleConfig.colors;
             if (colors.length <= 0) return;
             data = data.sort(function (a, b) {
                 return parseFloat(a.count) - parseFloat(b.count);
@@ -5465,28 +5465,28 @@ var PointOverlay = function (_Parameter) {
                 }
             }
 
-            this.styleConfig.splitList = result;
-            this.setlegend(this.legendConfig, this.styleConfig.splitList);
+            this._styleConfig.splitList = result;
+            this._setlegend(this._legendConfig, this._styleConfig.splitList);
         }
     }, {
-        key: 'getTarget',
-        value: function getTarget(mouseX, mouseY) {
-            var pixels = this.workerData,
-                ctx = this.ctx;
-            var mapSize = this.map.getSize();
+        key: '_getTarget',
+        value: function _getTarget(mouseX, mouseY) {
+            var pixels = this._workerData,
+                ctx = this._ctx;
+            var mapSize = this._map.getSize();
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var _item2 = pixels[i];
                 var _item2$geometry$pixel = _item2.geometry.pixel,
                     x = _item2$geometry$pixel.x,
                     y = _item2$geometry$pixel.y;
 
-                var style = this.setDrawStyle(_item2);
+                var style = this._setDrawStyle(_item2);
                 var size = this._calculateMpp(style.size);
                 size += style.borderWidth || 0;
                 if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
                     ctx.beginPath();
                     ctx.arc(x, y, size, 0, 2 * Math.PI, true);
-                    if (ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
+                    if (ctx.isPointInPath(mouseX * this._devicePixelRatio, mouseY * this._devicePixelRatio)) {
                         return {
                             index: i,
                             item: _item2
@@ -5500,11 +5500,11 @@ var PointOverlay = function (_Parameter) {
             };
         }
     }, {
-        key: 'findIndexSelectItem',
-        value: function findIndexSelectItem(item) {
+        key: '_findIndexSelectItem',
+        value: function _findIndexSelectItem(item) {
             var index = -1;
             if (item) {
-                index = this.selectItem.findIndex(function (val) {
+                index = this._selectItem.findIndex(function (val) {
                     var itemCoordinates = item.geometry.coordinates;
                     var valCoordinates = val.geometry.coordinates;
                     return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
@@ -5515,42 +5515,42 @@ var PointOverlay = function (_Parameter) {
     }, {
         key: 'refresh',
         value: function refresh() {
-            this.setState(_OnStateConfig2.default.drawBefore);
-            this.clearCanvas();
-            this.mouseLayer.canvasResize();
-            if (this.batchesData) {
-                this.batchesData.clear();
-                this.batchesData.action(this.workerData, this._loopDraw, this.ctx);
+            this._setState(_OnStateConfig2.default.drawBefore);
+            this._clearCanvas();
+            this._mouseLayer._canvasResize();
+            if (this._batchesData) {
+                this._batchesData.clear();
+                this._batchesData.action(this._workerData, this._loopDraw, this._ctx);
             } else {
-                this._loopDraw(this.ctx, this.workerData, false);
+                this._loopDraw(this._ctx, this._workerData, false);
             }
-            if (this.styleConfig.normal.label.show) {
-                this._drawLabel(this.ctx, this.workerData);
+            if (this._styleConfig.normal.label.show) {
+                this._drawLabel(this._ctx, this._workerData);
             }
-            this.drawMouseLayer();
-            this.setState(_OnStateConfig2.default.drawAfter);
+            this._drawMouseLayer();
+            this._setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
-        key: 'swopData',
-        value: function swopData(index, item) {
-            if (index > -1 && !this.styleConfig.normal.label.show) {
-                this.workerData[index] = this.workerData[this.workerData.length - 1];
-                this.workerData[this.workerData.length - 1] = item;
+        key: '_swopData',
+        value: function _swopData(index, item) {
+            if (index > -1 && !this._styleConfig.normal.label.show) {
+                this._workerData[index] = this._workerData[this._workerData.length - 1];
+                this._workerData[this._workerData.length - 1] = item;
             }
         }
     }, {
         key: '_loopDraw',
         value: function _loopDraw(ctx, pixels, otherMode) {
-            var mapSize = this.map.getSize();
+            var mapSize = this._map.getSize();
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var _item3 = pixels[i];
                 var pixel = _item3.geometry.pixel;
                 var x = pixel.x,
                     y = pixel.y;
 
-                var style = this.setDrawStyle(_item3, otherMode);
+                var style = this._setDrawStyle(_item3, otherMode);
                 var size = this._calculateMpp(style.size);
-                if (this.styleConfig.normal.label.show) {
+                if (this._styleConfig.normal.label.show) {
                     pixel['radius'] = size;
                 }
                 if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
@@ -5573,7 +5573,7 @@ var PointOverlay = function (_Parameter) {
         value: function _drawLabel(ctx, pixels) {
             var _this4 = this;
 
-            var fontStyle = this.styleConfig.normal.label;
+            var fontStyle = this._styleConfig.normal.label;
             var fontSize = parseInt(fontStyle.font);
             ctx.font = fontStyle.font;
             ctx.textBaseline = 'top';
@@ -5587,7 +5587,7 @@ var PointOverlay = function (_Parameter) {
                     x = _val$geometry$pixel.x,
                     y = _val$geometry$pixel.y;
 
-                var r = radius + _this4.styleConfig.normal.borderWidth;
+                var r = radius + _this4._styleConfig.normal.borderWidth;
                 isName = val.name ? true : false;
                 return new _Label2.default(x, y, r, fontSize, byteWidth, val.name);
             });
@@ -5638,69 +5638,69 @@ var PointOverlay = function (_Parameter) {
             }
         }
     }, {
-        key: 'Tdispose',
-        value: function Tdispose() {
-            this.batchesData && this.batchesData.clear();
-            this.map.removeOverlay(this.mouseLayer);
-            this.mouseLayer.dispose();
+        key: '_Tdispose',
+        value: function _Tdispose() {
+            this._batchesData && this._batchesData.clear();
+            this._map.removeOverlay(this._mouseLayer);
+            this._mouseLayer.dispose();
         }
     }, {
-        key: 'tMousemove',
-        value: function tMousemove(event) {
+        key: '_tMousemove',
+        value: function _tMousemove(event) {
 
-            if (this.eventType == 'onmoving') {
+            if (this._eventType == 'onmoving') {
                 return;
             }
-            if (!this.tooltipConfig.show && (0, _util.isEmpty)(this.styleConfig.mouseOver)) {
+            if (!this._tooltipConfig.show && (0, _util.isEmpty)(this._styleConfig.mouseOver)) {
                 return;
             }
-            var result = this.getTarget(event.pixel.x, event.pixel.y);
+            var result = this._getTarget(event.pixel.x, event.pixel.y);
             var temp = result.item;
 
-            if (temp != this.overItem) {
-                this.overItem = temp;
-                this.eventType = 'mousemove';
-                if (!(0, _util.isEmpty)(this.styleConfig.mouseOver)) {
-                    this.drawMouseLayer();
+            if (temp != this._overItem) {
+                this._overItem = temp;
+                this._eventType = 'mousemove';
+                if (!(0, _util.isEmpty)(this._styleConfig.mouseOver)) {
+                    this._drawMouseLayer();
                 }
             }
             if (temp) {
-                this.map.setDefaultCursor('pointer');
+                this._map.setDefaultCursor('pointer');
             } else {
-                this.map.setDefaultCursor('default');
+                this._map.setDefaultCursor('default');
             }
 
-            this.setTooltip(event);
+            this._setTooltip(event);
         }
     }, {
-        key: 'tMouseClick',
-        value: function tMouseClick(event) {
-            if (this.eventType == 'onmoving') return;
-            var multiSelect = this.eventConfig.multiSelect;
+        key: '_tMouseClick',
+        value: function _tMouseClick(event) {
+            if (this._eventType == 'onmoving') return;
+            var multiSelect = this._eventConfig.multiSelect;
 
-            var result = this.getTarget(event.pixel.x, event.pixel.y);
+            var result = this._getTarget(event.pixel.x, event.pixel.y);
             if (result.index == -1) {
                 return;
             }
 
             var item = result.item;
             if (multiSelect) {
-                if (this.selectItemContains(item)) {
-                    this.deleteSelectItem(item);
+                if (this._selectItemContains(item)) {
+                    this._deleteSelectItem(item);
                 } else {
-                    this.selectItem.push(result.item);
+                    this._selectItem.push(result.item);
                 }
             } else {
-                this.selectItem = [result.item];
+                this._selectItem = [result.item];
             }
 
-            this.eventConfig.onMouseClick(this.selectItem, event);
+            this._eventConfig.onMouseClick(this._selectItem, event);
 
             if (isMobile) {
-                this.overItem = [item];
-                this.setTooltip(event);
+                this._overItem = [item];
+                this._setTooltip(event);
             }
-            this.drawMouseLayer();
+            this._drawMouseLayer();
         }
     }]);
 
@@ -5756,43 +5756,43 @@ var PolygonOverlay = function (_Parameter) {
 
         var _this = _possibleConstructorReturn(this, (PolygonOverlay.__proto__ || Object.getPrototypeOf(PolygonOverlay)).call(this, _PolygonConfig2.default, ops));
 
-        _this.patchSplitList();
-        _this.state = null;
+        _this._patchSplitList();
+        _this._state = null;
         return _this;
     }
 
     _createClass(PolygonOverlay, [{
-        key: 'parameterInit',
-        value: function parameterInit() {
-            this.initLegend();
+        key: '_parameterInit',
+        value: function _parameterInit() {
+            this._initLegend();
         }
     }, {
-        key: 'initLegend',
-        value: function initLegend() {
-            this.compileSplitList(this.styleConfig.colors, this.getTransformData());
-            this.patchSplitList();
-            this.setlegend(this.legendConfig, this.styleConfig.splitList);
+        key: '_initLegend',
+        value: function _initLegend() {
+            this._compileSplitList(this._styleConfig.colors, this._getTransformData());
+            this._patchSplitList();
+            this._setlegend(this._legendConfig, this._styleConfig.splitList);
         }
     }, {
-        key: 'setSelectedList',
-        value: function setSelectedList(list) {
-            (0, _util.clearPushArray)(this.selectItem, list);
+        key: '_setSelectedList',
+        value: function _setSelectedList(list) {
+            (0, _util.clearPushArray)(this._selectItem, list);
         }
     }, {
-        key: 'clearSelectedList',
-        value: function clearSelectedList() {
-            (0, _util.clearPushArray)(this.selectItem);
+        key: '_clearSelectedList',
+        value: function _clearSelectedList() {
+            (0, _util.clearPushArray)(this._selectItem);
         }
     }, {
-        key: 'getSelectedList',
-        value: function getSelectedList() {
-            return this.selectItem;
+        key: '_getSelectedList',
+        value: function _getSelectedList() {
+            return this._selectItem;
         }
     }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            for (var i = 0; i < this.workerData.length; i++) {
-                var geometry = this.workerData[i].geometry;
+        key: '_translation',
+        value: function _translation(distanceX, distanceY) {
+            for (var i = 0; i < this._workerData.length; i++) {
+                var geometry = this._workerData[i].geometry;
                 var pixels = geometry.pixels;
                 if (geometry.type == 'MultiPolygon') {
                     for (var j = 0; j < pixels.length; j++) {
@@ -5834,24 +5834,24 @@ var PolygonOverlay = function (_Parameter) {
             this._setStyle(this._option, ops);
         }
     }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState.call(this, this.state);
+        key: '_setState',
+        value: function _setState(val) {
+            this._state = val;
+            this._eventConfig.onState.call(this, this._state);
         }
     }, {
-        key: 'onOptionChange',
-        value: function onOptionChange() {
-            this.map && this.initLegend();
+        key: '_onOptionChange',
+        value: function _onOptionChange() {
+            this._map && this._initLegend();
         }
     }, {
-        key: 'onDataChange',
-        value: function onDataChange() {
-            this.map && this.initLegend();
+        key: '_onDataChange',
+        value: function _onDataChange() {
+            this._map && this._initLegend();
         }
     }, {
-        key: 'compileSplitList',
-        value: function compileSplitList(colors, data) {
+        key: '_compileSplitList',
+        value: function _compileSplitList(colors, data) {
 
             if (colors.length <= 0) return;
             data = data.sort(function (a, b) {
@@ -5898,32 +5898,31 @@ var PolygonOverlay = function (_Parameter) {
                 }
             }
 
-            this.styleConfig.splitList = result;
+            this._styleConfig.splitList = result;
         }
     }, {
-        key: 'patchSplitList',
-        value: function patchSplitList() {
-            var normal = this.styleConfig.normal;
+        key: '_patchSplitList',
+        value: function _patchSplitList() {
+            var normal = this._styleConfig.normal;
             if (normal.borderWidth != null && normal.borderColor == null) {
-                normal.borderColor = new _Color2.default(normal.backgroundColor).getRgbaStyle();
+                normal.borderColor = new _Color2.default(normal.backgroundColor).getRgbaValue();
             }
-            var splitList = this.styleConfig.splitList;
+            var splitList = this._styleConfig.splitList;
             for (var i = 0; i < splitList.length; i++) {
                 var condition = splitList[i];
                 if ((condition.borderWidth != null || normal.borderColor != null) && condition.borderColor == null) {
-                    condition.borderColor = new _Color2.default(condition.backgroundColor).getRgbaStyle();
+                    condition.borderColor = new _Color2.default(condition.backgroundColor).getRgbaValue();
                 }
             }
         }
     }, {
-        key: 'resize',
-        value: function resize() {
-
-            this.drawMap();
+        key: '_toDraw',
+        value: function _toDraw() {
+            this._drawMap();
         }
     }, {
-        key: 'getGeoCenter',
-        value: function getGeoCenter(geo) {
+        key: '_getGeoCenter',
+        value: function _getGeoCenter(geo) {
             var minX = geo[0][0];
             var minY = geo[0][1];
             var maxX = geo[0][0];
@@ -5937,8 +5936,8 @@ var PolygonOverlay = function (_Parameter) {
             return [minX + (maxX - minX) / 2, minY + (maxY - minY) / 2];
         }
     }, {
-        key: 'getMaxWidth',
-        value: function getMaxWidth(geo) {
+        key: '_getMaxWidth',
+        value: function _getMaxWidth(geo) {
             var minX = geo[0][0];
             var minY = geo[0][1];
             var maxX = geo[0][0];
@@ -5952,11 +5951,11 @@ var PolygonOverlay = function (_Parameter) {
             return maxX - minX;
         }
     }, {
-        key: 'findIndexSelectItem',
-        value: function findIndexSelectItem(item) {
+        key: '_findIndexSelectItem',
+        value: function _findIndexSelectItem(item) {
             var index = -1;
             if (item) {
-                index = this.selectItem.findIndex(function (val) {
+                index = this._selectItem.findIndex(function (val) {
                     return val && val.name == item.name;
                 });
             }
@@ -5966,36 +5965,36 @@ var PolygonOverlay = function (_Parameter) {
         key: 'refresh',
         value: function refresh() {
 
-            this.setState(_OnStateConfig2.default.drawBefore);
-            this.clearCanvas();
-            this.drawLine(this.getData());
-            this.setState(_OnStateConfig2.default.drawAfter);
+            this._setState(_OnStateConfig2.default.drawBefore);
+            this._clearCanvas();
+            this._drawLine(this.getRenderData());
+            this._setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
-        key: 'drawMap',
-        value: function drawMap() {
+        key: '_drawMap',
+        value: function _drawMap() {
             var _this2 = this;
 
-            this.setState(_OnStateConfig2.default.computeBefore);
+            this._setState(_OnStateConfig2.default.computeBefore);
             var parameter = {
-                data: this.getTransformData(),
-                enable: this.styleConfig.normal.label.enable
+                data: this._getTransformData(),
+                enable: this._styleConfig.normal.label.enable
             };
 
-            this.postMessage('PolygonOverlay.calculatePixel', parameter, function (pixels, margin) {
-                if (_this2.eventType == 'onmoving') {
+            this._postMessage('PolygonOverlay.calculatePixel', parameter, function (pixels, margin) {
+                if (_this2._eventType == 'onmoving') {
                     return;
                 }
-                _this2.setWorkerData(pixels);
-                _this2.setState(_OnStateConfig2.default.conputeAfter);
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                _this2._setWorkerData(pixels);
+                _this2._setState(_OnStateConfig2.default.conputeAfter);
+                _this2._translation(margin.left - _this2._margin.left, margin.top - _this2._margin.top);
                 pixels = null, margin = null;
             });
         }
     }, {
-        key: 'getTarget',
-        value: function getTarget(x, y) {
-            var data = this.getData();
+        key: '_getTarget',
+        value: function _getTarget(x, y) {
+            var data = this.getRenderData();
             for (var i = 0; i < data.length; i++) {
                 var item = data[i];
                 var geometry = item.geometry;
@@ -6003,7 +6002,7 @@ var PolygonOverlay = function (_Parameter) {
 
                 if (geometry.type == 'MultiPolygon') {
                     for (var k = 0; k < pixels.length; k++) {
-                        if (this.containPolygon(x, y, pixels[k])) {
+                        if (this._containPolygon(x, y, pixels[k])) {
                             return {
                                 index: i,
                                 item: item
@@ -6011,7 +6010,7 @@ var PolygonOverlay = function (_Parameter) {
                         }
                     }
                 } else {
-                    if (this.containPolygon(x, y, pixels)) {
+                    if (this._containPolygon(x, y, pixels)) {
                         return {
                             index: i,
                             item: item
@@ -6028,41 +6027,41 @@ var PolygonOverlay = function (_Parameter) {
             };
         }
     }, {
-        key: 'drawData',
-        value: function drawData(pixelItem) {
+        key: '_drawData',
+        value: function _drawData(pixelItem) {
 
             if (pixelItem.length == 0) return;
             var pixel = pixelItem[0];
-            this.ctx.moveTo(pixel[0], pixel[1]);
+            this._ctx.moveTo(pixel[0], pixel[1]);
             for (var k = 1, len = pixelItem.length; k < len; k++) {
                 var item = pixelItem[k];
                 if (pixel[0] != item[0] && pixel[1] != item[1]) {
-                    this.ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
+                    this._ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
                     pixel = item;
                 }
             }
         }
     }, {
-        key: 'containPolygon',
-        value: function containPolygon(x, y, pixels) {
+        key: '_containPolygon',
+        value: function _containPolygon(x, y, pixels) {
             var outerRace = false;
             for (var j = 0; j < pixels.length; j++) {
-                this.ctx.beginPath();
+                this._ctx.beginPath();
                 var pixelItem = pixels[j];
                 if (j == 0) {
-                    this.drawData(pixelItem);
-                    this.ctx.closePath();
-                    if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
+                    this._drawData(pixelItem);
+                    this._ctx.closePath();
+                    if (this._ctx.isPointInPath(x * this._devicePixelRatio, y * this._devicePixelRatio)) {
                         outerRace = true;
                     } else {
                         return false;
                     }
                 } else {
 
-                    this.drawData(pixelItem);
-                    this.ctx.closePath();
+                    this._drawData(pixelItem);
+                    this._ctx.closePath();
 
-                    if (this.ctx.isPointInPath(x * this.devicePixelRatio, y * this.devicePixelRatio)) {
+                    if (this._ctx.isPointInPath(x * this._devicePixelRatio, y * this._devicePixelRatio)) {
                         return false;
                     }
                 }
@@ -6070,64 +6069,64 @@ var PolygonOverlay = function (_Parameter) {
             return outerRace;
         }
     }, {
-        key: 'drawPolygon',
-        value: function drawPolygon(pixels, style) {
+        key: '_drawPolygon',
+        value: function _drawPolygon(pixels, style) {
 
             for (var j = 0; j < pixels.length; j++) {
-                this.ctx.save();
-                this.ctx.beginPath();
+                this._ctx.save();
+                this._ctx.beginPath();
                 var pixelItem = pixels[j];
                 if (j == 0) {
-                    this.drawData(pixelItem);
-                    this.ctx.closePath();
-                    this.ctx.fill();
+                    this._drawData(pixelItem);
+                    this._ctx.closePath();
+                    this._ctx.fill();
                 } else {
-                    this.drawData(pixelItem);
-                    this.ctx.clip();
-                    this.clearCanvas();
+                    this._drawData(pixelItem);
+                    this._ctx.clip();
+                    this._clearCanvas();
                 }
-                this.ctx.strokeStyle = style.borderColor;
-                this.ctx.lineWidth = style.borderWidth;
-                this.ctx.stroke();
-                this.ctx.restore();
+                this._ctx.strokeStyle = style.borderColor;
+                this._ctx.lineWidth = style.borderWidth;
+                this._ctx.stroke();
+                this._ctx.restore();
                 pixelItem = null;
             }
         }
     }, {
-        key: 'drawLine',
-        value: function drawLine(data) {
-            this.ctx.lineCap = 'round';
-            this.ctx.lineJoin = 'round';
-            this.ctx.miterLimit = 4;
+        key: '_drawLine',
+        value: function _drawLine(data) {
+            this._ctx.lineCap = 'round';
+            this._ctx.lineJoin = 'round';
+            this._ctx.miterLimit = 4;
             for (var i = 0; i < data.length; i++) {
                 var item = data[i];
                 var geometry = item.geometry;
                 var pixels = geometry.pixels;
-                var style = this.setDrawStyle(item, true);
-                this.ctx.beginPath();
-                this.ctx.shadowColor = style.shadowColor || 'transparent';
-                this.ctx.shadowBlur = style.shadowBlur || 10;
-                this.ctx.shadowOffsetX = 0;
-                this.ctx.shadowOffsetY = 0;
-                this.ctx.fillStyle = style.backgroundColor;
+                var style = this._setDrawStyle(item, true);
+                this._ctx.beginPath();
+                this._ctx.shadowColor = style.shadowColor || 'transparent';
+                this._ctx.shadowBlur = style.shadowBlur || 10;
+                this._ctx.shadowOffsetX = 0;
+                this._ctx.shadowOffsetY = 0;
+                this._ctx.fillStyle = style.backgroundColor;
                 if (geometry.type == 'MultiPolygon') {
                     for (var k = 0; k < pixels.length; k++) {
-                        this.drawPolygon(pixels[k], style);
+                        this._drawPolygon(pixels[k], style);
                     }
                 } else {
-                    this.drawPolygon(pixels, style);
+                    this._drawPolygon(pixels, style);
                 }
 
-                if (this.styleConfig.normal.label.show) {
+                if (this._styleConfig.normal.label.show) {
                     var labelPixels = geometry.labelPixels;
-                    this.ctx.shadowBlur = 0;
-                    this.ctx.lineWidth = style.label.lineWidth;
-                    this.ctx.font = style.label.font;
-                    this.ctx.fillStyle = style.label.color;
+                    this._ctx.shadowBlur = 0;
+                    this._ctx.lineWidth = style.label.lineWidth;
+                    this._ctx.font = style.label.font;
+                    this._ctx.fillStyle = style.label.color;
                     for (var j = 0; j < labelPixels.length; j++) {
                         var bestCell = labelPixels[j];
-                        this.ctx.beginPath();
-                        var width = this.ctx.measureText(item.name).width;
+                        this._ctx.beginPath();
+                        var width = this._ctx.measureText(item.name).width;
                         if (geometry.type == 'MultiPolygon') {
                             var maxPixels = [];
                             for (var _k2 = 0; _k2 < pixels.length; _k2++) {
@@ -6138,13 +6137,13 @@ var PolygonOverlay = function (_Parameter) {
                                 }
                                 _item = null;
                             }
-                            if (bestCell && item.name && this.getMaxWidth(maxPixels) > width) {
-                                this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
+                            if (bestCell && item.name && this._getMaxWidth(maxPixels) > width) {
+                                this._ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
                             }
                             maxPixels = null;
                         } else {
-                            if (bestCell && item.name && this.getMaxWidth(pixels[j]) > width) {
-                                this.ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
+                            if (bestCell && item.name && this._getMaxWidth(pixels[j]) > width) {
+                                this._ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
                             }
                         }
 
@@ -6154,7 +6153,7 @@ var PolygonOverlay = function (_Parameter) {
                 }
                 style = null, pixels = null, geometry = null, item = null;
             }
-            this.ctx.closePath();
+            this._ctx.closePath();
         }
     }]);
 
@@ -6467,9 +6466,9 @@ var Toolbar = function () {
     function Toolbar(mapDom) {
         _classCallCheck(this, Toolbar);
 
-        var toolDom = this.create(mapDom);
+        var toolDom = this._create(mapDom);
         var toolTip = new _ToolTip2.default(toolDom);
-        var legendContainer = this.createLegendContainer(toolDom);
+        var legendContainer = this._createLegendContainer(toolDom);
         return {
             legendContainer: legendContainer,
             toolTip: toolTip
@@ -6477,16 +6476,16 @@ var Toolbar = function () {
     }
 
     _createClass(Toolbar, [{
-        key: 'create',
-        value: function create(mapDom) {
+        key: '_create',
+        value: function _create(mapDom) {
             var div = document.createElement('div');
             div.classList.add('inmap-container');
             mapDom.appendChild(div);
             return div;
         }
     }, {
-        key: 'createLegendContainer',
-        value: function createLegendContainer(parentDom) {
+        key: '_createLegendContainer',
+        value: function _createLegendContainer(parentDom) {
             var div = document.createElement('div');
             div.classList.add('inmap-legend-container');
             parentDom.appendChild(div);
@@ -7526,14 +7525,14 @@ var Map = function () {
     function Map(ops) {
         _classCallCheck(this, Map);
 
-        this.map = null;
-        this.option = (0, _util.merge)(_InmapConfig2.default, ops);
-        this.create();
+        this._map = null;
+        this._option = (0, _util.merge)(_InmapConfig2.default, ops);
+        this._create();
     }
 
     _createClass(Map, [{
-        key: 'tMapStyle',
-        value: function tMapStyle(map, skin) {
+        key: '_tMapStyle',
+        value: function _tMapStyle(map, skin) {
             var styleJson = null;
             if ((0, _util.isString)(skin)) {
                 styleJson = skin == 'Blueness' ? _MapStyleConfig.Blueness : _MapStyleConfig.WhiteLover;
@@ -7545,9 +7544,9 @@ var Map = function () {
             });
         }
     }, {
-        key: 'create',
-        value: function create() {
-            var id = this.option.id;
+        key: '_create',
+        value: function _create() {
+            var id = this._option.id;
 
             var mapDom = (0, _util.isString)(id) ? document.getElementById(id) : id;
             var bmap = new BMap.Map(mapDom, {
@@ -7557,43 +7556,43 @@ var Map = function () {
             bmap.disableDoubleClickZoom();
             bmap.enableKeyboard();
 
-            this.tMapStyle(bmap, this.option.skin);
+            this._tMapStyle(bmap, this._option.skin);
 
-            bmap.inmapToolBar = new _Toolbar2.default(mapDom);
-            var center = this.option.center;
+            bmap._inmapToolBar = new _Toolbar2.default(mapDom);
+            var center = this._option.center;
 
-            bmap.centerAndZoom(new BMap.Point(center[0], center[1]), this.option.zoom.value);
-            bmap.setMinZoom(this.option.zoom.min);
-            bmap.setMaxZoom(this.option.zoom.max);
-            if (this.option.zoom.show) {
-                var mapZoom = new _mapZoom2.default(bmap, mapDom, this.option.zoom);
+            bmap.centerAndZoom(new BMap.Point(center[0], center[1]), this._option.zoom.value);
+            bmap.setMinZoom(this._option.zoom.min);
+            bmap.setMaxZoom(this._option.zoom.max);
+            if (this._option.zoom.show) {
+                var mapZoom = new _mapZoom2.default(bmap, mapDom, this._option.zoom);
                 bmap.addEventListener('zoomend', function () {
                     mapZoom.setButtonState();
                 });
             }
 
-            this.map = bmap;
+            this._map = bmap;
         }
     }, {
         key: 'getMap',
         value: function getMap() {
-            return this.map;
+            return this._map;
         }
     }, {
         key: 'add',
         value: function add(overlay) {
-            if (overlay.isDispose) {
+            if (overlay._isDispose) {
                 throw new TypeError('inMap: overlay has been destroyed.');
             } else if (overlay instanceof _MultiOverlay2.default) {
-                overlay._init(this.map);
+                overlay._init(this._map);
             } else {
-                this.map.addOverlay(overlay);
+                this._map.addOverlay(overlay);
             }
         }
     }, {
         key: 'remove',
         value: function remove(overlay) {
-            if (overlay && !overlay.isDispose) {
+            if (overlay && !overlay._isDispose) {
                 overlay.dispose();
             }
             overlay = null;
@@ -7646,89 +7645,84 @@ var GriddingOverlay = function (_Parameter) {
 
         var _this = _possibleConstructorReturn(this, (GriddingOverlay.__proto__ || Object.getPrototypeOf(GriddingOverlay)).call(this, _GriddingConfig2.default, ops));
 
-        _this.state = null;
+        _this._state = null;
         _this._drawSize = 0;
-        _this.mpp = {};
+        _this._mpp = {};
         return _this;
     }
 
     _createClass(GriddingOverlay, [{
-        key: 'parameterInit',
-        value: function parameterInit() {}
+        key: '_parameterInit',
+        value: function _parameterInit() {}
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
             this._setStyle(this._option, ops);
         }
     }, {
-        key: 'draw',
-        value: function draw() {
-            this.resize();
-        }
-    }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState.call(this, this.state);
+        key: '_setState',
+        value: function _setState(val) {
+            this._state = val;
+            this._eventConfig.onState.call(this, this._state);
         }
     }, {
         key: 'refresh',
         value: function refresh() {
-            this.setState(_OnStateConfig2.default.drawBefore);
-            this.drawRec();
-            this.setState(_OnStateConfig2.default.drawAfter);
+            this._setState(_OnStateConfig2.default.drawBefore);
+            this._drawRec();
+            this._setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
-        key: 'resize',
-        value: function resize() {
-            this.drawMap();
+        key: '_toDraw',
+        value: function _toDraw() {
+            this._drawMap();
         }
     }, {
-        key: 'onOptionChange',
-        value: function onOptionChange() {
-            this.map && this.createColorSplit();
+        key: '_onOptionChange',
+        value: function _onOptionChange() {
+            this._map && this._createColorSplit();
         }
     }, {
-        key: 'onDataChange',
-        value: function onDataChange() {
-            this.map && this.createColorSplit();
+        key: '_onDataChange',
+        value: function _onDataChange() {
+            this._map && this._createColorSplit();
         }
     }, {
         key: '_calculateMpp',
         value: function _calculateMpp() {
-            var zoom = this.map.getZoom();
-            if (this.mpp[zoom]) {
-                return this.mpp[zoom];
+            var zoom = this._map.getZoom();
+            if (this._mpp[zoom]) {
+                return this._mpp[zoom];
             } else {
-                this.mpp[zoom] = this.getMpp();
-                return this.mpp[zoom];
+                this._mpp[zoom] = this._getMpp();
+                return this._mpp[zoom];
             }
         }
     }, {
-        key: 'getMpp',
-        value: function getMpp() {
-            var mapCenter = this.map.getCenter();
+        key: '_getMpp',
+        value: function _getMpp() {
+            var mapCenter = this._map.getCenter();
             var assistValue = 10;
             var cpt = new BMap.Point(mapCenter.lng, mapCenter.lat + assistValue);
-            var dpx = Math.abs(this.map.pointToPixel(mapCenter).y - this.map.pointToPixel(cpt).y);
-            return this.map.getDistance(mapCenter, cpt) / dpx;
+            var dpx = Math.abs(this._map.pointToPixel(mapCenter).y - this._map.pointToPixel(cpt).y);
+            return this._map.getDistance(mapCenter, cpt) / dpx;
         }
     }, {
-        key: 'drawMap',
-        value: function drawMap() {
+        key: '_drawMap',
+        value: function _drawMap() {
             var _this2 = this;
 
-            this.clearData();
-            var _styleConfig = this.styleConfig,
+            this._clearData();
+            var _styleConfig = this._styleConfig,
                 normal = _styleConfig.normal,
                 type = _styleConfig.type;
 
-            var zoom = this.map.getZoom();
-            var mapCenter = this.map.getCenter();
-            var mapSize = this.map.getSize();
+            var zoom = this._map.getZoom();
+            var mapCenter = this._map.getCenter();
+            var mapSize = this._map.getSize();
 
             var zoomUnit = Math.pow(2, 18 - zoom);
-            var mercatorProjection = this.map.getMapType().getProjection();
+            var mercatorProjection = this._map.getMapType().getProjection();
             var mcCenter = mercatorProjection.lngLatToPoint(mapCenter);
 
             var nwMcX = mcCenter.x - mapSize.width / 2 * zoomUnit;
@@ -7747,7 +7741,7 @@ var GriddingOverlay = function (_Parameter) {
             }
 
             var params = {
-                points: this.points,
+                points: this._data,
                 size: size,
                 type: type,
                 nwMc: nwMc,
@@ -7757,20 +7751,20 @@ var GriddingOverlay = function (_Parameter) {
                 zoom: zoom
 
             };
-            this.setState(_OnStateConfig2.default.computeBefore);
-            this.postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj) {
-                if (_this2.eventType == 'onmoving') {
+            this._setState(_OnStateConfig2.default.computeBefore);
+            this._postMessage('GriddingOverlay.toRecGrids', params, function (gridsObj) {
+                if (_this2._eventType == 'onmoving') {
                     return;
                 }
-                _this2.canvasResize();
-                _this2.workerData = gridsObj.grids;
-                _this2.setState(_OnStateConfig2.default.conputeAfter);
+                _this2._canvasResize();
+                _this2._workerData = gridsObj.grids;
+                _this2._setState(_OnStateConfig2.default.conputeAfter);
 
                 _this2._drawSize = size / zoomUnit;
-                _this2.setState(_OnStateConfig2.default.drawBefore);
+                _this2._setState(_OnStateConfig2.default.drawBefore);
 
-                if (_this2.eventType != 'onmoveend' || _this2.styleConfig.splitList == null || _this2.styleConfig.splitList.length < _this2.styleConfig.colors.length) {
-                    _this2.createColorSplit();
+                if (_this2._eventType != 'onmoveend' || _this2._styleConfig.splitList == null || _this2._styleConfig.splitList.length < _this2._styleConfig.colors.length) {
+                    _this2._createColorSplit();
                 }
                 _this2.refresh();
                 gridsObj = null;
@@ -7782,24 +7776,24 @@ var GriddingOverlay = function (_Parameter) {
             return !(mouseX < x || mouseX > x + w || mouseY < y || mouseY > y + h);
         }
     }, {
-        key: 'findIndexSelectItem',
-        value: function findIndexSelectItem(item) {
+        key: '_findIndexSelectItem',
+        value: function _findIndexSelectItem(item) {
             var index = -1;
             if (item) {
-                index = this.selectItem.findIndex(function (val) {
+                index = this._selectItem.findIndex(function (val) {
                     return val && val.x == item.x && val.y == item.y;
                 });
             }
             return index;
         }
     }, {
-        key: 'getTarget',
-        value: function getTarget(x, y) {
+        key: '_getTarget',
+        value: function _getTarget(x, y) {
 
             var gridStep = this._drawSize;
-            var mapSize = this.map.getSize();
-            for (var i = 0; i < this.workerData.length; i++) {
-                var item = this.workerData[i];
+            var mapSize = this._map.getSize();
+            for (var i = 0; i < this._workerData.length; i++) {
+                var item = this._workerData[i];
                 var x1 = item.x;
                 var y1 = item.y;
                 if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
@@ -7817,10 +7811,10 @@ var GriddingOverlay = function (_Parameter) {
             };
         }
     }, {
-        key: 'compileSplitList',
-        value: function compileSplitList(data) {
+        key: '_compileSplitList',
+        value: function _compileSplitList(data) {
 
-            var colors = this.styleConfig.colors;
+            var colors = this._styleConfig.colors;
             if (colors.length < 0 || data.length <= 0) return;
             data = data.sort(function (a, b) {
                 return parseFloat(a.count) - parseFloat(b.count);
@@ -7864,57 +7858,56 @@ var GriddingOverlay = function (_Parameter) {
                 }
             }
             split = [];
-            this.styleConfig.splitList = result;
+            this._styleConfig.splitList = result;
         }
     }, {
-        key: 'createColorSplit',
-        value: function createColorSplit() {
+        key: '_createColorSplit',
+        value: function _createColorSplit() {
 
-            this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
-
-            this.setlegend(this.legendConfig, this.styleConfig.splitList);
+            this._styleConfig.colors.length > 0 && this._compileSplitList(this._workerData);
+            this._setlegend(this._legendConfig, this._styleConfig.splitList);
         }
     }, {
-        key: 'setTooltip',
-        value: function setTooltip(event) {
-            var item = this.overItem && this.overItem.list.length > 0 ? this.overItem : null;
+        key: '_setTooltip',
+        value: function _setTooltip(event) {
+            var item = this._overItem && this._overItem.list.length > 0 ? this._overItem : null;
             this.toolTip.render(event, item);
         }
     }, {
-        key: 'getStyle',
-        value: function getStyle(item) {
+        key: '_getStyle',
+        value: function _getStyle(item) {
             if (item.count == 0) {
                 return {
                     backgroundColor: 'rgba(255,255,255,0)'
                 };
             } else {
-                return this.setDrawStyle(item, true);
+                return this._setDrawStyle(item, true);
             }
         }
     }, {
-        key: 'drawRec',
-        value: function drawRec() {
-            this.clearCanvas();
+        key: '_drawRec',
+        value: function _drawRec() {
+            this._clearCanvas();
             var gridStep = this._drawSize;
-            var style = this.styleConfig.normal;
-            var mapSize = this.map.getSize();
-            this.ctx.shadowOffsetX = 0;
-            this.ctx.shadowOffsetY = 0;
-            for (var i = 0; i < this.workerData.length; i++) {
-                var item = this.workerData[i];
+            var style = this._styleConfig.normal;
+            var mapSize = this._map.getSize();
+            this._ctx.shadowOffsetX = 0;
+            this._ctx.shadowOffsetY = 0;
+            for (var i = 0; i < this._workerData.length; i++) {
+                var item = this._workerData[i];
                 var x = item.x;
                 var y = item.y;
                 if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
-                    var drawStyle = this.getStyle(item);
+                    var drawStyle = this._getStyle(item);
                     if (drawStyle.shadowColor) {
-                        this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
-                        this.ctx.shadowBlur = drawStyle.shadowBlur || 10;
+                        this._ctx.shadowColor = drawStyle.shadowColor || 'transparent';
+                        this._ctx.shadowBlur = drawStyle.shadowBlur || 10;
                     } else {
-                        this.ctx.shadowColor = 'transparent';
-                        this.ctx.shadowBlur = 0;
+                        this._ctx.shadowColor = 'transparent';
+                        this._ctx.shadowBlur = 0;
                     }
-                    this.ctx.fillStyle = drawStyle.backgroundColor;
-                    this.ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
+                    this._ctx.fillStyle = drawStyle.backgroundColor;
+                    this._ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
                 }
             }
         }
@@ -7968,11 +7961,11 @@ var HeatOverlay = function (_CanvasOverlay) {
 
         var _this = _possibleConstructorReturn(this, (HeatOverlay.__proto__ || Object.getPrototypeOf(HeatOverlay)).call(this, ops));
 
-        _this.points = [];
-        _this.workerData = [];
+        _this._data = [];
+        _this._workerData = [];
         _this._setStyle(_HeatConfig2.default, ops);
-        _this.delteOption();
-        _this.state = null;
+        _this._delteOption();
+        _this._state = null;
         return _this;
     }
 
@@ -7982,14 +7975,19 @@ var HeatOverlay = function (_CanvasOverlay) {
             this._setStyle(this._option, ops);
         }
     }, {
-        key: 'resize',
-        value: function resize() {
-            this.drawMap();
+        key: '_toDraw',
+        value: function _toDraw() {
+            this._drawMap();
         }
     }, {
-        key: 'getTransformData',
-        value: function getTransformData() {
-            return this.workerData.length > 0 ? this.workerData : this.points;
+        key: 'getRenderData',
+        value: function getRenderData() {
+            return this._workerData;
+        }
+    }, {
+        key: '_getTransformData',
+        value: function _getTransformData() {
+            return this._workerData.length > 0 ? this._workerData : this._data;
         }
     }, {
         key: '_setStyle',
@@ -7997,29 +7995,29 @@ var HeatOverlay = function (_CanvasOverlay) {
             if (!ops) return;
             var option = (0, _util.merge)(config, ops);
             this._option = option;
-            this.styleConfig = option.style;
-            this.eventConfig = option.event;
-            this.gradient = option.style.gradient;
+            this._styleConfig = option.style;
+            this._eventConfig = option.event;
+            this._gradient = option.style.gradient;
             if (ops.data !== undefined) {
                 this.setData(ops.data);
             } else {
-                this.map && this.refresh();
+                this._map && this.refresh();
             }
-            this.tMapStyle(option.skin);
+            this._tMapStyle(option.skin);
         }
     }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState.call(this, this.state);
+        key: '_setState',
+        value: function _setState(val) {
+            this._state = val;
+            this._eventConfig.onState.call(this, this._state);
         }
     }, {
-        key: 'delteOption',
-        value: function delteOption() {
-            this.tooltipConfig = {
+        key: '_delteOption',
+        value: function _delteOption() {
+            this._tooltipConfig = {
                 show: false
             };
-            this.legendConfig = {
+            this._legendConfig = {
                 show: false
             };
         }
@@ -8035,58 +8033,58 @@ var HeatOverlay = function (_CanvasOverlay) {
                 if (!(0, _util.isArray)(points)) {
                     throw new TypeError('inMap: data must be a Array');
                 }
-                this.points = points;
+                this._data = points;
             } else {
-                this.points = [];
+                this._data = [];
             }
-            (0, _util.clearPushArray)(this.workerData, []);
-            this.map && this.drawMap();
+            (0, _util.clearPushArray)(this._workerData, []);
+            this._map && this._drawMap();
         }
     }, {
-        key: 'getMax',
-        value: function getMax() {
-            var normal = this.styleConfig;
+        key: '_getMax',
+        value: function _getMax() {
+            var normal = this._styleConfig;
             normal.maxValue = 0;
-            for (var i = 0, len = this.points.length; i < len; i++) {
-                if (this.points[i].count > normal.maxValue) {
-                    normal.maxValue = this.points[i].count;
+            for (var i = 0, len = this._data.length; i < len; i++) {
+                if (this._data[i].count > normal.maxValue) {
+                    normal.maxValue = this._data[i].count;
                 }
             }
         }
     }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            for (var i = 0; i < this.workerData.length; i++) {
-                var pixel = this.workerData[i].geometry.pixel;
+        key: '_translation',
+        value: function _translation(distanceX, distanceY) {
+            for (var i = 0; i < this._workerData.length; i++) {
+                var pixel = this._workerData[i].geometry.pixel;
                 pixel.x = pixel.x + distanceX;
                 pixel.y = pixel.y + distanceY;
             }
-            this.setState(_OnStateConfig2.default.drawBefore);
+            this._setState(_OnStateConfig2.default.drawBefore);
             this.refresh();
-            this.setState(_OnStateConfig2.default.drawAfter);
+            this._setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
-        key: 'setWorkerData',
-        value: function setWorkerData(val) {
-            this.points = [];
-            (0, _util.clearPushArray)(this.workerData, val);
+        key: '_setWorkerData',
+        value: function _setWorkerData(val) {
+            this._data = [];
+            (0, _util.clearPushArray)(this._workerData, val);
         }
     }, {
-        key: 'drawMap',
-        value: function drawMap() {
+        key: '_drawMap',
+        value: function _drawMap() {
             var _this2 = this;
 
-            this.setState(_OnStateConfig2.default.computeBefore);
+            this._setState(_OnStateConfig2.default.computeBefore);
 
-            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin) {
+            this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), function (pixels, margin) {
 
-                if (_this2.eventType == 'onmoving') {
+                if (_this2._eventType == 'onmoving') {
                     return;
                 }
-                _this2.setWorkerData(pixels);
-                _this2.setState(_OnStateConfig2.default.conputeAfter);
+                _this2._setWorkerData(pixels);
+                _this2._setState(_OnStateConfig2.default.conputeAfter);
 
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                _this2._translation(margin.left - _this2._margin.left, margin.top - _this2._margin.top);
 
                 margin = null;
                 pixels = null;
@@ -8095,27 +8093,27 @@ var HeatOverlay = function (_CanvasOverlay) {
     }, {
         key: 'refresh',
         value: function refresh() {
-            this.clearCanvas();
-            var normal = this.styleConfig;
-            var container = this.container;
+            this._clearCanvas();
+            var normal = this._styleConfig;
+            var container = this._container;
             if (normal.maxValue == 0) {
-                this.getMax();
+                this._getMax();
             }
             if (container.width <= 0) {
                 return;
             }
 
-            var ctx = this.ctx;
-            for (var i = 0, _len = this.workerData.length; i < _len; i++) {
-                var item = this.workerData[i];
+            var ctx = this._ctx;
+            for (var i = 0, _len = this._workerData.length; i < _len; i++) {
+                var item = this._workerData[i];
                 var opacity = (item.count - normal.minValue) / (normal.maxValue - normal.minValue);
                 opacity = opacity > 1 ? 1 : opacity;
                 var pixel = item.geometry.pixel;
-                this.drawPoint(pixel.x, pixel.y, normal.radius, opacity);
+                this._drawPoint(pixel.x, pixel.y, normal.radius, opacity);
                 item = null, opacity = null, pixel = null;
             }
 
-            var palette = this.getColorPaint();
+            var palette = this._getColorPaint();
 
             var img = ctx.getImageData(0, 0, container.width, container.height);
             var imgData = img.data;
@@ -8154,9 +8152,9 @@ var HeatOverlay = function (_CanvasOverlay) {
             ctx.putImageData(img, 0, 0, 0, 0, container.width, container.height);
         }
     }, {
-        key: 'drawPoint',
-        value: function drawPoint(x, y, radius, opacity) {
-            var ctx = this.ctx;
+        key: '_drawPoint',
+        value: function _drawPoint(x, y, radius, opacity) {
+            var ctx = this._ctx;
             ctx.globalAlpha = opacity;
             ctx.beginPath();
             var gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
@@ -8168,9 +8166,9 @@ var HeatOverlay = function (_CanvasOverlay) {
             ctx.fill();
         }
     }, {
-        key: 'getColorPaint',
-        value: function getColorPaint() {
-            var gradientConfig = this.gradient;
+        key: '_getColorPaint',
+        value: function _getColorPaint() {
+            var gradientConfig = this._gradient;
             var paletteCanvas = document.createElement('canvas');
             var paletteCtx = paletteCanvas.getContext('2d');
 
@@ -8234,8 +8232,8 @@ var HoneycombOverlay = function (_Parameter) {
 
         var _this = _possibleConstructorReturn(this, (HoneycombOverlay.__proto__ || Object.getPrototypeOf(HoneycombOverlay)).call(this, _HoneycombConfig2.default, ops));
 
-        _this.state = null;
-        _this.mpp = {};
+        _this._state = null;
+        _this._mpp = {};
         _this._drawSize = 0;
         return _this;
     }
@@ -8246,74 +8244,74 @@ var HoneycombOverlay = function (_Parameter) {
             this._setStyle(this._option, ops);
         }
     }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState.call(this, this.state);
+        key: '_setState',
+        value: function _setState(val) {
+            this._state = val;
+            this._eventConfig.onState.call(this, this._state);
         }
     }, {
         key: 'draw',
         value: function draw() {
-            this.resize();
+            this._toDraw();
         }
     }, {
         key: 'refresh',
         value: function refresh() {
-            this.setState(_OnStateConfig2.default.drawBefore);
-            this.drawRec();
-            this.setState(_OnStateConfig2.default.drawAfter);
+            this._setState(_OnStateConfig2.default.drawBefore);
+            this._drawRec();
+            this._setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
-        key: 'resize',
-        value: function resize() {
-            this.drawMap();
+        key: '_toDraw',
+        value: function _toDraw() {
+            this._drawMap();
         }
     }, {
-        key: 'onOptionChange',
-        value: function onOptionChange() {
-            this.map && this.createColorSplit();
+        key: '_onOptionChange',
+        value: function _onOptionChange() {
+            this._map && this._createColorSplit();
         }
     }, {
-        key: 'onDataChange',
-        value: function onDataChange() {
-            this.map && this.createColorSplit();
+        key: '_onDataChange',
+        value: function _onDataChange() {
+            this._map && this._createColorSplit();
         }
     }, {
         key: '_calculateMpp',
         value: function _calculateMpp() {
-            var zoom = this.map.getZoom();
-            if (this.mpp[zoom]) {
-                return this.mpp[zoom];
+            var zoom = this._map.getZoom();
+            if (this._mpp[zoom]) {
+                return this._mpp[zoom];
             } else {
-                this.mpp[zoom] = this.getMpp();
-                return this.mpp[zoom];
+                this._mpp[zoom] = this._getMpp();
+                return this._mpp[zoom];
             }
         }
     }, {
-        key: 'getMpp',
-        value: function getMpp() {
-            var mapCenter = this.map.getCenter();
+        key: '_getMpp',
+        value: function _getMpp() {
+            var mapCenter = this._map.getCenter();
             var assistValue = 10;
             var cpt = new BMap.Point(mapCenter.lng, mapCenter.lat + assistValue);
-            var dpx = Math.abs(this.map.pointToPixel(mapCenter).y - this.map.pointToPixel(cpt).y);
-            return this.map.getDistance(mapCenter, cpt) / dpx;
+            var dpx = Math.abs(this._map.pointToPixel(mapCenter).y - this._map.pointToPixel(cpt).y);
+            return this._map.getDistance(mapCenter, cpt) / dpx;
         }
     }, {
-        key: 'drawMap',
-        value: function drawMap() {
+        key: '_drawMap',
+        value: function _drawMap() {
             var _this2 = this;
 
-            this.clearData();
-            var _styleConfig = this.styleConfig,
+            this._clearData();
+            var _styleConfig = this._styleConfig,
                 normal = _styleConfig.normal,
                 type = _styleConfig.type;
 
-            var zoom = this.map.getZoom();
-            var mapCenter = this.map.getCenter();
-            var mapSize = this.map.getSize();
+            var zoom = this._map.getZoom();
+            var mapCenter = this._map.getCenter();
+            var mapSize = this._map.getSize();
 
             var zoomUnit = Math.pow(2, 18 - zoom);
-            var mercatorProjection = this.map.getMapType().getProjection();
+            var mercatorProjection = this._map.getMapType().getProjection();
             var mcCenter = mercatorProjection.lngLatToPoint(mapCenter);
 
             var nwMcX = mcCenter.x - mapSize.width / 2 * zoomUnit;
@@ -8333,7 +8331,7 @@ var HoneycombOverlay = function (_Parameter) {
             }
 
             var params = {
-                points: this.points,
+                points: this._data,
                 size: size,
                 type: type,
                 nwMc: nwMc,
@@ -8342,36 +8340,36 @@ var HoneycombOverlay = function (_Parameter) {
                 mapCenter: mapCenter,
                 zoom: zoom
             };
-            this.setState(_OnStateConfig2.default.computeBefore);
+            this._setState(_OnStateConfig2.default.computeBefore);
 
-            this.postMessage('HoneycombOverlay.toRecGrids', params, function (gridsObj) {
-                if (_this2.eventType == 'onmoving') {
+            this._postMessage('HoneycombOverlay.toRecGrids', params, function (gridsObj) {
+                if (_this2._eventType == 'onmoving') {
                     return;
                 }
-                _this2.canvasResize();
-                _this2.setState(_OnStateConfig2.default.conputeAfter);
+                _this2._canvasResize();
+                _this2._setState(_OnStateConfig2.default.conputeAfter);
 
-                _this2.workerData = gridsObj.grids;
+                _this2._workerData = gridsObj.grids;
                 _this2._drawSize = size / zoomUnit;
 
-                if (_this2.eventType != 'onmoveend' || _this2.styleConfig.splitList == null || _this2.styleConfig.splitList.length < _this2.styleConfig.colors.length) {
-                    _this2.createColorSplit();
+                if (_this2._eventType != 'onmoveend' || _this2._styleConfig.splitList == null || _this2._styleConfig.splitList.length < _this2._styleConfig.colors.length) {
+                    _this2._createColorSplit();
                 }
                 _this2.refresh();
                 gridsObj = null;
             });
         }
     }, {
-        key: 'createColorSplit',
-        value: function createColorSplit() {
-            this.styleConfig.colors.length > 0 && this.compileSplitList(this.workerData);
-            this.setlegend(this.legendConfig, this.styleConfig.splitList);
+        key: '_createColorSplit',
+        value: function _createColorSplit() {
+            this._styleConfig.colors.length > 0 && this._compileSplitList(this._workerData);
+            this._setlegend(this._legendConfig, this._styleConfig.splitList);
         }
     }, {
-        key: 'compileSplitList',
-        value: function compileSplitList(data) {
+        key: '_compileSplitList',
+        value: function _compileSplitList(data) {
 
-            var colors = this.styleConfig.colors;
+            var colors = this._styleConfig.colors;
             if (colors.length < 0 || data.length <= 0) return;
             data = data.sort(function (a, b) {
                 return parseFloat(a.count) - parseFloat(b.count);
@@ -8417,51 +8415,51 @@ var HoneycombOverlay = function (_Parameter) {
             }
             split = [];
 
-            this.styleConfig.splitList = result;
+            this._styleConfig.splitList = result;
         }
     }, {
-        key: 'findIndexSelectItem',
-        value: function findIndexSelectItem(item) {
+        key: '_findIndexSelectItem',
+        value: function _findIndexSelectItem(item) {
             var index = -1;
             if (item) {
-                index = this.selectItem.findIndex(function (val) {
+                index = this._selectItem.findIndex(function (val) {
                     return val && val.x == item.x && val.y == item.y;
                 });
             }
             return index;
         }
     }, {
-        key: 'getStyle',
-        value: function getStyle(item) {
+        key: '_getStyle',
+        value: function _getStyle(item) {
             if (item.count == 0) {
                 return {
                     backgroundColor: 'rgba(255,255,255,0)'
                 };
             } else {
-                return this.setDrawStyle(item, true);
+                return this._setDrawStyle(item, true);
             }
         }
     }, {
-        key: 'getTarget',
-        value: function getTarget(mouseX, mouseY) {
+        key: '_getTarget',
+        value: function _getTarget(mouseX, mouseY) {
             var gridStep = this._drawSize;
-            var mapSize = this.map.getSize();
+            var mapSize = this._map.getSize();
 
-            for (var i = 0; i < this.workerData.length; i++) {
-                var item = this.workerData[i];
+            for (var i = 0; i < this._workerData.length; i++) {
+                var item = this._workerData[i];
                 var x = item.x;
                 var y = item.y;
                 if (item.list.length > 0 && x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(x, y - gridStep / 2);
-                    this.ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
-                    this.ctx.lineTo(x + gridStep / 2, y + gridStep / 4);
-                    this.ctx.lineTo(x, y + gridStep / 2);
-                    this.ctx.lineTo(x - gridStep / 2, y + gridStep / 4);
-                    this.ctx.lineTo(x - gridStep / 2, y - gridStep / 4);
-                    this.ctx.closePath();
+                    this._ctx.beginPath();
+                    this._ctx.moveTo(x, y - gridStep / 2);
+                    this._ctx.lineTo(x + gridStep / 2, y - gridStep / 4);
+                    this._ctx.lineTo(x + gridStep / 2, y + gridStep / 4);
+                    this._ctx.lineTo(x, y + gridStep / 2);
+                    this._ctx.lineTo(x - gridStep / 2, y + gridStep / 4);
+                    this._ctx.lineTo(x - gridStep / 2, y - gridStep / 4);
+                    this._ctx.closePath();
 
-                    if (this.ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
+                    if (this._ctx.isPointInPath(mouseX * this._devicePixelRatio, mouseY * this._devicePixelRatio)) {
                         return {
                             index: i,
                             item: item
@@ -8475,36 +8473,36 @@ var HoneycombOverlay = function (_Parameter) {
             };
         }
     }, {
-        key: 'drawRec',
-        value: function drawRec() {
-            this.clearCanvas();
-            var mapSize = this.map.getSize();
+        key: '_drawRec',
+        value: function _drawRec() {
+            this._clearCanvas();
+            var mapSize = this._map.getSize();
             var gridsW = this._drawSize;
 
-            var style = this.styleConfig.normal;
-            this.ctx.shadowOffsetX = 0;
-            this.ctx.shadowOffsetY = 0;
-            for (var i = 0; i < this.workerData.length; i++) {
-                var item = this.workerData[i];
+            var style = this._styleConfig.normal;
+            this._ctx.shadowOffsetX = 0;
+            this._ctx.shadowOffsetY = 0;
+            for (var i = 0; i < this._workerData.length; i++) {
+                var item = this._workerData[i];
                 var x = item.x;
                 var y = item.y;
                 if (item.list.length > 0 && x > -gridsW && y > -gridsW && x < mapSize.width + gridsW && y < mapSize.height + gridsW) {
-                    var drawStyle = this.getStyle(item);
-                    this.drawLine(x, y, gridsW - style.padding, drawStyle, this.ctx);
+                    var drawStyle = this._getStyle(item);
+                    this._drawLine(x, y, gridsW - style.padding, drawStyle, this._ctx);
                 }
             }
         }
     }, {
-        key: 'drawLine',
-        value: function drawLine(x, y, gridStep, drawStyle, ctx) {
+        key: '_drawLine',
+        value: function _drawLine(x, y, gridStep, drawStyle, ctx) {
 
             ctx.beginPath();
             if (drawStyle.shadowColor) {
-                this.ctx.shadowColor = drawStyle.shadowColor || 'transparent';
-                this.ctx.shadowBlur = drawStyle.shadowBlur || 10;
+                this._ctx.shadowColor = drawStyle.shadowColor || 'transparent';
+                this._ctx.shadowBlur = drawStyle.shadowBlur || 10;
             } else {
-                this.ctx.shadowColor = 'transparent';
-                this.ctx.shadowBlur = 0;
+                this._ctx.shadowColor = 'transparent';
+                this._ctx.shadowBlur = 0;
             }
             ctx.fillStyle = drawStyle.backgroundColor;
             ctx.moveTo(x, y - gridStep / 2);
@@ -8566,15 +8564,15 @@ var ImgOverlay = function (_Parameter) {
 
         var _this = _possibleConstructorReturn(this, (ImgOverlay.__proto__ || Object.getPrototypeOf(ImgOverlay)).call(this, _ImgConfig2.default, opts));
 
-        _this.cacheImg = {};
-        _this.state = null;
+        _this._cacheImg = {};
+        _this._state = null;
         return _this;
     }
 
     _createClass(ImgOverlay, [{
-        key: 'resize',
-        value: function resize() {
-            this.drawMap();
+        key: '_toDraw',
+        value: function _toDraw() {
+            this._drawMap();
         }
     }, {
         key: 'setOptionStyle',
@@ -8582,16 +8580,16 @@ var ImgOverlay = function (_Parameter) {
             this._setStyle(this._option, ops);
         }
     }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState.call(this, this.state);
+        key: '_setState',
+        value: function _setState(val) {
+            this._state = val;
+            this._eventConfig.onState.call(this, this._state);
         }
     }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            for (var i = 0; i < this.workerData.length; i++) {
-                var pixel = this.workerData[i].geometry.pixel;
+        key: '_translation',
+        value: function _translation(distanceX, distanceY) {
+            for (var i = 0; i < this._workerData.length; i++) {
+                var pixel = this._workerData[i].geometry.pixel;
                 pixel.x = pixel.x + distanceX;
                 pixel.y = pixel.y + distanceY;
                 pixel = null;
@@ -8600,19 +8598,19 @@ var ImgOverlay = function (_Parameter) {
             this.refresh();
         }
     }, {
-        key: 'drawMap',
-        value: function drawMap() {
+        key: '_drawMap',
+        value: function _drawMap() {
             var _this2 = this;
 
-            this.setState(_OnStateConfig2.default.computeBefore);
-            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin) {
-                if (_this2.eventType == 'onmoving') {
+            this._setState(_OnStateConfig2.default.computeBefore);
+            this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), function (pixels, margin) {
+                if (_this2._eventType == 'onmoving') {
                     return;
                 }
-                _this2.setState(_OnStateConfig2.default.conputeAfter);
+                _this2._setState(_OnStateConfig2.default.conputeAfter);
 
-                _this2.setWorkerData(pixels);
-                _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                _this2._setWorkerData(pixels);
+                _this2._translation(margin.left - _this2._margin.left, margin.top - _this2._margin.top);
                 margin = null;
                 pixels = null;
             });
@@ -8623,17 +8621,17 @@ var ImgOverlay = function (_Parameter) {
             return !(x < imgX || x > imgX + imgW || y < imgY || y > imgY + imgH);
         }
     }, {
-        key: 'getTarget',
-        value: function getTarget(x, y) {
-            var pixels = this.workerData;
+        key: '_getTarget',
+        value: function _getTarget(x, y) {
+            var pixels = this._workerData;
 
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var item = pixels[i];
                 var pixel = item.geometry.pixel;
-                var style = this.setDrawStyle(item, true);
+                var style = this._setDrawStyle(item, true);
                 var img = void 0;
                 if ((0, _util.isString)(img)) {
-                    img = this.cacheImg[style.icon];
+                    img = this._cacheImg[style.icon];
                 } else {
                     img = style.icon;
                 }
@@ -8666,11 +8664,11 @@ var ImgOverlay = function (_Parameter) {
             };
         }
     }, {
-        key: 'findIndexSelectItem',
-        value: function findIndexSelectItem(item) {
+        key: '_findIndexSelectItem',
+        value: function _findIndexSelectItem(item) {
             var index = -1;
             if (item) {
-                index = this.selectItem.findIndex(function (val) {
+                index = this._selectItem.findIndex(function (val) {
                     return val && val.lat == item.lat && val.lng == item.lng;
                 });
             }
@@ -8680,22 +8678,22 @@ var ImgOverlay = function (_Parameter) {
     }, {
         key: 'refresh',
         value: function refresh() {
-            this.setState(_OnStateConfig2.default.drawBefore);
-            this.clearCanvas();
-            this._loopDraw(this.ctx, this.workerData);
-            this.setState(_OnStateConfig2.default.drawAfter);
+            this._setState(_OnStateConfig2.default.drawBefore);
+            this._clearCanvas();
+            this._loopDraw(this._ctx, this._workerData);
+            this._setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
-        key: 'loadImg',
-        value: function loadImg(img, fun) {
+        key: '_loadImg',
+        value: function _loadImg(img, fun) {
             var me = this;
             if ((0, _util.isString)(img)) {
-                var image = me.cacheImg[img];
+                var image = me._cacheImg[img];
                 if (!image) {
                     var _image = new Image();
                     _image.src = img;
                     _image.onload = function () {
-                        me.cacheImg[img] = _image;
+                        me._cacheImg[img] = _image;
                         fun(_image);
                     };
                 } else {
@@ -8706,8 +8704,8 @@ var ImgOverlay = function (_Parameter) {
             }
         }
     }, {
-        key: 'isPercent',
-        value: function isPercent(val) {
+        key: '_isPercent',
+        value: function _isPercent(val) {
             if (val.toString().indexOf('%') > -1) {
                 return true;
             } else {
@@ -8724,12 +8722,12 @@ var ImgOverlay = function (_Parameter) {
             var offsetLeft = parseFloat(offsetL);
             var offsetTop = parseFloat(offsetT);
 
-            if (this.isPercent(offsetL)) {
+            if (this._isPercent(offsetL)) {
                 x = pixel.x + scaleW * offsetLeft / 100;
             } else {
                 x = pixel.x + offsetLeft;
             }
-            if (this.isPercent(offsetT)) {
+            if (this._isPercent(offsetT)) {
                 y = pixel.y + scaleH * offsetTop / 100;
             } else {
                 y = pixel.y + offsetTop;
@@ -8740,14 +8738,14 @@ var ImgOverlay = function (_Parameter) {
             };
         }
     }, {
-        key: 'setDrawStyle',
-        value: function setDrawStyle(item) {
-            var normal = this.styleConfig.normal;
+        key: '_setDrawStyle',
+        value: function _setDrawStyle(item) {
+            var normal = this._styleConfig.normal;
             var result = {};
             Object.assign(result, normal);
 
 
-            var splitList = this.styleConfig.splitList;
+            var splitList = this._styleConfig.splitList;
             for (var i = 0; i < splitList.length; i++) {
                 var condition = splitList[i];
                 if (condition.end == null) {
@@ -8771,14 +8769,14 @@ var ImgOverlay = function (_Parameter) {
             var _loop = function _loop(i, len) {
                 var item = pixels[i];
                 var pixel = item.geometry.pixel;
-                var style = _this3.setDrawStyle(item);
-                _this3.loadImg(style.icon, function (img) {
+                var style = _this3._setDrawStyle(item);
+                _this3._loadImg(style.icon, function (img) {
                     if (style.width && style.height) {
                         var xy = _this3._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height);
-                        _this3._drawImage(_this3.ctx, img, xy.x, xy.y, style.width, style.height);
+                        _this3._drawImage(_this3._ctx, img, xy.x, xy.y, style.width, style.height);
                     } else {
                         var _xy2 = _this3._getDrawXY(pixel, style.offsets.left, style.offsets.top, img.width, img.height, 1);
-                        _this3._drawImage(_this3.ctx, img, _xy2.x, _xy2.y, img.width, img.height);
+                        _this3._drawImage(_this3._ctx, img, _xy2.x, _xy2.y, img.width, img.height);
                     }
                 });
             };
@@ -8840,74 +8838,74 @@ var LabelOverlay = function (_Parameter) {
 
         var _this = _possibleConstructorReturn(this, (LabelOverlay.__proto__ || Object.getPrototypeOf(LabelOverlay)).call(this, _LabelConfig2.default, opts));
 
-        _this.state = null;
+        _this._state = null;
         return _this;
     }
 
     _createClass(LabelOverlay, [{
-        key: 'onOptionChange',
-        value: function onOptionChange() {}
+        key: '_onOptionChange',
+        value: function _onOptionChange() {}
     }, {
-        key: 'onDataChange',
-        value: function onDataChange() {}
+        key: '_onDataChangee',
+        value: function _onDataChangee() {}
     }, {
         key: 'setOptionStyle',
         value: function setOptionStyle(ops) {
             this._setStyle(this._option, ops);
         }
     }, {
-        key: 'setState',
-        value: function setState(val) {
-            this.state = val;
-            this.eventConfig.onState.call(this, this.state);
+        key: '_setState',
+        value: function _setState(val) {
+            this._state = val;
+            this._eventConfig.onState.call(this, this._state);
         }
     }, {
-        key: 'resize',
-        value: function resize() {
-            this.drawMap();
+        key: '_toDraw',
+        value: function _toDraw() {
+            this._drawMap();
         }
     }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
-            for (var i = 0; i < this.workerData.length; i++) {
-                var pixel = this.workerData[i].geometry.pixel;
+        key: '_translation',
+        value: function _translation(distanceX, distanceY) {
+            for (var i = 0; i < this._workerData.length; i++) {
+                var pixel = this._workerData[i].geometry.pixel;
                 pixel.x = pixel.x + distanceX;
                 pixel.y = pixel.y + distanceY;
             }
             this.refresh();
         }
     }, {
-        key: 'drawMap',
-        value: function drawMap() {
+        key: '_drawMap',
+        value: function _drawMap() {
             var _this2 = this;
 
-            this.clearCanvas();
-            this.setState(_OnStateConfig2.default.computeBefore);
-            this.postMessage('HeatOverlay.pointsToPixels', this.getTransformData(), function (pixels, margin, zoom) {
-                _this2.setState(_OnStateConfig2.default.conputeAfter);
-                _this2.setWorkerData(pixels);
-                _this2.updateOverClickItem();
+            this._clearCanvas();
+            this._setState(_OnStateConfig2.default.computeBefore);
+            this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), function (pixels, margin, zoom) {
+                _this2._setState(_OnStateConfig2.default.conputeAfter);
+                _this2._setWorkerData(pixels);
+                _this2._updateOverClickItem();
 
-                if (_this2.map.getZoom() == zoom) {
-                    _this2.translation(margin.left - _this2.margin.left, margin.top - _this2.margin.top);
+                if (_this2._map.getZoom() == zoom) {
+                    _this2._translation(margin.left - _this2._margin.left, margin.top - _this2._margin.top);
                 } else {
-                    _this2.translation(0, 0);
+                    _this2._translation(0, 0);
                 }
                 margin = null;
                 pixels = null;
             });
         }
     }, {
-        key: 'updateOverClickItem',
-        value: function updateOverClickItem() {
+        key: '_updateOverClickItem',
+        value: function _updateOverClickItem() {
             var _this3 = this;
 
-            var overArr = this.overItem ? [this.overItem] : [];
-            var allItems = this.selectItem.concat(overArr);
+            var overArr = this._overItem ? [this._overItem] : [];
+            var allItems = this._selectItem.concat(overArr);
 
             var _loop = function _loop(i) {
                 var item = allItems[i];
-                var ret = _this3.workerData.find(function (val) {
+                var ret = _this3._workerData.find(function (val) {
                     var itemCoordinates = item.geometry.coordinates;
                     var valCoordinates = val.geometry.coordinates;
                     return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
@@ -8920,9 +8918,9 @@ var LabelOverlay = function (_Parameter) {
             }
         }
     }, {
-        key: 'getTarget',
-        value: function getTarget(mouseX, mouseY) {
-            var data = this.workerData;
+        key: '_getTarget',
+        value: function _getTarget(mouseX, mouseY) {
+            var data = this._workerData;
             for (var i = 0, len = data.length; i < len; i++) {
                 var _item = data[i];
                 var pixel = _item.geometry.pixel;
@@ -8946,11 +8944,11 @@ var LabelOverlay = function (_Parameter) {
             return !(mouseX < x || mouseX > x + w || mouseY < y || mouseY > y + h);
         }
     }, {
-        key: 'findIndexSelectItem',
-        value: function findIndexSelectItem(item) {
+        key: '_findIndexSelectItem',
+        value: function _findIndexSelectItem(item) {
             var index = -1;
             if (item) {
-                index = this.selectItem.findIndex(function (val) {
+                index = this._selectItem.findIndex(function (val) {
                     var itemCoordinates = item.geometry.coordinates;
                     var valCoordinates = val.geometry.coordinates;
                     return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
@@ -8961,17 +8959,17 @@ var LabelOverlay = function (_Parameter) {
     }, {
         key: 'refresh',
         value: function refresh() {
-            this.setState(_OnStateConfig2.default.drawBefore);
-            this.clearCanvas();
-            this._drawLabel(this.ctx, this.workerData);
-            this.setState(_OnStateConfig2.default.drawAfter);
+            this._setState(_OnStateConfig2.default.drawBefore);
+            this._clearCanvas();
+            this._drawLabel(this._ctx, this._workerData);
+            this._setState(_OnStateConfig2.default.drawAfter);
         }
     }, {
-        key: 'swopData',
-        value: function swopData(index, item) {
+        key: '_swopData',
+        value: function _swopData(index, item) {
             if (index > -1) {
-                this.workerData[index] = this.workerData[this.workerData.length - 1];
-                this.workerData[this.workerData.length - 1] = item;
+                this._workerData[index] = this._workerData[this._workerData.length - 1];
+                this._workerData[this._workerData.length - 1] = item;
             }
         }
     }, {
@@ -8982,7 +8980,7 @@ var LabelOverlay = function (_Parameter) {
                 var _item2 = pixels[i];
                 var pixel = _item2.geometry.pixel;
                 ctx.beginPath();
-                var style = this.setDrawStyle(_item2, true);
+                var style = this._setDrawStyle(_item2, true);
                 ctx.font = style.font;
                 ctx.fillStyle = style.color;
 
@@ -9063,21 +9061,21 @@ var MoveLineOverlay = function (_MultiOverlay) {
 
         var _this = _possibleConstructorReturn(this, (MoveLineOverlay.__proto__ || Object.getPrototypeOf(MoveLineOverlay)).call(this));
 
-        _this.isDispose = false;
-        _this.data = opts.data || [];
+        _this._isDispose = false;
+        _this._data = opts.data || [];
         _this._opts = (0, _util.merge)(_MoveLineConfig2.default, opts);
-        _this.PointOverlay = _this.creataPointOverlay(_this._opts);
-        _this.LineStringOverlay = _this.createLineStringOverlay(_this._opts);
-        _this.LineStringAnimationOverlay = _this.createLineStringAnimationOverlay(_this._opts);
+        _this._PointOverlay = _this._creataPointOverlay(_this._opts);
+        _this._LineStringOverlay = _this._createLineStringOverlay(_this._opts);
+        _this._LineStringAnimationOverlay = _this._createLineStringAnimationOverlay(_this._opts);
         return _this;
     }
 
     _createClass(MoveLineOverlay, [{
         key: '_init',
         value: function _init(map) {
-            map.addOverlay(this.LineStringOverlay);
-            map.addOverlay(this.LineStringAnimationOverlay);
-            map.addOverlay(this.PointOverlay);
+            map.addOverlay(this._LineStringOverlay);
+            map.addOverlay(this._LineStringAnimationOverlay);
+            map.addOverlay(this._PointOverlay);
         }
     }, {
         key: 'setOptionStyle',
@@ -9087,9 +9085,9 @@ var MoveLineOverlay = function (_MultiOverlay) {
             opts.style.point.data && delete opts.style.point.data;
             opts.style.point.line && delete opts.style.point.line;
             opts.style.point.lineAnimation && delete opts.style.point.lineAnimation;
-            this.PointOverlay.setOptionStyle(opts.style.point);
-            this.LineStringOverlay.setOptionStyle(opts.style.line);
-            this.LineStringAnimationOverlay.setOptionStyle(opts.style.lineAnimation);
+            this._PointOverlay.setOptionStyle(opts.style.point);
+            this._LineStringOverlay.setOptionStyle(opts.style.line);
+            this._LineStringAnimationOverlay.setOptionStyle(opts.style.lineAnimation);
 
             if (opts.data !== undefined) {
                 this.setData(opts.data);
@@ -9102,14 +9100,14 @@ var MoveLineOverlay = function (_MultiOverlay) {
                 if (!(0, _util.isArray)(data)) {
                     throw new TypeError('inMap: data must be a Array');
                 }
-                this.data = data;
+                this._data = data;
             } else {
-                this.data = [];
+                this._data = [];
             }
 
-            this.PointOverlay.setData(this._getPointData());
-            this.LineStringOverlay.setData(this._getLineStringData());
-            this.LineStringAnimationOverlay.setData(this._getLineStringData());
+            this._PointOverlay.setData(this._getPointData());
+            this._LineStringOverlay.setData(this._getLineStringData());
+            this._LineStringAnimationOverlay.setData(this._getLineStringData());
         }
     }, {
         key: '_findIndex',
@@ -9124,7 +9122,7 @@ var MoveLineOverlay = function (_MultiOverlay) {
             var _this2 = this;
 
             var data = [];
-            this.data.forEach(function (item) {
+            this._data.forEach(function (item) {
                 if (_this2._findIndex(data, item.from.name) == -1) {
                     data.push({
                         name: item.from.name,
@@ -9153,7 +9151,7 @@ var MoveLineOverlay = function (_MultiOverlay) {
     }, {
         key: '_getLineStringData',
         value: function _getLineStringData() {
-            return this.data.map(function (item) {
+            return this._data.map(function (item) {
                 return {
                     geometry: {
                         type: 'LineString',
@@ -9165,37 +9163,37 @@ var MoveLineOverlay = function (_MultiOverlay) {
             });
         }
     }, {
-        key: 'creataPointOverlay',
-        value: function creataPointOverlay(opts) {
+        key: '_creataPointOverlay',
+        value: function _creataPointOverlay(opts) {
             opts.style.point['data'] = this._getPointData();
             return new _PointOverlay2.default(opts.style.point);
         }
     }, {
-        key: 'createLineStringOverlay',
-        value: function createLineStringOverlay(opts) {
+        key: '_createLineStringOverlay',
+        value: function _createLineStringOverlay(opts) {
 
             opts.style.line['data'] = this._getLineStringData();
             return new _LineStringOverlay2.default(opts.style.line);
         }
     }, {
-        key: 'createLineStringAnimationOverlay',
-        value: function createLineStringAnimationOverlay(opts) {
+        key: '_createLineStringAnimationOverlay',
+        value: function _createLineStringAnimationOverlay(opts) {
             opts.style.lineAnimation['data'] = this._getLineStringData();
             return new _LineStringAnimationOverlay2.default(opts.style.lineAnimation);
         }
     }, {
         key: 'dispose',
         value: function dispose() {
-            this.PointOverlay.dispose();
-            this.LineStringOverlay.dispose();
-            this.LineStringAnimationOverlay.dispose();
+            this._PointOverlay.dispose();
+            this._LineStringOverlay.dispose();
+            this._LineStringAnimationOverlay.dispose();
             var me = this;
             for (var key in me) {
                 if (!(0, _util.isFunction)(me[key])) {
                     me[key] = null;
                 }
             }
-            me.isDispose = true;
+            me._isDispose = true;
             me = null;
         }
     }]);
@@ -9279,30 +9277,30 @@ var PointAnimationOverlay = function (_CanvasOverlay) {
 
         var _this = _possibleConstructorReturn(this, (PointAnimationOverlay.__proto__ || Object.getPrototypeOf(PointAnimationOverlay)).call(this));
 
-        _this.data = [];
-        _this.styleConfig = null;
-        _this.markers = [];
-        _this.render = _this.render.bind(_this);
+        _this._data = [];
+        _this._styleConfig = null;
+        _this._markers = [];
+        _this._render = _this._render.bind(_this);
         _this.setOptionStyle(ops);
         return _this;
     }
 
     _createClass(PointAnimationOverlay, [{
-        key: 'canvasInit',
-        value: function canvasInit() {
-            this.addMarker();
+        key: '_canvasInit',
+        value: function _canvasInit() {
+            this._addMarker();
             var now = void 0;
             var then = Date.now();
             var interval = 1000 / 25;
             var delta = void 0;
-            var render = this.render;
+            var _render = this._render;
             (function drawFrame() {
                 requestAnimationFrame(drawFrame);
                 now = Date.now();
                 delta = now - then;
                 if (delta > interval) {
                     then = now - delta % interval;
-                    render();
+                    _render();
                 }
             })();
         }
@@ -9311,12 +9309,12 @@ var PointAnimationOverlay = function (_CanvasOverlay) {
         value: function setOptionStyle(ops) {
             if (!ops) return;
             var option = (0, _util.merge)(_PointAnimation2.default, ops);
-            this.styleConfig = option.style;
-            this.tMapStyle(option.skin);
+            this._styleConfig = option.style;
+            this._tMapStyle(option.skin);
             if (ops.data === null) {
                 option.data = [];
             } else if (ops.data === undefined) {
-                option.data = this.data;
+                option.data = this._data;
             }
             this.setData(option.data);
         }
@@ -9327,51 +9325,51 @@ var PointAnimationOverlay = function (_CanvasOverlay) {
                 if (!(0, _util.isArray)(points)) {
                     throw new TypeError('inMap: data must be a Array');
                 }
-                this.data = points;
+                this._data = points;
             } else {
-                this.data = [];
+                this._data = [];
             }
 
-            this.map && this.addMarker();
+            this._map && this._addMarker();
         }
     }, {
-        key: 'translation',
-        value: function translation(distanceX, distanceY) {
+        key: '_translation',
+        value: function _translation(distanceX, distanceY) {
 
-            for (var i = 0; i < this.markers.length; i++) {
-                var pixel = this.markers[i].pixel;
+            for (var i = 0; i < this._markers.length; i++) {
+                var pixel = this._markers[i].pixel;
                 pixel.x = pixel.x + distanceX;
                 pixel.y = pixel.y + distanceY;
             }
         }
     }, {
-        key: 'addMarker',
-        value: function addMarker() {
-            this.markers = [];
-            for (var i = 0; i < this.data.length; i++) {
-                var style = (0, _util.merge)(this.styleConfig, this.data[i].style || {});
-                this.markers.push(new Marker(style, this.data[i], this.map));
+        key: '_addMarker',
+        value: function _addMarker() {
+            this._markers = [];
+            for (var i = 0; i < this._data.length; i++) {
+                var style = (0, _util.merge)(this._styleConfig, this._data[i].style || {});
+                this._markers.push(new Marker(style, this._data[i], this._map));
             }
         }
     }, {
-        key: 'resize',
-        value: function resize() {
-            this.addMarker();
-            this.canvasResize();
+        key: '_toDraw',
+        value: function _toDraw() {
+            this._addMarker();
+            this._canvasResize();
         }
     }, {
-        key: 'render',
-        value: function render() {
-            var ctx = this.ctx;
+        key: '_render',
+        value: function _render() {
+            var ctx = this._ctx;
             if (!ctx) {
                 return;
             }
-            if (!this.animationFlag) {
-                this.clearCanvas();
+            if (!this._animationFlag) {
+                this._clearCanvas();
                 return;
             }
 
-            var size = this.map.getSize();
+            var size = this._map.getSize();
             ctx.fillStyle = 'rgba(0,0,0,.95)';
             var prev = ctx.globalCompositeOperation;
             ctx.globalCompositeOperation = 'destination-in';
@@ -9379,8 +9377,8 @@ var PointAnimationOverlay = function (_CanvasOverlay) {
             ctx.fillRect(0, 0, size.width, size.height);
             ctx.globalCompositeOperation = prev;
 
-            for (var i = 0; i < this.markers.length; i++) {
-                var marker = this.markers[i];
+            for (var i = 0; i < this._markers.length; i++) {
+                var marker = this._markers[i];
                 marker.draw(ctx);
             }
         }
@@ -9466,8 +9464,8 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
     }
 
     _createClass(PolygonEditorOverlay2, [{
-        key: 'canvasInit',
-        value: function canvasInit() {
+        key: '_canvasInit',
+        value: function _canvasInit() {
             var _this2 = this;
 
             this._polygonOverlay = new _PolygonOverlay2.default({
@@ -9476,7 +9474,7 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
                 event: {
                     onState: function onState(state) {
                         if (state == 3) {
-                            _this2._workerData = _this2._polygonOverlay.getData();
+                            _this2._workerData = _this2._polygonOverlay.getRenderData();
                             if (_this2._workerData.length == 0) {
                                 _this2._workerData.push({
                                     geometry: {
@@ -9504,7 +9502,7 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
                 }
             });
 
-            this.map.addOverlay(this._polygonOverlay);
+            this._map.addOverlay(this._polygonOverlay);
 
             this._pointOverlay = new _PointDragOverlay2.default({
                 style: _extends({}, this._opts.style.point, {
@@ -9516,7 +9514,7 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
                     onDblclick: this._dblclickPoint
                 }
             });
-            this.map.addOverlay(this._pointOverlay);
+            this._map.addOverlay(this._pointOverlay);
 
             this._virtualPointOverlay = new _PointDragOverlay2.default({
                 style: _extends({}, this._opts.style.virtualPoint, {
@@ -9527,8 +9525,8 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
                     onDragging: this._draggingVirtual
                 }
             });
-            this.map.addOverlay(this._virtualPointOverlay);
-            this.map.addEventListener('rightclick', this._rightclick);
+            this._map.addOverlay(this._virtualPointOverlay);
+            this._map.addEventListener('rightclick', this._rightclick);
         }
     }, {
         key: 'setOptionStyle',
@@ -9574,15 +9572,15 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
             }];
             this._createTempCache = null;
             this._createIndex = -1;
-            if (this.map) {
-                this._polygonOverlay.setWorkerData(this._workerData);
+            if (this._map) {
+                this._polygonOverlay._setWorkerData(this._workerData);
                 this._polygonOverlay.refresh();
-                this.map.removeEventListener('click', this._clickFun);
-                this.map.removeEventListener('dblclick', this._dblclickFun);
-                this.map.removeEventListener('mousemove', this._mousemoveFun);
-                this.map.addEventListener('click', this._clickFun);
-                this.map.addEventListener('dblclick', this._dblclickFun);
-                this.map.addEventListener('mousemove', this._mousemoveFun);
+                this._map.removeEventListener('click', this._clickFun);
+                this._map.removeEventListener('dblclick', this._dblclickFun);
+                this._map.removeEventListener('mousemove', this._mousemoveFun);
+                this._map.addEventListener('click', this._clickFun);
+                this._map.addEventListener('dblclick', this._dblclickFun);
+                this._map.addEventListener('mousemove', this._mousemoveFun);
             }
         }
     }, {
@@ -9603,9 +9601,9 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
         value: function enableEditing() {
             this.isCreate = false;
             this._opts.style.isEdit = true;
-            this.map && this.map.removeEventListener('click', this._clickFun);
-            this.map && this.map.removeEventListener('dblclick', this._dblclickFun);
-            this.map && this.map.removeEventListener('mousemove', this._mousemoveFun);
+            this._map && this._map.removeEventListener('click', this._clickFun);
+            this._map && this._map.removeEventListener('dblclick', this._dblclickFun);
+            this._map && this._map.removeEventListener('mousemove', this._mousemoveFun);
             this._setPointData();
             this._setVirtualPointData();
         }
@@ -9635,7 +9633,7 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
                                     pixel[0] = pixel[0] + x;
                                     pixel[1] = pixel[1] + y;
 
-                                    var latlng = this.map.overlayPixelToPoint({
+                                    var latlng = this._map.overlayPixelToPoint({
                                         x: pixel[0],
                                         y: pixel[1]
                                     });
@@ -9652,19 +9650,19 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
     }, {
         key: '_removeMoveEvent',
         value: function _removeMoveEvent() {
-            if (!this.map) return;
-            this.map.removeEventListener('click', this._clickFun);
-            this.map.removeEventListener('dblclick', this._dblclickFun);
-            this.map.removeEventListener('mousemove', this._mousemoveFun);
-            this.map.removeEventListener('rightclick', this._rightclick);
+            if (!this._map) return;
+            this._map.removeEventListener('click', this._clickFun);
+            this._map.removeEventListener('dblclick', this._dblclickFun);
+            this._map.removeEventListener('mousemove', this._mousemoveFun);
+            this._map.removeEventListener('rightclick', this._rightclick);
         }
     }, {
-        key: 'Tdispose',
-        value: function Tdispose() {
+        key: '_Tdispose',
+        value: function _Tdispose() {
             this._removeMoveEvent();
-            this.map.removeOverlay(this._polygonOverlay);
-            this.map.removeOverlay(this._pointOverlay);
-            this.map.removeOverlay(this._virtualPointOverlay);
+            this._map.removeOverlay(this._polygonOverlay);
+            this._map.removeOverlay(this._pointOverlay);
+            this._map.removeOverlay(this._virtualPointOverlay);
             this._polygonOverlay.dispose();
             this._pointOverlay.dispose();
             this._virtualPointOverlay.dispose();
@@ -9749,7 +9747,7 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
                 return;
             }
 
-            var geoJSON = this._polygonOverlay.workerData[0];
+            var geoJSON = this._polygonOverlay._workerData[0];
 
             var currentCoordinate = geoJSON.geometry.coordinates[this._createIndex];
             if (currentCoordinate[0].length <= 2) {
@@ -9837,23 +9835,23 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
         value: function _mousemoveFun(event) {
 
             if (!this.isCreate || !this._createTempCache) return;
-            var data = this._polygonOverlay.workerData[0];
+            var data = this._polygonOverlay._workerData[0];
             var currentCoordinate = data.geometry.coordinates[this._createIndex];
             var currentPixels = data.geometry.pixels[this._createIndex];
 
             currentCoordinate[0] = this._createTempCache.coordinates.concat([[event.point.lng, event.point.lat]]);
             currentPixels[0] = this._createTempCache.pixels.concat([[event.offsetX, event.offsetY]]);
 
-            this._polygonOverlay.selectItem = [];
+            this._polygonOverlay._selectItem = [];
             this._polygonOverlay.refresh();
         }
     }, {
         key: '_clearPointOverlay',
         value: function _clearPointOverlay() {
             if (!this._pointOverlay) return;
-            this._pointOverlay.setWorkerData([]);
+            this._pointOverlay._setWorkerData([]);
             this._pointOverlay.refresh();
-            this._virtualPointOverlay.setWorkerData([]);
+            this._virtualPointOverlay._setWorkerData([]);
             this._virtualPointOverlay.refresh();
         }
     }, {
@@ -9897,8 +9895,8 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
                 }
             }
             if (!this._virtualPointOverlay) return;
-            this._virtualPointOverlay.selectItem = [];
-            this._virtualPointOverlay.setWorkerData(virtualData);
+            this._virtualPointOverlay._selectItem = [];
+            this._virtualPointOverlay._setWorkerData(virtualData);
             this._virtualPointOverlay.refresh();
         }
     }, {
@@ -9919,8 +9917,8 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
                 pointData = pointData.concat(this._pointDataGroup[_i]);
             }
             if (!this._pointOverlay) return;
-            this._pointOverlay.selectItem = [];
-            this._pointOverlay.setWorkerData(pointData);
+            this._pointOverlay._selectItem = [];
+            this._pointOverlay._setWorkerData(pointData);
             this._pointOverlay.refresh();
         }
     }, {
@@ -9956,26 +9954,26 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
     }, {
         key: '_dragEndVirtual',
         value: function _dragEndVirtual(item, index, event) {
-            var key = this._pointOverlay.workerData[index]._index;
+            var key = this._pointOverlay._workerData[index]._index;
             this._draggingPointTemp = null;
             this._draggingVirtualTemp = null;
             this._updatePolygon(item, key, 'insert', event);
-            this.clearCanvas();
+            this._clearCanvas();
         }
     }, {
         key: '_dragEndPoint',
         value: function _dragEndPoint(item, index, event) {
-            var key = this._pointOverlay.workerData[index]._index;
+            var key = this._pointOverlay._workerData[index]._index;
             this._draggingPointTemp = null;
             this._draggingVirtualTemp = null;
-            this.clearCanvas();
+            this._clearCanvas();
             this._updatePolygon(item, key, 'update', event);
         }
     }, {
         key: '_dblclickPoint',
         value: function _dblclickPoint(item, index, event) {
-            var key = this._pointOverlay.workerData[index]._index;
-            this.clearCanvas();
+            var key = this._pointOverlay._workerData[index]._index;
+            this._clearCanvas();
             this._updatePolygon(item, key, 'delete', event);
         }
     }, {
@@ -10071,22 +10069,22 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
     }, {
         key: '_drawLine',
         value: function _drawLine(data) {
-            this.clearCanvas();
-            this.ctx.beginPath();
-            this.ctx.save();
-            this.ctx.lineWidth = 4;
-            this.ctx.strokeStyle = 'red';
-            this.ctx.setLineDash([10, 5]);
+            this._clearCanvas();
+            this._ctx.beginPath();
+            this._ctx.save();
+            this._ctx.lineWidth = 4;
+            this._ctx.strokeStyle = 'red';
+            this._ctx.setLineDash([10, 5]);
             for (var i = 0; i < data.length; i++) {
                 var geometry = data[i].geometry;
                 if (i == 0) {
-                    this.ctx.moveTo(geometry.pixel.x, geometry.pixel.y);
+                    this._ctx.moveTo(geometry.pixel.x, geometry.pixel.y);
                 } else {
-                    this.ctx.lineTo(geometry.pixel.x, geometry.pixel.y);
+                    this._ctx.lineTo(geometry.pixel.x, geometry.pixel.y);
                 }
             }
-            this.ctx.stroke();
-            this.ctx.restore();
+            this._ctx.stroke();
+            this._ctx.restore();
         }
     }]);
 
@@ -10947,14 +10945,14 @@ var Legend = function () {
     function Legend(toolDom, opts) {
         _classCallCheck(this, Legend);
 
-        this.opts = opts || _LegendConfig2.default;
-        this.dom = this.crateDom(toolDom);
+        this._opts = opts || _LegendConfig2.default;
+        this._dom = this._crateDom(toolDom);
         this.hide();
     }
 
     _createClass(Legend, [{
-        key: 'crateDom',
-        value: function crateDom(toolDom) {
+        key: '_crateDom',
+        value: function _crateDom(toolDom) {
             var div = document.createElement('div');
             div.classList.add('inmap-legend');
             toolDom.appendChild(div);
@@ -10963,41 +10961,41 @@ var Legend = function () {
     }, {
         key: 'show',
         value: function show() {
-            this.dom.style.display = 'inline-block';
+            this._dom.style.display = 'inline-block';
         }
     }, {
         key: 'hide',
         value: function hide() {
-            this.dom.style.display = 'none';
+            this._dom.style.display = 'none';
         }
     }, {
-        key: 'toFixed',
-        value: function toFixed(num) {
-            return isNaN(num) ? num : parseFloat(num).toFixed(this.opts.toFixed);
+        key: '_toFixed',
+        value: function _toFixed(num) {
+            return isNaN(num) ? num : parseFloat(num).toFixed(this._opts.toFixed);
         }
     }, {
         key: 'setTitle',
         value: function setTitle(title) {
-            this.opts.title = title;
-            this.render();
+            this._opts.title = title;
+            this._render();
         }
     }, {
         key: 'setOption',
         value: function setOption(opts) {
-            this.opts = (0, _util.merge)(_LegendConfig2.default, this.opts, opts);
-            this.opts.list = this.opts.list || [];
-            this.render();
+            this._opts = (0, _util.merge)(_LegendConfig2.default, this._opts, opts);
+            this._opts.list = this._opts.list || [];
+            this._render();
         }
     }, {
         key: 'setItems',
         value: function setItems(list) {
-            this.opts.list = list;
-            this.render();
+            this._opts.list = list;
+            this._render();
         }
     }, {
         key: '_verify',
         value: function _verify() {
-            var _opts = this.opts,
+            var _opts = this._opts,
                 show = _opts.show,
                 title = _opts.title,
                 list = _opts.list;
@@ -11013,12 +11011,12 @@ var Legend = function () {
             }
         }
     }, {
-        key: 'render',
-        value: function render() {
+        key: '_render',
+        value: function _render() {
             var _this = this;
 
             this._verify();
-            var _opts2 = this.opts,
+            var _opts2 = this._opts,
                 show = _opts2.show,
                 title = _opts2.title,
                 list = _opts2.list;
@@ -11052,13 +11050,13 @@ var Legend = function () {
                 } else {
                     opacity = 1;
                 }
-                backgroundColor = legendBg.getRgbaStyle(opacity);
+                backgroundColor = legendBg.getRgbaValue(opacity);
                 if (val.text) {
                     text = val.text;
-                } else if (_this.opts.formatter) {
-                    text = _this.opts.formatter(_this.toFixed(val.start), _this.toFixed(val.end), index, val);
+                } else if (_this._opts.formatter) {
+                    text = _this._opts.formatter(_this._toFixed(val.start), _this._toFixed(val.end), index, val);
                 } else {
-                    text = _this.toFixed(val.start) + ' ~ ' + (val.end == null ? '<span class="inmap-infinity"></span>' : _this.toFixed(val.end));
+                    text = _this._toFixed(val.start) + ' ~ ' + (val.end == null ? '<span class="inmap-infinity"></span>' : _this._toFixed(val.end));
                 }
                 var td = isShow ? ' <td style="background:' + backgroundColor + '; width:17px;"></td>' : '';
                 str += '\n                <tr>\n                   ' + td + '\n                    <td class="inmap-legend-text">\n                       ' + text + '\n                    </td>\n                </tr>\n                ';
@@ -11067,14 +11065,14 @@ var Legend = function () {
             if (list.length <= 0) {
                 this.hide();
             }
-            this.dom.innerHTML = str;
+            this._dom.innerHTML = str;
         }
     }, {
         key: 'dispose',
         value: function dispose(parentDom) {
-            parentDom.removeChild(this.dom);
-            this.opts = null;
-            this.dom = null;
+            parentDom.removeChild(this._dom);
+            this._opts = null;
+            this._dom = null;
         }
     }]);
 
@@ -11104,23 +11102,23 @@ var ToolTip = function () {
     function ToolTip(toolDom) {
         _classCallCheck(this, ToolTip);
 
-        this.dom = this.create(toolDom);
-        this.tooltipTemplate = null;
-        this.opts = {};
+        this._dom = this._create(toolDom);
+        this._tooltipTemplate = null;
+        this._opts = {};
         this.hide();
     }
 
     _createClass(ToolTip, [{
-        key: 'create',
-        value: function create(toolDom) {
+        key: '_create',
+        value: function _create(toolDom) {
             var dom = document.createElement('div');
             dom.classList.add('inmap-tooltip');
             toolDom.appendChild(dom);
             return dom;
         }
     }, {
-        key: 'compileTooltipTemplate',
-        value: function compileTooltipTemplate(formatter) {
+        key: '_compileTooltipTemplate',
+        value: function _compileTooltipTemplate(formatter) {
             var RexStr = /\{|\}/g;
             formatter = formatter.replace(RexStr, function (MatchStr) {
                 switch (MatchStr) {
@@ -11132,72 +11130,72 @@ var ToolTip = function () {
                         break;
                 }
             });
-            this.tooltipTemplate = new Function('overItem', 'return ' + formatter);
+            this._tooltipTemplate = new Function('overItem', 'return ' + formatter);
         }
     }, {
         key: 'show',
         value: function show(x, y) {
-            var _opts$offsets = this.opts.offsets,
+            var _opts$offsets = this._opts.offsets,
                 left = _opts$offsets.left,
                 top = _opts$offsets.top;
 
-            this.dom.style.left = x + left + 'px';
-            this.dom.style.top = y + top + 'px';
-            this.dom.style.display = 'block';
+            this._dom.style.left = x + left + 'px';
+            this._dom.style.top = y + top + 'px';
+            this._dom.style.display = 'block';
         }
     }, {
         key: 'showCenterText',
         value: function showCenterText(text, x, y) {
-            this.dom.innerHTML = text;
-            this.dom.style.display = 'block';
-            this.dom.style.visibility = 'hidden';
-            var width = this.dom.offsetWidth;
-            this.dom.style.left = x - width / 2 + 'px';
-            this.dom.style.top = y + 'px';
-            this.dom.style.visibility = 'visible';
+            this._dom.innerHTML = text;
+            this._dom.style.display = 'block';
+            this._dom.style.visibility = 'hidden';
+            var width = this._dom.offsetWidth;
+            this._dom.style.left = x - width / 2 + 'px';
+            this._dom.style.top = y + 'px';
+            this._dom.style.visibility = 'visible';
         }
     }, {
         key: 'showText',
         value: function showText(text, x, y) {
-            this.dom.innerHTML = text;
-            this.dom.style.left = x + 'px';
-            this.dom.style.top = y + 'px';
-            this.dom.style.display = 'block';
+            this._dom.innerHTML = text;
+            this._dom.style.left = x + 'px';
+            this._dom.style.top = y + 'px';
+            this._dom.style.display = 'block';
         }
     }, {
         key: 'hide',
         value: function hide() {
-            this.dom.style.display = 'none';
+            this._dom.style.display = 'none';
         }
     }, {
         key: 'setOption',
         value: function setOption(opts) {
-            var result = (0, _util.merge)(this.opts, opts);
+            var result = (0, _util.merge)(this._opts, opts);
             var formatter = result.formatter,
                 customClass = result.customClass;
 
 
             if ((0, _util.isString)(formatter)) {
-                this.compileTooltipTemplate(result.formatter);
+                this._compileTooltipTemplate(result.formatter);
             }
 
-            if (this.opts.customClass) {
-                this.dom.classList.remove(this.opts.customClass);
+            if (this._opts.customClass) {
+                this._dom.classList.remove(this._opts.customClass);
             }
 
-            this.dom.classList.add(customClass);
-            this.opts = result;
+            this._dom.classList.add(customClass);
+            this._opts = result;
         }
     }, {
         key: 'render',
         value: function render(event, overItem) {
-            if (!this.opts.show) return;
+            if (!this._opts.show) return;
             if (overItem) {
-                var formatter = this.opts.formatter;
+                var formatter = this._opts.formatter;
                 if ((0, _util.isFunction)(formatter)) {
-                    this.dom.innerHTML = formatter(overItem);
+                    this._dom.innerHTML = formatter(overItem);
                 } else if ((0, _util.isString)(formatter)) {
-                    this.dom.innerHTML = this.tooltipTemplate(overItem);
+                    this._dom.innerHTML = this._tooltipTemplate(overItem);
                 }
                 this.show(event.offsetX, event.offsetY);
             } else {
@@ -11230,53 +11228,53 @@ var MapZoom = function () {
     function MapZoom(map, mapDom, opts) {
         _classCallCheck(this, MapZoom);
 
-        this.map = map;
-        this.mapDom = mapDom;
-        this.zoom = opts;
-        this.createDom();
+        this._map = map;
+        this._mapDom = mapDom;
+        this._zoom = opts;
+        this._createDom();
     }
 
     _createClass(MapZoom, [{
-        key: 'createDom',
-        value: function createDom() {
+        key: '_createDom',
+        value: function _createDom() {
             var div = document.createElement('div');
             div.classList.add('inmap-scale-group');
             div.innerHTML = '<a>+</a > <a>-</a >';
-            this.mapDom.appendChild(div);
-            this.event(div);
+            this._mapDom.appendChild(div);
+            this._event(div);
         }
     }, {
         key: 'setButtonState',
         value: function setButtonState() {
-            var doms = this.mapDom.querySelectorAll('.inmap-scale-group a');
-            var zoom = this.map.getZoom();
-            if (zoom >= this.zoom.max) {
+            var doms = this._mapDom.querySelectorAll('.inmap-scale-group a');
+            var zoom = this._map.getZoom();
+            if (zoom >= this._zoom.max) {
                 doms[0].setAttribute('disabled', 'true');
             } else {
                 doms[0].removeAttribute('disabled');
             }
-            if (zoom <= this.zoom.min) {
+            if (zoom <= this._zoom.min) {
                 doms[1].setAttribute('disabled', 'true');
             } else {
                 doms[1].removeAttribute('disabled');
             }
         }
     }, {
-        key: 'event',
-        value: function event(div) {
+        key: '_event',
+        value: function _event(div) {
             var _this = this;
 
             var doms = div.querySelectorAll('a');
             doms[0].addEventListener('click', function () {
-                var zoom = _this.map.getZoom();
-                if (zoom < _this.zoom.max) {
-                    _this.map.zoomIn();
+                var zoom = _this._map.getZoom();
+                if (zoom < _this._zoom.max) {
+                    _this._map.zoomIn();
                 }
             });
             doms[1].addEventListener('click', function () {
-                var zoom = _this.map.getZoom();
-                if (zoom > _this.zoom.min) {
-                    _this.map.zoomOut();
+                var zoom = _this._map.getZoom();
+                if (zoom > _this._zoom.min) {
+                    _this._map.zoomOut();
                 }
             });
         }
@@ -11346,18 +11344,18 @@ var PointOverlay = function (_Parameter) {
     }
 
     _createClass(PointOverlay, [{
-        key: 'onOptionChange',
-        value: function onOptionChange() {}
+        key: '_onOptionChange',
+        value: function _onOptionChange() {}
     }, {
-        key: 'onDataChange',
-        value: function onDataChange() {}
+        key: '_onDataChangee',
+        value: function _onDataChangee() {}
     }, {
-        key: 'parameterInit',
-        value: function parameterInit() {
-            this.map.addOverlay(this._mouseLayer);
-            this.map.addEventListener('mouseup', this._mouseupFun);
-            this.map.addEventListener('mousedown', this._mousedownFun);
-            this.map.addEventListener('dblclick', this._dblclickFun);
+        key: '_parameterInit',
+        value: function _parameterInit() {
+            this._map.addOverlay(this._mouseLayer);
+            this._map.addEventListener('mouseup', this._mouseupFun);
+            this._map.addEventListener('mousedown', this._mousedownFun);
+            this._map.addEventListener('dblclick', this._dblclickFun);
         }
     }, {
         key: 'setOptionStyle',
@@ -11365,33 +11363,33 @@ var PointOverlay = function (_Parameter) {
             this._setStyle(this._option, ops);
         }
     }, {
-        key: 'resize',
-        value: function resize() {}
+        key: '_toDraw',
+        value: function _toDraw() {}
     }, {
-        key: 'drawMouseLayer',
-        value: function drawMouseLayer() {
-            var overArr = this.overItem ? [this.overItem] : [];
-            this._mouseLayer.clearCanvas();
-            this._loopDraw(this._mouseLayer.ctx, this.selectItem.concat(overArr), true);
+        key: '_drawMouseLayer',
+        value: function _drawMouseLayer() {
+            var overArr = this._overItem ? [this._overItem] : [];
+            this._mouseLayer._clearCanvas();
+            this._loopDraw(this._mouseLayer._getContext(), this._selectItem.concat(overArr), true);
         }
     }, {
-        key: 'clearAll',
-        value: function clearAll() {
-            this.overItem = [];
-            this._mouseLayer.clearCanvas();
-            this.clearCanvas();
+        key: '_clearAll',
+        value: function _clearAll() {
+            this._overItem = [];
+            this._mouseLayer._clearCanvas();
+            this._clearCanvas();
         }
     }, {
-        key: 'updateOverClickItem',
-        value: function updateOverClickItem() {
+        key: '_updateOverClickItem',
+        value: function _updateOverClickItem() {
             var _this2 = this;
 
-            var overArr = this.overItem ? [this.overItem] : [];
-            var allItems = this.selectItem.concat(overArr);
+            var overArr = this._overItem ? [this._overItem] : [];
+            var allItems = this._selectItem.concat(overArr);
 
             var _loop = function _loop(i) {
                 var item = allItems[i];
-                var ret = _this2.workerData.find(function (val) {
+                var ret = _this2._workerData.find(function (val) {
                     var itemCoordinates = item.geometry.coordinates;
                     var valCoordinates = val.geometry.coordinates;
                     return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
@@ -11404,24 +11402,24 @@ var PointOverlay = function (_Parameter) {
             }
         }
     }, {
-        key: 'getTarget',
-        value: function getTarget(mouseX, mouseY) {
-            var pixels = this.workerData,
-                ctx = this.ctx;
-            var mapSize = this.map.getSize();
+        key: '_getTarget',
+        value: function _getTarget(mouseX, mouseY) {
+            var pixels = this._workerData,
+                ctx = this._ctx;
+            var mapSize = this._map.getSize();
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var _item = pixels[i];
                 var _item$geometry$pixel = _item.geometry.pixel,
                     x = _item$geometry$pixel.x,
                     y = _item$geometry$pixel.y;
 
-                var style = this.setDrawStyle(_item);
+                var style = this._setDrawStyle(_item);
                 var size = style.size;
                 size += style.borderWidth || 0;
                 if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
                     ctx.beginPath();
                     ctx.arc(x, y, size, 0, 2 * Math.PI, true);
-                    if (ctx.isPointInPath(mouseX * this.devicePixelRatio, mouseY * this.devicePixelRatio)) {
+                    if (ctx.isPointInPath(mouseX * this._devicePixelRatio, mouseY * this._devicePixelRatio)) {
                         return {
                             index: i,
                             item: _item
@@ -11435,11 +11433,11 @@ var PointOverlay = function (_Parameter) {
             };
         }
     }, {
-        key: 'findIndexSelectItem',
-        value: function findIndexSelectItem(item) {
+        key: '_findIndexSelectItem',
+        value: function _findIndexSelectItem(item) {
             var index = -1;
             if (item) {
-                index = this.selectItem.findIndex(function (val) {
+                index = this._selectItem.findIndex(function (val) {
                     var itemCoordinates = item.geometry.coordinates;
                     var valCoordinates = val.geometry.coordinates;
                     return val && itemCoordinates[0] == valCoordinates[0] && itemCoordinates[1] == valCoordinates[1] && val.count == item.count;
@@ -11451,23 +11449,23 @@ var PointOverlay = function (_Parameter) {
         key: 'refresh',
         value: function refresh() {
 
-            this.clearCanvas();
-            this._mouseLayer.canvasResize();
-            this._loopDraw(this.ctx, this.workerData, false);
-            this.drawMouseLayer();
+            this._clearCanvas();
+            this._mouseLayer._canvasResize();
+            this._loopDraw(this._ctx, this._workerData, false);
+            this._drawMouseLayer();
         }
     }, {
-        key: 'swopData',
-        value: function swopData(index, item) {
+        key: '_swopData',
+        value: function _swopData(index, item) {
             if (index > -1) {
-                this.workerData[index] = this.workerData[this.workerData.length - 1];
-                this.workerData[this.workerData.length - 1] = item;
+                this._workerData[index] = this._workerData[this._workerData.length - 1];
+                this._workerData[this._workerData.length - 1] = item;
             }
         }
     }, {
         key: '_loopDraw',
         value: function _loopDraw(ctx, pixels, otherMode) {
-            var mapSize = this.map.getSize();
+            var mapSize = this._map.getSize();
             var pre = null;
             for (var i = 0, len = pixels.length; i < len; i++) {
                 var _item2 = pixels[i];
@@ -11477,7 +11475,7 @@ var PointOverlay = function (_Parameter) {
                     y = pixel.y;
 
                 if (pre == null || pre.x != x && pre.y != y) {
-                    var style = this.setDrawStyle(_item2, otherMode);
+                    var style = this._setDrawStyle(_item2, otherMode);
                     var size = style.size;
 
                     if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
@@ -11515,22 +11513,22 @@ var PointOverlay = function (_Parameter) {
     }, {
         key: '_removeMoveEvent',
         value: function _removeMoveEvent() {
-            this.map.removeEventListener('mouseup', this._mouseupFun);
-            this.map.removeEventListener('mousedown', this._mousedownFun);
-            this.map.removeEventListener('dblclick', this._dblclickFun);
+            this._map.removeEventListener('mouseup', this._mouseupFun);
+            this._map.removeEventListener('mousedown', this._mousedownFun);
+            this._map.removeEventListener('dblclick', this._dblclickFun);
         }
     }, {
-        key: 'Tdispose',
-        value: function Tdispose() {
+        key: '_Tdispose',
+        value: function _Tdispose() {
             this._removeMoveEvent();
-            this.map.removeOverlay(this._mouseLayer);
+            this._map.removeOverlay(this._mouseLayer);
             this._mouseLayer.dispose();
         }
     }, {
-        key: 'tMousemove',
-        value: function tMousemove(event) {
+        key: '_tMousemove',
+        value: function _tMousemove(event) {
             if (this._isDragging) {
-                var point = this.selectItem[0];
+                var point = this._selectItem[0];
                 if (!point) return;
 
                 var dragEndPixel = {
@@ -11541,50 +11539,50 @@ var PointOverlay = function (_Parameter) {
                 point.geometry.pixel.y = dragEndPixel.y;
                 point.geometry.coordinates = [event.point.lng, event.point.lat];
                 this.refresh();
-                this.eventConfig.onDragging.call(this, point, this._selectItemIndex, event);
+                this._eventConfig.onDragging.call(this, point, this._selectItemIndex, event);
             } else {
-                if (this.eventType == 'onmoving') {
+                if (this._eventType == 'onmoving') {
                     return;
                 }
-                var result = this.getTarget(event.pixel.x, event.pixel.y);
+                var result = this._getTarget(event.pixel.x, event.pixel.y);
                 var temp = result.item;
 
-                if (temp != this.overItem) {
-                    this.overItem = temp;
-                    this.eventType = 'mousemove';
-                    if (!(0, _util.isEmpty)(this.styleConfig.mouseOver)) {
-                        this.drawMouseLayer();
+                if (temp != this._overItem) {
+                    this._overItem = temp;
+                    this._eventType = 'mousemove';
+                    if (!(0, _util.isEmpty)(this._styleConfig.mouseOver)) {
+                        this._drawMouseLayer();
                     }
                 }
                 if (temp) {
-                    this.map.setDefaultCursor('pointer');
+                    this._map.setDefaultCursor('pointer');
                 } else {
-                    this.map.setDefaultCursor('default');
+                    this._map.setDefaultCursor('default');
                 }
             }
         }
     }, {
         key: '_mousedownFun',
         value: function _mousedownFun(event) {
-            if (this.eventType == 'onmoving') return;
-            var result = this.getTarget(event.pixel.x, event.pixel.y);
+            if (this._eventType == 'onmoving') return;
+            var result = this._getTarget(event.pixel.x, event.pixel.y);
             this._selectItemIndex = result.index;
             if (result.index == -1) {
                 return;
             }
-            this._isDragging = this.styleConfig.isDrag;
+            this._isDragging = this._styleConfig.isDrag;
 
             if (this._isDragging) {
                 this._dragStartPixel = {
                     x: event.offsetX,
                     y: event.offsetY
                 };
-                this.map.disableDragging();
-                this.eventConfig.onDragStart.call(this, result.item, this._selectItemIndex, event);
+                this._map.disableDragging();
+                this._eventConfig.onDragStart.call(this, result.item, this._selectItemIndex, event);
             }
 
-            this.selectItem = [result.item];
-            this.drawMouseLayer();
+            this._selectItem = [result.item];
+            this._drawMouseLayer();
         }
     }, {
         key: '_mouseupFun',
@@ -11596,13 +11594,13 @@ var PointOverlay = function (_Parameter) {
                     y: event.offsetY
                 };
                 if (this._dragStartPixel.x == dragEndPixel.x && this._dragStartPixel.y == dragEndPixel.y) {
-                    this.map.enableDragging();
+                    this._map.enableDragging();
                 } else {
-                    var point = this.selectItem[0];
+                    var point = this._selectItem[0];
                     if (point) {
                         point.geometry.coordinates = [event.point.lng, event.point.lat];
-                        this.map.enableDragging();
-                        this.eventConfig.onDragEnd.call(this, point, this._selectItemIndex, event);
+                        this._map.enableDragging();
+                        this._eventConfig.onDragEnd.call(this, point, this._selectItemIndex, event);
                     }
                 }
             }
@@ -11612,12 +11610,12 @@ var PointOverlay = function (_Parameter) {
         key: '_dblclickFun',
         value: function _dblclickFun(event) {
             if (this._selectItemIndex > -1) {
-                this.eventConfig.onDblclick.call(this, this.selectItem[0], this._selectItemIndex, event);
+                this._eventConfig.onDblclick.call(this, this._selectItem[0], this._selectItemIndex, event);
             }
         }
     }, {
-        key: 'tMouseClick',
-        value: function tMouseClick() {}
+        key: '_tMouseClick',
+        value: function _tMouseClick() {}
     }]);
 
     return PointOverlay;
@@ -11683,14 +11681,14 @@ BaseClass.prototype.dispose = function () {
     }
 };
 
-BaseClass.prototype.getHashCode = function () {
+BaseClass.prototype._getHashCode = function () {
     if (!this.hashCode) {
         inmap_instances[this.hashCode = BaseClass.guid()] = this;
     }
     return this.hashCode;
 };
 
-BaseClass.prototype.decontrol = function () {
+BaseClass.prototype._decontrol = function () {
     inmap_instances[this.hashCode] = null;
 };
 
@@ -11699,11 +11697,11 @@ var baidu = window.BMap || {
 };
 BaseClass.inherits(baidu.Overlay, 'BaseClass');
 
-BaseClass.prototype.postMessage = function (workerClassPath, data, callback) {
-    var map = this.map;
+BaseClass.prototype._postMessage = function (workerClassPath, data, callback) {
+    var map = this._map;
     var center = map.getCenter();
     var size = map.getSize();
-    var msgId = this.setMsgId();
+    var msgId = this._setMsgId();
     var request = {
         'type': 'web',
         'data': data,
@@ -11721,21 +11719,21 @@ BaseClass.prototype.postMessage = function (workerClassPath, data, callback) {
                 height: size.height
             },
             'zoom': map.getZoom(),
-            'margin': this.margin
+            'margin': this._margin
         }
     };
     _workerMrg2.default.postMessage({
         request: request
     }, callback);
 };
-BaseClass.prototype.getMsgId = function () {
+BaseClass.prototype._getMsgId = function () {
     return 'msgId' + _count.toString(36);
 };
-BaseClass.prototype.setMsgId = function () {
+BaseClass.prototype._setMsgId = function () {
     _count++;
     return 'msgId' + _count.toString(36);
 };
-BaseClass.prototype.removeWorkerMessage = function () {
+BaseClass.prototype._removeWorkerMessage = function () {
     _workerMrg2.default.removeMessage(this.hashCode);
 };
 

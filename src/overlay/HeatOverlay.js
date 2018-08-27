@@ -22,6 +22,9 @@ export default class HeatOverlay extends CanvasOverlay {
     _toDraw() {
         this._drawMap();
     }
+    getRenderData() {
+        return this._workerData;
+    }
     _getTransformData() {
         return this._workerData.length > 0 ? this._workerData : this._data;
     }

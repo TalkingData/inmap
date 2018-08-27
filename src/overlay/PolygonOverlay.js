@@ -199,7 +199,7 @@ export default class PolygonOverlay extends Parameter {
 
         this._setState(State.drawBefore);
         this._clearCanvas();
-        this._drawLine(this.getData());
+        this._drawLine(this.getRenderData());
         this._setState(State.drawAfter);
     }
     _drawMap() {
@@ -220,7 +220,7 @@ export default class PolygonOverlay extends Parameter {
         });
     }
     _getTarget(x, y) {
-        let data = this.getData();
+        let data = this.getRenderData();
         for (let i = 0; i < data.length; i++) {
             let item = data[i];
             let geometry = item.geometry;
