@@ -129,9 +129,7 @@
              this.setPath(opts.data);
          }
      }
-     create() {
-
-         this.isCreate = true;
+     _wokerDataClear() {
          this._workerData = [{
              geometry: {
                  type: 'MultiPolygon',
@@ -141,6 +139,11 @@
 
              }
          }];
+     }
+     create() {
+
+         this.isCreate = true;
+         this._wokerDataClear();
          this._createTempCache = null;
          this._createIndex = -1;
          if (this._map) {
@@ -158,7 +161,7 @@
      setPath(data) {
          this.isCreate = false;
          this._opts.data = data;
-         this._workerData = [];
+         this._wokerDataClear();
          this._pointDataGroup = [];
          this._draggingPointTemp = null;
          this._draggingVirtualTemp = null;
@@ -210,6 +213,7 @@
                  }
              }
              this._polygonOverlay && this._polygonOverlay.refresh();
+             this._eventConfig.onChange.call(this, 'translationPixel');
          }
      }
      _removeMoveEvent() {

@@ -9557,10 +9557,8 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
             }
         }
     }, {
-        key: 'create',
-        value: function create() {
-
-            this.isCreate = true;
+        key: '_wokerDataClear',
+        value: function _wokerDataClear() {
             this._workerData = [{
                 geometry: {
                     type: 'MultiPolygon',
@@ -9570,6 +9568,13 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
 
                 }
             }];
+        }
+    }, {
+        key: 'create',
+        value: function create() {
+
+            this.isCreate = true;
+            this._wokerDataClear();
             this._createTempCache = null;
             this._createIndex = -1;
             if (this._map) {
@@ -9588,7 +9593,7 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
         value: function setPath(data) {
             this.isCreate = false;
             this._opts.data = data;
-            this._workerData = [];
+            this._wokerDataClear();
             this._pointDataGroup = [];
             this._draggingPointTemp = null;
             this._draggingVirtualTemp = null;
@@ -9645,6 +9650,7 @@ var PolygonEditorOverlay2 = function (_CanvasOverlay) {
                     }
                 }
                 this._polygonOverlay && this._polygonOverlay.refresh();
+                this._eventConfig.onChange.call(this, 'translationPixel');
             }
         }
     }, {
@@ -10875,7 +10881,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "2.0.2";
+var version = "2.0.3";
 console.log('inMap v' + version);
 
 var inMap = {
