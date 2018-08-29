@@ -26,7 +26,7 @@ export default class PolygonOverlay extends Parameter {
      * 
      * @memberof Parameter
      */
-    _setSelectedList(list) {
+    setSelectedList(list) {
         clearPushArray(this._selectItem, list);
     }
     _clearSelectedList() {
