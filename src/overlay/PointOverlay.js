@@ -186,15 +186,14 @@ export default class PointOverlay extends Parameter {
                 star = data[i].count;
             }
         }
-        //去除最后判断区间，防止区间遗漏
-        if (split.length > 0) {
-            split.push({
-                start: star,
-                end: null,
-                backgroundColor: colors[colorIndex],
-            });
+        
+        data.length > 0 && split.push({
+            start: star,
+            end: null,
+            backgroundColor: colors[colorIndex],
+        });
 
-        }
+
 
 
         let result = [];
