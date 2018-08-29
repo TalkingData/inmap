@@ -3,6 +3,10 @@ export default class MapZoom {
         this._map = map;
         this._mapDom = mapDom;
         this._zoom = opts;
+        this._confine = {
+            min: 3,
+            max: 18
+        };
         this._createDom();
     }
 
@@ -12,16 +16,18 @@ export default class MapZoom {
         div.innerHTML = '<a>+</a > <a>-</a >';
         this._mapDom.appendChild(div);
         this._event(div);
+        this.setButtonState();
     }
     setButtonState() {
         let doms = this._mapDom.querySelectorAll('.inmap-scale-group a');
         let zoom = this._map.getZoom();
-        if (zoom >= this._zoom.max) {
+
+        if (zoom >= this._zoom.max || zoom >= this._confine.max) {
             doms[0].setAttribute('disabled', 'true');
         } else {
             doms[0].removeAttribute('disabled');
         }
-        if (zoom <= this._zoom.min) {
+        if (zoom <= this._zoom.min || zoom <= this._confine.min) {
             doms[1].setAttribute('disabled', 'true');
         } else {
             doms[1].removeAttribute('disabled');
@@ -32,16 +38,18 @@ export default class MapZoom {
         let doms = div.querySelectorAll('a');
         doms[0].addEventListener('click', () => {
             let zoom = this._map.getZoom();
-            if (zoom < this._zoom.max) {
+            if (zoom < this._zoom.max && zoom < this._confine.max) {
                 this._map.zoomIn();
             }
+             
 
         });
         doms[1].addEventListener('click', () => {
             let zoom = this._map.getZoom();
-            if (zoom > this._zoom.min) {
+            if (zoom > this._zoom.min && zoom > this._confine.min) {
                 this._map.zoomOut();
             }
+            
         });
 
 
