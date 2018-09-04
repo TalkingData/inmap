@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PointOverlay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+        .demo-inmap{
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        .demo-inmap-legend{
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            z-index: 100;
+            padding: 10px;
+            background: rgb(24, 32, 55,.8);
+            color: #fff;
+        }
+        .demo-inmap-legend p{
+            height: 24px;
+            line-height: 24px;
+            margin: 0;
+            font-size: 12px;
+        }
+        .demo-inmap-legend i{
+            display: inline-block;
+            margin-right: 5px;
+            width: 10px;
+            vertical-align: middle;
+            height: 10px;
+        }
+        .random-polygon{
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 100px;
+            height: 30px;
+            display: inline-block;
+            line-height: 30px;
+            text-align: center;
+            cursor: pointer;
+            background: blue;
+            color: #fff;
+            font-size: 14px;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="./data/geojson.js"></script>
+    <script src="../dist/inmap.js"></script>
+
+</head>
+
+<body>
+    <div class="demo-inmap">
+        <div id="allmap"></div>
+        <div class="random-polygon">设置随机围栏</div>
+        <div class="demo-inmap-legend"></div>
+    </div>
+</body>
+
+</html>
+<script>
+    var colors = [
+        "rgba(0, 184, 255,0.6)",
+        "rgba(72, 246, 217, 0.6)",
+        "rgba(252, 196, 95, 0.6)",
+        "rgba(255, 132, 84, 0.6)",
+        "rgba(219, 66, 90,0.6)"
+    ];
+    var storeData = JSON.parse( JSON.stringify(data.features) );
+    var compileSplitList = function(colors, data,key) {
+
+        if (colors.length <= 0) return;
+        data = data.sort((a, b) => {
+            return a.properties[key] - b.properties[key] > 0 ? 1 : -1;
+        });
+        let splitCount = data.length / colors.length;
+        let colorIndex = 0;
+        let split = [];
+        let star = 0,
+            end = 0;
+
+        for (let i = 0; i < data.length; i++) {
+
+            if (i > splitCount * (colorIndex + 1)) {
+                if (split.length == 0) {
+                    star = data[0].properties[key];
+                }
+
+                end = data[i].properties[key];
+
+                split.push({
+                    start: star,
+                    end: end,
+                    backgroundColor: colors[colorIndex]
+                });
+                colorIndex++;
+                star = data[i].properties[key];
+            }
+        }
+        //去除最后判断区间，防止区间遗漏
+        if ( data.length > 0) {
+            split.push({
+                start: star,
+                end: null,
+                backgroundColor: colors[colorIndex],
+            });
+        }
+
+        let result = [];
+        for (let i = 0; i < split.length; i++) {
+            let item = split[i];
+            if (item.start != item.end) {
+                item.backgroundColor = colors[result.length];
+                result.push(item);
+            }
+        }
+
+        return result;
+    }
+    var splitColor = compileSplitList( colors,data.features,'OBJECTID_1'  );
+
+    var createLegendDom = function(){
+        var html = '';
+        for( var i = 0, len = splitColor.length; i < len;i++ ){
+            var item = splitColor[i];
+            html += `
+                <p>
+                    <i style="background:${item.backgroundColor}"></i> ${item.start} ~ ${item.end ? item.end : '∞'}
+                </p>
+                `;
+        }
+        document.querySelector('.demo-inmap-legend').innerHTML = html;
+    };
+    createLegendDom();
+
+
+    var destroyedData = function() {
+        if( overlay ){
+            inmap.remove(overlay);
+            overlay = null;
+            inmap = null;
+        }
+    };
+    var createOverlay = function( num ){
+        if( overlay  ){
+            destroyedData();
+        }
+        var inmap = new inMap.Map({
+            id: 'allmap',
+            skin: "Blueness",
+            center: ["114.16248337214269", "22.559515429553684"],
+            zoom: {
+                value: 11,
+                show: true,
+                max: 22
+            }
+        });
+        var overlay = new inMap.PolygonOverlay({
+            style: {
+                normal: {
+                    borderWidth: 1.5,
+                    backgroundColor: "rgba(0,184,255,0.80)",
+                    label: {
+                        show: true, // 是否显示
+                        font: "10px bold ",
+                        color: "rgba(224, 238, 251,1)"
+                    }
+                },
+                colors : colors,
+                splitList : splitColor,
+                mouseOver: {
+                    shadowColor: "rgba(0, 0, 0, 1)",
+                    shadowBlur: 10,
+                    borderWidth: 1.5,
+                    label: {
+                        color: "rgba(0, 0, 0, 1)"
+                    }
+                },
+                selected: {
+                    backgroundColor: "rgba(184,0,0,1)",
+                    borderColor: "rgba(255,255,255,1)"
+                }
+            },
+            legend : {
+                show : false
+            },
+            tooltip : {
+                show : true,
+                formatter : '{count}'
+            },
+            data: data.features.slice(0,num).map((item)=>{
+                item.count = item.properties.OBJECTID_1;
+                return item;
+            }),
+            event: {
+                onState(state) {
+                    console.log(state);
+                }
+            }
+        });
+        inmap.add(overlay);
+    }
+    createOverlay(data.features.length);
+
+    document.querySelector('.random-polygon').addEventListener('click',function(){
+        createOverlay(Math.ceil( data.features.length * Math.random() ));
+    })
+</script>
