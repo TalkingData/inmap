@@ -24,7 +24,7 @@ export default class PointOverlay extends Parameter {
         this._mpp = {};
     }
     _initLegend() {
-        if (this._styleConfig.colors.length > 0) {
+        if (this._styleConfig.splitList.length === 0 && this._styleConfig.colors.length > 0) {
             this._compileSplitList(this._getTransformData());
         } else {
             this._setlegend(this._legendConfig, this._styleConfig.splitList);
@@ -186,7 +186,7 @@ export default class PointOverlay extends Parameter {
                 star = data[i].count;
             }
         }
-        
+
         data.length > 0 && split.push({
             start: star,
             end: null,
