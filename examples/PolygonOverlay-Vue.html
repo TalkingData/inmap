@@ -58,7 +58,7 @@
         watch: {
             model: function (newVal, oldVal) {
                 console.log(newVal);
-                var renderData = overlay.getData();
+                var renderData = overlay.getRenderData();
                 let selectList = []
                 renderData.forEach(function (val) {
                     if (newVal == val.name) {
