@@ -17,7 +17,10 @@ export default class PolygonOverlay extends Parameter {
         this._initLegend();
     }
     _initLegend() {
-        this._compileSplitList(this._styleConfig.colors, this._getTransformData());
+        const splitList = this._styleConfig.splitList;
+        if( splitList.length === 0 ){
+            this._compileSplitList(this._styleConfig.colors, this._getTransformData());
+        }
         this._patchSplitList();
         this._setlegend(this._legendConfig, this._styleConfig.splitList);
     }
@@ -93,8 +96,7 @@ export default class PolygonOverlay extends Parameter {
      * @param {} data 
      */
     _compileSplitList(colors, data) {
-
-        if (colors.length <= 0) return;
+        if ( colors.length <= 0) return;
         data = data.sort((a, b) => {
             return parseFloat(a.count) - parseFloat(b.count);
         });
@@ -137,7 +139,6 @@ export default class PolygonOverlay extends Parameter {
                 result.push(item);
             }
         }
-
         this._styleConfig.splitList = result;
     }
     _patchSplitList() {
