@@ -5,6 +5,7 @@
  export default {
      tooltip: {
          show: false,
+         formatter: '{count}',
          customClass: 'inmap-tooltip-black', //是否自定义样式
          offsets: {
              top: 5,

@@ -46,8 +46,11 @@
             max: 22
         }
     });
-  
+
     var overlay = new inMap.PolygonOverlay({
+        tooltip: {
+            show: true
+        },
         style: {
             normal: {
                 borderWidth: 1.5,
@@ -71,7 +74,10 @@
                 borderColor: "rgba(255,255,255,1)"
             }
         },
-        data: data.features,
+        data: data.features.map((item) => {
+            item.count = item.properties.OBJECTID_1;
+            return item;
+        }),
         event: {
             onState(state) {
                 console.log(state);
