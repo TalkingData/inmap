@@ -18,7 +18,9 @@ export default class PointOverlay extends Parameter {
         this._mousedownFun = this._mousedownFun.bind(this);
         this._dblclickFun = this._dblclickFun.bind(this);
         this._selectItemIndex = -1;
-        this._mouseLayer = new CanvasOverlay();
+        this._mouseLayer = new CanvasOverlay({
+            zIndex: this._zIndex + 1
+        });
         this._isDragging = false;
         this._dragStartPixel = {
             x: 0,
@@ -30,6 +32,12 @@ export default class PointOverlay extends Parameter {
     _onOptionChange() {
 
     }
+    setZIndex(zIndex) {
+        this._zIndex = zIndex;
+        if (this._container) this._container.style.zIndex = this._zIndex;
+
+        this._mouseLayer.setZIndex(this._zIndex + 1);
+    }
     _onDataChangee() {
 
     }
@@ -38,7 +46,7 @@ export default class PointOverlay extends Parameter {
         this._map.addEventListener('mouseup', this._mouseupFun);
         this._map.addEventListener('mousedown', this._mousedownFun);
         this._map.addEventListener('dblclick', this._dblclickFun);
-       
+
     }
 
     setOptionStyle(ops) {
@@ -181,7 +189,7 @@ export default class PointOverlay extends Parameter {
         this._map.removeEventListener('mouseup', this._mouseupFun);
         this._map.removeEventListener('mousedown', this._mousedownFun);
         this._map.removeEventListener('dblclick', this._dblclickFun);
-       
+
     }
     _Tdispose() {
         this._removeMoveEvent();

@@ -14,7 +14,7 @@ let isMobile = detectmob();
  */
 export default class Parameter extends CanvasOverlay {
     constructor(baseConfig, ops) {
-        super();
+        super(ops);
         this._data = []; //数据
         this._workerData = []; //转换后的数据
         this._option = {};

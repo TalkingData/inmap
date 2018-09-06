@@ -13,12 +13,20 @@ export default class LineStringOverlay extends Parameter {
     constructor(ops) {
         super(LineStringConfig, ops);
         this._state = null;
-        this._mouseLayer = new CanvasOverlay();
+        this._mouseLayer = new CanvasOverlay({
+            zIndex: this._zIndex + 1
+        });
         this._selectItemIndex = -1;
         this._onDataChange();
     }
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
+    }
+    setZIndex(zIndex) {
+        this._zIndex = zIndex;
+        if (this._container) this._container.style.zIndex = this._zIndex;
+
+        this._mouseLayer.setZIndex(this._zIndex + 1);
     }
     _onDataChange() {
         this._selectItemIndex = -1;

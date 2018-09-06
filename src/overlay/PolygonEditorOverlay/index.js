@@ -33,6 +33,14 @@
          this.isCreate = false;
 
      }
+     setZIndex(zIndex) {
+         this._zIndex = zIndex;
+         if (this._container) this._container.style.zIndex = this._zIndex;
+
+         this._polygonOverlay && this._polygonOverlay.setZIndex(this._zIndex + 1);
+         this._pointOverlay && this._pointOverlay.setZIndex(this._zIndex + 2);
+         this._virtualPointOverlay && this._virtualPointOverlay.setZIndex(this._zIndex + 4);
+     }
      _canvasInit() {
          this._polygonOverlay = new PolygonOverlay({
              style: this._opts.style.polygon,
@@ -66,7 +74,8 @@
                      }
 
                  }
-             }
+             },
+             zIndex: this._zIndex + 1
          });
 
          this._map.addOverlay(this._polygonOverlay);
@@ -81,7 +90,8 @@
                  onDragEnd: this._dragEndPoint,
                  onDragging: this._draggingPoint,
                  onDblclick: this._dblclickPoint,
-             }
+             },
+             zIndex: this._zIndex + 2
          });
          this._map.addOverlay(this._pointOverlay);
 
@@ -94,7 +104,8 @@
              event: {
                  onDragEnd: this._dragEndVirtual,
                  onDragging: this._draggingVirtual
-             }
+             },
+             zIndex: this._zIndex + 4
          });
          this._map.addOverlay(this._virtualPointOverlay);
          this._map.addEventListener('rightclick', this._rightclick);

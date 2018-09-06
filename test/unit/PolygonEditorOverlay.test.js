@@ -196,8 +196,7 @@ describe('PolygonEditorOverlay ', () => {
 
         option.data = null;
         overlay.setOptionStyle(option);
-
-        expect(overlay._workerData.length).to.eql(0);
+        expect(overlay._workerData[0].geometry.coordinates.length).to.eql(0);
         expect(overlay._pointDataGroup.length).to.eql(0);
         expect(overlay._draggingPointTemp).to.eql(null);
         expect(overlay._draggingVirtualTemp).to.eql(null);

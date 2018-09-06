@@ -46,6 +46,8 @@
         <button type="button" class="btn btn-primary" @click='addHeat'>添加热力图层 </button>
         <button type="button" class="btn btn-primary" @click='delDot'>删除散点图层 </button>
         <button type="button" class="btn btn-primary" @click='delHeat'>删除热力图层 </button>
+        <button type="button" class="btn btn-primary" @click='setZIndex'>设置图层的显示顺序 </button>
+
     </div>
 
 </body>
@@ -165,8 +167,11 @@
             },
             delHeat: function () {
                 inmap.remove(overlay2);
+            },
+            setZIndex: function () {
+                overlay1.setZIndex(-overlay1._zIndex);
+                overlay2.setZIndex(-overlay2._zIndex);
             }
-
 
         }
     })

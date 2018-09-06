@@ -12,7 +12,7 @@ import {
     Blueness
 } from '../../config/MapStyleConfig';
 import Toolbar from '../../map/Toolbar';
-let zIndex = 1;
+let zIndex = 0;
 
 export default class CanvasOverlay extends BaseClass {
     constructor(opts) {
@@ -39,6 +39,7 @@ export default class CanvasOverlay extends BaseClass {
             left: 0,
             top: 0
         };
+        this._zIndex = !opts || opts.zIndex == null ? zIndex += 10 : opts.zIndex;
 
     }
     initialize(map) {
@@ -47,7 +48,7 @@ export default class CanvasOverlay extends BaseClass {
         this._ctx = this._container.getContext('2d');
         this._margin.left = -this._map.offsetX;
         this._margin.top = -this._map.offsetY;
-        this._container.style.cssText = `position:absolute;left:${this._margin.left}px;top:${this._margin.top}px;z-index:${zIndex++};`;
+        this._container.style.cssText = `position:absolute;left:${this._margin.left}px;top:${this._margin.top}px;z-index:${this._zIndex};`;
         map.getPanes().mapPane.appendChild(this._container);
         this._setCanvasSize();
         map.addEventListener('resize', this._tOnResize);
@@ -187,8 +188,9 @@ export default class CanvasOverlay extends BaseClass {
     /**
      * 设置overlay z-index
      */
-    setZIndex(_zIndex) {
-        this._container.style.zIndex = _zIndex;
+    setZIndex(zIndex) {
+        this._zIndex = zIndex;
+        this._container.style.zIndex = this._zIndex;
     }
 
     _Tclear() {

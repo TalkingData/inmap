@@ -39,6 +39,13 @@ export default class MoveLineOverlay extends MultiOverlay {
         }
 
     }
+    setZIndex(zIndex) {
+        this._zIndex = zIndex;
+
+        this._PointOverlay && this._PointOverlay.setZIndex(this._zIndex);
+        this._LineStringOverlay && this._LineStringOverlay.setZIndex(this._zIndex + 2);
+        this._LineStringAnimationOverlay && this._LineStringAnimationOverlay.setZIndex(this._zIndex + 4);
+    }
     setData(data) {
         if (data) {
             if (!isArray(data)) {
@@ -106,17 +113,28 @@ export default class MoveLineOverlay extends MultiOverlay {
         });
     }
     _creataPointOverlay(opts) {
-        opts.style.point['data'] = this._getPointData();
-        return new PointOverlay(opts.style.point);
+
+        return new PointOverlay({
+            ...opts.style.point,
+            data: this._getPointData(),
+            zIndex: this._zIndex + 1
+        });
     }
     _createLineStringOverlay(opts) {
 
-        opts.style.line['data'] = this._getLineStringData();
-        return new LineStringOverlay(opts.style.line);
+        return new LineStringOverlay({
+            ...opts.style.line,
+            data: this._getLineStringData(),
+            zIndex: this._zIndex + 2
+        });
     }
     _createLineStringAnimationOverlay(opts) {
-        opts.style.lineAnimation['data'] = this._getLineStringData();
-        return new LineStringAnimationOverlay(opts.style.lineAnimation);
+
+        return new LineStringAnimationOverlay({
+            ...opts.style.lineAnimation,
+            data: this._getLineStringData(),
+            zIndex: this._zIndex + 3
+        });
     }
     dispose() {
         this._PointOverlay.dispose();
