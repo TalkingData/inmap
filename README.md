@@ -29,7 +29,10 @@ inMap 是一款基于百度地图的大数据可视化库，专注于大数据�
 ## 示例效果图
 ![image](http://ozjyavyki.bkt.clouddn.com/demo/demoe%E6%88%AA%E5%9B%BE.jpg)
 ![image](http://ozjyavyki.bkt.clouddn.com/demo/demo%E6%88%AA%E5%9B%BE2.jpg)
-
+## 首先引用地图
+```html
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
+```
 ## 安装
 Using npm:
 ```
@@ -38,7 +41,6 @@ npm install inmap --save
 
 或使用 <script> 全局引用，inMap 会被注册为一个全局变量:
 ```html
-<script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
 <script type="text/javascript" src="http://unpkg.com/inmap/dist/inmap.min.js"></script>
 ```
 
