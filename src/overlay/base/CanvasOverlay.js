@@ -12,6 +12,7 @@ import {
     Blueness
 } from '../../config/MapStyleConfig';
 import Toolbar from '../../map/Toolbar';
+import ToolTip from '../../map/ToolTip';
 let zIndex = 0;
 
 export default class CanvasOverlay extends BaseClass {
@@ -61,10 +62,10 @@ export default class CanvasOverlay extends BaseClass {
         if (!map._inmapToolBar) {
             map._inmapToolBar = new Toolbar(map.getContainer());
         }
-        let legendContainer = map._inmapToolBar.legendContainer;
-        this.legend = new Legend(legendContainer);
-        this.toolTip = map._inmapToolBar.toolTip;
-        legendContainer = null;
+        
+        this.legend = new Legend(map._inmapToolBar.legendContainer);
+        this.toolTip = new ToolTip(map._inmapToolBar.container);
+ 
         this._canvasInit();
         return this._container;
 
@@ -218,7 +219,7 @@ export default class CanvasOverlay extends BaseClass {
             this.legend = null;
         }
         if (this.toolTip) {
-            this.toolTip.hide();
+            this.toolTip.dispose();
             this.toolTip = null;
         }
 
