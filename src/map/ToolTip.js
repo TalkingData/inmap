@@ -91,4 +91,10 @@ export default class ToolTip {
         }
 
     }
+    dispose() {
+        this._dom.parentNode.removeChild(this._dom);
+        this._tooltipTemplate = null;
+        this._opts = null;
+        this._dom = null;
+    }
 }
