@@ -5047,6 +5047,7 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
         _this.setOptionStyle(opts);
         _this.render = _this.render.bind(_this);
         _this.animationDraw = null;
+        _this.isDispose = false;
         return _this;
     }
 
@@ -5094,7 +5095,7 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
             var me = this;
 
             function drawFrame() {
-                requestAnimationFrame(drawFrame);
+                !me.isDispose && requestAnimationFrame(me.animationDraw);
                 now = Date.now();
                 delta = now - then;
                 if (delta > interval) {
@@ -5102,7 +5103,9 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
                     me.render();
                 }
             }
-            this.animationDraw = drawFrame;
+            this.animationDraw = function () {
+                drawFrame();
+            };
             this.animationDraw();
         }
     }, {
@@ -5211,10 +5214,17 @@ var MoveLineOverlay = exports.MoveLineOverlay = function (_BaseClass) {
     }, {
         key: 'dispose',
         value: function dispose() {
-            window.requestAnimationFrame(this.animationDraw);
+            window.cancelAnimationFrame(this.animationDraw);
             this.markLines = [];
             this.map.removeOverlay(this.animationLayer);
             this.map.removeOverlay(this.baseLayer);
+            var me = this;
+            for (var key in me) {
+                if (!(0, _util.isFunction)(me[key])) {
+                    me[key] = null;
+                }
+            }
+            this.isDispose = true;
         }
     }]);
 
@@ -6104,7 +6114,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.7.0";
+var version = "1.7.1";
 console.log('inMap v' + version);
 
 var inMap = {

@@ -4,7 +4,8 @@ import {
 import {
     merge,
     isString,
-    isArray
+    isArray,
+    isFunction
 } from './../common/util';
 import {
     WhiteLover,
@@ -209,6 +210,7 @@ export class MoveLineOverlay extends BaseClass {
         this.setOptionStyle(opts);
         this.render = this.render.bind(this);
         this.animationDraw = null;
+        this.isDispose = false;
     }
     setOptionStyle(ops) {
         let option = merge(config, ops);
@@ -249,7 +251,7 @@ export class MoveLineOverlay extends BaseClass {
         let me = this;
 
         function drawFrame() {
-            requestAnimationFrame(drawFrame);
+            !me.isDispose && requestAnimationFrame(me.animationDraw);
             now = Date.now();
             delta = now - then;
             if (delta > interval) {
@@ -257,7 +259,9 @@ export class MoveLineOverlay extends BaseClass {
                 me.render();
             }
         }
-        this.animationDraw = drawFrame;
+        this.animationDraw = function(){
+            drawFrame();
+        };
         this.animationDraw();
     }
     render() {
@@ -354,9 +358,17 @@ export class MoveLineOverlay extends BaseClass {
         this.drawBaseLayer();
     }
     dispose() {
-        window.requestAnimationFrame(this.animationDraw);
+        window.cancelAnimationFrame(this.animationDraw);
         this.markLines = [];
         this.map.removeOverlay(this.animationLayer);
         this.map.removeOverlay(this.baseLayer);
+        let me = this;
+        for (let key in me) {
+            if (!isFunction(me[key])) {
+                me[key] = null;
+            }
+        }
+        this.isDispose = true;
+
     }
 }
