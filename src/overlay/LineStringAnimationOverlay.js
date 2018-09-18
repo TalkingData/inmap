@@ -163,7 +163,7 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
         let me = this;
 
         function drawFrame() {
-            requestAnimationFrame(drawFrame);
+            !me.isDispose && requestAnimationFrame(drawFrame);
             now = Date.now();
             delta = now - then;
             if (delta > interval) {
