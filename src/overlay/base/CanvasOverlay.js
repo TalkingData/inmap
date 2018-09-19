@@ -62,10 +62,10 @@ export default class CanvasOverlay extends BaseClass {
         if (!map._inmapToolBar) {
             map._inmapToolBar = new Toolbar(map.getContainer());
         }
-        
+
         this.legend = new Legend(map._inmapToolBar.legendContainer);
         this.toolTip = new ToolTip(map._inmapToolBar.container);
- 
+
         this._canvasInit();
         return this._container;
 
@@ -191,7 +191,9 @@ export default class CanvasOverlay extends BaseClass {
      */
     setZIndex(zIndex) {
         this._zIndex = zIndex;
-        this._container.style.zIndex = this._zIndex;
+        if (this._container) {
+            this._container.style.zIndex = this._zIndex;
+        }
     }
 
     _Tclear() {
@@ -206,13 +208,16 @@ export default class CanvasOverlay extends BaseClass {
     dispose() {
         this._throttle.dispose();
         this._removeWorkerMessage();
-        this._map.removeEventListener('resize', this._tOnResize);
-        this._map.removeEventListener('moveend', this._tOnMoveend);
-        this._map.removeEventListener('zoomstart', this._tOnZoomstart);
-        this._map.removeEventListener('zoomend', this._tOnZoomend);
-        this._map.removeEventListener('moving', this._tOnMoving);
-        this._map.removeEventListener('mousemove', this._tMousemove);
-        this._map.removeEventListener('click', this._tMouseClick);
+        if (this._map) {
+            this._map.removeEventListener('resize', this._tOnResize);
+            this._map.removeEventListener('moveend', this._tOnMoveend);
+            this._map.removeEventListener('zoomstart', this._tOnZoomstart);
+            this._map.removeEventListener('zoomend', this._tOnZoomend);
+            this._map.removeEventListener('moving', this._tOnMoving);
+            this._map.removeEventListener('mousemove', this._tMousemove);
+            this._map.removeEventListener('click', this._tMouseClick);
+        }
+
 
         if (this.legend) {
             this.legend.dispose(this._map._inmapToolBar.legendContainer);
