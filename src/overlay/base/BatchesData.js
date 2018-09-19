@@ -35,14 +35,14 @@ export default class BatchesData {
         } = this;
        
         this.splitArray = chunk(data, splitCount);
-
+        
         let loop = () => {
             let item = this.splitArray[this.index];
             item && callback(ctx, item);
 
             this.index++;
 
-            if (this.index >= this.splitArray.length - 1) {
+            if (this.index >= this.splitArray.length ) {
                 this.clear();
             } else {
                 this.intervalId = setTimeout(loop, interval);

@@ -6114,7 +6114,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var version = "1.7.1";
+var version = "1.7.2";
 console.log('inMap v' + version);
 
 var inMap = {
@@ -6573,7 +6573,7 @@ var BatchesData = function () {
 
                 _this.index++;
 
-                if (_this.index >= _this.splitArray.length - 1) {
+                if (_this.index >= _this.splitArray.length) {
                     _this.clear();
                 } else {
                     _this.intervalId = setTimeout(loop, interval);
