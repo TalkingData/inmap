@@ -44,13 +44,13 @@ export default class PointAnimationOverlay extends CanvasOverlay {
     }
     _canvasInit() {
         this._addMarker();
-        let now;
+        let now, me = this;
         let then = Date.now();
         let interval = 1000 / 25;
         let delta;
         let _render = this._render;
         (function drawFrame() {
-            requestAnimationFrame(drawFrame);
+            !me.isDispose && requestAnimationFrame(drawFrame);
             now = Date.now();
             delta = now - then;
             if (delta > interval) {
