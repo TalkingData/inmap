@@ -61,7 +61,7 @@ export default class BatchesData {
 
             this.index++;
 
-            if (this.index >= this.splitArray.length - 1) {
+            if (this.index >= this.splitArray.length) {
                 this.clear();
             } else {
                 this.intervalId = setTimeout(loop, interval);
