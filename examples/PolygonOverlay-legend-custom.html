@@ -23,34 +23,39 @@
             margin-left: 5px;
             font-size: 14px;
         }
-        .demo-inmap{
+
+        .demo-inmap {
             position: relative;
             width: 100%;
             height: 100%;
         }
-        .demo-inmap-legend{
+
+        .demo-inmap-legend {
             position: absolute;
             bottom: 30px;
             left: 30px;
             z-index: 100;
             padding: 10px;
-            background: rgb(24, 32, 55,.8);
+            background: rgb(24, 32, 55, .8);
             color: #fff;
         }
-        .demo-inmap-legend p{
+
+        .demo-inmap-legend p {
             height: 24px;
             line-height: 24px;
             margin: 0;
             font-size: 12px;
         }
-        .demo-inmap-legend i{
+
+        .demo-inmap-legend i {
             display: inline-block;
             margin-right: 5px;
             width: 10px;
             vertical-align: middle;
             height: 10px;
         }
-        .random-polygon{
+
+        .random-polygon {
             position: absolute;
             top: 30px;
             left: 30px;
@@ -88,8 +93,8 @@
         "rgba(255, 132, 84, 0.6)",
         "rgba(219, 66, 90,0.6)"
     ];
-    var storeData = JSON.parse( JSON.stringify(data.features) );
-    var compileSplitList = function(colors, data,key) {
+    var storeData = JSON.parse(JSON.stringify(data.features));
+    var compileSplitList = function (colors, data, key) {
 
         if (colors.length <= 0) return;
         data = data.sort((a, b) => {
@@ -120,7 +125,7 @@
             }
         }
         //去除最后判断区间，防止区间遗漏
-        if ( data.length > 0) {
+        if (data.length > 0) {
             split.push({
                 start: star,
                 end: null,
@@ -139,13 +144,14 @@
 
         return result;
     }
-    var splitColor = compileSplitList( colors,data.features,'OBJECTID_1'  );
+    var splitColor = compileSplitList(colors, data.features, 'OBJECTID_1');
 
-    var createLegendDom = function(){
+    var createLegendDom = function () {
         var html = '';
-        for( var i = 0, len = splitColor.length; i < len;i++ ){
+        for (var i = 0, len = splitColor.length; i < len; i++) {
             var item = splitColor[i];
-            html += `
+            html +=
+                `
                 <p>
                     <i style="background:${item.backgroundColor}"></i> ${item.start} ~ ${item.end ? item.end : '∞'}
                 </p>
@@ -156,28 +162,29 @@
     createLegendDom();
 
 
-    var destroyedData = function() {
-        if( overlay ){
+    var destroyedData = function () {
+        if (overlay) {
             inmap.remove(overlay);
             overlay = null;
-            inmap = null;
+            // inmap = null;
         }
     };
-    var createOverlay = function( num ){
-        if( overlay  ){
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        skin: "Blueness",
+        center: ["114.16248337214269", "22.559515429553684"],
+        zoom: {
+            value: 11,
+            show: true,
+            max: 22
+        }
+    });
+    var overlay = null;
+    var createOverlay = function (num) {
+        if (overlay) {
             destroyedData();
         }
-        var inmap = new inMap.Map({
-            id: 'allmap',
-            skin: "Blueness",
-            center: ["114.16248337214269", "22.559515429553684"],
-            zoom: {
-                value: 11,
-                show: true,
-                max: 22
-            }
-        });
-        var overlay = new inMap.PolygonOverlay({
+        overlay = new inMap.PolygonOverlay({
             style: {
                 normal: {
                     borderWidth: 1.5,
@@ -188,8 +195,8 @@
                         color: "rgba(224, 238, 251,1)"
                     }
                 },
-                colors : colors,
-                splitList : splitColor,
+                colors: colors,
+                splitList: splitColor,
                 mouseOver: {
                     shadowColor: "rgba(0, 0, 0, 1)",
                     shadowBlur: 10,
@@ -203,14 +210,14 @@
                     borderColor: "rgba(255,255,255,1)"
                 }
             },
-            legend : {
-                show : false
+            legend: {
+                show: false
             },
-            tooltip : {
-                show : true,
-                formatter : '{count}'
+            tooltip: {
+                show: true,
+                formatter: '{count}'
             },
-            data: data.features.slice(0,num).map((item)=>{
+            data: data.features.slice(0, num).map((item) => {
                 item.count = item.properties.OBJECTID_1;
                 return item;
             }),
@@ -224,7 +231,7 @@
     }
     createOverlay(data.features.length);
 
-    document.querySelector('.random-polygon').addEventListener('click',function(){
-        createOverlay(Math.ceil( data.features.length * Math.random() ));
+    document.querySelector('.random-polygon').addEventListener('click', function () {
+        createOverlay(Math.ceil(data.features.length * Math.random()));
     })
 </script>
