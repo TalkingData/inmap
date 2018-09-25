@@ -60,7 +60,11 @@
                 shadowBlur: 10,
             },
         },
-        data: data,
+        data: data.map(function (item, index) {
+            item.name = '轨迹' + index;
+            item.count = index;
+            return item;
+        }),
         event: {
             onState(state) {
                 console.log(state);
@@ -82,7 +86,11 @@
             lineOrCurve: 'line', //curve or line
             deltaAngle: 50 
         },
-        data: data2,
+        data: data2.map(function (item, index) {
+            item.name = '轨迹' + index;
+            item.count = index;
+            return item;
+        }),
 
     });
     map.add(overlay2);

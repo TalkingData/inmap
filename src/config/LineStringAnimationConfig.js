@@ -12,4 +12,8 @@ export default {
 
     },
     data: [],
+    checkDataType: {
+        name: false,
+        count: false
+    },
 };

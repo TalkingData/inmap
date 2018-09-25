@@ -38,6 +38,10 @@
 
      },
      data: [],
+     checkDataType: {
+         name: true,
+         count: true
+     },
      event: {
          multiSelect: false, //是否支持多选
          onMouseClick() {},

@@ -43,6 +43,10 @@
      }
      _canvasInit() {
          this._polygonOverlay = new PolygonOverlay({
+             checkDataType: {
+                 name: false,
+                 count: false
+             },
              style: this._opts.style.polygon,
              data: this._opts.data ? [this._toMutilPolygon(this._opts.data)] : [],
              event: {

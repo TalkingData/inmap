@@ -18,6 +18,10 @@ export default {
         splitList: [],
     },
     data: [],
+    checkDataType: {
+        name: false,
+        count: true
+    },
     selected: [], //设置选中
     event: {
         onMouseClick() {},

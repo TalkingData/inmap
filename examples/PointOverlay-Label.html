@@ -107,7 +107,10 @@
             ],
 
         },
-        data: data,
+        data: data.map(function (item, index) {
+            item.count = item.count || index;
+            return item;
+        }),
         event: {
             onMouseClick: function (item) {
                 //能获取当前点的信息

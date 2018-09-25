@@ -197,3 +197,53 @@ export function clearPushArray(a, b) {
         a.splice(0, a.length);
     }
 }
+export function checkType(row, isCheckName, isCheckCount) {
+    let nameType = typeOf(row.name);
+    let countType = typeOf(row.count);
+    let geometryType = typeOf(row.geometry);
+    if (isCheckName) {
+        if (nameType == 'null' || nameType == 'undefined') {
+            return 'The property name cannot be the value cannot be null!';
+        }
+        if (nameType !== 'string') {
+            return 'The property name must be of type String!';
+        }
+    }
+    if (isCheckCount) {
+        if (countType == 'null' || countType == 'undefined') {
+            return 'The property count cannot be the value cannot be null!';
+        }
+        if (countType == 'string' && typeOf(parseFloat(row.count)) !== 'number') {
+            return 'The property count must be of type String!';
+        }
+
+        if (geometryType == 'null' || geometryType == 'undefined') {
+            return 'The property geometry cannot be the value cannot be null!';
+        }
+    }
+
+
+    if (typeOf(row.geometry.type) !== 'string') {
+        return 'The property geometry.type must be of type String!';
+    }
+    if (!isArray(row.geometry.coordinates)) {
+        return 'The property geometry.coordinates must be of type Array!';
+    }
+
+}
+
+export function checkGeoJSON(data, isCheckName, isCheckCount) {
+    if (!data) return;
+    if (!isArray(data)) {
+        throw new TypeError('inMap: data must be is Array<GEOJSON>');
+    }
+
+    for (let i = 0, len = data.length; i < len; i++) {
+        let ms = checkType(data[i], isCheckName, isCheckCount);
+        if (ms) {
+            throw new TypeError(`inMap: data index Line ${i}. ${ms}\r about geoJSON, visit http://inmap.talkingdata.com/#/docs/v2/Geojson`);
+        }
+
+    }
+
+}

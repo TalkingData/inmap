@@ -1,8 +1,8 @@
 import CanvasOverlay from './base/CanvasOverlay.js';
 import {
     merge,
-    isArray,
-    clearPushArray
+    clearPushArray,
+    checkGeoJSON
 } from './../common/util';
 
 import LineStringAnimationConfig from './../config/LineStringAnimationConfig';
@@ -98,10 +98,8 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
     }
     setData(points) {
         if (points) {
-            if (!isArray(points)) {
-                throw new TypeError('inMap: data must be a Array');
-            }
             this._data = points;
+            checkGeoJSON(points, this._option.checkDataType.name, this._option.checkDataType.count);
         } else {
             this._data = [];
         }

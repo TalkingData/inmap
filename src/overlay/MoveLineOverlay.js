@@ -5,8 +5,8 @@ import LineStringAnimationOverlay from './LineStringAnimationOverlay';
 import config from './../config/MoveLineConfig';
 import {
     merge,
-    isArray,
-    isFunction
+    isFunction,
+    checkGeoJSON
 } from './../common/util';
 
 export default class MoveLineOverlay extends MultiOverlay {
@@ -48,9 +48,7 @@ export default class MoveLineOverlay extends MultiOverlay {
     }
     setData(data) {
         if (data) {
-            if (!isArray(data)) {
-                throw new TypeError('inMap: data must be a Array');
-            }
+            checkGeoJSON(data, false);
             this._data = data;
 
         } else {

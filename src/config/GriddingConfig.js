@@ -37,18 +37,22 @@ export default {
             },
         },
         mouseOver: {
-           
+
 
         },
         selected: {
-          
+
         },
-        splitList:[]
+        splitList: []
     },
     data: [],
+    checkDataType: {
+        name: false,
+        count: true
+    },
     event: {
         multiSelect: false,
-        onMouseClick(){},
+        onMouseClick() {},
         onState() {}
     }
 };

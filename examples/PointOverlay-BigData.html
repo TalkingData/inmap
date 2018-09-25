@@ -62,7 +62,11 @@
                 size: 1 // 半径
             }
         },
-        data: data,
+        data: data.map(function (item, index) {
+            item.name = '散点' + index;
+            item.count = index;
+            return item;
+        }),
         event: {
             onState(val) {
                 console.log(val);

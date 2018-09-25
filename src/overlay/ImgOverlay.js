@@ -181,7 +181,6 @@ export default class ImgOverlay extends Parameter {
         let splitList = this._styleConfig.splitList;
         for (let i = 0; i < splitList.length; i++) {
             let condition = splitList[i];
-           
             if (condition.end == null) {
                 if (count >= condition.start) {
                     Object.assign(result, normal, condition);

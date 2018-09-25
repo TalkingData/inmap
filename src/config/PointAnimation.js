@@ -5,5 +5,9 @@ export default {
         color: '#FAFA32',
         speed: 0.15 //动画速度
     },
-    data: []
+    data: [],
+    checkDataType: {
+        name: false,
+        count: false
+    },
 };

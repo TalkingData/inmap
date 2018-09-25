@@ -1,6 +1,5 @@
 import {
     isEmpty,
-    isArray,
     detectmob,
     clearPushArray
 } from './../common/util';
@@ -111,19 +110,7 @@ export default class LineStringOverlay extends Parameter {
             return (Math.sqrt(((line2[0] - mouseX) * (line2[0] - mouseX)) + ((line2[1] - mouseY) * (line2[1] - mouseY))) <= lineThickness);
         }
     }
-    setData(points) {
-        if (points) {
-            if (!isArray(points)) {
-                throw new TypeError('inMap: data must be a Array');
-            }
-            this._data = points;
-        } else {
-            this._data = [];
-        }
-        this._clearData();
-        this._cancerSelectd();
-        this._map && this._drawMap();
-    }
+
     refresh() {
         this._setState(State.drawBefore);
         this._mouseLayer._canvasResize();

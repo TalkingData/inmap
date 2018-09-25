@@ -59,7 +59,11 @@
                 shadowBlur: 20,
             },
         },
-        data: data,
+        data: data.map(function (item, index) {
+            item.name = '轨迹' + index;
+            item.count = index;
+            return item;
+        }),
         event: {
             onState(state) {
                 console.log(state);
@@ -98,7 +102,11 @@
             lineOrCurve: 'curve', //curve or line
             deltaAngle: 0 //动画散点个数
         },
-        data: data2,
+        data:data2.map(function (item, index) {
+            item.name = '轨迹' + index;
+            item.count = index;
+            return item;
+        }),
 
     });
     map.add(overlay2);

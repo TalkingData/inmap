@@ -19,6 +19,10 @@
         splitList:[]
     },
     data: [],
+    checkDataType: {
+        name: false,
+        count: false
+    },
     event: {
          onDragStart:function(){},
          onDragging:function(){},

@@ -3,7 +3,7 @@ import {
     detectmob,
     isEmpty,
     merge,
-    isArray,
+    checkGeoJSON,
     clearPushArray
 } from './../../common/util';
 import CanvasOverlay from './CanvasOverlay';
@@ -49,16 +49,15 @@ export default class Parameter extends CanvasOverlay {
         this.toolTip && this.toolTip.setOption(this._tooltipConfig);
 
     }
+    _checkGeoJSON(data){
+        checkGeoJSON(data, this._option.checkDataType.name, this._option.checkDataType.count);
+    }
     setData(points) {
         if (points) {
-            if (!isArray(points)) {
-                throw new TypeError('inMap: data must be a Array');
-            }
+            this._checkGeoJSON(points);
             this._data = points;
-
         } else {
             this._data = [];
-
         }
 
         this._clearData();

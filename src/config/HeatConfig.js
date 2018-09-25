@@ -25,6 +25,10 @@ export default {
         maxScope: 1, // 最大区间,大于此区间的不显示
     },
     data: [],
+    checkDataType: {
+        name: false,
+        count: true
+    },
     event: {
         onState() {}
     }

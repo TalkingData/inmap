@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>PointOverlay-Dluster</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -37,7 +38,7 @@
 <script>
     var map = new inMap.Map({
         id: 'allmap',
-        skin:"Blueness",
+        skin: "Blueness",
         center: [105.403119, 38.028658],
         zoom: {
             value: 5,
@@ -58,7 +59,7 @@
         legend: {
             show: true,
             title: "标题",
-            formatter: function (start, end,index) {
+            formatter: function (start, end, index) {
                 return start + "万~" + (end || "max") + "万";
             },
 
@@ -111,7 +112,11 @@
                 }
             ],
         },
-        data: data,
+        data:  data.map(function (item, index) {
+            item.name = '散点' + index;
+            item.count = item.count || index;
+            return item;
+        }),
         event: {
             onMouseClick: function (item) {
                 //能获取当前点的信息

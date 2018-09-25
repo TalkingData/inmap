@@ -67,7 +67,11 @@
                 size: 5 // 半径
             }
         },
-        data: data,
+        data: data.map(function (item, index) {
+            item.name = '散点' + index;
+            item.count = item.count || index;
+            return item;
+        }),
         event: {
             onMouseClick: function (item, event) {
                 //能获取当前点的信息

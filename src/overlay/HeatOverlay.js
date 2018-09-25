@@ -1,8 +1,8 @@
 import CanvasOverlay from './base/CanvasOverlay';
 import {
     merge,
-    isArray,
-    clearPushArray
+    clearPushArray,
+    checkGeoJSON
 } from './../common/util';
 
 import HeatConfig from './../config/HeatConfig';
@@ -42,6 +42,19 @@ export default class HeatOverlay extends CanvasOverlay {
         }
         this._tMapStyle(option.skin);
     }
+    _checkGeoJSON(data){
+        checkGeoJSON(data, this._option.checkDataType.name, this._option.checkDataType.count);
+    }
+    setData(points) {
+        if (points) {
+            this._data = points;
+            this._checkGeoJSON(points);
+        } else {
+            this._data = [];
+        }
+        clearPushArray(this._workerData, []);
+        this._map && this._drawMap();
+    }
     _setState(val) {
         this._state = val;
         this._eventConfig.onState.call(this, this._state);
@@ -56,21 +69,6 @@ export default class HeatOverlay extends CanvasOverlay {
         this._legendConfig = {
             show: false
         };
-    }
-    setData(points) {
-        this.setPoints(points);
-    }
-    setPoints(points) {
-        if (points) {
-            if (!isArray(points)) {
-                throw new TypeError('inMap: data must be a Array');
-            }
-            this._data = points;
-        } else {
-            this._data = [];
-        }
-        clearPushArray(this._workerData, []);
-        this._map && this._drawMap();
     }
     _getMax() {
         let normal = this._styleConfig;

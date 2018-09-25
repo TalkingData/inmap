@@ -21,6 +21,10 @@ export default {
         splitList: [],
     },
     data: [],
+    checkDataType: {
+        name: true,
+        count: false
+    },
     selected: [], //设置选中
     event: {
         multiSelect: false, //是否支持多选

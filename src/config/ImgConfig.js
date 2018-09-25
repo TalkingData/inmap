@@ -31,6 +31,10 @@ export default {
         splitList: [],
     },
     data: [],
+    checkDataType: {
+        name: false,
+        count: false
+    },
     event: {
         multiSelect: false, //是否支持多选
         onMouseClick() {},

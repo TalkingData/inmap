@@ -101,7 +101,11 @@
                 }
             ],
         },
-        data: data,
+        data: data.map(function (item, index) {
+            item.name = '散点' + index;
+            item.count = item.count || index;
+            return item;
+        }),
         event: {
             onState(state) {
                 console.log(state);

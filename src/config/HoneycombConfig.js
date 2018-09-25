@@ -45,6 +45,10 @@ export default {
 
     },
     data: [],
+    checkDataType: {
+        name: false,
+        count: true
+    },
     event: {
         multiSelect: false,
         onMouseClick(){},

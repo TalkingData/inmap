@@ -71,7 +71,10 @@
                 borderColor: "rgba(255,255,255,1)"
             }
         },
-        data: data.features,
+        data: data.features.map(function (item) {
+            item.count = item.properties.OBJECTID_1
+            return item;
+        }),
         selected: [data.features[1]],
         event: {
             onState(state) {

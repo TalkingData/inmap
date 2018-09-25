@@ -36,12 +36,6 @@
 
 </html>
 <script>
-    data.forEach(element => {
-        element["style"] = {
-            size: Math.random() * 10
-        }
-    });
-
     var inmap = new inMap.Map({
         id: 'allmap',
         skin: "Blueness",
@@ -66,7 +60,7 @@
         legend: {
             show: true,
             title: "标题",
-            formatter: function (start, end,index) {
+            formatter: function (start, end, index) {
                 return start + "万~" + (end || "max") + "万";
             }
         },
@@ -88,7 +82,14 @@
             },
 
         },
-        data: data,
+        data: data.map(function (item, index) {
+            item.name = '散点' + index;
+            item.count = index;
+            item["style"] = {
+                size: Math.random() * 10
+            }
+            return item;
+        }),
         event: {
             // onMouseClick: function (item, event) {
             //     //能获取当前点的信息
