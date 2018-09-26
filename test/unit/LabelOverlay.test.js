@@ -36,7 +36,7 @@ describe('LabelOverlay ', () => {
         expect(overlay._data).to.eql([]);
 
         let data = [{
-            "count": 4,
+            "name": '',
             "geometry": {
                 "type": "Point",
                 "coordinates": [117.306518554688, 38.5537719726562]
@@ -68,7 +68,7 @@ describe('LabelOverlay ', () => {
         expect(overlay._workerData).to.eql([]);
 
         let data = [{
-            "count": 4,
+            "name": "",
             "geometry": {
                 "type": "Point",
                 "coordinates": [117.306518554688, 38.5537719726562]

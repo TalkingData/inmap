@@ -6,7 +6,6 @@ import config from './../config/MoveLineConfig';
 import {
     merge,
     isFunction,
-    checkGeoJSON
 } from './../common/util';
 
 export default class MoveLineOverlay extends MultiOverlay {
@@ -48,9 +47,7 @@ export default class MoveLineOverlay extends MultiOverlay {
     }
     setData(data) {
         if (data) {
-            checkGeoJSON(data, false);
             this._data = data;
-
         } else {
             this._data = [];
         }
