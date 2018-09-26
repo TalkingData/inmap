@@ -1,10 +1,10 @@
 import Parameter from './base/Parameter';
-import PointConfig from '../config/LabelConfig';
+import Config from '../config/LabelConfig';
 import State from './../config/OnStateConfig';
 
 export default class LabelOverlay extends Parameter {
     constructor(opts) {
-        super(PointConfig, opts);
+        super(Config, opts);
         this._state = null;
     }
     _onOptionChange() {
