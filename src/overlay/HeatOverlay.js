@@ -3,7 +3,7 @@ import {
     merge,
     clearPushArray,
     checkGeoJSON
-} from './../common/util';
+} from './../common/Util';
 
 import HeatConfig from './../config/HeatConfig';
 import State from './../config/OnStateConfig';

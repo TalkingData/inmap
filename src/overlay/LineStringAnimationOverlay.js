@@ -3,7 +3,7 @@ import {
     merge,
     clearPushArray,
     checkGeoJSON
-} from './../common/util';
+} from '../common/Util.js';
 
 import LineStringAnimationConfig from './../config/LineStringAnimationConfig';
 class MarkLine {

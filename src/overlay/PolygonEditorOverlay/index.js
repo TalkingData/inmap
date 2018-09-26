@@ -5,7 +5,7 @@
  import {
      merge,
      isPolyContains,
- } from '../../common/util';
+ } from '../../common/Util';
 
  export default class PolygonEditorOverlay2 extends CanvasOverlay {
      constructor(opts) {

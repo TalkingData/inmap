@@ -6,7 +6,7 @@ import config from './../config/MoveLineConfig';
 import {
     merge,
     isFunction,
-} from './../common/util';
+} from '../common/Util';
 
 export default class MoveLineOverlay extends MultiOverlay {
     constructor(opts) {

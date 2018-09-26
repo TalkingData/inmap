@@ -1,6 +1,6 @@
 import {
     chunk
-} from './../../common/util';
+} from '../../common/Util';
 /**
  * 数据分批间断执行
  */

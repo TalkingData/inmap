@@ -6,7 +6,7 @@ import {
     isEmpty,
     isBoolean,
     merge
-} from '../common/util';
+} from '../common/Util';
 export default class Legend {
     constructor(toolDom, opts) {
         this._opts = opts || config;

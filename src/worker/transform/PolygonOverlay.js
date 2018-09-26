@@ -3,7 +3,7 @@ import {
 } from '../../lib/pointToPixel';
 
 import Point from './../../common/Point';
-import polylabel from './../../common/polylabel';
+import Polylabel from '../../common/Polylabel';
 
 function transfrom(coordinates, map, pixels, labelPixels, enable) {
     for (let i = 0; i < coordinates.length; i++) {
@@ -15,7 +15,7 @@ function transfrom(coordinates, map, pixels, labelPixels, enable) {
         }
         pixels.push(tmp);
         if (enable && i == 0) {
-            labelPixels.push(polylabel([tmp]));
+            labelPixels.push(Polylabel([tmp]));
         }
 
     }

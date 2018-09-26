@@ -2,7 +2,7 @@ import Parameter from './base/Parameter.js';
 import Color from '../common/Color.js';
 import {
     clearPushArray
-} from '../common/util.js';
+} from '../common/Util.js';
 import PolygonConfig from '../config/PolygonConfig.js';
 import State from '../config/OnStateConfig.js';
 

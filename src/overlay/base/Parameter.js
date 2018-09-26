@@ -5,7 +5,7 @@ import {
     merge,
     checkGeoJSON,
     clearPushArray
-} from './../../common/util';
+} from '../../common/Util';
 import CanvasOverlay from './CanvasOverlay';
 import Color from './../../common/Color';
 let isMobile = detectmob();

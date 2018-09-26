@@ -5,7 +5,7 @@ import CanvasOverlay from '../base/CanvasOverlay.js';
 import Parameter from '../base/Parameter.js';
 import {
     isEmpty
-} from '../../common/util.js';
+} from '../../common/Util.js';
 
 import PointDragConfig from '../../config/PointDragConfig.js';
 

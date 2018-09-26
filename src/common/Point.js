@@ -1,4 +1,4 @@
-import {isString} from './util';
+import {isString} from './Util';
 
 
 /**

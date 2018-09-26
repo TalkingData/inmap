@@ -6,7 +6,7 @@ import {
     isString,
     isArray,
     isFunction
-} from '../../common/util';
+} from '../../common/Util';
 import {
     WhiteLover,
     Blueness

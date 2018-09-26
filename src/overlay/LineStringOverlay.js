@@ -2,7 +2,7 @@ import {
     isEmpty,
     detectmob,
     clearPushArray
-} from './../common/util';
+} from '../common/Util';
 import CanvasOverlay from './base/CanvasOverlay.js';
 import Parameter from './base/Parameter';
 import LineStringConfig from '../config/LineStringConfig';

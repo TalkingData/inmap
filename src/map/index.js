@@ -2,7 +2,7 @@ import {
     isString,
     merge,
     isArray
-} from './../common/util';
+} from './../common/Util';
 import {
     WhiteLover,
     Blueness

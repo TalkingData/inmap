@@ -1,4 +1,4 @@
-import workerMrg from './../../common/workerMrg';
+import WorkerMrg from '../../common/WorkerMrg';
 
 let baseClassCounter = 0;
 let inmap_instances = {};
@@ -116,7 +116,7 @@ BaseClass.prototype._postMessage = function (workerClassPath, data, callback) {
             'margin': this._margin
         }
     };
-    workerMrg.postMessage({
+    WorkerMrg.postMessage({
         request: request
     }, callback);
 };
@@ -128,7 +128,7 @@ BaseClass.prototype._setMsgId = function () {
     return 'msgId' + (_count).toString(36);
 };
 BaseClass.prototype._removeWorkerMessage = function () {
-    workerMrg.removeMessage(this.hashCode);
+    WorkerMrg.removeMessage(this.hashCode);
 };
 
 export default BaseClass;

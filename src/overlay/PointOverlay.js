@@ -7,7 +7,7 @@ import Parameter from './base/Parameter';
 import {
     isEmpty,
     detectmob,
-} from './../common/util';
+} from '../common/Util.js';
 import BatchesData from './base/BatchesData';
 import PointConfig from '../config/PointConfig';
 import State from './../config/OnStateConfig';

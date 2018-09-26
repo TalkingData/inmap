@@ -2,7 +2,7 @@ import CanvasOverlay from './base/CanvasOverlay.js';
 import {
     merge,
     isArray
-} from './../common/util';
+} from './../common/Util';
 import config from '../config/PointAnimation';
 
 

@@ -2,7 +2,7 @@ import {
     isString,
     isFunction,
     merge
-} from './../common/util';
+} from '../common/Util';
 export default class ToolTip {
     constructor(toolDom) {
         this._dom = this._create(toolDom);
