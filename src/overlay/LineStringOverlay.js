@@ -242,7 +242,7 @@ export default class LineStringOverlay extends Parameter {
 
         this._eventConfig.onMouseClick(this._selectItem, event);
         if (isMobile) {
-            this._overItem = [item];
+            this._overItem = item;
             this._setTooltip(event);
         }
         this._drawMouseLayer();

@@ -63,7 +63,7 @@ export default class PointOverlay extends Parameter {
 
     }
     _clearAll() {
-        this._overItem = [];
+        this._overItem = null;
         this._mouseLayer._clearCanvas();
         this._clearCanvas();
     }
