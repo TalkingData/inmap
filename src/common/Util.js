@@ -241,7 +241,7 @@ export function checkGeoJSON(data, isCheckName, isCheckCount) {
     for (let i = 0, len = data.length; i < len; i++) {
         let ms = checkType(data[i], isCheckName, isCheckCount);
         if (ms) {
-            throw new TypeError(`inMap: data index Line ${i}. ${ms}\r about geoJSON, visit http://inmap.talkingdata.com/#/docs/v2/Geojson`);
+            throw new TypeError(`inMap: data index Line ${i}. ${ms} about geoJSON, visit http://inmap.talkingdata.com/#/docs/v2/Geojson`);
         }
 
     }
