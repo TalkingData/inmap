@@ -457,7 +457,7 @@ export default class PointOverlay extends Parameter {
 
 
         if (isMobile) {
-            this._overItem = [item];
+            this._overItem = item;
             this._setTooltip(event);
         }
         this._drawMouseLayer();
