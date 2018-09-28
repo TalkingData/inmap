@@ -70,7 +70,7 @@ export default class LineStringOverlay extends Parameter {
         for (let i = 0, len = this._workerData.length; i < len; i++) {
             let item = this._workerData[i];
             let pixels = item.geometry.pixels;
-            let style = this._setDrawStyle(item);
+            let style = this._setDrawStyle(item, false, i);
             for (let k = 0, len = pixels.length; k < len - 2; k++) {
                 let pixel1 = pixels[k];
                 let pixel2 = pixels[k + 1];
@@ -184,7 +184,7 @@ export default class LineStringOverlay extends Parameter {
 
         for (let i = 0; i < data.length; i++) {
             let item = data[i];
-            let style = this._setDrawStyle(item, otherMode);
+            let style = this._setDrawStyle(item, otherMode, i);
             ctx.strokeStyle = style.borderColor;
             let pixels = item.geometry.pixels;
             ctx.beginPath();

@@ -2,7 +2,8 @@ import Parameter from './base/Parameter';
 import ImgConfig from './../config/ImgConfig';
 import {
     isString,
-    merge
+    merge,
+    typeOf
 } from './../common/Util';
 import State from './../config/OnStateConfig';
 /*
@@ -61,7 +62,7 @@ export default class ImgOverlay extends Parameter {
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.geometry.pixel;
-            let style = this._setDrawStyle(item, true);
+            let style = this._setDrawStyle(item, i);
             let img;
             if (isString(img)) {
                 img = this._cacheImg[style.icon];
@@ -172,14 +173,19 @@ export default class ImgOverlay extends Parameter {
      * 根据用户配置，设置用户绘画样式
      * @param {*} item 
      */
-    _setDrawStyle(item) {
+    _setDrawStyle(item, i) {
         let normal = this._styleConfig.normal; //正常样式
         let result = merge({}, normal);
         let count = parseFloat(item.count);
 
         //区间样式
-        let splitList = this._styleConfig.splitList;
-        for (let i = 0; i < splitList.length; i++) {
+        let splitList = this._styleConfig.splitList,
+            len = splitList.length;
+        len = splitList.length;
+        if (len > 0 && typeOf(count) !== 'number') {
+            throw new TypeError(`inMap: data index Line ${i}, The property count must be of type Number! about geoJSON, visit http://inmap.talkingdata.com/#/docs/v2/Geojson`);
+        }
+        for (let i = 0; i < len; i++) {
             let condition = splitList[i];
             if (condition.end == null) {
                 if (count >= condition.start) {
@@ -200,7 +206,7 @@ export default class ImgOverlay extends Parameter {
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.geometry.pixel;
-            let style = this._setDrawStyle(item);
+            let style = this._setDrawStyle(item, i);
             this._loadImg(style.icon, (img) => {
                 if (style.width && style.height) {
                     let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height);

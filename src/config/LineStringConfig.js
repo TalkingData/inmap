@@ -15,12 +15,13 @@ export default {
             lineCurive: null, //‘cure’ 曲线
             deltaAngle: -0.2
         },
+        colors: [],
         splitList: [],
     },
     data: [],
     checkDataType: {
         name: false,
-        count: true
+        count: false
     },
     selected: [], //设置选中
     event: {

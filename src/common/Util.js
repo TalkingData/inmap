@@ -203,7 +203,7 @@ export function checkType(row, isCheckName, isCheckCount) {
     let geometryType = typeOf(row.geometry);
     if (isCheckName) {
         if (nameType == 'null' || nameType == 'undefined') {
-            return 'The property name cannot be the value cannot be null!';
+            return 'The property name cannot be null!';
         }
         if (nameType !== 'string') {
             return 'The property name must be of type String!';
@@ -211,18 +211,18 @@ export function checkType(row, isCheckName, isCheckCount) {
     }
     if (isCheckCount) {
         if (countType == 'null' || countType == 'undefined') {
-            return 'The property count cannot be the value cannot be null!';
+            return 'The property count cannot be null!';
         }
         if (countType == 'string' && typeOf(parseFloat(row.count)) !== 'number') {
-            return 'The property count must be of type String!';
+            return 'The property count must be of type Number!';
         }
 
-        if (geometryType == 'null' || geometryType == 'undefined') {
-            return 'The property geometry cannot be the value cannot be null!';
-        }
+        
     }
 
-
+    if (geometryType == 'null' || geometryType == 'undefined') {
+        return 'The property geometry cannot be null!';
+    }
     if (typeOf(row.geometry.type) !== 'string') {
         return 'The property geometry.type must be of type String!';
     }
@@ -241,7 +241,7 @@ export function checkGeoJSON(data, isCheckName, isCheckCount) {
     for (let i = 0, len = data.length; i < len; i++) {
         let ms = checkType(data[i], isCheckName, isCheckCount);
         if (ms) {
-            throw new TypeError(`inMap: data index Line ${i}. ${ms} about geoJSON, visit http://inmap.talkingdata.com/#/docs/v2/Geojson`);
+            throw new TypeError(`inMap: data index Line ${i}, ${ms} about geoJSON, visit http://inmap.talkingdata.com/#/docs/v2/Geojson`);
         }
 
     }

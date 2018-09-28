@@ -179,13 +179,13 @@ export default class HoneycombOverlay extends Parameter {
         }
         return index;
     }
-    _getStyle(item) {
+    _getStyle(item, i) {
         if (item.count == 0) {
             return {
                 backgroundColor: 'rgba(255,255,255,0)'
             };
         } else {
-            return this._setDrawStyle(item,true);
+            return this._setDrawStyle(item, true, i);
         }
 
     }
@@ -233,7 +233,7 @@ export default class HoneycombOverlay extends Parameter {
             let x = item.x;
             let y = item.y;
             if (item.list.length > 0 && x > -gridsW && y > -gridsW && x < mapSize.width + gridsW && y < mapSize.height + gridsW) {
-                let drawStyle = this._getStyle(item);
+                let drawStyle = this._getStyle(item, i);
                 this._drawLine(x, y, gridsW - style.padding, drawStyle, this._ctx);
             }
         }

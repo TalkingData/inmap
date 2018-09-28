@@ -19,6 +19,7 @@ export default {
             shadowBlur: 10
         },
         splitList: [],
+        colors: []
     },
     data: [],
     checkDataType: {

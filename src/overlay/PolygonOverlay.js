@@ -18,7 +18,7 @@ export default class PolygonOverlay extends Parameter {
     }
     _initLegend() {
         const splitList = this._styleConfig.splitList;
-        if( splitList.length === 0 ){
+        if (splitList.length === 0) {
             this._compileSplitList(this._styleConfig.colors, this._getTransformData());
         }
         this._patchSplitList();
@@ -96,7 +96,7 @@ export default class PolygonOverlay extends Parameter {
      * @param {} data 
      */
     _compileSplitList(colors, data) {
-        if ( colors.length <= 0) return;
+        if (colors.length <= 0) return;
         data = data.sort((a, b) => {
             return parseFloat(a.count) - parseFloat(b.count);
         });
@@ -324,7 +324,7 @@ export default class PolygonOverlay extends Parameter {
             let item = data[i];
             let geometry = item.geometry;
             let pixels = geometry.pixels;
-            let style = this._setDrawStyle(item, true);
+            let style = this._setDrawStyle(item, true, i);
             this._ctx.beginPath();
             this._ctx.shadowColor = style.shadowColor || 'transparent';
             this._ctx.shadowBlur = style.shadowBlur || 10;

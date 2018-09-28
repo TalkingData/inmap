@@ -3,6 +3,7 @@ import {
     detectmob,
     isEmpty,
     merge,
+    typeOf,
     checkGeoJSON,
     clearPushArray
 } from '../../common/Util';
@@ -49,8 +50,9 @@ export default class Parameter extends CanvasOverlay {
         this.toolTip && this.toolTip.setOption(this._tooltipConfig);
 
     }
-    _checkGeoJSON(data){
-        checkGeoJSON(data, this._option.checkDataType.name, this._option.checkDataType.count);
+    _checkGeoJSON(data) {
+        let isCheckCount = this._styleConfig.colors.length > 0 || this._styleConfig.splitList.length > 0;
+        checkGeoJSON(data, this._option.checkDataType.name, isCheckCount);
     }
     setData(points) {
         if (points) {
@@ -135,15 +137,20 @@ export default class Parameter extends CanvasOverlay {
      * @param {*} item 数据行
      * @param {*} otherMode  是否返回选中数据集的样式
      */
-    _setDrawStyle(item, otherMode) {
+    _setDrawStyle(item, otherMode, i) {
         let normal = this._styleConfig.normal, //正常样式
             mouseOverStyle = this._styleConfig.mouseOver, //悬浮样式
             selectedStyle = this._styleConfig.selected; //选中样式
         let result = merge({}, normal);
         let count = parseFloat(item.count);
         //区间样式
-        let splitList = this._styleConfig.splitList;
-        for (let i = 0; i < splitList.length; i++) {
+        let splitList = this._styleConfig.splitList,
+            len = splitList.length;
+        if (len > 0 && typeOf(count) !== 'number') {
+            throw new TypeError(`inMap: data index Line ${i}, The property count must be of type Number! about geoJSON, visit http://inmap.talkingdata.com/#/docs/v2/Geojson`);
+        }
+
+        for (let i = 0; i < len; i++) {
             let condition = splitList[i];
             if (i == splitList.length - 1) {
                 if (condition.end == null) {
