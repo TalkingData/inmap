@@ -1,7 +1,7 @@
 import Parameter from './base/Parameter.js';
 import GriddingConfig from './../config/GriddingConfig.js';
 import State from './../config/OnStateConfig';
- 
+
 export default class GriddingOverlay extends Parameter {
     constructor(ops) {
         super(GriddingConfig, ops);
@@ -9,7 +9,7 @@ export default class GriddingOverlay extends Parameter {
         this._drawSize = 0;
         this._mpp = {};
     }
-   
+
     _parameterInit() {
 
     }
@@ -212,13 +212,13 @@ export default class GriddingOverlay extends Parameter {
         let item = this._overItem && this._overItem.list.length > 0 ? this._overItem : null;
         this.toolTip.render(event, item);
     }
-    _getStyle(item) {
+    _getStyle(item, i) {
         if (item.count == 0) {
             return {
                 backgroundColor: 'rgba(255,255,255,0)'
             };
         } else {
-            return this._setDrawStyle(item,true);
+            return this._setDrawStyle(item, true, i);
         }
 
     }
@@ -234,7 +234,7 @@ export default class GriddingOverlay extends Parameter {
             let x = item.x;
             let y = item.y;
             if (x > -gridStep && y > -gridStep && x < mapSize.width + gridStep && y < mapSize.height + gridStep) {
-                let drawStyle = this._getStyle(item);
+                let drawStyle = this._getStyle(item, i);
                 if (drawStyle.shadowColor) {
                     this._ctx.shadowColor = drawStyle.shadowColor || 'transparent';
                     this._ctx.shadowBlur = drawStyle.shadowBlur || 10;

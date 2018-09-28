@@ -63,7 +63,7 @@ export default class PointOverlay extends Parameter {
 
     }
     _clearAll() {
-        this._overItem = [];
+        this._overItem = null;
         this._mouseLayer._clearCanvas();
         this._clearCanvas();
     }
@@ -93,7 +93,7 @@ export default class PointOverlay extends Parameter {
                 x,
                 y,
             } = item.geometry.pixel;
-            let style = this._setDrawStyle(item);
+            let style = this._setDrawStyle(item, false, i);
             let size = style.size;
             size += style.borderWidth || 0;
             if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {
@@ -142,15 +142,13 @@ export default class PointOverlay extends Parameter {
         let pre = null;
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
-
-
             let pixel = item.geometry.pixel;
             let {
                 x,
                 y
             } = pixel;
             if (pre == null || (pre.x != x && pre.y != y)) {
-                let style = this._setDrawStyle(item, otherMode);
+                let style = this._setDrawStyle(item, otherMode, i);
                 let size = style.size;
 
                 if (x > -size && y > -size && x < mapSize.width + size && y < mapSize.height + size) {

@@ -43,7 +43,7 @@
      data: [],
      checkDataType: {
          name: false,
-         count: true
+         count: false
      },
      selected: [], //设置选中
      event: {
