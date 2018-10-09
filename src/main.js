@@ -15,6 +15,7 @@ import MoveLineOverlay from './overlay/MoveLineOverlay';
 import PointAnimationOverlay from './overlay/PointAnimationOverlay';
 import LineStringAnimationOverlay from './overlay/LineStringAnimationOverlay';
 import PolygonEditorOverlay from './overlay/PolygonEditorOverlay/index';
+import MaskOverlay from './overlay/MaskOverlay';
 import Map from './map/index';
 import * as utils from './common/Util';
 import WorkerMrg from './common/WorkerMrg';
@@ -38,7 +39,8 @@ const inMap = {
     MoveLineOverlay,
     PointAnimationOverlay,
     LineStringAnimationOverlay,
-    WorkerMrg
+    WorkerMrg,
+    MaskOverlay
 };
 export {
     version,
@@ -56,6 +58,7 @@ export {
     MoveLineOverlay,
     PointAnimationOverlay,
     LineStringAnimationOverlay,
-    WorkerMrg
+    WorkerMrg,
+    MaskOverlay
 };
 export default inMap;
