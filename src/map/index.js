@@ -10,6 +10,7 @@ import {
 import MapZoom from './mapZoom';
 import Toolbar from './Toolbar';
 import MapConfig from '../config/MapConfig';
+import Config from '../config/Config';
 import MultiOverlay from '../overlay/base/MultiOverlay';
 import './map.less';
 
@@ -57,8 +58,22 @@ export default class Map {
                 mapZoom.setButtonState();
             });
         }
-
         this._map = bmap;
+
+        if (Config.devtools) { //开发模式
+            bmap.addEventListener('moveend', () => {
+                this.printMapInfo();
+            });
+            bmap.addEventListener('zoomend', () => {
+                this.printMapInfo();
+            });
+        }
+
+
+    }
+    printMapInfo() {
+        let center = this._map.getCenter();
+        console.log(`Map: center:${JSON.stringify(center)}, zoom:${this._map.getZoom()}.`);
     }
     getMap() {
         return this._map;
