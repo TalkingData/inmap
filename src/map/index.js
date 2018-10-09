@@ -9,14 +9,14 @@ import {
 } from './../config/MapStyleConfig';
 import MapZoom from './mapZoom';
 import Toolbar from './Toolbar';
-import inmapConfig from './../config/InmapConfig';
+import MapConfig from '../config/MapConfig';
 import MultiOverlay from '../overlay/base/MultiOverlay';
 import './map.less';
 
 export default class Map {
     constructor(ops) {
         this._map = null;
-        this._option = merge(inmapConfig, ops);
+        this._option = merge(MapConfig, ops);
         this._create();
     }
     _tMapStyle(map, skin) {

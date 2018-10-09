@@ -22,7 +22,6 @@ import WorkerMrg from './common/WorkerMrg';
 
 let version = VERSION;
 console.log(`inMap v${version}`);
-
 const inMap = {
     version,
     utils,
