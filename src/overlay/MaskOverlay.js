@@ -127,8 +127,12 @@ export default class MaskOverlay extends CanvasOverlay {
                 this._drawData(pixelItem);
                 this._ctx.clip();
                 this._clearCanvas();
-                this._ctx.strokeStyle = style.borderColor;
-                this._ctx.lineWidth = style.borderWidth;
+                if(style.borderColor){
+                    this._ctx.strokeStyle = style.borderColor;
+                }
+                if(style.borderWidth){
+                    this._ctx.lineWidth = style.borderWidth;
+                }
                 this._ctx.stroke();
                 this._ctx.restore();
                 pixelItem = null;
@@ -161,7 +165,7 @@ export default class MaskOverlay extends CanvasOverlay {
                 this._drawLine(pixels, style);
             }
 
-            style = null, pixels = null, geometry = null, item = null;
+        
         }
         this._ctx.closePath();
     }
