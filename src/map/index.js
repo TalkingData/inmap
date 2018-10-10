@@ -60,20 +60,22 @@ export default class Map {
         }
         this._map = bmap;
 
-        if (Config.devtools) { //开发模式
-            bmap.addEventListener('moveend', () => {
-                this.printMapInfo();
-            });
-            bmap.addEventListener('zoomend', () => {
-                this.printMapInfo();
-            });
-        }
 
+        bmap.addEventListener('moveend', () => {
+            if (Config.devtools) { //开发模式
+                this.printMapInfo();
+            }
+        });
+        bmap.addEventListener('zoomend', () => {
+            if (Config.devtools) { //开发模式
+                this.printMapInfo();
+            }
+        });
 
     }
     printMapInfo() {
         let center = this._map.getCenter();
-        console.log(`Map: center:${JSON.stringify(center)}, zoom:${this._map.getZoom()}.`);
+        console.log(`Map: center:${JSON.stringify(center)} zoom:${this._map.getZoom()}`);
     }
     getMap() {
         return this._map;
