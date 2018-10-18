@@ -198,7 +198,7 @@ export default class PolygonOverlay extends Parameter {
 
         this._setState(State.drawBefore);
         this._clearCanvas();
-        this._drawLine(this.getRenderData());
+        this._drawPolygon(this.getRenderData());
         this._setState(State.drawAfter);
     }
     _drawMap() {
@@ -293,7 +293,7 @@ export default class PolygonOverlay extends Parameter {
         }
         return outerRace;
     }
-    _drawPolygon(pixels, style) {
+    _drawPath(pixels, style) {
 
         for (let j = 0; j < pixels.length; j++) {
             this._ctx.save();
@@ -316,7 +316,7 @@ export default class PolygonOverlay extends Parameter {
 
         }
     }
-    _drawLine(data) {
+    _drawPolygon(data) {
         this._ctx.lineCap = 'round';
         this._ctx.lineJoin = 'round';
         this._ctx.miterLimit = 4;
@@ -333,11 +333,11 @@ export default class PolygonOverlay extends Parameter {
             this._ctx.fillStyle = style.backgroundColor;
             if (geometry.type == 'MultiPolygon') {
                 for (let k = 0; k < pixels.length; k++) {
-                    this._drawPolygon(pixels[k], style);
+                    this._drawPath(pixels[k], style);
                 }
 
             } else {
-                this._drawPolygon(pixels, style);
+                this._drawPath(pixels, style);
             }
 
             if (this._styleConfig.normal.label.show) {
