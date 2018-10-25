@@ -338,9 +338,16 @@ export default class PolygonOverlay extends Parameter {
 
             } else {
                 this._drawPath(pixels, style);
-            }
+            }  
+            style = null, pixels = null, geometry = null, item = null;
+        }
 
-            if (this._styleConfig.normal.label.show) {
+        if (this._styleConfig.normal.label.show) {
+            for (let i = 0; i < data.length; i++) {
+                let item = data[i];
+                let geometry = item.geometry;
+                let pixels = geometry.pixels;
+                let style = this._setDrawStyle(item, true, i);
                 let labelPixels = geometry.labelPixels;
                 this._ctx.shadowBlur = 0;
                 this._ctx.lineWidth = style.label.lineWidth;
@@ -374,7 +381,7 @@ export default class PolygonOverlay extends Parameter {
                 }
                 labelPixels = null;
             }
-            style = null, pixels = null, geometry = null, item = null;
+            
         }
         this._ctx.closePath();
     }
