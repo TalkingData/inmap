@@ -254,14 +254,13 @@ export default class PolygonOverlay extends Parameter {
         };
     }
     _drawData(pixelItem) {
-
         if (pixelItem.length == 0)
             return;
         let pixel = pixelItem[0];
         this._ctx.moveTo(pixel[0], pixel[1]);
         for (let k = 1, len = pixelItem.length; k < len; k++) {
             let item = pixelItem[k];
-            if (pixel[0] != item[0] && pixel[1] != item[1]) {
+            if (pixel[0] != item[0] || pixel[1] != item[1]) {
                 this._ctx.lineTo(pixelItem[k][0], pixelItem[k][1]);
                 pixel = item;
             }
@@ -317,6 +316,7 @@ export default class PolygonOverlay extends Parameter {
         }
     }
     _drawPolygon(data) {
+        // debugger
         this._ctx.lineCap = 'round';
         this._ctx.lineJoin = 'round';
         this._ctx.miterLimit = 4;
@@ -338,8 +338,9 @@ export default class PolygonOverlay extends Parameter {
 
             } else {
                 this._drawPath(pixels, style);
-            }  
+            }
             style = null, pixels = null, geometry = null, item = null;
+            this._ctx.closePath();
         }
 
         if (this._styleConfig.normal.label.show) {
@@ -381,8 +382,8 @@ export default class PolygonOverlay extends Parameter {
                 }
                 labelPixels = null;
             }
-            
+
         }
-        this._ctx.closePath();
+
     }
 }
