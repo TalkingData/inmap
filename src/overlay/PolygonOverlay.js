@@ -12,6 +12,7 @@ export default class PolygonOverlay extends Parameter {
         super(PolygonConfig, ops);
         this._patchSplitList();
         this._state = null;
+        this._customZoom = null;
     }
     _parameterInit() {
         this._initLegend();
@@ -31,6 +32,10 @@ export default class PolygonOverlay extends Parameter {
      */
     setSelectedList(list) {
         clearPushArray(this._selectItem, list);
+    }
+    setCustomZoom(zoom){
+        this._customZoom=zoom;
+        this._drawMap();
     }
     _clearSelectedList() {
         clearPushArray(this._selectItem);
@@ -205,7 +210,8 @@ export default class PolygonOverlay extends Parameter {
         this._setState(State.computeBefore);
         let parameter = {
             data: this._getTransformData(),
-            enable: this._styleConfig.normal.label.enable
+            enable: this._styleConfig.normal.label.enable,
+            customZoom: this._customZoom
         };
 
         this._postMessage('PolygonOverlay.calculatePixel', parameter, (pixels, margin) => {
@@ -218,6 +224,7 @@ export default class PolygonOverlay extends Parameter {
             pixels = null, margin = null;
         });
     }
+
     _getTarget(x, y) {
         let data = this.getRenderData();
         for (let i = 0; i < data.length; i++) {
@@ -316,7 +323,6 @@ export default class PolygonOverlay extends Parameter {
         }
     }
     _drawPolygon(data) {
-        // debugger
         this._ctx.lineCap = 'round';
         this._ctx.lineJoin = 'round';
         this._ctx.miterLimit = 4;

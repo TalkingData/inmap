@@ -9,6 +9,7 @@ function transfrom(coordinates, map, pixels, labelPixels, enable) {
     for (let i = 0; i < coordinates.length; i++) {
         let geo = coordinates[i];
         let tmp = [];
+
         for (let k = 0; k < geo.length; k++) {
             let pixel = pointToPixelWorker(new Point(geo[k][0], geo[k][1]), map);
             tmp.push([pixel.x, pixel.y]);
@@ -24,9 +25,11 @@ const PolygonOverlay = {
     calculatePixel: function (webObj) {
         let {
             data,
-            enable
+            enable,
+            customZoom
         } = webObj.request.data;
         let map = webObj.request.map;
+        if (customZoom != null) map.zoom = customZoom;
         for (let j = 0; j < data.length; j++) {
             let geometry = data[j].geometry;
             let type = geometry.type;
