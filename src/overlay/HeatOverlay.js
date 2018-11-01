@@ -35,14 +35,16 @@ export default class HeatOverlay extends CanvasOverlay {
         this._styleConfig = option.style;
         this._eventConfig = option.event;
         this._gradient = option.style.gradient;
+        this._palette = this._getColorPaint();
         if (ops.data !== undefined) {
             this.setData(ops.data);
         } else {
             this._map && this.refresh();
         }
         this._tMapStyle(option.skin);
+
     }
-    _checkGeoJSON(data){
+    _checkGeoJSON(data) {
         checkGeoJSON(data, this._option.checkDataType.name, this._option.checkDataType.count);
     }
     setData(points) {
@@ -115,29 +117,30 @@ export default class HeatOverlay extends CanvasOverlay {
     refresh() {
         this._clearCanvas();
         let normal = this._styleConfig;
-        let container = this._container;
+        let mapSize = this._map.getSize();
         if (normal.maxValue == 0) {
             this._getMax();
         }
-        if (container.width <= 0) {
+        if (mapSize.width <= 0) {
             return;
         }
 
         let ctx = this._ctx;
         for (let i = 0, len = this._workerData.length; i < len; i++) {
             let item = this._workerData[i];
-            let opacity = (item.count - normal.minValue) / (normal.maxValue - normal.minValue);
-            opacity = opacity > 1 ? 1 : opacity;
             let pixel = item.geometry.pixel;
-            this._drawPoint(pixel.x, pixel.y, normal.radius, opacity);
-            item = null, opacity = null, pixel = null;
+            debugger
+            if (pixel.x > -normal.radius && pixel.y > -normal.radius && pixel.x < mapSize.width + normal.radius && pixel.y < mapSize.height + normal.radius) {
+                let opacity = (item.count - normal.minValue) / (normal.maxValue - normal.minValue);
+                opacity = opacity > 1 ? 1 : opacity;
+                this._drawPoint(pixel.x, pixel.y, normal.radius, opacity);
+            }
+
         }
 
-        let palette = this._getColorPaint();
-
-        let img = ctx.getImageData(0, 0, container.width, container.height);
+        let palette = this._palette;
+        let img = ctx.getImageData(0, 0, mapSize.width, mapSize.height);
         let imgData = img.data;
-
 
         let max_opacity = normal.maxOpacity * 255;
         let min_opacity = normal.minOpacity * 255;
@@ -172,8 +175,7 @@ export default class HeatOverlay extends CanvasOverlay {
             }
         }
 
-
-        ctx.putImageData(img, 0, 0, 0, 0, container.width, container.height);
+        ctx.putImageData(img, 0, 0, 0, 0, mapSize.width, mapSize.height);
     }
     _drawPoint(x, y, radius, opacity) {
         let ctx = this._ctx;
