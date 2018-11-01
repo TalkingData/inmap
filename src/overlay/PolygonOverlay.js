@@ -26,15 +26,14 @@ export default class PolygonOverlay extends Parameter {
         this._setlegend(this._legendConfig, this._styleConfig.splitList);
     }
     /**
-     * 设置选中集合，但不会触发绘画
-     * 
-     * @memberof Parameter
+     * 设置选中集合
      */
     setSelectedList(list) {
         clearPushArray(this._selectItem, list);
+        this.refresh();
     }
-    setCustomZoom(zoom){
-        this._customZoom=zoom;
+    setCustomZoom(zoom) {
+        this._customZoom = zoom;
         this._drawMap();
     }
     _clearSelectedList() {
