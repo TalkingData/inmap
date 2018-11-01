@@ -129,7 +129,6 @@ export default class HeatOverlay extends CanvasOverlay {
         for (let i = 0, len = this._workerData.length; i < len; i++) {
             let item = this._workerData[i];
             let pixel = item.geometry.pixel;
-            debugger
             if (pixel.x > -normal.radius && pixel.y > -normal.radius && pixel.x < mapSize.width + normal.radius && pixel.y < mapSize.height + normal.radius) {
                 let opacity = (item.count - normal.minValue) / (normal.maxValue - normal.minValue);
                 opacity = opacity > 1 ? 1 : opacity;

@@ -97,7 +97,13 @@ export default class Parameter extends CanvasOverlay {
     _cancerSelectd() {
         clearPushArray(this._selectItem, []);
     }
-
+    /**
+     * 设置选中集合
+     */
+    setSelectedList(list) {
+        clearPushArray(this._selectItem, list);
+        this._map && this.refresh();
+    }
     _setWorkerData(val) {
         this._data = []; //优化
         this._overItem = null;
