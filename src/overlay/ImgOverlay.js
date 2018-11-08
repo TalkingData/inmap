@@ -203,21 +203,23 @@ export default class ImgOverlay extends Parameter {
 
     }
     _loopDraw(ctx, pixels) {
+        let mapSize = this._map.getSize();
         for (let i = 0, len = pixels.length; i < len; i++) {
             let item = pixels[i];
             let pixel = item.geometry.pixel;
             let style = this._setDrawStyle(item, i);
-            this._loadImg(style.icon, (img) => {
-                if (style.width && style.height) {
-                    let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height);
-                    this._drawImage(this._ctx, img, xy.x, xy.y, style.width, style.height);
+            if (pixel.x > -style.width && pixel.y > -style.height && pixel.x < mapSize.width + style.width && pixel.y < mapSize.height + style.height) {
+                this._loadImg(style.icon, (img) => {
+                    if (style.width && style.height) {
+                        let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, style.width, style.height);
+                        this._drawImage(this._ctx, img, xy.x, xy.y, style.width, style.height);
 
-                } else {
-                    let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, img.width, img.height, 1);
-                    this._drawImage(this._ctx, img, xy.x, xy.y, img.width, img.height);
-                }
-            });
-
+                    } else {
+                        let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, img.width, img.height, 1);
+                        this._drawImage(this._ctx, img, xy.x, xy.y, img.width, img.height);
+                    }
+                });
+            }
         }
     }
     _drawImage(ctx, img, x, y, width, height) {
