@@ -147,7 +147,7 @@ export default class PointOverlay extends Parameter {
                 x,
                 y
             } = pixel;
-            if (pre == null || (pre.x != x && pre.y != y)) {
+            if (pre == null || pre.x != x || pre.y != y) {
                 let style = this._setDrawStyle(item, otherMode, i);
                 let size = style.size;
 
