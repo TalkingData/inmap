@@ -4,6 +4,7 @@ import LabelOverlay from './overlay/LabelOverlay';
 import PointOverlay from './overlay/PointOverlay';
 
 import GriddingOverlay from './overlay/GriddingOverlay';
+import GeoHashOverlay from './overlay/GeoHashOverlay';
 import PolygonOverlay from './overlay/PolygonOverlay';
 
 import HeatOverlay from './overlay/HeatOverlay';
@@ -30,6 +31,7 @@ const inMap = {
     LabelOverlay,
     PointOverlay,
     GriddingOverlay,
+    GeoHashOverlay,
     PolygonOverlay,
     PolygonEditorOverlay,
     HeatOverlay,
@@ -50,6 +52,7 @@ export {
     LabelOverlay,
     PointOverlay,
     GriddingOverlay,
+    GeoHashOverlay,
     PolygonOverlay,
     PolygonEditorOverlay,
     HeatOverlay,
