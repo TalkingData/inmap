@@ -116,6 +116,7 @@ export default class HeatOverlay extends CanvasOverlay {
     }
     refresh() {
         this._clearCanvas();
+
         let normal = this._styleConfig;
         let mapSize = this._map.getSize();
         if (normal.maxValue == 0) {
@@ -138,7 +139,7 @@ export default class HeatOverlay extends CanvasOverlay {
         }
 
         let palette = this._palette;
-        let img = ctx.getImageData(0, 0, mapSize.width, mapSize.height);
+        let img = ctx.getImageData(0, 0, mapSize.width * this._devicePixelRatio, mapSize.height * this._devicePixelRatio);
         let imgData = img.data;
 
         let max_opacity = normal.maxOpacity * 255;
@@ -174,7 +175,7 @@ export default class HeatOverlay extends CanvasOverlay {
             }
         }
 
-        ctx.putImageData(img, 0, 0, 0, 0, mapSize.width, mapSize.height);
+        ctx.putImageData(img, 0, 0, 0, 0, mapSize.width * this._devicePixelRatio, mapSize.height * this._devicePixelRatio);
     }
     _drawPoint(x, y, radius, opacity) {
         let ctx = this._ctx;
