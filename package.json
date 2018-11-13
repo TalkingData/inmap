@@ -24,6 +24,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
+    "coordtransform": "^2.1.2",
     "deepmerge": "^1.5.2",
     "http-server": "^0.11.1",
     "latlon-geohash": "^1.1.0",

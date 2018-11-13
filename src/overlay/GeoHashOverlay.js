@@ -119,7 +119,7 @@ export default class GriddingOverlay extends Parameter {
     _drawMap() {
         this._clearData();
         let params = {
-            points: this._data
+            points: this._getTransformData()
         };
         this._setState(State.computeBefore);
         this._postMessage('GeoHashOverlay.encode', params, (grids) => {
@@ -133,14 +133,18 @@ export default class GriddingOverlay extends Parameter {
             if (mpp == 0 || isNaN(mpp)) {
                 return;
             }
-
+            console.log(grids);
             if (grids.length > 0) {
                 // The cell sizes of geohashes of different lengths are as follows; 
-                let meter = this._getGeoHashM(grids[0].geohash);
+                let meter = this._getGeoHashM(grids[0].geohash.length);
                 // Size of the rectangle
-                this._rectangle = parseInt(meter / mpp, 10);
+                // this._rectangle = parseInt(meter / mpp, 10);
+                this._rectangle.width = parseInt(meter.w / mpp, 10);
+                this._rectangle.height = parseInt(meter.h / mpp, 10);
+                console.log(this._rectangle);
             } else {
-                this._rectangle = 0;
+                this._rectangle.width = 0;
+                this._rectangle.height = 0;
             }
             this._setState(State.conputeAfter);
 
@@ -162,7 +166,7 @@ export default class GriddingOverlay extends Parameter {
         let index = -1;
         if (item) {
             index = this._selectItem.findIndex(function (val) {
-                return val && val.pixel.x == item.pixel.x && val.pixel.y == item.pixel.y;
+                return val && val.geohash == item.geohash;
             });
         }
         return index;
@@ -243,8 +247,7 @@ export default class GriddingOverlay extends Parameter {
 
     }
     _setTooltip(event) {
-        let item = this._overItem && this._overItem.list.length > 0 ? this._overItem : null;
-        this.toolTip.render(event, item);
+        this.toolTip.render(event, this._overItem);
     }
     _getStyle(item, i) {
         if (item.count == 0) {
@@ -258,8 +261,7 @@ export default class GriddingOverlay extends Parameter {
     }
     _drawRec() {
         this._clearCanvas();
-
-        if (this._rectangle.width == 0 || this._rectangle.height) return;
+        if (this._rectangle.width == 0 || this._rectangle.height == 0) return;
         let style = this._styleConfig.normal;
         let mapSize = this._map.getSize();
         this._ctx.shadowOffsetX = 0;

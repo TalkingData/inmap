@@ -52,7 +52,7 @@ export default class Parameter extends CanvasOverlay {
     }
     _checkGeoJSON(data) {
         let isCheckCount = this._styleConfig.colors.length > 0 || this._styleConfig.splitList.length > 0;
-        checkGeoJSON(data, this._option.checkDataType.name, isCheckCount);
+        checkGeoJSON(data, this._option.checkDataType.name, isCheckCount, this._option.checkDataType.geometry != false);
     }
     setData(points) {
         if (points) {
@@ -285,7 +285,7 @@ export default class Parameter extends CanvasOverlay {
             option = merge(legendConfig, {
                 list: list
             });
-         
+
         }
         this.legend.setOption(option);
     }

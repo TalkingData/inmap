@@ -5,14 +5,16 @@ import LineStringOverlay from './transform/LineStringOverlay';
 import HoneycombOverlay from './transform/HoneycombOverlay';
 import PolymeOverlay from './transform/PolymeOverlay';
 import LablEvading from './transform/LablEvading';
+import GeoHashOverlay from './transform/GeoHashOverlay';
 let callbackList = {
-    'HeatOverlay': HeatOverlay,
-    'GriddingOverlay': GriddingOverlay,
-    'PolygonOverlay': PolygonOverlay,
-    'LineStringOverlay': LineStringOverlay,
-    'HoneycombOverlay': HoneycombOverlay,
-    'PolymeOverlay': PolymeOverlay,
-    'LablEvading': LablEvading
+    HeatOverlay,
+    GriddingOverlay,
+    PolygonOverlay,
+    LineStringOverlay,
+    HoneycombOverlay,
+    PolymeOverlay,
+    LablEvading,
+    GeoHashOverlay
 };
 
 /**
@@ -42,7 +44,7 @@ let callbackFun = function (data) {
         callback = callbackList;
     while (p[index]) {
         callback = callback[p[index]];
-        
+
         index++;
         if (index >= p.length) {
             //唯一生效队列控制

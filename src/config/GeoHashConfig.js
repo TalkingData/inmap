@@ -2,7 +2,7 @@ export default {
     tooltip: {
         show: true,
         customClass: 'inmap-tooltip-black', //是否自定义样式
-        formatter: '{count}',
+        formatter: '{geohash}+":"+{count}',
         offsets: {
             top: 5,
             left: 12,
@@ -43,6 +43,7 @@ export default {
     data: [],
     checkDataType: {
         name: false,
+        geometry: false,
         count: true
     },
     event: {

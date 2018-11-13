@@ -2,7 +2,7 @@ import {
     pointToPixelWorker
 } from '../../lib/pointToPixel';
 import Geohash from 'latlon-geohash';
-
+import Coordtransform from 'coordtransform';
 const GeoHashOverlay = {
     encode(webObj) {
         let {
@@ -11,7 +11,6 @@ const GeoHashOverlay = {
         let map = webObj.request.map;
 
         let result = GeoHashOverlay._calculatePixel(map, points);
-        // let result = GeoHashOverlay.recGrids(points, map, nwMc, size, zoomUnit, mapSize, type);
         webObj.request.data = result;
         return webObj;
     },
@@ -20,7 +19,8 @@ const GeoHashOverlay = {
             let item = data[j];
             if (!item.coordinates) {
                 let lnglat = Geohash.decode(item.geohash);
-                item.coordinates = [lnglat.lng, lnglat.lat];
+                let wgs84togcj02 = Coordtransform.wgs84togcj02(lnglat.lon, lnglat.lat);
+                item.coordinates = Coordtransform.gcj02tobd09(wgs84togcj02[0], wgs84togcj02[1]);
             }
             item['pixel'] = pointToPixelWorker({
                 lng: item.coordinates[0],
@@ -35,6 +35,5 @@ const GeoHashOverlay = {
         return data;
     },
 
-   
 };
 export default GeoHashOverlay;
