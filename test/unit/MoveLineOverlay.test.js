@@ -39,7 +39,7 @@ describe('MoveLineOverlay ', () => {
                                     borderWidth: 1,
                                     // shadowColor: 'rgba(255, 250, 50, 1)',
                                     // shadowBlur: 20,
-                                    lineCurive: "curve"
+                                    lineOrCurive: "curve"
                                 }
                             }
                         },
@@ -154,7 +154,7 @@ describe('MoveLineOverlay ', () => {
                                             borderWidth: 1,
                                             // shadowColor: 'rgba(255, 250, 50, 1)',
                                             // shadowBlur: 20,
-                                            lineCurive: "curve"
+                                            lineOrCurive: "curve"
                                         }
                                     }
                                 },
@@ -213,7 +213,7 @@ describe('MoveLineOverlay ', () => {
                                             borderWidth: 1,
                                             // shadowColor: 'rgba(255, 250, 50, 1)',
                                             // shadowBlur: 20,
-                                            lineCurive: "curve"
+                                            lineOrCurive: "curve"
                                         }
                                     }
                                 },
@@ -274,7 +274,7 @@ describe('MoveLineOverlay ', () => {
                                             borderWidth: 1,
                                             // shadowColor: 'rgba(255, 250, 50, 1)',
                                             // shadowBlur: 20,
-                                            lineCurive: "curve"
+                                            lineOrCurive: "curve"
                                         }
                                     }
                                 },
@@ -331,7 +331,7 @@ describe('MoveLineOverlay ', () => {
                                             borderWidth: 1,
                                             // shadowColor: 'rgba(255, 250, 50, 1)',
                                             // shadowBlur: 20,
-                                            lineCurive: "curve"
+                                            lineOrCurive: "curve"
                                         }
                                     }
                                 },

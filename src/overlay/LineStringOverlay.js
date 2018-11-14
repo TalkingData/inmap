@@ -143,7 +143,7 @@ export default class LineStringOverlay extends Parameter {
             points: this._getTransformData(),
             nwMc: nwMc,
             zoomUnit: zoomUnit,
-            lineOrCurve: this._styleConfig.normal.lineCurive,
+            lineOrCurve: this._styleConfig.normal.lineOrCurive,
             deltaAngle: this._styleConfig.normal.deltaAngle
         };
         this._setState(State.computeBefore);
