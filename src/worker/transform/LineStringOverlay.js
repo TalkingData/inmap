@@ -64,8 +64,8 @@ const LineStringOverlay = {
 
                 let x2 = (lngLat2[0] - nwMc.x) / zoomUnit;
                 let y2 = (nwMc.y - lngLat2[1]) / zoomUnit;
-
-                paths = paths.concat(getPointList([parseInt(x1), parseInt(y1)], [parseInt(x2), parseInt(y2)], deltaAngle));
+                let angle = item.style && item.style.deltaAngle != null ? item.style.deltaAngle : deltaAngle;
+                paths = paths.concat(getPointList([parseInt(x1), parseInt(y1)], [parseInt(x2), parseInt(y2)], angle));
                 x1 = null, y1 = null, x2 = null, y2 = null, lngLat1 = null, lngLat2 = null;
             }
 
@@ -76,7 +76,8 @@ const LineStringOverlay = {
         for (let j = 0; j < points.length; j++) {
             let item = points[j];
             if (!item.geometry.animationCoordinates) {
-                item.geometry['animationCoordinates'] = lineCurive(item.geometry.coordinates[0], item.geometry.coordinates[1], n);
+                let count = item.style && item.style.deltaAngle != null ? item.style.deltaAngle : n;
+                item.geometry['animationCoordinates'] = lineCurive(item.geometry.coordinates[0], item.geometry.coordinates[1], count);
             }
             if (!item.geometry.animationMedianCoordinates) {
                 item.geometry['animationMedianCoordinates'] = item.geometry.animationCoordinates.map(function (item) {
