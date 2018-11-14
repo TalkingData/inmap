@@ -43,7 +43,6 @@ export default class GriddingOverlay extends Parameter {
         this._map && this._createColorSplit();
     }
     _getGeoHashM(len) {
-
         let w = 0,
             h = 0;
         switch (len) {
@@ -74,8 +73,8 @@ export default class GriddingOverlay extends Parameter {
 
                 break;
             case 7:
-                w = 153;
-                h = 153;
+                w = 152;
+                h = 152;
                 break;
             case 8:
                 w = 38.2;
