@@ -16,7 +16,7 @@ export default class MaskOverlay extends CanvasOverlay {
         this._setStyle(MaskConfig, ops);
     }
     _setStyle(config, ops) {
-        if (!ops) return;
+        ops = ops || {};
         let option = merge(config, ops);
         this._option = option;
         this._eventConfig = option.event;

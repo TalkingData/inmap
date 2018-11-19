@@ -29,7 +29,7 @@ export default class HeatOverlay extends CanvasOverlay {
         return this._workerData.length > 0 ? this._workerData : this._data;
     }
     _setStyle(config, ops) {
-        if (!ops) return;
+        ops = ops || {};
         let option = merge(config, ops);
         this._option = option;
         this._styleConfig = option.style;

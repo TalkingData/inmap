@@ -25,7 +25,7 @@ export default class Parameter extends CanvasOverlay {
         this._setStyle(baseConfig, ops);
     }
     _setStyle(config, ops) {
-        if (!ops) return;
+        ops = ops || {};
 
         let option = merge(config, ops);
         if (option.style.splitList && option.style.splitList.length > 0) {
@@ -285,7 +285,7 @@ export default class Parameter extends CanvasOverlay {
             option = merge(legendConfig, {
                 list: list
             });
-         
+
         }
         this.legend.setOption(option);
     }
