@@ -10,6 +10,8 @@
 [![inMap](https://img.shields.io/npm/v/inmap.svg?style=flat-square)](https://www.npmjs.org/package/inmap)
 [![NPM downloads](http://img.shields.io/npm/dm/inmap.svg?style=flat-square)](https://npmjs.org/package/inmap)
 [![NPM downloads](https://img.shields.io/npm/dt/inmap.svg?style=flat-square)](https://npmjs.org/package/inmap)
+[![Code Quality: Javascript](https://img.shields.io/lgtm/grade/javascript/g/TalkingData/inmap.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/TalkingData/inmap/context:javascript)
+[![Total Alerts](https://img.shields.io/lgtm/alerts/g/TalkingData/inmap.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/TalkingData/inmap/alerts)
 
 
 ## 介绍
