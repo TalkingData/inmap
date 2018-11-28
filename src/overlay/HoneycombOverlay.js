@@ -180,14 +180,7 @@ export default class HoneycombOverlay extends Parameter {
         return index;
     }
     _getStyle(item, i) {
-        if (item.count == 0) {
-            return {
-                backgroundColor: 'rgba(255,255,255,0)'
-            };
-        } else {
-            return this._setDrawStyle(item, true, i);
-        }
-
+        return this._setDrawStyle(item, true, i);
     }
     _getTarget(mouseX, mouseY) {
         let gridStep = this._drawSize;
