@@ -1,7 +1,9 @@
 import {
     pointToPixelWorker
 } from '../../lib/pointToPixel';
-
+import {
+    isPolyContains
+} from './../../common/Util';
 const HoneycombOverlay = {
     toRecGrids: function (webObj) {
         let {
@@ -33,6 +35,15 @@ const HoneycombOverlay = {
 
         }
         return data;
+    },
+    _findGrids(grids, x, y) {
+        for (let key in grids) {
+            let item = grids[key];
+            if (isPolyContains(item.xs, item.ys, y, x)) {
+                return item;
+            }
+        }
+        return null;
     },
     honeycombGrid: function (data, map, nwMc, size, zoomUnit, mapSize, type) {
         if (data.length <= 0) {
@@ -68,9 +79,10 @@ const HoneycombOverlay = {
                 grids[x + '|' + pointY] = grids[x + '|' + pointY] || {
                     x: x,
                     y: pointY,
+                    xs: [x, x + gridStep / 2, x + gridStep / 2, x, x - gridStep / 2, x - gridStep / 2],
+                    ys: [pointY - gridStep / 2, pointY - gridStep / 4, pointY + gridStep / 4, pointY + gridStep / 2, pointY + gridStep / 4, pointY - gridStep / 4],
                     list: [],
                     count: 0,
-
                 };
 
                 pointX += depthX;
@@ -81,33 +93,18 @@ const HoneycombOverlay = {
         }
 
         for (let i = 0; i < data.length; i++) {
-
             let item = data[i];
             let pX = item.geometry.pixel.x;
             let pY = item.geometry.pixel.y;
             if (pX >= startX && pX <= endX && pY >= startY && pY <= endY) {
-
-                let fixYIndex = Math.round((pY - startY) / depthY);
-                let fixY = fixYIndex * depthY + startY;
-                let fixXIndex = Math.round((pX - startX) / depthX);
-                let fixX = fixXIndex * depthX + startX;
-
-                if (fixYIndex % 2) {
-                    fixX = fixX - depthX / 2;
-                }
-                if (fixX < startX || fixX > endX || fixY < startY || fixY > endY) {
-                    continue;
-                }
-                let key = parseInt(fixX, 10) + '|' + parseInt(fixY, 10);
-                if (grids[key]) {
-
-                    grids[key].list.push(item);
-                    grids[key].count += item.count;
+                let result = HoneycombOverlay._findGrids(grids, pX, pY);
+                if (result) {
+                    result.list.push(item);
+                    result.count += item.count;
                 }
             }
 
         }
-
 
         let result = [];
         for (let key in grids) {
