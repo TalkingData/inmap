@@ -1,6 +1,3 @@
- /**
-  * 默认散点、围栏参数结构
-  */
 
  export default {
      tooltip: {
@@ -11,7 +8,6 @@
              top: 5,
              left: 12,
          }
-
      },
      legend: {
          show: false,
@@ -38,7 +34,6 @@
 
          ],
          splitList: [],
-
      },
      data: [],
      checkDataType: {
@@ -48,7 +43,7 @@
      selected: [], //设置选中
      event: {
          multiSelect: false, //是否支持多选
-         onMouseClick() {},
+         onClick() {},
          onState() {
 
          }

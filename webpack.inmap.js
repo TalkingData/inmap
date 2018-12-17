@@ -4,7 +4,10 @@
 const path = require('path');
 const webpack = require('webpack');
 const version = require('./package.json').version;
+
 const option = {
+  mode: 'none',
+  target: 'webworker',
   entry: {
     inmap: './src/main.js',
     worker: './src/worker/index.js'
@@ -13,11 +16,18 @@ const option = {
     path: path.join(__dirname, './dist'),
     libraryTarget: 'umd',
     library: 'inMap',
-    umdNamedDefine: true,
     filename: '[name].js'
+  },
+  resolve: {
+    extensions: ['.js', '.ts', '.tsx']
   },
   module: {
     rules: [{
+        test: /\.ts?$/,
+        loader: 'ts-loader',
+        exclude: /(node_modules)/
+      },
+      {
         test: /\.js$/,
         loader: 'babel-loader',
         exclude: /node_modules/
@@ -25,7 +35,7 @@ const option = {
       {
         test: /\.(less|css)$/,
         use: ['style-loader', 'css-loader', 'less-loader'],
-      },
+      }
     ]
   },
   externals: {

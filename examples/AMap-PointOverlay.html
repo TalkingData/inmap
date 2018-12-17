@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PointOverlayay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+    <script src="https://webapi.amap.com/maps?v=1.4.8&key=15cd8a57710d40c9b7c0e3cc120f1200&plugin=Map3D"></script>
+    <script src="data/data.js"></script>
+    <script src="../dist/inmap.js"></script>
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        skin: "Blueness",
+        center: [105.403119, 38.028658],
+        zoom: {
+            value: 4.6,
+            show: true,
+            max: 6,
+            min: 5
+        },
+    })
+    // console.log(inmap.getZoom());
+
+    var overlay = new inMap.PointOverlay({
+        tooltip: {
+            show: true,
+            formatter: "{count}",
+            offsets: {
+                top: 5,
+                left: 12,
+            }
+        },
+        legend: {
+            show: true,
+            title: "标题",
+            formatter: function (start, end, index, item) {
+                return start + "万~" + (end || "max") + "万";
+            },
+        },
+        style: {
+            normal: {
+                backgroundColor: 'rgba(200, 200, 50, 1)',
+                borderWidth: 1,
+                borderColor: "rgba(255,255,255,1)",
+                size: 10,
+            },
+            mouseOver: {
+                backgroundColor: 'rgba(200, 200, 200, 1)',
+                borderColor: "rgba(255,255,255,1)",
+                borderWidth: 4,
+            },
+            selected: {
+                backgroundColor: 'rgba(184,0,0,1)',
+                borderColor: "rgba(255,255,255,1)"
+            },
+            splitList: [{ //设置区间颜色
+                    start: 0,
+                    end: 2,
+                    size: 3,
+                },
+                {
+                    start: 2,
+                    end: 5,
+                    size: 6,
+                },
+                {
+                    start: 5,
+                    end: 7,
+                    size: 9,
+                },
+                {
+                    start: 7,
+                    size: 12,
+                }
+            ],
+        },
+        data: data.map(function (item, index) {
+            item.name = '散点' + index;
+            item.count = item.count || index;
+            return item;
+        }),
+        event: {
+            onState(state) {
+                console.log(state);
+            },
+            // multiSelect: true,
+            onMouseClick: function (item, event) {
+                console.log(item);
+                //能获取当前点的信息
+            }
+        }
+    });
+    inmap.add(overlay);
+</script>
