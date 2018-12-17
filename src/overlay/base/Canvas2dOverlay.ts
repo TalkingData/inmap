@@ -1,8 +1,12 @@
 import Factory from './Factory';
 
 export default abstract class Canvas2dOverlay extends Factory {
-    public ctx: any;
-    public onResize: any;
+    ctx: any;
+    onResize: any;
+    margin = {
+        left: 0,
+        top: 0
+    };
 
     created() {
         this.ctx = this.canvas.getContext('2d');
@@ -17,23 +21,6 @@ export default abstract class Canvas2dOverlay extends Factory {
         let size = this.map.getSize();
         this.ctx.clearRect(0, 0, size.width, size.height); //调整画布
     }
-    setCanvasSize() {
-        if (!this.map) return;
-        let size = this.getSize();
-        this.canvas.width = size.width;
-        this.canvas.height = size.height;
-        this.setDevicePixelRatio();
-        let containerDomStyle = this.canvas.style;
-        let point = this.getCenter()
-        let pixel = this.LngLatToOverlayPixel(point.lng, point.lat);
-
-        let left = Math.ceil(pixel.x - size.width / 2);
-        let top = Math.ceil(pixel.y - size.height / 2);
-
-        containerDomStyle.left = left + 'px';
-        containerDomStyle.top = top + 'px';
-    }
-
     setDevicePixelRatio() {
         let devicePixelRatio = window.devicePixelRatio;
         this.ctx.canvas.width = this.ctx.canvas.width * devicePixelRatio;
