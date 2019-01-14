@@ -19,6 +19,7 @@
      },
 
      style: {
+         isHighlight: false,
          normal: {
              borderWidth: 0.1,
              backgroundColor: 'rgba(200, 200, 200, 0.5)',

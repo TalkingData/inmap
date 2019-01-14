@@ -13,6 +13,9 @@ export default class PolygonOverlay extends Parameter {
         this._patchSplitList();
         this._state = null;
         this._customZoom = null;
+        if (!this._styleConfig.isHighlight) {
+            this._swopData = () => {};
+        }
     }
     _parameterInit() {
         this._initLegend();
