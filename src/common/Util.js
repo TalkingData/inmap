@@ -177,11 +177,7 @@ export function merge() {
     let arr = Array.prototype.slice.call(arguments);
     return deepmerge.all(arr, {
         arrayMerge: function (destinationArray, sourceArray) {
-            if (sourceArray.length > 0) {
-                return sourceArray;
-            } else {
-                return destinationArray;
-            }
+            return sourceArray || [];
         }
     });
 }
@@ -217,7 +213,7 @@ export function checkType(row, isCheckName, isCheckCount) {
             return 'The property count must be of type Number!';
         }
 
-        
+
     }
 
     if (geometryType == 'null' || geometryType == 'undefined') {
