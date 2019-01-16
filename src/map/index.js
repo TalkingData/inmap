@@ -12,7 +12,7 @@ import Toolbar from './Toolbar';
 import MapConfig from '../config/MapConfig';
 import Config from '../config/Config';
 import MultiOverlay from '../overlay/base/MultiOverlay';
-import './map.less';
+import './style/index.less';
 
 export default class Map {
     constructor(ops) {

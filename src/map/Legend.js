@@ -113,7 +113,7 @@ export default class Legend {
                     text = `${val.start==null?'-<span class="inmap-infinity"></span>': this._toFixed(val.start)} ~ ${ val.end==null ?'+<span class="inmap-infinity"></span>':this._toFixed(val.end)}`;
                 }
             }
-            let td = isShow ? ` <td style="background:${backgroundColor}; width:17px;"></td>` : '';
+            let td = isShow ? ` <td style="background:${backgroundColor}; width:17px;height:17px;"></td>` : '';
             str += `
                 <tr>
                    ${td}
