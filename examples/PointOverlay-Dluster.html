@@ -54,13 +54,13 @@
             // formatter: function (params) {
             //     return params.count;
             // }
-            formatter: "{count}+'~<br/>'+{count}"
+            formatter: "{count}"
         },
         legend: {
             show: true,
             title: "标题",
-            formatter: function (start, end, index) {
-                return start + "万~" + (end || "max") + "万";
+            formatter: function (val, index) {
+                return val + "万";
             },
 
         },
@@ -112,7 +112,7 @@
                 }
             ],
         },
-        data:  data.map(function (item, index) {
+        data: data.map(function (item, index) {
             item.name = '散点' + index;
             item.count = item.count || index;
             return item;

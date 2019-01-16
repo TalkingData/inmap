@@ -60,8 +60,8 @@
         legend: {
             show: true,
             title: "标题",
-            formatter: function (start, end, index, item) {
-                return start + "万~" + (end || "max") + "万";
+            formatter: function (val, index, item) {
+                return val + "万";
             },
         },
         style: {

@@ -99,9 +99,19 @@ export default class Legend {
             if (val.text) {
                 text = val.text;
             } else if (this._opts.formatter) {
-                text = this._opts.formatter(val.start, val.end, index, val);
+                if (val.start == val.end) {
+                    text = `${this._opts.formatter(val.start, index, val)}`;
+                } else {
+                    text = `${val.start==null?'-<span class="inmap-infinity"></span>': this._opts.formatter(val.start, index, val)} ~ ${ val.end==null ?'+<span class="inmap-infinity"></span>':this._opts.formatter(val.end, index, val)}`;
+                }
+
             } else {
-                text = `${this._toFixed(val.start)} ~ ${ val.end==null ?'<span class="inmap-infinity"></span>':this._toFixed(val.end)}`;
+                //相等
+                if (val.start == val.end) {
+                    text = `${this._toFixed(val.start)}`;
+                } else {
+                    text = `${val.start==null?'-<span class="inmap-infinity"></span>': this._toFixed(val.start)} ~ ${ val.end==null ?'+<span class="inmap-infinity"></span>':this._toFixed(val.end)}`;
+                }
             }
             let td = isShow ? ` <td style="background:${backgroundColor}; width:17px;"></td>` : '';
             str += `

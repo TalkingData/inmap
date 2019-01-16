@@ -53,11 +53,11 @@
             formatter: "{count}"
         },
         legend: {
-            show: true,  
+            show: true,
             data: ["描述1", "描述2", "描述3", "描述4"],
             //legned 回调
-            formatter: function (start, end, index, item) {
-                return start + "万~" + (end || "max") + "万";
+            formatter: function (val, index, item) {
+                return val + "万";
             }
         },
         style: {
@@ -107,7 +107,7 @@
                 //能获取当前点的信息
             }
         },
-        data:  data.map(function (item, index) {
+        data: data.map(function (item, index) {
             item.name = '散点' + index;
             item.count = item.count || index;
             return item;
