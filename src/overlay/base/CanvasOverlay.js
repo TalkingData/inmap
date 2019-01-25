@@ -5,6 +5,7 @@ import {
     setDevicePixelRatio,
     isString,
     isArray,
+    detectmob,
     isFunction
 } from '../../common/Util';
 import {
@@ -14,6 +15,7 @@ import {
 import Toolbar from '../../map/Toolbar';
 import ToolTip from '../../map/ToolTip';
 let zIndex = 0;
+const isMobile = detectmob();
 
 export default class CanvasOverlay extends BaseClass {
     constructor(opts) {
@@ -58,7 +60,12 @@ export default class CanvasOverlay extends BaseClass {
         map.addEventListener('zoomstart', this._tOnZoomstart);
         map.addEventListener('zoomend', this._tOnZoomend);
         map.addEventListener('mousemove', this._tMousemove);
-        map.addEventListener('click', this._tMouseClick);
+        if (isMobile) {
+            map.addEventListener('touchstart', this._tMouseClick);
+        } else {
+            map.addEventListener('click', this._tMouseClick);
+        }
+
         if (!map._inmapToolBar) {
             map._inmapToolBar = new Toolbar(map.getContainer());
         }
@@ -215,7 +222,11 @@ export default class CanvasOverlay extends BaseClass {
             this._map.removeEventListener('zoomend', this._tOnZoomend);
             this._map.removeEventListener('moving', this._tOnMoving);
             this._map.removeEventListener('mousemove', this._tMousemove);
-            this._map.removeEventListener('click', this._tMouseClick);
+            if (isMobile) {
+                this._map.removeEventListener('touchstart', this._tMouseClick);
+            } else {
+                this._map.removeEventListener('click', this._tMouseClick);
+            }
         }
 
 

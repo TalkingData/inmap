@@ -279,13 +279,18 @@ export default class Parameter extends CanvasOverlay {
      */
     _setlegend(legendConfig, list) {
         if (!this._map) return;
-        let option = {};
-        //legendConfig.list has a higher priority than list
-        if (!(legendConfig.list && legendConfig.list.length > 0)) {
-            option = merge(legendConfig, {
-                list: list
-            });
+        let option = {
 
+        };
+        if ((legendConfig.list && legendConfig.list.length > 0)) {
+            option = {
+                ...legendConfig
+            };
+        } else {
+            option = {
+                ...legendConfig,
+                list
+            };
         }
         this.legend.setOption(option);
     }
