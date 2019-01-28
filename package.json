@@ -1,14 +1,14 @@
 {
   "name": "inmap",
-  "version": "2.2.3",
+  "version": "2.2.4",
   "description": "Map visualization",
-  "main": "dist/inmap.min.js",
+  "main": "dist/inmap.js",
   "scripts": {
     "start": "node openServer.js",
     "dev": "webpack --watch --config  webpack.inmap.js & npm run start",
+    "build": "npm run build-inmap-min && npm run build-inmap",
     "build-inmap": "webpack --config webpack.inmap.js && node build-worker",
     "build-inmap-min": "webpack --config webpack.inmap.pro.js && set NODE_ENV=compress node build-worker",
-    "build": "npm run build-inmap-min && npm run build-inmap",
     "lint": "eslint --fix --ext .js src",
     "test": "npm run lint",
     "karma": "npm run lint && karma start karma.inmap.test.js",
