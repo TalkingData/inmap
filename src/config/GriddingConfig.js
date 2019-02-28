@@ -53,6 +53,7 @@ export default {
     event: {
         multiSelect: false,
         onMouseClick() {},
+        onMouseOver() {},
         onState() {}
     }
 };

@@ -26,6 +26,7 @@ export default {
     selected: [], //设置选中
     event: {
         onMouseClick() {},
+        onMouseOver() {},
         onState() {
 
         }

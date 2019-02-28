@@ -184,6 +184,11 @@
             ]
         },
         data: data,
+        event:{
+            onMouseOver:function(){
+                console.log(arguments);
+            }
+        }
 
     });
     inmap.add(overlay);

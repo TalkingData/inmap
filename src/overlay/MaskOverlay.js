@@ -109,7 +109,7 @@ export default class MaskOverlay extends CanvasOverlay {
     }
     _setState(val) {
         this._state = val;
-        this._eventConfig.onState.call(this, this._state);
+        this._eventConfig.onState(this._state, this);
     }
     refresh() {
 
@@ -127,10 +127,10 @@ export default class MaskOverlay extends CanvasOverlay {
                 this._drawData(pixelItem);
                 this._ctx.clip();
                 this._clearCanvas();
-                if(style.borderColor){
+                if (style.borderColor) {
                     this._ctx.strokeStyle = style.borderColor;
                 }
-                if(style.borderWidth){
+                if (style.borderWidth) {
                     this._ctx.lineWidth = style.borderWidth;
                 }
                 this._ctx.stroke();
@@ -165,7 +165,7 @@ export default class MaskOverlay extends CanvasOverlay {
                 this._drawLine(pixels, style);
             }
 
-        
+
         }
         this._ctx.closePath();
     }

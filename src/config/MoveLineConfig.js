@@ -32,7 +32,8 @@
                  },
              },
              event: {
-                 onMouseClick: function () {}
+                 onMouseClick: function () {},
+                 onMouseOver() {},
              }
          },
          line: { //线的配置

@@ -74,7 +74,7 @@
                  },
                  onMouseClick: (event) => {
                      if (!this.isCreate) {
-                         this._eventConfig.onMouseClick.call(this, event);
+                         this._eventConfig.onMouseClick(event, this);
                      }
 
                  }
@@ -85,7 +85,8 @@
          this._map.addOverlay(this._polygonOverlay);
 
          this._pointOverlay = new PointDragOverlay({
-             style: { ...this._opts.style.point,
+             style: {
+                 ...this._opts.style.point,
                  ...{
                      isDrag: true
                  },
@@ -100,7 +101,8 @@
          this._map.addOverlay(this._pointOverlay);
 
          this._virtualPointOverlay = new PointDragOverlay({
-             style: { ...this._opts.style.virtualPoint,
+             style: {
+                 ...this._opts.style.virtualPoint,
                  ...{
                      isDrag: true
                  },
@@ -127,14 +129,16 @@
          });
 
          this._pointOverlay && this._pointOverlay.setOptionStyle({
-             style: { ...this._opts.style.point,
+             style: {
+                 ...this._opts.style.point,
                  ...{
                      isDrag: true
                  },
              }
          });
          this._virtualPointOverlay && this._virtualPointOverlay.setOptionStyle({
-             style: { ...this._opts.style.virtualPoint,
+             style: {
+                 ...this._opts.style.virtualPoint,
                  ...{
                      isDrag: true
                  },
@@ -228,7 +232,7 @@
                  }
              }
              this._polygonOverlay && this._polygonOverlay.refresh();
-             this._eventConfig.onChange.call(this, 'translationPixel');
+             this._eventConfig.onChange('translationPixel', this);
          }
      }
      _removeMoveEvent() {
@@ -359,7 +363,7 @@
 
                  this._polygonOverlay.refresh();
              }
-             this._eventConfig.onCreated.call(this, event);
+             this._eventConfig.onCreated(event, this);
 
          }
 
@@ -412,7 +416,7 @@
                  coordinates.splice(j, 1);
                  this._workerData[0].geometry.pixels.splice(j, 1);
                  this._polygonOverlay.refresh();
-                 this._eventConfig.onDelete.call(this, event);
+                 this._eventConfig.onDelete(event, this);
                  break;
              }
          }
@@ -583,7 +587,7 @@
              this._setPointData();
              this._setVirtualPointData();
              //触发 change 事件
-             this._eventConfig.onChange.call(this, action, event);
+             this._eventConfig.onChange(action, event, this);
          }
      }
      _findPointDataGroup(data, item) {

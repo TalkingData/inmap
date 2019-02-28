@@ -18,7 +18,7 @@ export default class LabelOverlay extends Parameter {
     }
     _setState(val) {
         this._state = val;
-        this._eventConfig.onState.call(this, this._state);
+        this._eventConfig.onState(this._state, this);
     }
     _toDraw() {
         this._drawMap();
@@ -117,7 +117,7 @@ export default class LabelOverlay extends Parameter {
             let item = pixels[i];
             let pixel = item.geometry.pixel;
             ctx.beginPath();
-            let style = this._setDrawStyle(item,true,i);
+            let style = this._setDrawStyle(item, true, i);
             ctx.font = style.font;
             ctx.fillStyle = style.color;
 

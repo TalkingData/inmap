@@ -97,6 +97,9 @@
             onMouseClick: function (item) {
                 //能获取当前点的信息
             },
+            onMouseOver:function(item,event,overlay){
+                console.log(item,event,overlay);
+            },
             onState(state) {
                 console.log(state);
             }

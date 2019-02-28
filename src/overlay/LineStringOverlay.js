@@ -52,7 +52,7 @@ export default class LineStringOverlay extends Parameter {
     }
     _setState(val) {
         this._state = val;
-        this._eventConfig.onState.call(this, this._state);
+        this._eventConfig.onState(this._state, this);
     }
     _translation(distanceX, distanceY) {
         for (let i = 0; i < this._workerData.length; i++) {
@@ -207,9 +207,7 @@ export default class LineStringOverlay extends Parameter {
         if (this._eventTypee == 'onmoving') {
             return;
         }
-        if (!this._tooltipConfig.show && isEmpty(this._styleConfig.mouseOver)) {
-            return;
-        }
+
         let result = this._getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
 
@@ -222,6 +220,7 @@ export default class LineStringOverlay extends Parameter {
         }
         if (temp) {
             this._map.setDefaultCursor('pointer');
+            this._eventConfig.onMouseOver(temp, event, this);
         } else {
             this._map.setDefaultCursor('default');
         }
@@ -240,7 +239,7 @@ export default class LineStringOverlay extends Parameter {
         this._selectItem = [result.item];
         this._selectItemIndex = result.index;
 
-        this._eventConfig.onMouseClick(this._selectItem, event);
+        this._eventConfig.onMouseClick(this._selectItem, event, this);
         if (isMobile) {
             this._overItem = item;
             this._setTooltip(event);

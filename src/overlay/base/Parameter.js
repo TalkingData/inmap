@@ -314,10 +314,7 @@ export default class Parameter extends CanvasOverlay {
         if (this._eventType == 'onmoving') {
             return;
         }
-        if (!this._tooltipConfig.show && isEmpty(this._styleConfig.mouseOver)) {
-            return;
-        }
-
+        
         let result = this._getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
 
@@ -333,6 +330,7 @@ export default class Parameter extends CanvasOverlay {
         }
         if (temp) {
             this._map.setDefaultCursor('pointer');
+            this._eventConfig.onMouseOver(temp, event, this);
         } else {
             this._map.setDefaultCursor('default');
         }
@@ -362,7 +360,7 @@ export default class Parameter extends CanvasOverlay {
         }
 
         this._swopData(result.index, item);
-        this._eventConfig.onMouseClick.call(this, this._selectItem, event);
+        this._eventConfig.onMouseClick(this._selectItem, event, this);
 
         this.refresh();
         if (isMobile) {
