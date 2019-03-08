@@ -111,7 +111,9 @@ export default class PointOverlay extends Parameter {
     _drawMouseLayer() {
         let overArr = this._overItem ? [this._overItem] : [];
         this._mouseLayer._clearCanvas();
-        this._loopDraw(this._mouseLayer._getContext(), this._selectItem.concat(overArr), true);
+        if (this.getRenderData().length > 0) {
+            this._loopDraw(this._mouseLayer._getContext(), this._selectItem.concat(overArr), true);
+        }
 
     }
     _clearAll() {
