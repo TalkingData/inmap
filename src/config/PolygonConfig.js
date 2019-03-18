@@ -21,17 +21,23 @@
      style: {
          isHighlight: false,
          normal: {
-             borderWidth: 0.1,
-             backgroundColor: 'rgba(200, 200, 200, 0.5)',
-             mergeCount: 1.5,
+             backgroundColor: 'rgba(0,133,235,0.6)',
+             borderWidth: 1.5,
              label: {
                  enable: true,
-                 show: false,
-                 color: 'rgba(0,0,0,1)',
-                 font: '13px Arial'
-             },
+                 show: true,
+                 font: '13px bold ',
+                 color: '#fff'
+             }
          },
-
+         mouseOver: {
+             shadowColor: 'rgba(0, 0, 0, 1)',
+             shadowBlur: 10,
+             borderWidth: 1.5,
+             label: {
+                 color: 'rgba(0, 0, 0, 1)'
+             }
+         },
          colors: [
 
          ],

@@ -23,9 +23,9 @@
      },
      style: {
          normal: {
-             size: 3,
+             size: 5,
              borderWidth: 0.1,
-             backgroundColor: 'rgba(200, 200, 200, 0.5)',
+             backgroundColor: 'rgba(200, 200, 50, 1)',
              mergeCount: 1.5,
              unit: 'px', // px or m
              label: {
