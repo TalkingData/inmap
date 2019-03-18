@@ -1,6 +1,6 @@
 {
   "name": "inmap",
-  "version": "2.2.5",
+  "version": "2.2.6",
   "description": "Map visualization",
   "main": "dist/inmap.js",
   "scripts": {
