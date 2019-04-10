@@ -73,13 +73,24 @@ export default class HeatOverlay extends CanvasOverlay {
         };
     }
     _getMax() {
-        let normal = this._styleConfig;
-        normal.maxValue = 0;
-        for (let i = 0, len = this._data.length; i < len; i++) {
-            if (this._data[i].count > normal.maxValue) {
-                normal.maxValue = this._data[i].count;
+        let maxValue = 0;
+        for (let i = 0, len = this._workerData.length; i < len; i++) {
+            if (this._workerData[i].count > maxValue) {
+                maxValue = this._workerData[i].count;
             }
         }
+
+        return maxValue;
+    }
+    _getMin() {
+        let minValue = 0;
+        for (let i = 0, len = this._workerData.length; i < len; i++) {
+            if (this._workerData[i].count < minValue) {
+                minValue = this._workerData[i].count;
+            }
+        }
+
+        return minValue;
     }
     _translation(distanceX, distanceY) {
         for (let i = 0; i < this._workerData.length; i++) {
@@ -119,9 +130,15 @@ export default class HeatOverlay extends CanvasOverlay {
 
         let normal = this._styleConfig;
         let mapSize = this._map.getSize();
-        if (normal.maxValue == 0) {
-            this._getMax();
+        let maxValue = normal.maxValue;
+        if (normal.maxValue == null) {
+            maxValue = this._getMax();
         }
+        let minValue = normal.minValue;
+        if (normal.minValue == null) {
+            minValue = this._getMin();
+        }
+
         if (mapSize.width <= 0) {
             return;
         }
@@ -131,7 +148,7 @@ export default class HeatOverlay extends CanvasOverlay {
             let item = this._workerData[i];
             let pixel = item.geometry.pixel;
             if (pixel.x > -normal.radius && pixel.y > -normal.radius && pixel.x < mapSize.width + normal.radius && pixel.y < mapSize.height + normal.radius) {
-                let opacity = (item.count - normal.minValue) / (normal.maxValue - normal.minValue);
+                let opacity = (item.count - minValue) / (maxValue - minValue);
                 opacity = opacity > 1 ? 1 : opacity;
                 this._drawPoint(pixel.x, pixel.y, normal.radius, opacity);
             }
