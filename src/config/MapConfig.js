@@ -8,7 +8,7 @@ export default {
     zoom: {
         value: 5,
         show: true,
-        max: 18,
+        max: 19,
         min: 5
     }
 };
