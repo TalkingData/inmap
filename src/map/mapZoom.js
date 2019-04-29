@@ -3,9 +3,10 @@ export default class MapZoom {
         this._map = map;
         this._mapDom = mapDom;
         this._zoom = opts;
+         
         this._confine = {
             min: 3,
-            max: 18
+            max: 19
         };
         this._createDom();
     }

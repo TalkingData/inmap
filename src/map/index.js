@@ -27,6 +27,7 @@ export default class Map {
         } else if (isArray(skin)) {
             styleJson = skin;
         }
+        debugger
         skin && map && map.setMapStyle({
             styleJson: styleJson
         });
