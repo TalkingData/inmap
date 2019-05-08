@@ -189,7 +189,8 @@ export default class Parameter extends CanvasOverlay {
         if (result.shadowBlur != null && result.shadowColor == null) {
             result['shadowColor'] = (new Color(result.backgroundColor)).getValue();
         }
-        if (result.opacity !== null) {
+        if (result.opacity != null) {
+            
             let color = new Color(result.backgroundColor);
             result.backgroundColor = color.getRgbaValue(result.opacity || 0);
         }
