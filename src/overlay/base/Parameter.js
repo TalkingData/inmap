@@ -189,13 +189,14 @@ export default class Parameter extends CanvasOverlay {
         if (result.shadowBlur != null && result.shadowColor == null) {
             result['shadowColor'] = (new Color(result.backgroundColor)).getValue();
         }
-        if (result.opacity) {
+        if (result.opacity !== null) {
             let color = new Color(result.backgroundColor);
-            result.backgroundColor = color.getRgbaValue(result.opacity);
+            result.backgroundColor = color.getRgbaValue(result.opacity || 0);
         }
-        if (result.borderOpacity) {
+         
+        if (result.borderOpacity != null) {
             let color = new Color(result.borderColor);
-            result.borderColor = color.getRgbaValue(result.borderOpacity);
+            result.borderColor = color.getRgbaValue(result.borderOpacity || 0);
         }
         return result;
     }
@@ -314,7 +315,7 @@ export default class Parameter extends CanvasOverlay {
         if (this._eventType == 'onmoving') {
             return;
         }
-        
+
         let result = this._getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
 

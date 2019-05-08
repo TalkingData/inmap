@@ -498,7 +498,8 @@ Colors.prototype = {
 
     },
     getRgbaValue(opacity) {
-        return 'rgba(' + ((this.r * 255) | 0) + ',' + ((this.g * 255) | 0) + ',' + ((this.b * 255) | 0) + ',' + (opacity || 1) + ')';
+        opacity = opacity == null ? 1 : opacity;
+        return 'rgba(' + ((this.r * 255) | 0) + ',' + ((this.g * 255) | 0) + ',' + ((this.b * 255) | 0) + ',' + (opacity) + ')';
     },
 
     offsetHSL: function (h, s, l) {
