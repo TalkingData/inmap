@@ -216,6 +216,7 @@ export default class PointOverlay extends Parameter {
             let temp = result.item;
 
             if (temp != this._overItem) { //防止过度重新绘画
+
                 this._overItem = temp;
                 this._eventType = 'mousemove';
                 if (!isEmpty(this._styleConfig.mouseOver)) {
@@ -250,10 +251,11 @@ export default class PointOverlay extends Parameter {
         }
 
         this._selectItem = [result.item];
+        console.log('_selectItem', this._selectItem);
         this._drawMouseLayer();
     }
     _mouseupFun(event) {
-
+        console.log('_selectItem', this._selectItem);
         if (this._isDragging) {
             let dragEndPixel = {
                 x: event.offsetX,
@@ -271,7 +273,11 @@ export default class PointOverlay extends Parameter {
             }
 
         }
+        this._selectItem = [];
         this._isDragging = false;
+        this._map.enableDragging();
+    }
+    setData() {
 
     }
     _dblclickFun(event) {

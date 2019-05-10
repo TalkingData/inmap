@@ -18,6 +18,7 @@ export default class PointOverlay extends Parameter {
         this._loopDraw = this._loopDraw.bind(this);
         if (!isEmpty(this._option.draw)) {
             this._batchesData = new BatchesData(this._option.draw);
+            this.emitEvent = this._eventConfig.emitEvent = false;
         }
         this._mouseLayer = new CanvasOverlay({
             zIndex: this._zIndex + 1

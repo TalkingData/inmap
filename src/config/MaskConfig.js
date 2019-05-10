@@ -6,6 +6,7 @@ export default {
     },
     data: [],
     event: {
+        emitEvent: true,
         onState() {}
     }
 };

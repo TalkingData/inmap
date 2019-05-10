@@ -1,6 +1,7 @@
 import BaseClass from './BaseClass';
 import Legend from '../../map/Legend';
 import Throttle from '../../common/Throttle';
+import EventManage from './EventManage';
 import {
     setDevicePixelRatio,
     isString,
@@ -38,11 +39,13 @@ export default class CanvasOverlay extends BaseClass {
         this._repaintEnd = opts && opts.repaintEnd; //重绘回调
         this._animationFlag = true;
         this._isDispose = false; //是否已销毁
+        this.emitEvent = false;
         this._margin = {
             left: 0,
             top: 0
         };
         this._zIndex = !opts || opts.zIndex == null ? zIndex += 10 : opts.zIndex;
+
 
     }
     initialize(map) {
@@ -54,18 +57,7 @@ export default class CanvasOverlay extends BaseClass {
         this._container.style.cssText = `position:absolute;left:${this._margin.left}px;top:${this._margin.top}px;z-index:${this._zIndex};`;
         map.getPanes().mapPane.appendChild(this._container);
         this._setCanvasSize();
-        map.addEventListener('resize', this._tOnResize);
-        map.addEventListener('moveend', this._tOnMoveend);
-        map.addEventListener('moving', this._tOnMoving);
-        map.addEventListener('zoomstart', this._tOnZoomstart);
-        map.addEventListener('zoomend', this._tOnZoomend);
-        map.addEventListener('mousemove', this._tMousemove);
-        if (isMobile) {
-            map.addEventListener('touchstart', this._tMouseClick);
-        } else {
-            map.addEventListener('click', this._tMouseClick);
-        }
-
+        this._tBindEvent();
         if (!map._inmapToolBar) {
             map._inmapToolBar = new Toolbar(map.getContainer());
         }
@@ -75,6 +67,28 @@ export default class CanvasOverlay extends BaseClass {
 
         this._canvasInit();
         return this._container;
+
+    }
+    _tBindEvent() {
+        const map = this._map;
+
+        map.addEventListener('resize', this._tOnResize);
+        map.addEventListener('moveend', this._tOnMoveend);
+        map.addEventListener('moving', this._tOnMoving);
+        map.addEventListener('zoomstart', this._tOnZoomstart);
+        map.addEventListener('zoomend', this._tOnZoomend);
+         
+        if (this.emitEvent) {
+            EventManage.register(map, this);
+        } else {
+            map.addEventListener('mousemove', this._tMousemove);
+            if (isMobile) {
+                map.addEventListener('touchstart', this._tMouseClick);
+            } else {
+                map.addEventListener('click', this._tMouseClick);
+            }
+        }
+
 
     }
 
@@ -228,8 +242,6 @@ export default class CanvasOverlay extends BaseClass {
                 this._map.removeEventListener('click', this._tMouseClick);
             }
         }
-
-
         if (this.legend) {
             this.legend.dispose(this._map._inmapToolBar.legendContainer);
             this.legend = null;

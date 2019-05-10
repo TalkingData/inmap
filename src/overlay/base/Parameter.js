@@ -48,7 +48,7 @@ export default class Parameter extends CanvasOverlay {
         this._selectItem = option.selected || [];
         this._tMapStyle(option.skin);
         this.toolTip && this.toolTip.setOption(this._tooltipConfig);
-
+        this.emitEvent = this._eventConfig.emitEvent;
     }
     _checkGeoJSON(data) {
         let isCheckCount = this._styleConfig.colors.length > 0 || this._styleConfig.splitList.length > 0;
@@ -178,9 +178,14 @@ export default class Parameter extends CanvasOverlay {
         result = merge(result, item.style || {});
 
         if (mouseOverStyle && this._overItem == item) {
-            result = merge(result, mouseOverStyle, {
-                backgroundColor: mouseOverStyle.backgroundColor || this._brightness(result.backgroundColor, 0.1)
-            });
+            if (mouseOverStyle.backgroundColor) {
+                result = merge(result, mouseOverStyle);
+            } else {
+                result = merge(result, mouseOverStyle, {
+                    backgroundColor: this._brightness(result.backgroundColor, 0.1)
+                });
+            }
+           
         }
         if (otherMode && selectedStyle && this._selectItemContains(item)) {
             result = merge(result, selectedStyle);
@@ -190,11 +195,10 @@ export default class Parameter extends CanvasOverlay {
             result['shadowColor'] = (new Color(result.backgroundColor)).getValue();
         }
         if (result.opacity != null) {
-            
             let color = new Color(result.backgroundColor);
             result.backgroundColor = color.getRgbaValue(result.opacity || 0);
         }
-         
+
         if (result.borderOpacity != null) {
             let color = new Color(result.borderColor);
             result.borderColor = color.getRgbaValue(result.borderOpacity || 0);
@@ -358,6 +362,7 @@ export default class Parameter extends CanvasOverlay {
             }
 
         } else {
+
             clearPushArray(this._selectItem, result.item);
         }
 
@@ -369,6 +374,7 @@ export default class Parameter extends CanvasOverlay {
             this._overItem = item;
             this._setTooltip(event);
         }
+
 
 
     }

@@ -38,16 +38,21 @@ export default {
                 label: {
                     enable: false
                 }
+            },
+            mouseOver: {
+                shadowBlur: 0,
+                shadowColor:null,
+                backgroundColor: 'rgba(0,184,255,0.3)'
             }
         }
     },
     data: null,
     event: {
-        onMouseClick() {},
-        onCreated() {},
-        onChange() {},
-        onDelete(){
-            
+        onMouseClick() { },
+        onCreated() { },
+        onChange() { },
+        onDelete() {
+
         }
     }
 };

@@ -30,6 +30,7 @@ export default {
         count: true
     },
     event: {
+        emitEvent: true,
         onState() {}
     }
 };

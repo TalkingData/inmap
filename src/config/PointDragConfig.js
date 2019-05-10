@@ -1,8 +1,8 @@
- /**
-  * 默认散点、围栏参数结构
-  */
+/**
+ * 默认散点、围栏参数结构
+ */
 
- export default {
+export default {
     tooltip: {
         show: false,
     },
@@ -14,9 +14,9 @@
             size: 3,
             borderWidth: 0.1,
             backgroundColor: 'rgba(200, 200, 200, 0.5)',
-       
+
         },
-        splitList:[]
+        splitList: []
     },
     data: [],
     checkDataType: {
@@ -24,12 +24,13 @@
         count: false
     },
     event: {
-         onDragStart:function(){},
-         onDragging:function(){},
-         onDragEnd:function(){
-         },
-         onDblclick:function(){
+        emitEvent: false,
+        onDragStart: function () { },
+        onDragging: function () { },
+        onDragEnd: function () {
+        },
+        onDblclick: function () {
 
-         }
+        }
     }
 };

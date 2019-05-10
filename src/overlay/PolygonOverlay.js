@@ -329,7 +329,7 @@ export default class PolygonOverlay extends Parameter {
             let style = this._setDrawStyle(item, true, i);
             this._ctx.beginPath();
             this._ctx.shadowColor = style.shadowColor || 'transparent';
-            this._ctx.shadowBlur = style.shadowBlur || 10;
+            this._ctx.shadowBlur = style.shadowBlur || 0;
             this._ctx.shadowOffsetX = 0;
             this._ctx.shadowOffsetY = 0;
             this._ctx.fillStyle = style.backgroundColor;
