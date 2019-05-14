@@ -76,7 +76,7 @@ export default class HeatOverlay extends CanvasOverlay {
         if (this._workerData.length == 0) {
             return 0;
         }
-        let maxValue = this._workerData[0].count;
+        let maxValue = 0;
         for (let i = 0, len = this._workerData.length; i < len; i++) {
             if (this._workerData[i].count > maxValue) {
                 maxValue = this._workerData[i].count;
@@ -89,8 +89,8 @@ export default class HeatOverlay extends CanvasOverlay {
         if (this._workerData.length == 0) {
             return 0;
         }
-        
-        let minValue = this._workerData[0].count;
+
+        let minValue = 0;
         for (let i = 0, len = this._workerData.length; i < len; i++) {
             if (this._workerData[i].count < minValue) {
                 minValue = this._workerData[i].count;

@@ -70,50 +70,19 @@
 
             },
             mouseOver: {
-                icon: img,
-                width: 80,
-                height: 80,
-                offsets: {
-                    top: "-100%",
-                    left: "-50%",
-                },
-                label: {
-                    font: '14px bold ',
-                    color: '#fff',
-                    offsets: {
-                        top: -44,
-                        left: 0
-                    }
-                },
+                
             },
             splitList: [
                 { //设置区间颜色
                     start: 0,
                     end: 2,
                     icon: img3,
-                    label: {
-                        show: true,
-                        font: '12px bold ',
-                        color: '#000',
-                        offsets: {
-                            top: -25,
-                            left: 0
-                        }
-                    },
                 },
                 {
                     start: 2,
                     end: 5,
                     icon: img2,
-                    label: {
-                        show: true,
-                        font: '12px bold ',
-                        color: '#fff',
-                        offsets: {
-                            top: -25,
-                            left: 4
-                        }
-                    },
+                    
                 },
                 {
                     start: 5,
@@ -142,26 +111,26 @@
     });
     map.add(overlay);
 
-    // setTimeout(() => {
-    //     overlay.setOptionStyle({
-    //         skin: "Blueness",
-    //         tooltip: {
-    //             show: true,
-    //             formatter: function (params) {
-    //                 return params.count;
-    //             }
-    //         },
-    //         style: {
-    //             normal: {
-    //                 icon: img,
-    //                 width: 40,
-    //                 height: 40,
-    //                 offsets: {
-    //                     top: "-100%",
-    //                     left: "-50%",
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }, 2000);
+    setTimeout(() => {
+        overlay.setOptionStyle({
+            skin: "Blueness",
+            tooltip: {
+                show: true,
+                formatter: function (params) {
+                    return params.count;
+                }
+            },
+            style: {
+                normal: {
+                    icon: img,
+                    width: 40,
+                    height: 40,
+                    offsets: {
+                        top: "-100%",
+                        left: "-50%",
+                    }
+                }
+            }
+        });
+    }, 2000);
 </script>
