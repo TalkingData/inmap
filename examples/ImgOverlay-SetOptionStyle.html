@@ -27,8 +27,7 @@
 
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="../dist/inmap.js"></script>
-    <script src="data/data.js"></script>
-
+    <script src="data/data2.js"></script>
 </head>
 
 <body>
@@ -37,7 +36,7 @@
 
 </html>
 <script>
-    data.length = 5;
+    data.length = 50;
     var map = new inMap.Map({
         id: 'allmap',
         center: [105.403119, 38.028658],
@@ -51,6 +50,7 @@
     var img = "./img/bso.svg";
     var img2 = "./img/mark (2).png";
     var img3 = "./img/place.svg";
+
     var overlay = new inMap.ImgOverlay({
         tooltip: {
             show: true,
@@ -66,18 +66,54 @@
                 offsets: {
                     top: "-100%",
                     left: "-50%",
-                }
+                },
+
             },
-            splitList: [{ //设置区间颜色
+            mouseOver: {
+                icon: img,
+                width: 80,
+                height: 80,
+                offsets: {
+                    top: "-100%",
+                    left: "-50%",
+                },
+                label: {
+                    font: '14px bold ',
+                    color: '#fff',
+                    offsets: {
+                        top: -44,
+                        left: 0
+                    }
+                },
+            },
+            splitList: [
+                { //设置区间颜色
                     start: 0,
                     end: 2,
-                    icon: img,
+                    icon: img3,
+                    label: {
+                        show: true,
+                        font: '12px bold ',
+                        color: '#000',
+                        offsets: {
+                            top: -25,
+                            left: 0
+                        }
+                    },
                 },
                 {
                     start: 2,
                     end: 5,
                     icon: img2,
-
+                    label: {
+                        show: true,
+                        font: '12px bold ',
+                        color: '#fff',
+                        offsets: {
+                            top: -25,
+                            left: 4
+                        }
+                    },
                 },
                 {
                     start: 5,
@@ -90,30 +126,42 @@
                 }
             ],
         },
+        event: {
+            onMouseClick: function (item) {
+                //能获取当前点的信息
+                console.log(item,11111);
+            },
+            onMouseOver:function(item,event,overlay){
+                // console.log(item,event,overlay);
+            },
+            onState(state) {
+                console.log(state);
+            }
+        },
         data: data
     });
     map.add(overlay);
 
-    setTimeout(() => {
-        overlay.setOptionStyle({
-            skin: "Blueness",
-            tooltip: {
-                show: true,
-                formatter: function (params) {
-                    return params.count;
-                }
-            },
-            style: {
-                normal: {
-                    icon: img3,
-                    width: 40,
-                    height: 40,
-                    offsets: {
-                        top: "-100%",
-                        left: "-50%",
-                    }
-                }
-            }
-        });
-    }, 2000);
+    // setTimeout(() => {
+    //     overlay.setOptionStyle({
+    //         skin: "Blueness",
+    //         tooltip: {
+    //             show: true,
+    //             formatter: function (params) {
+    //                 return params.count;
+    //             }
+    //         },
+    //         style: {
+    //             normal: {
+    //                 icon: img,
+    //                 width: 40,
+    //                 height: 40,
+    //                 offsets: {
+    //                     top: "-100%",
+    //                     left: "-50%",
+    //                 }
+    //             }
+    //         }
+    //     });
+    // }, 2000);
 </script>

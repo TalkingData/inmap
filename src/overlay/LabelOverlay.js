@@ -136,7 +136,7 @@ export default class LabelOverlay extends Parameter {
             }
 
             ctx.beginPath();
-            ctx.fillText(item.name, pixel.x - byteWidth / 2, pixel.y);
+            ctx.fillText(item.name, pixel.x - byteWidth / 2 + style.offsets.left, pixel.y + parseInt(style.font,10) / 2 + style.offsets.top);
             ctx.fill();
         }
     }

@@ -16,6 +16,15 @@ export default {
             icon: null,
             width: 0,
             height: 0,
+            label: {
+                show: false,
+                font: '12px bold ',
+                color: '#fff',
+                offsets: {
+                    top: 0,
+                    left: 0
+                }
+            },
             offsets: {
                 top: 0,
                 left: 0

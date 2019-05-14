@@ -16,7 +16,11 @@ export default {
             font: '18px Arial',
             color: 'yellow',
             shadowColor: 'yellow',
-            shadowBlur: 10
+            shadowBlur: 10,
+            offsets: {
+                top: 0,
+                left: 0
+            }
         },
         splitList: [],
         colors: []
