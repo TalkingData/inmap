@@ -2,8 +2,6 @@ import Parameter from './base/Parameter';
 import ImgConfig from './../config/ImgConfig';
 import {
     isString,
-    merge,
-    typeOf
 } from './../common/Util';
 import State from './../config/OnStateConfig';
 /*
