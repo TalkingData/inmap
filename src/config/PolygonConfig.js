@@ -25,6 +25,8 @@ export default {
             borderWidth: 1.5,
             label: {
                 enable: true,
+                overflow: 'hidden',  // hidden visible  
+                centerType: 'cell', //cell  minMax
                 show: true,
                 font: '13px bold ',
                 color: '#fff'

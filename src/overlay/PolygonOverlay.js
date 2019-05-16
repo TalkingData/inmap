@@ -14,7 +14,7 @@ export default class PolygonOverlay extends Parameter {
         this._state = null;
         this._customZoom = null;
         if (!this._styleConfig.isHighlight) {
-            this._swopData = () => {};
+            this._swopData = () => { };
         }
     }
     _parameterInit() {
@@ -207,6 +207,7 @@ export default class PolygonOverlay extends Parameter {
         let parameter = {
             data: this._getTransformData(),
             enable: this._styleConfig.normal.label.enable,
+            centerType: this._styleConfig.normal.label.centerType,
             customZoom: this._customZoom
         };
 
@@ -358,8 +359,9 @@ export default class PolygonOverlay extends Parameter {
                 this._ctx.fillStyle = style.label.color;
                 for (let j = 0; j < labelPixels.length; j++) {
                     let bestCell = labelPixels[j];
+                    const text = item.name;
                     this._ctx.beginPath();
-                    let width = this._ctx.measureText(item.name).width;
+
                     if (geometry.type == 'MultiPolygon') {
                         let maxPixels = [];
                         for (let k = 0; k < pixels.length; k++) {
@@ -368,24 +370,28 @@ export default class PolygonOverlay extends Parameter {
                                 maxPixels = item;
                                 bestCell = labelPixels[k];
                             }
-                            item = null;
                         }
-                        if (bestCell && item.name && this._getMaxWidth(maxPixels) > width) {
-                            this._ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
-                        }
-                        maxPixels = null;
-                    } else {
-                        if (bestCell && item.name && this._getMaxWidth(pixels[j]) > width) {
-                            this._ctx.fillText(item.name, bestCell.x - width / 2, bestCell.y);
-                        }
-                    }
+                        this._drawLabel(bestCell, text, maxPixels, style);
 
-                    bestCell = null, width = null;
+                    } else {
+                        this._drawLabel(bestCell, text, pixels[j], style);
+                    }
                 }
-                labelPixels = null;
+            }
+        }
+    }
+    _drawLabel(bestCell, text, pixels, style) {
+        const width = this._ctx.measureText(text).width;
+        if (bestCell && text && this._getMaxWidth(pixels) > width) {
+            if (style.label.overflow == 'hidden') {
+                if (this._getMaxWidth(pixels) > width) {
+                    this._ctx.fillText(text, bestCell.x - width / 2, bestCell.y);
+                }
+
+            } else {
+                this._ctx.fillText(text, bestCell.x - width / 2, bestCell.y);
             }
 
         }
-
     }
 }

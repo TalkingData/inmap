@@ -4,8 +4,21 @@ import {
 
 import Point from './../../common/Point';
 import Polylabel from '../../common/Polylabel';
+function getGeoCenter(geo) {
+    let minX = geo[0][0];
+    let minY = geo[0][1];
+    let maxX = geo[0][0];
+    let maxY = geo[0][1];
+    for (let i = 1; i < geo.length; i++) {
+        minX = Math.min(minX, geo[i][0]);
+        maxX = Math.max(maxX, geo[i][0]);
+        minY = Math.min(minY, geo[i][1]);
+        maxY = Math.max(maxY, geo[i][1]);
+    }
+    return { x: minX + (maxX - minX) / 2, y: minY + (maxY - minY) / 2 };
 
-function transfrom(coordinates, map, pixels, labelPixels, enable) {
+}
+function transfrom(coordinates, map, pixels, labelPixels, enable, centerType) {
     for (let i = 0; i < coordinates.length; i++) {
         let geo = coordinates[i];
         let tmp = [];
@@ -16,7 +29,11 @@ function transfrom(coordinates, map, pixels, labelPixels, enable) {
         }
         pixels.push(tmp);
         if (enable && i == 0) {
-            labelPixels.push(Polylabel([tmp]));
+            if (centerType == 'minMax') {
+                labelPixels.push(getGeoCenter(tmp));
+            } else if (centerType == 'cell') {
+                labelPixels.push(Polylabel([tmp]));
+            }
         }
 
     }
@@ -26,6 +43,7 @@ const PolygonOverlay = {
         let {
             data,
             enable,
+            centerType,
             customZoom
         } = webObj.request.data;
         let map = webObj.request.map;
@@ -39,11 +57,11 @@ const PolygonOverlay = {
             if (type == 'MultiPolygon') {
                 for (let k = 0; k < coordinates.length; k++) {
                     let p = [];
-                    transfrom(coordinates[k], map, p, labelPixels, enable);
+                    transfrom(coordinates[k], map, p, labelPixels, enable, centerType);
                     pixels.push(p);
                 }
             } else {
-                transfrom(coordinates, map, pixels, labelPixels, enable);
+                transfrom(coordinates, map, pixels, labelPixels, enable, centerType);
             }
 
             data[j].geometry['pixels'] = pixels;
