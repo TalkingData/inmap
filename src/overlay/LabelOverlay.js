@@ -1,6 +1,7 @@
 import Parameter from './base/Parameter';
 import Config from '../config/LabelConfig';
 import State from './../config/OnStateConfig';
+import { isString } from './../common/Util';
 
 export default class LabelOverlay extends Parameter {
     constructor(opts) {
@@ -135,7 +136,18 @@ export default class LabelOverlay extends Parameter {
                 pixel['width'] = byteWidth;
                 pixel['height'] = parseInt(style.font);
             }
-            const x = (pixel.x - pixel.width / 2) + style.offsets.left;
+            let left = 0;
+            
+            if (isString(style.offsets.left)) {
+                const leftStr = style.offsets.left;
+                if (leftStr.substr(leftStr.length - 1, 1) == '%') {
+                    const width = ctx.measureText(item.name).width;
+                    left = parseInt(parseInt(leftStr) * width / 100, 10);
+                }
+            } else {
+                left = style.offsets.left || 0;
+            }
+            const x = (pixel.x - pixel.width / 2) + left;
             const y = pixel.y + style.offsets.top;
             ctx.beginPath();
             ctx.fillText(item.name, x, y);
