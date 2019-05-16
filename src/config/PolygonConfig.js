@@ -23,6 +23,7 @@ export default {
         normal: {
             backgroundColor: 'rgba(0,133,235,0.6)',
             borderWidth: 1.5,
+            bordeStyle: 'solid',
             label: {
                 enable: true,
                 overflow: 'hidden',  // hidden visible  
