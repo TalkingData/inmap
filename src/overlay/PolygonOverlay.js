@@ -301,7 +301,7 @@ export default class PolygonOverlay extends Parameter {
         for (let j = 0; j < pixels.length; j++) {
             this._ctx.save();
             this._ctx.beginPath();
-            if (style.bordeStyle == 'dashed') {
+            if (style.borderStyle == 'dashed') {
                 if (style.dashed) {
                     this._ctx.setLineDash(style.dashed);
                 } else {
