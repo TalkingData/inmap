@@ -308,7 +308,7 @@ export default class PolygonOverlay extends Parameter {
                     this._ctx.setLineDash([style.borderWidth * 10, style.borderWidth * 3]);
                 }
             }
-            
+
             let pixelItem = pixels[j];
             if (j == 0) {
                 this._drawData(pixelItem);
@@ -367,7 +367,7 @@ export default class PolygonOverlay extends Parameter {
                 this._ctx.fillStyle = style.label.color;
                 for (let j = 0; j < labelPixels.length; j++) {
                     let bestCell = labelPixels[j];
-                    const text = item.name;
+
                     this._ctx.beginPath();
 
                     if (geometry.type == 'MultiPolygon') {
@@ -379,19 +379,42 @@ export default class PolygonOverlay extends Parameter {
                                 bestCell = labelPixels[k];
                             }
                         }
-                        this._drawLabel(bestCell, text, maxPixels, style);
+                        this._drawLabel(bestCell, item, maxPixels, style);
 
                     } else {
-                        this._drawLabel(bestCell, text, pixels[j], style);
+                        this._drawLabel(bestCell, item, pixels[j], style);
                     }
                 }
             }
         }
     }
-    _drawLabel(bestCell, text, pixels, style) {
+    _compileTooltipTemplate(formatter) {
+        //语法解析 先暂时不支持ie11
+        let RexStr = /\{|\}/g;
+        formatter = formatter.replace(RexStr, function (MatchStr) {
+            switch (MatchStr) {
+                case '{':
+                    return 'overItem.';
+                case '}':
+                    return '';
+                default:
+                    break;
+            }
+        });
+        return new Function('overItem', 'return ' + formatter);
+    }
+    _drawLabel(bestCell, item, pixels, style) {
+        let text = item.name;
+
+        if (style.label.formatter) {
+            text = this._compileTooltipTemplate(style.label.formatter)(item);
+        }
+
         const width = this._ctx.measureText(text).width;
-        if (bestCell && text && this._getMaxWidth(pixels) > width) {
+        if (bestCell && text != null) {
+
             if (style.label.overflow == 'hidden') {
+
                 if (this._getMaxWidth(pixels) > width) {
                     this._ctx.fillText(text, bestCell.x - width / 2, bestCell.y);
                 }

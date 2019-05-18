@@ -72,6 +72,8 @@
                 borderWidth: 1.5,
                 backgroundColor: "rgba(0,184,255,0.80)",
                 label: {
+                    formatter: "{name}+{name}",
+                    overflow: "visible",
                     centerType: 'minMax', //cell  minMax
                     show: true, // 是否显示
                     font: "10px bold ",
@@ -91,45 +93,45 @@
                 borderColor: "rgba(255,255,255,1)"
             },
             splitList: [{
-                    //设置区间颜色
-                    start: 0.5,
-                    backgroundColor: colorStairs[0],
-                },
-                {
-                    //设置区间颜色
-                    start: 0.2,
-                    end: 0.5,
-                    backgroundColor: colorStairs[1],
-                },
-                {
-                    //设置区间颜色
-                    start: 0,
-                    end: 0.2,
-                    backgroundColor: colorStairs[2],
-                },
+                //设置区间颜色
+                start: 0.5,
+                backgroundColor: colorStairs[0],
+            },
+            {
+                //设置区间颜色
+                start: 0.2,
+                end: 0.5,
+                backgroundColor: colorStairs[1],
+            },
+            {
+                //设置区间颜色
+                start: 0,
+                end: 0.2,
+                backgroundColor: colorStairs[2],
+            },
 
-                {
-                    //设置区间颜色
-                    start: 0,
-                    end: 0,
-                    backgroundColor: colorStairs[3],
-                },
-                {
-                    //设置区间颜色
-                    start: -0.2,
-                    end: 0,
-                    backgroundColor: colorStairs[4],
-                },
-                {
+            {
+                //设置区间颜色
+                start: 0,
+                end: 0,
+                backgroundColor: colorStairs[3],
+            },
+            {
+                //设置区间颜色
+                start: -0.2,
+                end: 0,
+                backgroundColor: colorStairs[4],
+            },
+            {
 
-                    start: -1.5,
-                    end: -0.2,
-                    backgroundColor: colorStairs[5],
-                },
-                {
-                    end: -0.2,
-                    backgroundColor: colorStairs[6],
-                },
+                start: -1.5,
+                end: -0.2,
+                backgroundColor: colorStairs[5],
+            },
+            {
+                end: -0.2,
+                backgroundColor: colorStairs[6],
+            },
 
             ],
         },
