@@ -32,6 +32,7 @@ export default class CanvasOverlay extends BaseClass {
         this._tOnZoomend = this._tOnZoomend.bind(this);
         this._tOnMoving = this._tOnMoving.bind(this);
         this._tMousemove = this._tMousemove.bind(this);
+        this._tMouseout = this._tMouseout.bind(this);
         this._tMouseClick = this._tMouseClick.bind(this);
         this._resize = this._toDraw.bind(this);
         this._throttle.on('throttle', this._resize);
@@ -77,7 +78,7 @@ export default class CanvasOverlay extends BaseClass {
         map.addEventListener('moving', this._tOnMoving);
         map.addEventListener('zoomstart', this._tOnZoomstart);
         map.addEventListener('zoomend', this._tOnZoomend);
-         
+
         if (this.emitEvent) {
             EventManage.register(map, this);
         } else {
@@ -103,7 +104,9 @@ export default class CanvasOverlay extends BaseClass {
             styleJson: styleJson
         });
     }
-
+    _tMouseout() {
+        this.toolTip && this.toolTip.hide();
+    }
     _tOnResize(event) {
         this._setCanvasSize();
         this._eventType = event.type;
@@ -236,6 +239,8 @@ export default class CanvasOverlay extends BaseClass {
             this._map.removeEventListener('zoomend', this._tOnZoomend);
             this._map.removeEventListener('moving', this._tOnMoving);
             this._map.removeEventListener('mousemove', this._tMousemove);
+
+            this._map.removeEventListener('mouseout', this._tMouseout);
             if (isMobile) {
                 this._map.removeEventListener('touchstart', this._tMouseClick);
             } else {

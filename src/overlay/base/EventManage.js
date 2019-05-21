@@ -24,7 +24,10 @@ class EventManage {
         }
     }
     bindEvent() {
-
+ 
+        this.map.getContainer().addEventListener('mouseout', (e) => {
+            this.trigger('_tMouseout', e);
+        });
         this.map.addEventListener('mousemove', (e) => {
             this.trigger('_tMousemove', e);
         });

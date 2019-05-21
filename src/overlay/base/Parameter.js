@@ -313,9 +313,7 @@ export default class Parameter extends CanvasOverlay {
             this._workerData[this._workerData.length - 1] = item;
         }
     }
-    _tMouseleave() {
-        this.tooltip.hide();
-    }
+   
     _tMousemove(event) {
         if (this._eventType == 'onmoving') {
             return;
