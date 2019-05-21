@@ -340,7 +340,7 @@ export default class Parameter extends CanvasOverlay {
         }
 
         this._setTooltip(event);
-
+        return result;
     }
     _tMouseClick(event) {
         if (this._eventType == 'onmoving') return;
@@ -372,7 +372,7 @@ export default class Parameter extends CanvasOverlay {
             this._overItem = item;
             this._setTooltip(event);
         }
-
+        return result;
 
 
     }

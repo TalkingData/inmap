@@ -431,7 +431,7 @@ export default class PointOverlay extends Parameter {
         }
 
         this._setTooltip(event);
-
+        return result;
     }
     _tMouseClick(event) {
         if (this._eventType == 'onmoving') return;
@@ -463,7 +463,7 @@ export default class PointOverlay extends Parameter {
             this._setTooltip(event);
         }
         this._drawMouseLayer();
-
+        return result;
 
     }
 }
