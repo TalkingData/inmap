@@ -188,8 +188,8 @@ export default class ImgOverlay extends Parameter {
                         this._ctx.font = style.label.font;
                         this._ctx.fillStyle = style.label.color;
                         let width = this._ctx.measureText(item.name).width;
-                        const x = (pixel.x - width / 2) + style.offsets.left;
-                        const y = pixel.y + style.offsets.top;
+                        const x = (pixel.x - width / 2) + style.label.offsets.left;
+                        const y = pixel.y + style.label.offsets.top;
                         this._ctx.fillText(item.name, x, y);
                     }
                 });
