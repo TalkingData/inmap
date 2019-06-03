@@ -14,15 +14,15 @@ export default class LabelOverlay extends Parameter {
     _onDataChangee() {
 
     }
-    setOptionStyle(ops) {
-        this._setStyle(this._option, ops);
+    setOptionStyle(ops, callback) {
+        this._setStyle(this._option, ops, callback);
     }
     _setState(val) {
         this._state = val;
         this._eventConfig.onState(this._state, this);
     }
-    _toDraw() {
-        this._drawMap();
+    _toDraw(callback) {
+        this._drawMap(callback);
     }
     _translation(distanceX, distanceY) {
         for (let i = 0; i < this._workerData.length; i++) {
@@ -33,7 +33,7 @@ export default class LabelOverlay extends Parameter {
         this.refresh();
     }
 
-    _drawMap() {
+    _drawMap(callback) {
         this._clearCanvas();
         this._setState(State.computeBefore);
         this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin, zoom) => {
@@ -48,6 +48,7 @@ export default class LabelOverlay extends Parameter {
             }
             margin = null;
             pixels = null;
+            callback && callback(this);
         });
     }
     _updateOverClickItem() {
@@ -137,7 +138,7 @@ export default class LabelOverlay extends Parameter {
                 pixel['height'] = parseInt(style.font);
             }
             let left = 0;
-            
+
             if (isString(style.offsets.left)) {
                 const leftStr = style.offsets.left;
                 if (leftStr.substr(leftStr.length - 1, 1) == '%') {

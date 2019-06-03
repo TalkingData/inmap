@@ -9,8 +9,8 @@ export default class HoneycombOverlay extends Parameter {
         this._mpp = {};
         this._drawSize = 0;
     }
-    setOptionStyle(ops) {
-        this._setStyle(this._option, ops);
+    setOptionStyle(ops, callback) {
+        this._setStyle(this._option, ops, callback);
     }
     _setState(val) {
         this._state = val;
@@ -24,8 +24,8 @@ export default class HoneycombOverlay extends Parameter {
         this._drawRec();
         this._setState(State.drawAfter);
     }
-    _toDraw() {
-        this._drawMap();
+    _toDraw(callback) {
+        this._drawMap(callback);
     }
     _onOptionChange() {
         this._map && this._createColorSplit();
@@ -53,7 +53,7 @@ export default class HoneycombOverlay extends Parameter {
         let dpx = Math.abs(this._map.pointToPixel(mapCenter).y - this._map.pointToPixel(cpt).y);
         return this._map.getDistance(mapCenter, cpt) / dpx;
     }
-    _drawMap() {
+    _drawMap(callback) {
         this._clearData();
         let {
             normal,
@@ -110,7 +110,7 @@ export default class HoneycombOverlay extends Parameter {
             }
             this.refresh();
             gridsObj = null;
-
+            callback && callback(this);
         });
     }
     _createColorSplit() {

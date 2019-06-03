@@ -74,16 +74,19 @@
                 color: 'rgba(184,0,0,1)'
             },
         },
-        data: data,
+        // data: data,
         event: {
             onMouseClick: function (item, event) {
                 console.log(item);
                 //能获取当前点的信息
             },
-            onMouseOver(){
+            onMouseOver() {
                 console.log(arguments);
             }
         }
     });
     inmap.add(overlay);
+    overlay.setData(data, (it) => {
+        console.log(it);
+    });
 </script>

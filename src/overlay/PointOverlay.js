@@ -50,8 +50,8 @@ export default class PointOverlay extends Parameter {
         this._map.addOverlay(this._mouseLayer);
         this._initLegend();
     }
-    setOptionStyle(ops) {
-        this._setStyle(this._option, ops);
+    setOptionStyle(ops, callback) {
+        this._setStyle(this._option, ops, callback);
         if (!isEmpty(this._option.draw)) {
             this._batchesData = new BatchesData(this._option.draw);
         } else {
@@ -62,8 +62,8 @@ export default class PointOverlay extends Parameter {
         this._state = val;
         this._eventConfig.onState(this._state, this);
     }
-    _toDraw() {
-        this._drawMap();
+    _toDraw(callback) {
+        this._drawMap(callback);
     }
     _calculateMpp(size) {
         let normal = this._styleConfig.normal,
@@ -121,7 +121,7 @@ export default class PointOverlay extends Parameter {
         this._mouseLayer._clearCanvas();
         this._clearCanvas();
     }
-    _drawMap() {
+    _drawMap(callback) {
         if (this._batchesData) {
             this._batchesData.clear();
             this._batchesData.setUsable(false);
@@ -146,7 +146,7 @@ export default class PointOverlay extends Parameter {
             }
             margin = null;
             pixels = null;
-
+            callback && callback(this);
         });
     }
     _updateOverClickItem() {

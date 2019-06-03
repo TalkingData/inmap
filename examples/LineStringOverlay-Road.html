@@ -49,7 +49,7 @@
             max: 22
         }
     });
-  
+
     var overlay = new inMap.LineStringOverlay({
         style: {
             normal: {
@@ -58,11 +58,6 @@
                 borderWidth: 0.05,
             },
         },
-        data:  data.map(function (item, index) {
-            item.name = '轨迹' + index;
-            item.count = index;
-            return item;
-        }),
         event: {
             onState(state) {
                 console.log(state);
@@ -70,5 +65,15 @@
         }
     });
     map.add(overlay);
- 
+    overlay.setData(data.map(function (item, index) {
+        item.name = '轨迹' + index;
+        item.count = index;
+        return item;
+    }),function(it){
+        console.log(it)
+    });
+
+
+    
+
 </script>

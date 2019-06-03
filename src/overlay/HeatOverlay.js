@@ -16,11 +16,11 @@ export default class HeatOverlay extends CanvasOverlay {
         this._delteOption();
         this._state = null;
     }
-    setOptionStyle(ops) {
-        this._setStyle(this._option, ops);
+    setOptionStyle(ops, callback) {
+        this._setStyle(this._option, ops, callback);
     }
-    _toDraw() {
-        this._drawMap();
+    _toDraw(callback) {
+        this._drawMap(callback);
     }
     getRenderData() {
         return this._workerData;
@@ -55,7 +55,7 @@ export default class HeatOverlay extends CanvasOverlay {
             this._data = [];
         }
         clearPushArray(this._workerData, []);
-        this._map && this._drawMap();
+        this._map && this._drawMap(callback);
     }
     _setState(val) {
         this._state = val;
@@ -114,7 +114,7 @@ export default class HeatOverlay extends CanvasOverlay {
         this._data = []; //优化
         clearPushArray(this._workerData, val);
     }
-    _drawMap() {
+    _drawMap(callback) {
         this._setState(State.computeBefore);
 
         this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin) => {
@@ -129,7 +129,7 @@ export default class HeatOverlay extends CanvasOverlay {
 
             margin = null;
             pixels = null;
-
+            callback && callback(this);
         });
     }
     refresh() {

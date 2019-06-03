@@ -15,24 +15,25 @@ export default class MaskOverlay extends CanvasOverlay {
         this._option = {};
         this._setStyle(MaskConfig, ops);
     }
-    _setStyle(config, ops) {
+    _setStyle(config, ops, callback) {
         ops = ops || {};
         let option = merge(config, ops);
         this._option = option;
         this._eventConfig = option.event;
         this._styleConfig = option.style;
         if (ops.data !== undefined) {
-            this.setData(ops.data);
+            this.setData(ops.data, callback);
         } else {
             this._map && this.refresh();
+            callback && callback(this);
         }
         delete this._option.data;
         this._tMapStyle(option.skin);
     }
-    setOptionStyle(ops) {
-        this._setStyle(this._option, ops);
+    setOptionStyle(ops, callback) {
+        this._setStyle(this._option, ops, callback);
     }
-    setData(points) {
+    setData(points, callback) {
         if (points) {
             checkGeoJSON(points, false, false);
             this._data = points;
@@ -41,7 +42,7 @@ export default class MaskOverlay extends CanvasOverlay {
         }
 
         this._clearData();
-        this._map && this._drawMap();
+        this._map && this._drawMap(callback);
     }
     getRenderData() {
         return this._workerData;
@@ -49,10 +50,10 @@ export default class MaskOverlay extends CanvasOverlay {
     _clearData() {
         clearPushArray(this._workerData);
     }
-    _toDraw() {
-        this._drawMap();
+    _toDraw(callback) {
+        this._drawMap(callback);
     }
-    _drawMap() {
+    _drawMap(callback) {
         this._setState(State.computeBefore);
         let parameter = {
             data: this._getTransformData(),
@@ -67,6 +68,7 @@ export default class MaskOverlay extends CanvasOverlay {
             this._setState(State.conputeAfter);
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             pixels = null, margin = null;
+            callback && callback(this);
         });
     }
 

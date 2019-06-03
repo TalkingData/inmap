@@ -13,15 +13,15 @@ export default class ImgOverlay extends Parameter {
         this._cacheImg = {}; //缓存图片对象
         this._state = null;
     }
-    _toDraw() {
-        this._drawMap();
+    _toDraw(callback) {
+        this._drawMap(callback);
     }
-    setOptionStyle(ops) {
-        this._setStyle(this._option, ops);
+    setOptionStyle(ops, callback) {
+        this._setStyle(this._option, ops, callback);
     }
     _setState(val) {
         this._state = val;
-        this._eventConfig.onState(this._state,this);
+        this._eventConfig.onState(this._state, this);
     }
     _translation(distanceX, distanceY) {
         for (let i = 0; i < this._workerData.length; i++) {
@@ -34,7 +34,7 @@ export default class ImgOverlay extends Parameter {
         this.refresh();
 
     }
-    _drawMap() {
+    _drawMap(callback) {
 
         this._setState(State.computeBefore);
         this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin) => {
@@ -47,7 +47,7 @@ export default class ImgOverlay extends Parameter {
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             margin = null;
             pixels = null;
-
+            callback && callback(this);
         });
     }
 
@@ -184,7 +184,7 @@ export default class ImgOverlay extends Parameter {
                         let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, img.width, img.height, 1);
                         this._drawImage(this._ctx, img, xy.x, xy.y, img.width, img.height);
                     }
-                    if(style.label.show){
+                    if (style.label.show) {
                         this._ctx.font = style.label.font;
                         this._ctx.fillStyle = style.label.color;
                         let width = this._ctx.measureText(item.name).width;

@@ -24,7 +24,7 @@ export default class Parameter extends CanvasOverlay {
         this._overItem = null; //悬浮
         this._setStyle(baseConfig, ops);
     }
-    _setStyle(config, ops) {
+    _setStyle(config, ops, callback) {
         ops = ops || {};
 
         let option = merge(config, ops);
@@ -39,10 +39,11 @@ export default class Parameter extends CanvasOverlay {
         this._eventConfig = option.event;
         this._styleConfig = option.style;
         if (ops.data !== undefined) {
-            this.setData(ops.data);
+            this.setData(ops.data, callback);
         } else {
             this._onOptionChange();
             this._map && this.refresh();
+            callback && callback(this);
         }
         delete this._option.data;
         this._selectItem = option.selected || [];

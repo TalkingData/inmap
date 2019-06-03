@@ -18,8 +18,8 @@ export default class LineStringOverlay extends Parameter {
         this._selectItemIndex = -1;
         this._onDataChange();
     }
-    setOptionStyle(ops) {
-        this._setStyle(this._option, ops);
+    setOptionStyle(ops, callback) {
+        this._setStyle(this._option, ops, callback);
     }
     setZIndex(zIndex) {
         this._zIndex = zIndex;
@@ -127,13 +127,13 @@ export default class LineStringOverlay extends Parameter {
             this._selectItem = [];
         }
     }
-    _toDraw() {
-        this._drawMap();
+    _toDraw(callback) {
+        this._drawMap(callback);
     }
     _getTransformData() {
         return this._workerData.length > 0 ? this._workerData : this._data;
     }
-    _drawMap() {
+    _drawMap(callback) {
         this._clearAll();
         let zoomUnit = Math.pow(2, 18 - this._map.getZoom());
         let projection = this._map.getMapType().getProjection();
@@ -157,6 +157,7 @@ export default class LineStringOverlay extends Parameter {
 
             params = null;
             margin = null;
+            callback && callback(this);
         });
     }
     /**
