@@ -47,7 +47,7 @@ export default class HeatOverlay extends CanvasOverlay {
     _checkGeoJSON(data) {
         checkGeoJSON(data, this._option.checkDataType.name, this._option.checkDataType.count);
     }
-    setData(points) {
+    setData(points, callback) {
         if (points) {
             this._data = points;
             this._checkGeoJSON(points);
