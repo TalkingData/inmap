@@ -54,7 +54,7 @@ export default class Parameter extends CanvasOverlay {
         let isCheckCount = this._styleConfig.colors.length > 0 || this._styleConfig.splitList.length > 0;
         checkGeoJSON(data, this._option.checkDataType.name, isCheckCount);
     }
-    setData(points) {
+    setData(points, callback) {
         if (points) {
             this._checkGeoJSON(points);
             this._data = points;
@@ -65,7 +65,7 @@ export default class Parameter extends CanvasOverlay {
         this._clearData();
         this._cancerSelectd();
         this._onDataChange();
-        this._map && this._toDraw();
+        this._map && this._toDraw(callback);
     }
     _onOptionChange() {
         /**抽象方法，样式发生变化会触发 */
@@ -185,7 +185,7 @@ export default class Parameter extends CanvasOverlay {
                     backgroundColor: this._brightness(result.backgroundColor, 0.1)
                 });
             }
-           
+
         }
         if (otherMode && selectedStyle && this._selectItemContains(item)) {
             result = merge(result, selectedStyle);
@@ -313,7 +313,7 @@ export default class Parameter extends CanvasOverlay {
             this._workerData[this._workerData.length - 1] = item;
         }
     }
-   
+
     _tMousemove(event) {
         if (this._eventType == 'onmoving') {
             return;

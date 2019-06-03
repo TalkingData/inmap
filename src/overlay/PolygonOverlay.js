@@ -156,8 +156,8 @@ export default class PolygonOverlay extends Parameter {
         }
 
     }
-    _toDraw() {
-        this._drawMap();
+    _toDraw(callback) {
+        this._drawMap(callback);
     }
     _getGeoCenter(geo) {
         let minX = geo[0][0];
@@ -202,7 +202,7 @@ export default class PolygonOverlay extends Parameter {
         this._drawPolygon(this.getRenderData());
         this._setState(State.drawAfter);
     }
-    _drawMap() {
+    _drawMap(callback) {
         this._setState(State.computeBefore);
         let parameter = {
             data: this._getTransformData(),
@@ -219,6 +219,29 @@ export default class PolygonOverlay extends Parameter {
             this._setState(State.conputeAfter);
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             pixels = null, margin = null;
+            callback && callback(this);
+        });
+    }
+    
+    pushData(data, callback) {
+        if (!Array.isArray(data)) return;
+        this._setState(State.computeBefore);
+        let parameter = {
+            data: data,
+            enable: this._styleConfig.normal.label.enable,
+            centerType: this._styleConfig.normal.label.centerType,
+            customZoom: this._customZoom
+        };
+         
+        this._postMessage('PolygonOverlay.calculatePixel', parameter, (pixels, margin) => {
+            if (this._eventType == 'onmoving') {
+                return;
+            }
+            this._workerData.push(...pixels);
+            this._setState(State.conputeAfter);
+            this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
+            pixels = null, margin = null;
+            callback && callback(this);
         });
     }
 
