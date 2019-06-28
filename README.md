@@ -45,7 +45,7 @@ npm install inmap --save
 ```
 
 ## 示例
-###### [pointOverlayDemo](https://github.com/fengluhome/inMapWebApp)
+
 ```html
 <script>
 var inmap = new inMap.Map({
