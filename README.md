@@ -45,6 +45,7 @@ npm install inmap --save
 ```
 
 ## 示例
+###### [pointOverlayDemo](https://github.com/fengluhome/inMapWebApp)
 ```html
 <script>
 var inmap = new inMap.Map({
@@ -60,13 +61,15 @@ var inmap = new inMap.Map({
 })
 </script>
 ```
+###### [示例代码demo](https://github.com/fengluhome/inMapWebApp)
+
 ## 预览当前项目所有demo
 ```shell
 # 从 GitHub 下载后，安装依赖
 npm install
 
 # 编译代码
-npm run dev
+npm run dev & npm run start
 
 在浏览器地址栏输入：http://localhost:8088/examples/index.html
 ```
