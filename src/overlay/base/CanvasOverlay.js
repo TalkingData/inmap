@@ -41,12 +41,22 @@ export default class CanvasOverlay extends BaseClass {
         this._animationFlag = true;
         this._isDispose = false; //是否已销毁
         this.emitEvent = false;
+
+        this._subscriptions = {
+            onMouseClick: [],
+            onMouseOver: [],
+            onMouseLeave: [],
+            onState: [],
+            onInit: [],
+            preEmitName: null
+        };
+
+
         this._margin = {
             left: 0,
             top: 0
         };
         this._zIndex = !opts || opts.zIndex == null ? zIndex += 10 : opts.zIndex;
-
 
     }
     initialize(map) {
@@ -156,6 +166,66 @@ export default class CanvasOverlay extends BaseClass {
     _toDraw() {
         /** 抽象方法 子类去实现*/
     }
+    /**
+     * 添加事件
+     * @param {} name 
+     * @param {*} callback 
+     */
+    on(name, callback) {
+         
+        if (name.length > 2 && name.indexOf('on') === -1) {
+            name = 'on' + name[0].toUpperCase() + name.substr(1);
+        }
+
+        const subscriber = this._subscriptions[name];
+        if (!subscriber) return;
+        const index = subscriber.findIndex((item) => {
+            return item === callback;
+        });
+
+        if (index > -1) {
+            subscriber.splice(index, 1);
+        }
+        subscriber.push(callback);
+
+    }
+    /**
+    * 移除事件
+    * @param {} name 
+    * @param {*} callback 
+    */
+    off(name, callback) {
+        if (name.length > 2 && name.indexOf('on') === -1) {
+            name = 'on' + name[0].toUpperCase() + name.substr(1);
+        }
+
+        const subscriber = this._subscriptions[name];
+        if (!subscriber) return;
+        for (let index = 0; index < subscriber.length; index++) {
+            const element = subscriber[index];
+            if (element === callback) {
+                subscriber.splice(index, 1);
+                index--;
+            }
+        }
+    }
+    _emit(name, ...args) {
+         
+        if (name.length > 2 && name.indexOf('on') === -1) {
+             
+            name = 'on' + name[0].toUpperCase() + name.substr(1);
+        }
+        if (name != 'onMouseClick' && name !== 'onState' && this._subscriptions.preEmitName == name) {
+            return;
+        }
+        this._subscriptions.preEmitName = name;
+        const subscriber = this._subscriptions[name];
+        subscriber && subscriber.forEach(callBack => {
+            callBack(...args);
+        });
+
+    }
+
     _canvasResize() {
         let map = this._map;
         let container = this._container;

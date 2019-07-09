@@ -47,17 +47,8 @@
             max: 11,
             min: 8
         }
-    })
-    // data = data.map((function (item) {
-    //     return {
-    //         count: item.count,
-    //         geometry: {
-    //             "type": "Point",
-    //             "coordinates": [item.lng, item.lat]
-    //         }
-    //     };
-    // }));
-    // console.log(JSON.stringify(data));
+    });
+
     var overlay = new inMap.GriddingOverlay({
         tooltip: {
             show: true,
@@ -93,15 +84,35 @@
         },
         data: [],
         event: {
-            onState(state) {
-                console.log(state);
-            },
-            onMouseClick(data, event) {
-                console.log(data, event);
-            }
+            // onState(state) {
+            //     console.log('onState', state);
+            // },
+            // onMouseClick(data, event) {
+            //     console.log('onMouseClick', data, event);
+            // },
+            // onMouseLeave(data, event) {
+            //     console.log('onMouseLeave', data, event);
+            // },
+            // onMouseOver(data) {
+            //     console.log('onMouseOver', data, event);
+            // }
 
         }
     });
-    map.add(overlay)
-    overlay.setData(data);
+
+    function mouseLeave() {
+        console.log('mouseLeave');
+    }
+    // overlay.on('mouseLeave', mouseLeave);
+    // overlay.on('mouseClick', function () {
+    //     console.log('mouseClick');
+    // });
+    // overlay.on('init', function () {
+    //     console.log('init');
+    // });
+    // overlay.off('mouseLeave', mouseLeave);
+    map.add(overlay);
+    overlay.setData(data, (e) => {
+        console.log('callback')
+    });
 </script>

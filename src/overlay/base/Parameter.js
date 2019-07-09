@@ -9,6 +9,7 @@ import {
 } from '../../common/Util';
 import CanvasOverlay from './CanvasOverlay';
 import Color from './../../common/Color';
+import { isFunction } from 'util';
 let isMobile = detectmob();
 /**
  * 接头定义 参数解析类
@@ -42,14 +43,27 @@ export default class Parameter extends CanvasOverlay {
             this.setData(ops.data, callback);
         } else {
             this._onOptionChange();
-            this._map && this.refresh();
-            callback && callback(this);
+            if (this._map) {
+                this.refresh();
+                if (callback) {
+                    callback(this);
+                }
+            }
         }
         delete this._option.data;
         this._selectItem = option.selected || [];
         this._tMapStyle(option.skin);
         this.toolTip && this.toolTip.setOption(this._tooltipConfig);
         this.emitEvent = this._eventConfig.emitEvent;
+        this._bindEmit();
+    }
+    _bindEmit() {
+        for (const name in this._eventConfig) {
+            const fun = this._eventConfig[name];
+            if (isFunction(fun)) {
+                this.on(name, fun);
+            }
+        }
     }
     _checkGeoJSON(data) {
         let isCheckCount = this._styleConfig.colors.length > 0 || this._styleConfig.splitList.length > 0;
@@ -335,9 +349,11 @@ export default class Parameter extends CanvasOverlay {
         }
         if (temp) {
             this._map.setDefaultCursor('pointer');
-            this._eventConfig.onMouseOver(temp, event, this);
+            this._emit('onMouseOver', event, this);
+
         } else {
             this._map.setDefaultCursor('default');
+            this._emit('onMouseLeave', event, this);
         }
 
         this._setTooltip(event);
@@ -361,12 +377,12 @@ export default class Parameter extends CanvasOverlay {
             }
 
         } else {
-
             clearPushArray(this._selectItem, result.item);
         }
 
         this._swopData(result.index, item);
-        this._eventConfig.onMouseClick(this._selectItem, event, this);
+ 
+        this._emit('onMouseClick', event, this);
 
         this.refresh();
         if (isMobile) {
