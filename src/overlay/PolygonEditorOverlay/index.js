@@ -7,7 +7,7 @@ import {
     isPolyContains,
 } from '../../common/Util';
 
-export default class PolygonEditorOverlay2 extends CanvasOverlay {
+export default class PolygonEditorOverlay extends CanvasOverlay {
     constructor(opts) {
         super(opts);
         this._opts = merge(config, opts);
@@ -37,7 +37,7 @@ export default class PolygonEditorOverlay2 extends CanvasOverlay {
         this._zIndex = zIndex;
         if (this._container) this._container.style.zIndex = this._zIndex;
 
-        this._polygonOverlay && this._polygonOverlay.setZIndex(this._zIndex + 1);
+        this._polygonOverlay && this.www.setZIndex(this._zIndex + 1);
         this._pointOverlay && this._pointOverlay.setZIndex(this._zIndex + 2);
         this._virtualPointOverlay && this._virtualPointOverlay.setZIndex(this._zIndex + 4);
     }
