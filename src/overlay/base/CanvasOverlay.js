@@ -48,6 +48,7 @@ export default class CanvasOverlay extends BaseClass {
             onMouseLeave: [],
             onState: [],
             onInit: [],
+            isInit: true,
             preEmitName: null
         };
 
@@ -172,7 +173,7 @@ export default class CanvasOverlay extends BaseClass {
      * @param {*} callback 
      */
     on(name, callback) {
-         
+
         if (name.length > 2 && name.indexOf('on') === -1) {
             name = 'on' + name[0].toUpperCase() + name.substr(1);
         }
@@ -210,9 +211,9 @@ export default class CanvasOverlay extends BaseClass {
         }
     }
     _emit(name, ...args) {
-         
+
         if (name.length > 2 && name.indexOf('on') === -1) {
-             
+
             name = 'on' + name[0].toUpperCase() + name.substr(1);
         }
         if (name != 'onMouseClick' && name !== 'onState' && this._subscriptions.preEmitName == name) {

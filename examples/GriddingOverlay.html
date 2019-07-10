@@ -84,18 +84,18 @@
         },
         data: [],
         event: {
-            // onState(state) {
-            //     console.log('onState', state);
-            // },
-            // onMouseClick(data, event) {
-            //     console.log('onMouseClick', data, event);
-            // },
-            // onMouseLeave(data, event) {
-            //     console.log('onMouseLeave', data, event);
-            // },
-            // onMouseOver(data) {
-            //     console.log('onMouseOver', data, event);
-            // }
+            onState(state) {
+                console.log('onState', state);
+            },
+            onMouseClick(data, event) {
+                console.log('onMouseClick', data, event);
+            },
+            onMouseLeave(data, event) {
+                console.log('onMouseLeave', data, event);
+            },
+            onMouseOver(data) {
+                console.log('onMouseOver', data, event);
+            }
 
         }
     });
@@ -107,12 +107,14 @@
     // overlay.on('mouseClick', function () {
     //     console.log('mouseClick');
     // });
-    // overlay.on('init', function () {
-    //     console.log('init');
-    // });
+    overlay.on('init', function () {
+        console.log('init');
+    });
     // overlay.off('mouseLeave', mouseLeave);
     map.add(overlay);
+   
     overlay.setData(data, (e) => {
         console.log('callback')
+       
     });
 </script>
