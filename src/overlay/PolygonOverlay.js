@@ -82,10 +82,7 @@ export default class PolygonOverlay extends Parameter {
     setOptionStyle(ops) {
         this._setStyle(this._option, ops);
     }
-    _setState(val) {
-        this._state = val;
-        this._eventConfig.onState(this._state, this);
-    }
+ 
     _onOptionChange() {
         this._map && this._initLegend();
     }

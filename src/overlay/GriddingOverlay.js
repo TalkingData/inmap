@@ -17,10 +17,7 @@ export default class GriddingOverlay extends Parameter {
         this._setStyle(this._option, ops, callback);
     }
 
-    _setState(val) {
-        this._state = val;
-        this._emit('onState', this._state, this);
-    }
+    
     draw() {
         this._toDraw();
     }

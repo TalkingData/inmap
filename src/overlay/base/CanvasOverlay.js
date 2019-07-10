@@ -216,6 +216,10 @@ export default class CanvasOverlay extends BaseClass {
             this._emit('onInit', this);
         }
     }
+    _setState(val) {
+        this._state = val;
+        this._emit('onState', this._state, this);
+    }
     _emit(name, ...args) {
 
         if (name.length > 2 && name.indexOf('on') === -1) {

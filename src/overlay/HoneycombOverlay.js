@@ -12,10 +12,7 @@ export default class HoneycombOverlay extends Parameter {
     setOptionStyle(ops, callback) {
         this._setStyle(this._option, ops, callback);
     }
-    _setState(val) {
-        this._state = val;
-        this._eventConfig.onState(this._state, this);
-    }
+    
     draw() {
         this._toDraw();
     }

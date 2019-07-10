@@ -57,10 +57,7 @@ export default class HeatOverlay extends CanvasOverlay {
         clearPushArray(this._workerData, []);
         this._map && this._drawMap(callback);
     }
-    _setState(val) {
-        this._state = val;
-        this._eventConfig.onState(this._state, this);
-    }
+   
     /**
      * 屏蔽参数
      */

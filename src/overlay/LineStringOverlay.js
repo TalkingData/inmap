@@ -50,10 +50,7 @@ export default class LineStringOverlay extends Parameter {
         this._mouseLayer._clearCanvas();
         this._clearCanvas();
     }
-    _setState(val) {
-        this._state = val;
-        this._eventConfig.onState(this._state, this);
-    }
+    
     _translation(distanceX, distanceY) {
         for (let i = 0; i < this._workerData.length; i++) {
             let pixels = this._workerData[i].geometry.pixels;

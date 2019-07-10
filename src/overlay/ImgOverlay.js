@@ -20,10 +20,7 @@ export default class ImgOverlay extends Parameter {
     setOptionStyle(ops, callback) {
         this._setStyle(this._option, ops, callback);
     }
-    _setState(val) {
-        this._state = val;
-        this._eventConfig.onState(this._state, this);
-    }
+   
     _translation(distanceX, distanceY) {
         for (let i = 0; i < this._workerData.length; i++) {
             let pixel = this._workerData[i].geometry.pixel;

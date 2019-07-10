@@ -109,10 +109,7 @@ export default class MaskOverlay extends CanvasOverlay {
         }
         this.refresh();
     }
-    _setState(val) {
-        this._state = val;
-        this._eventConfig.onState(this._state, this);
-    }
+  
     refresh() {
 
         this._setState(State.drawBefore);
