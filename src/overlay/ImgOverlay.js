@@ -2,6 +2,7 @@ import Parameter from './base/Parameter';
 import ImgConfig from './../config/ImgConfig';
 import {
     isString,
+    clearPushArray
 } from './../common/Util';
 import State from './../config/OnStateConfig';
 /*
@@ -46,6 +47,11 @@ export default class ImgOverlay extends Parameter {
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             callback && callback(this);
         });
+    }
+    filter(func) {
+        const arrData = this._workerData.filter(func);
+        clearPushArray(this._workerData, arrData);
+        this.refresh();
     }
     _drawMap(callback) {
 
