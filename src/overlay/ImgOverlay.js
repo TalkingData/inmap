@@ -34,6 +34,19 @@ export default class ImgOverlay extends Parameter {
         this.refresh();
 
     }
+    pushData(data, callback) {
+        if (!Array.isArray(data)) return;
+        this._setState(State.computeBefore);
+        this._postMessage('HeatOverlay.pointsToPixels', data, (pixels, margin) => {
+            if (this._eventType == 'onmoving') {
+                return;
+            }
+            this._workerData.push(...pixels);
+            this._setState(State.conputeAfter);
+            this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
+            callback && callback(this);
+        });
+    }
     _drawMap(callback) {
 
         this._setState(State.computeBefore);
@@ -48,6 +61,7 @@ export default class ImgOverlay extends Parameter {
             margin = null;
             pixels = null;
             callback && callback(this);
+            this._emitInit();
         });
     }
 

@@ -210,6 +210,12 @@ export default class CanvasOverlay extends BaseClass {
             }
         }
     }
+    _emitInit(){
+        if (this._subscriptions.isInit) {
+            this._subscriptions.isInit = false;
+            this._emit('onInit', this);
+        }
+    }
     _emit(name, ...args) {
 
         if (name.length > 2 && name.indexOf('on') === -1) {
