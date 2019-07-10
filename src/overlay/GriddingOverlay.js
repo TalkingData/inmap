@@ -113,10 +113,7 @@ export default class GriddingOverlay extends Parameter {
             gridsObj = null;
             callback && callback(this);
 
-            if (this._subscriptions.isInit) {
-                this._subscriptions.isInit = false;
-                this._emit('onInit', this);
-            }
+            this._emitInit();
         });
     }
 

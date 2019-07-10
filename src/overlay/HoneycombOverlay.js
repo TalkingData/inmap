@@ -108,10 +108,7 @@ export default class HoneycombOverlay extends Parameter {
             this.refresh();
             gridsObj = null;
             callback && callback(this);
-            if (this._subscriptions.isInit) {
-                this._subscriptions.isInit = false;
-                this._emit('onInit', this);
-            }
+            this._emitInit();
         });
     }
     _createColorSplit() {
