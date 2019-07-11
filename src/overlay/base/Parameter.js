@@ -336,7 +336,7 @@ export default class Parameter extends CanvasOverlay {
 
         let result = this._getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
-
+        const preOverItem = this._overItem;
         if (temp != this._overItem) { //防止过度重新绘画
             this._overItem = temp;
             if (temp) {
@@ -349,11 +349,11 @@ export default class Parameter extends CanvasOverlay {
         }
         if (temp) {
             this._map.setDefaultCursor('pointer');
-            this._emit('onMouseOver', event, this);
+            this._emit('onMouseOver', this._overItem, event, this);
 
         } else {
             this._map.setDefaultCursor('default');
-            this._emit('onMouseLeave', event, this);
+            this._emit('onMouseLeave', preOverItem, event, this);
         }
 
         this._setTooltip(event);
@@ -381,8 +381,8 @@ export default class Parameter extends CanvasOverlay {
         }
 
         this._swopData(result.index, item);
- 
-        this._emit('onMouseClick', event, this);
+
+        this._emit('onMouseClick', this._selectItem, event, this);
 
         this.refresh();
         if (isMobile) {

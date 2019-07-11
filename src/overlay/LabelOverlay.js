@@ -17,7 +17,7 @@ export default class LabelOverlay extends Parameter {
     setOptionStyle(ops, callback) {
         this._setStyle(this._option, ops, callback);
     }
-  
+
     _toDraw(callback) {
         this._drawMap(callback);
     }
@@ -34,6 +34,9 @@ export default class LabelOverlay extends Parameter {
         this._clearCanvas();
         this._setState(State.computeBefore);
         this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin, zoom) => {
+            if (this._eventType == 'onmoving') {
+                return;
+            }
             this._setState(State.computeAfter);
             this._setWorkerData(pixels);
             this._updateOverClickItem();
@@ -46,6 +49,7 @@ export default class LabelOverlay extends Parameter {
             margin = null;
             pixels = null;
             callback && callback(this);
+            this._emitInit();
         });
     }
     _updateOverClickItem() {
@@ -70,7 +74,14 @@ export default class LabelOverlay extends Parameter {
             let item = data[i];
             let pixel = item.geometry.pixel;
             let style = this._setDrawStyle(item, i);
-            let x1 = (pixel.x - pixel.width / 2) + style.offsets.left;
+            let left = 0;
+            if (isString(style.offsets.left)) {
+                const leftStr = style.offsets.left;
+                if (leftStr.substr(leftStr.length - 1, 1) == '%') {
+                    left = parseInt(parseInt(leftStr) * pixel.width / 100, 10);
+                }
+            }
+            let x1 = (pixel.x - pixel.width / 2) + left;
             let y1 = pixel.y + style.offsets.top;
             if (this._isMouseOver(mouseX, mouseY, x1, y1, pixel.width, pixel.height)) {
                 return {

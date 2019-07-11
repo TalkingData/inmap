@@ -74,19 +74,33 @@
                 color: 'rgba(184,0,0,1)'
             },
         },
-        // data: data,
         event: {
             onMouseClick: function (item, event) {
-                console.log(item);
+                console.log('onMouseClick', item);
                 //能获取当前点的信息
             },
-            onMouseOver() {
-                console.log(arguments);
+            onMouseOver(data) {
+                console.log('onMouseOver', data, event);
             }
+
         }
     });
     inmap.add(overlay);
-    overlay.setData(data, (it) => {
-        console.log(it);
+    function mouseLeave(item, e, layer) {
+        console.log('mouseLeave', item, e, layer);
+    }
+    overlay.on('mouseLeave', mouseLeave);
+    // overlay.on('mouseClick', function () {
+    //     console.log('mouseClick');
+    // });
+    overlay.on('init', function () {
+        console.log('init');
+    });
+    // overlay.off('mouseLeave', mouseLeave);
+
+
+    overlay.setData(data, (e) => {
+        console.log('callback')
+
     });
 </script>
