@@ -120,7 +120,7 @@ export default class HeatOverlay extends CanvasOverlay {
                 return;
             }
             this._setWorkerData(pixels);
-            this._setState(State.conputeAfter);
+            this._setState(State.computeAfter);
 
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
 

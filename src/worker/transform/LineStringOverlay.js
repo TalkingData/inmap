@@ -3,8 +3,8 @@ import {
 } from '../../lib/pointToPixel';
 import {
     getPointList,
-    lineCurive
-} from './../../common/Curive';
+    lineCurve
+} from './../../common/Curve';
 const LineStringOverlay = {
     transferCoordinate(_coordinates, nwMc, zoomUnit) {
         return _coordinates.map(function (item) {
@@ -35,7 +35,7 @@ const LineStringOverlay = {
             if (lineOrCurve == 'curve') {
                 LineStringOverlay.setCurive(points, zoomUnit, nwMc, deltaAngle);
             } else {
-                LineStringOverlay.transfrom(points, zoomUnit, nwMc);
+                LineStringOverlay.transform(points, zoomUnit, nwMc);
             }
 
         }
@@ -77,7 +77,7 @@ const LineStringOverlay = {
             let item = points[j];
             if (!item.geometry.animationCoordinates) {
                 let count = item.style && item.style.deltaAngle != null ? item.style.deltaAngle : n;
-                item.geometry['animationCoordinates'] = lineCurive(item.geometry.coordinates[0], item.geometry.coordinates[1], count);
+                item.geometry['animationCoordinates'] = lineCurve(item.geometry.coordinates[0], item.geometry.coordinates[1], count);
             }
             if (!item.geometry.animationMedianCoordinates) {
                 item.geometry['animationMedianCoordinates'] = item.geometry.animationCoordinates.map(function (item) {
@@ -95,7 +95,7 @@ const LineStringOverlay = {
             });
         }
     },
-    transfrom(points, zoomUnit, nwMc) {
+    transform(points, zoomUnit, nwMc) {
         for (let j = 0; j < points.length; j++) {
             let item = points[j];
             if (!item.geometry.medianCoordinates) {

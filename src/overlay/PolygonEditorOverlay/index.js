@@ -20,7 +20,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
         this._dblclickFun = this._dblclickFun.bind(this);
         this._clickFun = this._clickFun.bind(this);
         this._mousemoveFun = this._mousemoveFun.bind(this);
-        this._rightclick = this._rightclick.bind(this);
+        this._rightClick = this._rightClick.bind(this);
         this._polygonOverlay = null;
         this._pointOverlay = null;
         this._virtualPointOverlay = null;
@@ -48,7 +48,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
                 count: false
             },
             style: this._opts.style.polygon,
-            data: this._opts.data ? [this._toMutilPolygon(this._opts.data)] : [],
+            data: this._opts.data ? [this. _toMultiPolygon(this._opts.data)] : [],
             event: {
                 emitEvent: false,
                 onState: (state) => {
@@ -117,7 +117,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
             zIndex: this._zIndex + 4
         });
         this._map.addOverlay(this._virtualPointOverlay);
-        this._map.addEventListener('rightclick', this._rightclick);
+        this._map.addEventListener('rightclick', this._rightClick);
     }
     setOptionStyle(opts) {
 
@@ -151,7 +151,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
             this.setPath(opts.data);
         }
     }
-    _wokerDataClear() {
+    _workerDataClear() {
         this._workerData = [{
             geometry: {
                 type: 'MultiPolygon',
@@ -165,7 +165,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
     create() {
 
         this.isCreate = true;
-        this._wokerDataClear();
+        this._workerDataClear();
         this._createTempCache = null;
         this._createIndex = -1;
         if (this._map) {
@@ -183,13 +183,13 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
     setPath(data) {
         this.isCreate = false;
         this._opts.data = data;
-        this._wokerDataClear();
+        this._workerDataClear();
         this._pointDataGroup = [];
         this._draggingPointTemp = null;
         this._draggingVirtualTemp = null;
         this._createTempCache = null;
         this._createIndex = -1;
-        this._polygonOverlay && this._polygonOverlay.setData(this._opts.data ? [this._toMutilPolygon(data)] : []);
+        this._polygonOverlay && this._polygonOverlay.setData(this._opts.data ? [this. _toMultiPolygon(data)] : []);
     }
     enableEditing() {
         this.isCreate = false;
@@ -243,9 +243,9 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
         this._map.removeEventListener('click', this._clickFun);
         this._map.removeEventListener('dblclick', this._dblclickFun);
         this._map.removeEventListener('mousemove', this._mousemoveFun);
-        this._map.removeEventListener('rightclick', this._rightclick);
+        this._map.removeEventListener('rightclick', this._rightClick);
     }
-    _Tdispose() {
+    _TDispose() {
         this._removeMoveEvent();
         this._map.removeOverlay(this._polygonOverlay);
         this._map.removeOverlay(this._pointOverlay);
@@ -272,7 +272,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
             return null;
         }
     }
-    _toMutilPolygon(data) {
+     _toMultiPolygon(data) {
         try {
             if (data && data.geometry.type == 'Polygon') {
                 data.geometry.type = 'MultiPolygon';
@@ -401,7 +401,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
         }
         return -1;
     }
-    _rightclick(event) {
+    _rightClick(event) {
         if (this.isCreate || !this._opts.style.isDel || !this._opts.style.isEdit) return;
         let coordinates = this._workerData[0].geometry.coordinates;
         for (let j = 0, len = coordinates.length; j < len; j++) {
@@ -501,7 +501,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
             let type = item.geometry.type;
             if (type == 'MultiPolygon') {
                 for (let k = 0; k < item.geometry.coordinates.length; k++) {
-                    this._Andcoordinates(item.geometry.coordinates[k], item.geometry.pixels[k], this._pointDataGroup, i, k);
+                    this._AndCoordinates(item.geometry.coordinates[k], item.geometry.pixels[k], this._pointDataGroup, i, k);
                 }
 
             }
@@ -517,7 +517,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
         this._pointOverlay._setWorkerData(pointData);
         this._pointOverlay.refresh();
     }
-    _Andcoordinates(coordinates, pixels, target, Arrindex, coordinatesIndex) {
+    _AndCoordinates(coordinates, pixels, target, ArrIndex, coordinatesIndex) {
 
         for (let i = 0; i < coordinates.length; i++) {
             let points = coordinates[i];
@@ -535,7 +535,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
                         }
                     },
                     _index: {
-                        Arrindex,
+                        ArrIndex,
                         coordinatesIndex,
                         surround: i,
                         i: j
@@ -566,7 +566,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
     }
     _updatePolygon(item, key, action, event) {
 
-        let findGeometry = this._workerData[key.Arrindex].geometry;
+        let findGeometry = this._workerData[key.ArrIndex].geometry;
 
         if (findGeometry.type == 'MultiPolygon') {
             let latLngs = findGeometry.coordinates[key.coordinatesIndex][key.surround];

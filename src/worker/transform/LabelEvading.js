@@ -1,8 +1,8 @@
 import {
     Label
-} from './../helper/Label';
+} from '../helper/Label';
 
-const LablEvading = {
+const LabelEvading = {
     merge: function (webObj) {
         let {
             pixels,
@@ -52,4 +52,4 @@ const LablEvading = {
         };
     }
 };
-export default LablEvading;
+export default LabelEvading;

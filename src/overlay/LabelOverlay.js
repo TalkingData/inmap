@@ -11,7 +11,7 @@ export default class LabelOverlay extends Parameter {
     _onOptionChange() {
 
     }
-    _onDataChangee() {
+    _onDataChange() {
 
     }
     setOptionStyle(ops, callback) {
@@ -34,7 +34,7 @@ export default class LabelOverlay extends Parameter {
         this._clearCanvas();
         this._setState(State.computeBefore);
         this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin, zoom) => {
-            this._setState(State.conputeAfter);
+            this._setState(State.computeAfter);
             this._setWorkerData(pixels);
             this._updateOverClickItem();
 

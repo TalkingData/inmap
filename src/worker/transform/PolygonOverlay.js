@@ -3,7 +3,7 @@ import {
 } from '../../lib/pointToPixel';
 
 import Point from './../../common/Point';
-import Polylabel from '../../common/Polylabel';
+import PolyLabel from '../../common/PolyLabel';
 function getGeoCenter(geo) {
     let minX = geo[0][0];
     let minY = geo[0][1];
@@ -18,7 +18,7 @@ function getGeoCenter(geo) {
     return { x: minX + (maxX - minX) / 2, y: minY + (maxY - minY) / 2 };
 
 }
-function transfrom(coordinates, map, pixels, labelPixels, enable, centerType) {
+function transform(coordinates, map, pixels, labelPixels, enable, centerType) {
     for (let i = 0; i < coordinates.length; i++) {
         let geo = coordinates[i];
         let tmp = [];
@@ -32,7 +32,7 @@ function transfrom(coordinates, map, pixels, labelPixels, enable, centerType) {
             if (centerType == 'minMax') {
                 labelPixels.push(getGeoCenter(tmp));
             } else if (centerType == 'cell') {
-                labelPixels.push(Polylabel([tmp]));
+                labelPixels.push(PolyLabel([tmp]));
             }
         }
 
@@ -57,11 +57,11 @@ const PolygonOverlay = {
             if (type == 'MultiPolygon') {
                 for (let k = 0; k < coordinates.length; k++) {
                     let p = [];
-                    transfrom(coordinates[k], map, p, labelPixels, enable, centerType);
+                    transform(coordinates[k], map, p, labelPixels, enable, centerType);
                     pixels.push(p);
                 }
             } else {
-                transfrom(coordinates, map, pixels, labelPixels, enable, centerType);
+                transform(coordinates, map, pixels, labelPixels, enable, centerType);
             }
 
             data[j].geometry['pixels'] = pixels;

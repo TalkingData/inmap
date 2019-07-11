@@ -101,7 +101,7 @@ export default class GriddingOverlay extends Parameter {
             }
             this._canvasResize();
             this._workerData = gridsObj.grids;
-            this._setState(State.conputeAfter);
+            this._setState(State.computeAfter);
 
             this._drawSize = size / zoomUnit;
             this._setState(State.drawBefore);
@@ -205,7 +205,7 @@ export default class GriddingOverlay extends Parameter {
     _createColorSplit() {
 
         this._styleConfig.colors.length > 0 && this._compileSplitList(this._workerData);
-        this._setlegend(this._legendConfig, this._styleConfig.splitList);
+        this._setLegend(this._legendConfig, this._styleConfig.splitList);
 
     }
     _setTooltip(event) {

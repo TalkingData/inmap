@@ -1,6 +1,6 @@
 import {
     isNumber,
-    detectmob,
+    detection,
     isEmpty,
     merge,
     typeOf,
@@ -10,7 +10,7 @@ import {
 import CanvasOverlay from './CanvasOverlay';
 import Color from './../../common/Color';
 import { isFunction } from 'util';
-let isMobile = detectmob();
+let isMobile = detection();
 /**
  * 接头定义 参数解析类
  */
@@ -78,7 +78,7 @@ export default class Parameter extends CanvasOverlay {
         }
 
         this._clearData();
-        this._cancerSelectd();
+        this._cancerSelected();
         this._onDataChange();
         this._map && this._toDraw(callback);
     }
@@ -109,7 +109,7 @@ export default class Parameter extends CanvasOverlay {
      * 清除选中
      * @memberof Parameter
      */
-    _cancerSelectd() {
+    _cancerSelected() {
         clearPushArray(this._selectItem, []);
     }
     /**
@@ -282,7 +282,7 @@ export default class Parameter extends CanvasOverlay {
         this.toolTip.render(event, this._overItem);
     }
 
-    _Tclear() {
+    _TClear() {
         this._data = null;
         this._workerData = null;
         this._baseConfig = null;
@@ -298,7 +298,7 @@ export default class Parameter extends CanvasOverlay {
     /**
      * 设置图例
      */
-    _setlegend(legendConfig, list) {
+    _setLegend(legendConfig, list) {
         if (!this._map) return;
         let option = {
 

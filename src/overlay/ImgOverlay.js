@@ -40,7 +40,7 @@ export default class ImgOverlay extends Parameter {
                 return;
             }
             this._workerData.push(...pixels);
-            this._setState(State.conputeAfter);
+            this._setState(State.computeAfter);
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             callback && callback(this);
         });
@@ -57,7 +57,7 @@ export default class ImgOverlay extends Parameter {
             if (this._eventType == 'onmoving') {
                 return;
             }
-            this._setState(State.conputeAfter);
+            this._setState(State.computeAfter);
 
             this._setWorkerData(pixels);
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);

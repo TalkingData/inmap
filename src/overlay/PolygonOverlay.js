@@ -26,7 +26,7 @@ export default class PolygonOverlay extends Parameter {
             this._compileSplitList(this._styleConfig.colors, this._getTransformData());
         }
         this._patchSplitList();
-        this._setlegend(this._legendConfig, this._styleConfig.splitList);
+        this._setLegend(this._legendConfig, this._styleConfig.splitList);
     }
 
     setCustomZoom(zoom) {
@@ -213,7 +213,7 @@ export default class PolygonOverlay extends Parameter {
                 return;
             }
             this._setWorkerData(pixels);
-            this._setState(State.conputeAfter);
+            this._setState(State.computeAfter);
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             pixels = null, margin = null;
             callback && callback(this);
@@ -235,7 +235,7 @@ export default class PolygonOverlay extends Parameter {
                 return;
             }
             this._workerData.push(...pixels);
-            this._setState(State.conputeAfter);
+            this._setState(State.computeAfter);
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             pixels = null, margin = null;
             callback && callback(this);

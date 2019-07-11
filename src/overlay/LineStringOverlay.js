@@ -1,13 +1,13 @@
 import {
     isEmpty,
-    detectmob,
+    detection,
     clearPushArray
 } from '../common/Util';
 import CanvasOverlay from './base/CanvasOverlay.js';
 import Parameter from './base/Parameter';
 import LineStringConfig from '../config/LineStringConfig';
 import State from './../config/OnStateConfig';
-let isMobile = detectmob();
+let isMobile = detection();
 export default class LineStringOverlay extends Parameter {
     constructor(ops) {
         super(LineStringConfig, ops);
@@ -145,10 +145,10 @@ export default class LineStringOverlay extends Parameter {
         };
         this._setState(State.computeBefore);
         this._postMessage('LineStringOverlay.calculatePixel', params, (pixels, margin) => {
-            if (this._eventTypee == 'onmoving') {
+            if (this._eventType == 'onmoving') {
                 return;
             }
-            this._setState(State.conputeAfter);
+            this._setState(State.computeAfter);
             clearPushArray(this._workerData, pixels);
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
 
@@ -209,12 +209,12 @@ export default class LineStringOverlay extends Parameter {
 
 
     }
-    _Tdispose() {
+    _TDispose() {
         this._map.removeOverlay(this._mouseLayer);
         this._mouseLayer.dispose();
     }
     _tMousemove(event) {
-        if (this._eventTypee == 'onmoving') {
+        if (this._eventType == 'onmoving') {
             return;
         }
 
@@ -223,7 +223,7 @@ export default class LineStringOverlay extends Parameter {
 
         if (temp != this._overItem) { //防止过度重新绘画
             this._overItem = temp;
-            this._eventTypee = 'mousemove';
+            this._eventType = 'mousemove';
             if (!isEmpty(this._styleConfig.mouseOver)) {
                 this._drawMouseLayer();
             }
@@ -239,7 +239,7 @@ export default class LineStringOverlay extends Parameter {
 
     }
     _tMouseClick(event) {
-        if (this._eventTypee == 'onmoving') return;
+        if (this._eventType == 'onmoving') return;
         let result = this._getTarget(event.pixel.x, event.pixel.y);
         if (result.index == -1) {
             return;

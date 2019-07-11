@@ -76,7 +76,7 @@ function getDistance(p1, p2) {
         (p1[1] - p2[1]) * (p1[1] - p2[1])
     );
 }
-export function lineCurive(fromPoint, endPoint, n) {
+export function lineCurve(fromPoint, endPoint, n) {
     let delLng = (endPoint[0] - fromPoint[0]) / n;
     let delLat = (endPoint[1] - fromPoint[1]) / n;
     let path = [];

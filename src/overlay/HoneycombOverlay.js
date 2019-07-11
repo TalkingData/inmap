@@ -97,7 +97,7 @@ export default class HoneycombOverlay extends Parameter {
                 return;
             }
             this._canvasResize();
-            this._setState(State.conputeAfter);
+            this._setState(State.computeAfter);
 
             this._workerData = gridsObj.grids;
             this._drawSize = size / zoomUnit;
@@ -113,7 +113,7 @@ export default class HoneycombOverlay extends Parameter {
     }
     _createColorSplit() {
         this._styleConfig.colors.length > 0 && this._compileSplitList(this._workerData);
-        this._setlegend(this._legendConfig, this._styleConfig.splitList);
+        this._setLegend(this._legendConfig, this._styleConfig.splitList);
     }
     _compileSplitList(data) {
 

@@ -3,16 +3,15 @@ import GriddingOverlay from './transform/GriddingOverlay';
 import PolygonOverlay from './transform/PolygonOverlay';
 import LineStringOverlay from './transform/LineStringOverlay';
 import HoneycombOverlay from './transform/HoneycombOverlay';
-import PolymeOverlay from './transform/PolymeOverlay';
-import LablEvading from './transform/LablEvading';
+ 
+import LabelEvading from './transform/LabelEvading';
 let callbackList = {
     'HeatOverlay': HeatOverlay,
     'GriddingOverlay': GriddingOverlay,
     'PolygonOverlay': PolygonOverlay,
     'LineStringOverlay': LineStringOverlay,
     'HoneycombOverlay': HoneycombOverlay,
-    'PolymeOverlay': PolymeOverlay,
-    'LablEvading': LablEvading
+    'LabelEvading': LabelEvading
 };
 
 /**

@@ -6,12 +6,12 @@ import Label from './../worker/helper/Label';
 import Parameter from './base/Parameter';
 import {
     isEmpty,
-    detectmob,
+    detection,
 } from '../common/Util.js';
 import BatchesData from './base/BatchesData';
 import PointConfig from '../config/PointConfig';
 import State from './../config/OnStateConfig';
-let isMobile = detectmob();
+let isMobile = detection();
 export default class PointOverlay extends Parameter {
     constructor(opts) {
         super(PointConfig, opts);
@@ -30,7 +30,7 @@ export default class PointOverlay extends Parameter {
         if (this._styleConfig.splitList.length === 0 && this._styleConfig.colors.length > 0) {
             this._compileSplitList(this._getTransformData());
         } else {
-            this._setlegend(this._legendConfig, this._styleConfig.splitList);
+            this._setLegend(this._legendConfig, this._styleConfig.splitList);
         }
 
     }
@@ -129,7 +129,7 @@ export default class PointOverlay extends Parameter {
         this._setState(State.computeBefore);
         this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin, zoom) => {
 
-            this._setState(State.conputeAfter);
+            this._setState(State.computeAfter);
             this._setWorkerData(pixels);
             this._updateOverClickItem();
 
@@ -214,7 +214,7 @@ export default class PointOverlay extends Parameter {
         }
 
         this._styleConfig.splitList = result;
-        this._setlegend(this._legendConfig, this._styleConfig.splitList);
+        this._setLegend(this._legendConfig, this._styleConfig.splitList);
     }
 
     _getTarget(mouseX, mouseY) {
@@ -331,7 +331,7 @@ export default class PointOverlay extends Parameter {
         //     borderWidth: this._styleConfig.normal.borderWidth,
         //     byteWidth: byteWidth
         // };
-        // this._postMessage('LablEvading.merge', param, (labels) => {
+        // this._postMessage('LabelEvading.merge', param, (labels) => {
         //     if (this._eventType == 'onmoving') {
         //         return;
         //     }
@@ -399,7 +399,7 @@ export default class PointOverlay extends Parameter {
             ctx.stroke();
         }
     }
-    _Tdispose() {
+    _TDispose() {
         this._batchesData && this._batchesData.clear();
         this._map.removeOverlay(this._mouseLayer);
         this._mouseLayer.dispose();

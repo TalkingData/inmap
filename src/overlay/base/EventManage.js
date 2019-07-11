@@ -1,9 +1,7 @@
 import {
-
-    detectmob,
-
+    detection
 } from '../../common/Util';
-const isMobile = detectmob();
+const isMobile = detection();
 class EventManage {
     constructor() {
         this.map = null;
@@ -48,8 +46,8 @@ class EventManage {
             if (layer && layer._map) {
                 if (eventName == '_tMousemove' || eventName == '_tMouseClick') {
                     if (!lock) {
-                        let reuslt = layer[eventName](e);
-                        if (reuslt && reuslt.item) {
+                        let result = layer[eventName](e);
+                        if (result && result.item) {
                             lock = true;
                         }
                     } else {

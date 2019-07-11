@@ -40,7 +40,7 @@ export default class Label {
                 result = this._getTopAnchor();
                 break;
             default:
-                result = this._getCenterRectange();
+                result = this._getCenterRectangle();
                 break;
 
         }
@@ -57,15 +57,15 @@ export default class Label {
     }
     _getTrueLength(str) { //获取字符串的真实长度（字节长度）
         let len = str.length,
-            truelen = 0;
+            trueLen = 0;
         for (let x = 0; x < len; x++) {
             if (str.charCodeAt(x) > 128) {
-                truelen += 2;
+                trueLen += 2;
             } else {
-                truelen += 1;
+                trueLen += 1;
             }
         }
-        return truelen;
+        return trueLen;
     }
     /**
      * 判断分位是否相交
@@ -80,7 +80,7 @@ export default class Label {
         }
         return false;
     }
-    _getCenterRectange() {
+    _getCenterRectangle() {
         return {
             minX: this.center.x - this.radius,
             maxX: this.center.x + this.radius,
