@@ -59,7 +59,7 @@ export default class PointAnimationOverlay extends CanvasOverlay {
             }
         }());
     }
-    setOptionStyle(ops) {
+    setOptionStyle(ops, callback) {
         if (!ops) return;
         let option = merge(config, ops);
         this._styleConfig = option.style;
@@ -69,9 +69,9 @@ export default class PointAnimationOverlay extends CanvasOverlay {
         } else if (ops.data === undefined) {
             option.data = this._data;
         }
-        this.setData(option.data);
+        this.setData(option.data, callback);
     }
-    setData(points) {
+    setData(points, callback) {
         if (points) {
             if (!isArray(points)) {
                 throw new TypeError('inMap: data must be a Array');
@@ -80,8 +80,9 @@ export default class PointAnimationOverlay extends CanvasOverlay {
         } else {
             this._data = [];
         }
-
         this._map && this._addMarker();
+        callback && callback();
+        this._emitInit();
     }
     _translation(distanceX, distanceY) {
 
