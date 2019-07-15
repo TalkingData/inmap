@@ -60,20 +60,34 @@
         },
         event: {
             onState(state) {
-                console.log(state);
+                // console.log(state);
             }
         }
     });
     map.add(overlay);
-    overlay.setData(data.map(function (item, index) {
+    const roadData = data.map(function (item, index) {
         item.name = '轨迹' + index;
         item.count = index;
         return item;
-    }),function(it){
-        console.log(it)
     });
 
+    function mouseLeave(item, e, layer) {
+        console.log('mouseLeave', item, e, layer);
+    }
+    overlay.on('mouseLeave', mouseLeave);
+    overlay.on('mouseClick', function () {
+        console.log('mouseClick');
+    });
+    overlay.on('init', function () {
+        console.log('init');
+    });
+    // overlay.off('mouseLeave', mouseLeave);
 
-    
+
+    overlay.setData(roadData, (e) => {
+        console.log('callback')
+
+    });
+
 
 </script>
