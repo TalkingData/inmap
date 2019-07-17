@@ -69,6 +69,7 @@ export default class MaskOverlay extends CanvasOverlay {
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             pixels = null, margin = null;
             callback && callback(this);
+            this._emitInit();
         });
     }
 
