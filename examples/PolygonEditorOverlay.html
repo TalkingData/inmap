@@ -36,7 +36,7 @@
         <button onclick="openEdit()"> 打开编辑</button>
         <button onclick="closeEdit()">关闭编辑</button>
         <button onclick="translation()">平移</button>
-        <button onclick="getpath()">获得围栏路径</button>
+        <button onclick="getPath()">获得围栏路径</button>
     </div>
 </body>
 
@@ -62,8 +62,8 @@
                     size: 6, // 半径
                 },
                 mouseOver: {
-                  //  backgroundColor: "rgba(93,158,247,1)",
-                  backgroundColor: "rgba(184,0,0,1)",
+                    //  backgroundColor: "rgba(93,158,247,1)",
+                    backgroundColor: "rgba(184,0,0,1)",
                     // borderColor: "rgba(93,158,247,1)",
                     // borderWidth: 1
                 },
@@ -92,7 +92,7 @@
                     backgroundColor: "rgba(0,184,255,0.1)"
                     // backgroundColor: "rgba(0,184,255,0.3)"
                 },
-                mouseOver:{
+                mouseOver: {
                     backgroundColor: "rgba(0,184,255,0.1)"
                 }
 
@@ -180,9 +180,13 @@
                     ]
                 ]
             }
+        }, function () {
+            console.log('setData');
         });
     }
-
+    overlay.on('init', function () {
+        console.log('init');
+    });
     function openEdit() {
         overlay.enableEditing();
     }
@@ -195,7 +199,7 @@
         overlay.translationPixel(20, 20);
     }
 
-    function getpath() {
+    function getPath() {
         let data = JSON.stringify(overlay.getPath(), null, 2);
         console.log(data);
         alert(data);

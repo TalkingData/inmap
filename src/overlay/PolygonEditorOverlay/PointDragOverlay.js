@@ -251,11 +251,11 @@ export default class PointOverlay extends Parameter {
         }
 
         this._selectItem = [result.item];
-        console.log('_selectItem', this._selectItem);
+       
         this._drawMouseLayer();
     }
     _mouseupFun(event) {
-        console.log('_selectItem', this._selectItem);
+        
         if (this._isDragging) {
             let dragEndPixel = {
                 x: event.offsetX,

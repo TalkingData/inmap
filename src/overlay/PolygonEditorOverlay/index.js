@@ -5,6 +5,7 @@ import config from '../../config/PolygonEditorConfig';
 import {
     merge,
     isPolyContains,
+    isFunction
 } from '../../common/Util';
 
 export default class PolygonEditorOverlay extends CanvasOverlay {
@@ -31,7 +32,17 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
         this._createTempCache = null;
         this._createIndex = -1;
         this.isCreate = false;
-
+        this._subscriptions = {
+            onInit: [],
+            isInit: true,
+            onMouseClick: [],
+            onMouseOver: [],
+            onMouseLeave: [],
+            onCreated: [],
+            onChange: [],
+            onDelete: []
+        };
+        this._bindEmit();
     }
     setZIndex(zIndex) {
         this._zIndex = zIndex;
@@ -41,6 +52,14 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
         this._pointOverlay && this._pointOverlay.setZIndex(this._zIndex + 2);
         this._virtualPointOverlay && this._virtualPointOverlay.setZIndex(this._zIndex + 4);
     }
+    _bindEmit() {
+        for (const name in this._eventConfig) {
+            const fun = this._eventConfig[name];
+            if (isFunction(fun)) {
+                this.on(name, fun);
+            }
+        }
+    }
     _canvasInit() {
         this._polygonOverlay = new PolygonOverlay({
             checkDataType: {
@@ -48,7 +67,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
                 count: false
             },
             style: this._opts.style.polygon,
-            data: this._opts.data ? [this. _toMultiPolygon(this._opts.data)] : [],
+            data: this._opts.data ? [this._toMultiPolygon(this._opts.data)] : [],
             event: {
                 emitEvent: false,
                 onState: (state) => {
@@ -71,13 +90,19 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
                         } else {
                             this._clearPointOverlay();
                         }
+                        this._emitInit();
                     }
                 },
-                onMouseClick: (event) => {
+                onMouseClick: (...args) => {
                     if (!this.isCreate) {
-                        this._eventConfig.onMouseClick(event, this);
+                        this._emit('onMouseClick', ...args);
                     }
-
+                },
+                onMouseOver: (...args) => {
+                    this._emit('onMouseOver', ...args);
+                },
+                onMouseLeave: (...args) => {
+                    this._emit('onMouseLeave', ...args);
                 }
             },
             zIndex: this._zIndex + 1
@@ -119,7 +144,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
         this._map.addOverlay(this._virtualPointOverlay);
         this._map.addEventListener('rightclick', this._rightClick);
     }
-    setOptionStyle(opts) {
+    setOptionStyle(opts, callback) {
 
         if (!opts) return;
         if (opts.data === undefined) {
@@ -148,7 +173,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
             }
         });
         if (opts.data !== undefined) {
-            this.setPath(opts.data);
+            this.setPath(opts.data, callback);
         }
     }
     _workerDataClear() {
@@ -180,7 +205,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
         }
 
     }
-    setPath(data) {
+    setPath(data, callback) {
         this.isCreate = false;
         this._opts.data = data;
         this._workerDataClear();
@@ -189,7 +214,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
         this._draggingVirtualTemp = null;
         this._createTempCache = null;
         this._createIndex = -1;
-        this._polygonOverlay && this._polygonOverlay.setData(this._opts.data ? [this. _toMultiPolygon(data)] : []);
+        this._polygonOverlay && this._polygonOverlay.setData(this._opts.data ? [this._toMultiPolygon(data)] : [], callback);
     }
     enableEditing() {
         this.isCreate = false;
@@ -235,7 +260,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
                 }
             }
             this._polygonOverlay && this._polygonOverlay.refresh();
-            this._eventConfig.onChange('translationPixel', this);
+            this._emit('onChange', 'translationPixel', null, this);
         }
     }
     _removeMoveEvent() {
@@ -272,7 +297,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
             return null;
         }
     }
-     _toMultiPolygon(data) {
+    _toMultiPolygon(data) {
         try {
             if (data && data.geometry.type == 'Polygon') {
                 data.geometry.type = 'MultiPolygon';
@@ -351,7 +376,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
             geoJSON.geometry.pixels.splice(this._createIndex, 1);
 
             this._polygonOverlay.refresh();
-            console.log(geoJSON);
+
             this._createIndex--;
         } else {
 
@@ -366,7 +391,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
 
                 this._polygonOverlay.refresh();
             }
-            this._eventConfig.onCreated(event, this);
+            this._emit('onCreated', event, this);
 
         }
 
@@ -419,7 +444,8 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
                 coordinates.splice(j, 1);
                 this._workerData[0].geometry.pixels.splice(j, 1);
                 this._polygonOverlay.refresh();
-                this._eventConfig.onDelete(event, this);
+
+                this._emit('onDelete', event, this);
                 break;
             }
         }
@@ -512,7 +538,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
             pointData = pointData.concat(this._pointDataGroup[i]);
         }
         if (!this._pointOverlay) return;
-         
+
         // this._pointOverlay._selectItem = [];
         this._pointOverlay._setWorkerData(pointData);
         this._pointOverlay.refresh();
@@ -590,7 +616,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
             this._setPointData();
             this._setVirtualPointData();
             //触发 change 事件
-            this._eventConfig.onChange(action, event, this);
+            this._emit('onChange', action, event, this);
         }
     }
     _findPointDataGroup(data, item) {
@@ -620,22 +646,24 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
 
         let index = this._draggingPointTemp.index,
             virtualLine = [],
-            data = this._draggingPointTemp.points||[],
+            data = this._draggingPointTemp.points || [],
             len = data.length;
+        if (data.length > 0) {
+            if (index == 0) {
+                virtualLine.push(data[len - 1]);
+            } else {
+                virtualLine.push(data[index - 1]);
+            }
 
-        if (index == 0) {
-            virtualLine.push(data[len - 1]);
-        } else {
-            virtualLine.push(data[index - 1]);
+            virtualLine.push(data[index]);
+
+            if (index == len - 1) {
+                virtualLine.push(data[0]);
+            } else {
+                virtualLine.push(data[index + 1]);
+            }
         }
 
-        virtualLine.push(data[index]);
-
-        if (index == len - 1) {
-            virtualLine.push(data[0]);
-        } else {
-            virtualLine.push(data[index + 1]);
-        }
 
         this._drawLine(virtualLine);
         this._setVirtualPointData();
@@ -654,6 +682,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
         this._ctx.strokeStyle = 'red';
         this._ctx.setLineDash([10, 5]);
         for (let i = 0; i < data.length; i++) {
+
             let geometry = data[i].geometry;
             if (i == 0) {
                 this._ctx.moveTo(geometry.pixel.x, geometry.pixel.y);
