@@ -79,10 +79,10 @@ export default class PolygonOverlay extends Parameter {
         }
         this.refresh();
     }
-    setOptionStyle(ops) {
-        this._setStyle(this._option, ops);
+    setOptionStyle(ops, callback) {
+        this._setStyle(this._option, ops, callback);
     }
- 
+
     _onOptionChange() {
         this._map && this._initLegend();
     }
@@ -217,9 +217,10 @@ export default class PolygonOverlay extends Parameter {
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             pixels = null, margin = null;
             callback && callback(this);
+            this._emitInit();
         });
     }
-    
+
     pushData(data, callback) {
         if (!Array.isArray(data)) return;
         this._setState(State.computeBefore);
@@ -229,7 +230,7 @@ export default class PolygonOverlay extends Parameter {
             centerType: this._styleConfig.normal.label.centerType,
             customZoom: this._customZoom
         };
-         
+
         this._postMessage('PolygonOverlay.calculatePixel', parameter, (pixels, margin) => {
             if (this._eventType == 'onmoving') {
                 return;

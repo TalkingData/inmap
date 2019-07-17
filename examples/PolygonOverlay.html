@@ -135,10 +135,7 @@
 
             ],
         },
-        data: data.features.map((item) => {
-            item.count = item.properties.OBJECTID_1;
-            return item;
-        }),
+        data: [],
         event: {
             onState(state) {
                 console.log(state);
@@ -149,4 +146,14 @@
         }
     });
     inmap.add(overlay);
+    overlay.on('init', function () {
+        console.log('init');
+    });
+    var polygonData = data.features.map((item) => {
+        item.count = item.properties.OBJECTID_1;
+        return item;
+    });
+    overlay.setData(polygonData, function () {
+        console.log('setData');
+    });
 </script>
