@@ -144,6 +144,7 @@ export default class PointOverlay extends Parameter {
             margin = null;
             pixels = null;
             callback && callback(this);
+            this._emitInit();
         });
     }
     _updateOverClickItem() {
@@ -412,7 +413,7 @@ export default class PointOverlay extends Parameter {
 
         let result = this._getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
-
+        const preOverItem = this._overItem;
         if (temp != this._overItem) { //防止过度重新绘画
             this._overItem = temp;
             this._eventType = 'mousemove';
@@ -422,9 +423,10 @@ export default class PointOverlay extends Parameter {
         }
         if (temp) {
             this._map.setDefaultCursor('pointer');
-            this._eventConfig.onMouseOver(temp, event, this);
+            this._emit('onMouseOver', this._overItem, event, this);
         } else {
             this._map.setDefaultCursor('default');
+            this._emit('onMouseLeave', preOverItem, event, this);
         }
 
         this._setTooltip(event);
@@ -452,7 +454,7 @@ export default class PointOverlay extends Parameter {
             this._selectItem = [result.item];
         }
 
-        this._eventConfig.onMouseClick(this._selectItem, event, this);
+        this._emit('onMouseClick', this._selectItem, event, this);
 
 
         if (isMobile) {
