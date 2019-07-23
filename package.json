@@ -40,7 +40,7 @@
     "babel-preset-stage-3": "^6.00.0",
     "babel-runtime": "^6.11.6",
     "css-loader": "^0.23.1",
-    "eslint": "^3.12.2",
+    "eslint": "^4.18.2",
     "eslint-plugin-html": "^1.7.0",
     "extract-text-webpack-plugin": "^2.0.0",
     "file-loader": "^0.8.5",
