@@ -11,18 +11,15 @@ export default class LabelOverlay extends Parameter {
     _onOptionChange() {
 
     }
-    _onDataChangee() {
+    _onDataChange() {
 
     }
-    setOptionStyle(ops) {
-        this._setStyle(this._option, ops);
+    setOptionStyle(ops, callback) {
+        this._setStyle(this._option, ops, callback);
     }
-    _setState(val) {
-        this._state = val;
-        this._eventConfig.onState(this._state, this);
-    }
-    _toDraw() {
-        this._drawMap();
+
+    _toDraw(callback) {
+        this._drawMap(callback);
     }
     _translation(distanceX, distanceY) {
         for (let i = 0; i < this._workerData.length; i++) {
@@ -33,11 +30,14 @@ export default class LabelOverlay extends Parameter {
         this.refresh();
     }
 
-    _drawMap() {
+    _drawMap(callback) {
         this._clearCanvas();
         this._setState(State.computeBefore);
         this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin, zoom) => {
-            this._setState(State.conputeAfter);
+            if (this._eventType == 'onmoving') {
+                return;
+            }
+            this._setState(State.computeAfter);
             this._setWorkerData(pixels);
             this._updateOverClickItem();
 
@@ -48,6 +48,8 @@ export default class LabelOverlay extends Parameter {
             }
             margin = null;
             pixels = null;
+            callback && callback(this);
+            this._emitInit();
         });
     }
     _updateOverClickItem() {
@@ -72,7 +74,14 @@ export default class LabelOverlay extends Parameter {
             let item = data[i];
             let pixel = item.geometry.pixel;
             let style = this._setDrawStyle(item, i);
-            let x1 = (pixel.x - pixel.width / 2) + style.offsets.left;
+            let left = 0;
+            if (isString(style.offsets.left)) {
+                const leftStr = style.offsets.left;
+                if (leftStr.substr(leftStr.length - 1, 1) == '%') {
+                    left = parseInt(parseInt(leftStr) * pixel.width / 100, 10);
+                }
+            }
+            let x1 = (pixel.x - pixel.width / 2) + left;
             let y1 = pixel.y + style.offsets.top;
             if (this._isMouseOver(mouseX, mouseY, x1, y1, pixel.width, pixel.height)) {
                 return {
@@ -137,7 +146,7 @@ export default class LabelOverlay extends Parameter {
                 pixel['height'] = parseInt(style.font);
             }
             let left = 0;
-            
+
             if (isString(style.offsets.left)) {
                 const leftStr = style.offsets.left;
                 if (leftStr.substr(leftStr.length - 1, 1) == '%') {

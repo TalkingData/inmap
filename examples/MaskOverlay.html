@@ -56,7 +56,7 @@
             shadowBlur: 20,
             borderWidth: 16,
         },
-        data: data,
+        data: [],
         event: {
             onState(state) {
                 console.log(state);
@@ -64,4 +64,10 @@
         }
     });
     inmap.add(overlay);
+    overlay.on('init', function () {
+        console.log('init');
+    });
+    overlay.setData(data, function () {
+        console.log('setData');
+    });
 </script>

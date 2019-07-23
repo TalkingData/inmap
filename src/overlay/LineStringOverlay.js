@@ -1,13 +1,13 @@
 import {
     isEmpty,
-    detectmob,
+    detection,
     clearPushArray
 } from '../common/Util';
 import CanvasOverlay from './base/CanvasOverlay.js';
 import Parameter from './base/Parameter';
 import LineStringConfig from '../config/LineStringConfig';
 import State from './../config/OnStateConfig';
-let isMobile = detectmob();
+let isMobile = detection();
 export default class LineStringOverlay extends Parameter {
     constructor(ops) {
         super(LineStringConfig, ops);
@@ -18,8 +18,8 @@ export default class LineStringOverlay extends Parameter {
         this._selectItemIndex = -1;
         this._onDataChange();
     }
-    setOptionStyle(ops) {
-        this._setStyle(this._option, ops);
+    setOptionStyle(ops, callback) {
+        this._setStyle(this._option, ops, callback);
     }
     setZIndex(zIndex) {
         this._zIndex = zIndex;
@@ -50,10 +50,7 @@ export default class LineStringOverlay extends Parameter {
         this._mouseLayer._clearCanvas();
         this._clearCanvas();
     }
-    _setState(val) {
-        this._state = val;
-        this._eventConfig.onState(this._state, this);
-    }
+    
     _translation(distanceX, distanceY) {
         for (let i = 0; i < this._workerData.length; i++) {
             let pixels = this._workerData[i].geometry.pixels;
@@ -127,13 +124,13 @@ export default class LineStringOverlay extends Parameter {
             this._selectItem = [];
         }
     }
-    _toDraw() {
-        this._drawMap();
+    _toDraw(callback) {
+        this._drawMap(callback);
     }
     _getTransformData() {
         return this._workerData.length > 0 ? this._workerData : this._data;
     }
-    _drawMap() {
+    _drawMap(callback) {
         this._clearAll();
         let zoomUnit = Math.pow(2, 18 - this._map.getZoom());
         let projection = this._map.getMapType().getProjection();
@@ -148,15 +145,17 @@ export default class LineStringOverlay extends Parameter {
         };
         this._setState(State.computeBefore);
         this._postMessage('LineStringOverlay.calculatePixel', params, (pixels, margin) => {
-            if (this._eventTypee == 'onmoving') {
+            if (this._eventType == 'onmoving') {
                 return;
             }
-            this._setState(State.conputeAfter);
+            this._setState(State.computeAfter);
             clearPushArray(this._workerData, pixels);
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
 
             params = null;
             margin = null;
+            callback && callback(this);
+            this._emitInit();
         });
     }
     /**
@@ -211,37 +210,37 @@ export default class LineStringOverlay extends Parameter {
 
 
     }
-    _Tdispose() {
+    _TDispose() {
         this._map.removeOverlay(this._mouseLayer);
         this._mouseLayer.dispose();
     }
     _tMousemove(event) {
-        if (this._eventTypee == 'onmoving') {
+        if (this._eventType == 'onmoving') {
             return;
         }
-
         let result = this._getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
-
+        const preOverItem = this._overItem;
         if (temp != this._overItem) { //防止过度重新绘画
             this._overItem = temp;
-            this._eventTypee = 'mousemove';
+            this._eventType = 'mousemove';
             if (!isEmpty(this._styleConfig.mouseOver)) {
                 this._drawMouseLayer();
             }
         }
         if (temp) {
             this._map.setDefaultCursor('pointer');
-            this._eventConfig.onMouseOver(temp, event, this);
+            this._emit('onMouseOver', this._overItem, event, this);
         } else {
             this._map.setDefaultCursor('default');
+            this._emit('onMouseLeave', preOverItem, event, this);
         }
 
         this._setTooltip(event);
 
     }
     _tMouseClick(event) {
-        if (this._eventTypee == 'onmoving') return;
+        if (this._eventType == 'onmoving') return;
         let result = this._getTarget(event.pixel.x, event.pixel.y);
         if (result.index == -1) {
             return;
@@ -251,7 +250,7 @@ export default class LineStringOverlay extends Parameter {
         this._selectItem = [result.item];
         this._selectItemIndex = result.index;
 
-        this._eventConfig.onMouseClick(this._selectItem, event, this);
+        this._emit('onMouseClick', this._selectItem, event, this);
         if (isMobile) {
             this._overItem = item;
             this._setTooltip(event);

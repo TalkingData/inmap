@@ -2,6 +2,7 @@ import Parameter from './base/Parameter';
 import ImgConfig from './../config/ImgConfig';
 import {
     isString,
+    clearPushArray
 } from './../common/Util';
 import State from './../config/OnStateConfig';
 /*
@@ -13,16 +14,13 @@ export default class ImgOverlay extends Parameter {
         this._cacheImg = {}; //缓存图片对象
         this._state = null;
     }
-    _toDraw() {
-        this._drawMap();
+    _toDraw(callback) {
+        this._drawMap(callback);
     }
-    setOptionStyle(ops) {
-        this._setStyle(this._option, ops);
+    setOptionStyle(ops, callback) {
+        this._setStyle(this._option, ops, callback);
     }
-    _setState(val) {
-        this._state = val;
-        this._eventConfig.onState(this._state,this);
-    }
+   
     _translation(distanceX, distanceY) {
         for (let i = 0; i < this._workerData.length; i++) {
             let pixel = this._workerData[i].geometry.pixel;
@@ -34,20 +32,39 @@ export default class ImgOverlay extends Parameter {
         this.refresh();
 
     }
-    _drawMap() {
+    pushData(data, callback) {
+        if (!Array.isArray(data)) return;
+        this._setState(State.computeBefore);
+        this._postMessage('HeatOverlay.pointsToPixels', data, (pixels, margin) => {
+            if (this._eventType == 'onmoving') {
+                return;
+            }
+            this._workerData.push(...pixels);
+            this._setState(State.computeAfter);
+            this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
+            callback && callback(this);
+        });
+    }
+    filter(func) {
+        const arrData = this._workerData.filter(func);
+        clearPushArray(this._workerData, arrData);
+        this.refresh();
+    }
+    _drawMap(callback) {
 
         this._setState(State.computeBefore);
         this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin) => {
             if (this._eventType == 'onmoving') {
                 return;
             }
-            this._setState(State.conputeAfter);
+            this._setState(State.computeAfter);
 
             this._setWorkerData(pixels);
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             margin = null;
             pixels = null;
-
+            callback && callback(this);
+            this._emitInit();
         });
     }
 
@@ -184,7 +201,7 @@ export default class ImgOverlay extends Parameter {
                         let xy = this._getDrawXY(pixel, style.offsets.left, style.offsets.top, img.width, img.height, 1);
                         this._drawImage(this._ctx, img, xy.x, xy.y, img.width, img.height);
                     }
-                    if(style.label.show){
+                    if (style.label.show) {
                         this._ctx.font = style.label.font;
                         this._ctx.fillStyle = style.label.color;
                         let width = this._ctx.measureText(item.name).width;

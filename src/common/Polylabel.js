@@ -84,7 +84,7 @@ function getCentroid(polygon) {
     return new Cell(totalX / totalArea, totalY / totalArea);
 }
 
-export default function Polylabel(polygon) {
+export default function PolyLabel(polygon) {
     // 计算bbox，为切分网格做准备
     let minX, minY, maxX, maxY;
     for (let i = 0; i < polygon[0].length; i++) {

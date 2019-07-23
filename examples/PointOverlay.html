@@ -81,31 +81,27 @@
                 borderColor: "rgba(255,255,255,1)"
             },
             splitList: [{ //设置区间颜色
-                    start: 0,
-                    end: 2,
-                    size: 3,
-                },
-                {
-                    start: 2,
-                    end: 5,
-                    size: 6,
-                },
-                {
-                    start: 5,
-                    end: 7,
-                    size: 9,
-                },
-                {
-                    start: 7,
-                    size: 12,
-                }
+                start: 0,
+                end: 2,
+                size: 3,
+            },
+            {
+                start: 2,
+                end: 5,
+                size: 6,
+            },
+            {
+                start: 5,
+                end: 7,
+                size: 9,
+            },
+            {
+                start: 7,
+                size: 12,
+            }
             ],
         },
-        data: data.map(function (item, index) {
-            item.name = '散点' + index;
-            item.count = item.count || index;
-            return item;
-        }),
+
         event: {
             onState(state) {
                 console.log(state);
@@ -115,11 +111,18 @@
                 console.log(item);
                 //能获取当前点的信息
             },
-            onMouseOver:function(item,event,overlay){
-                console.log(item,event,overlay);
+            onMouseOver: function (item, event, overlay) {
+                console.log(item, event, overlay);
 
             }
         }
     });
     inmap.add(overlay);
+    overlay.setData(data.map(function (item, index) {
+        item.name = '散点' + index;
+        item.count = item.count || index;
+        return item;
+    }), function (it) {
+        console.log(it);
+    })
 </script>

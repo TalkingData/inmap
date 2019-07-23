@@ -46,7 +46,7 @@
             max: 18,
             min: 5
         },
-    })
+    });
 
     var overlay = new inMap.HoneycombOverlay({
         tooltip: {
@@ -84,16 +84,28 @@
         },
         data: data,
         event: {
-            onMouseClick(data, event) {
-                console.log(data, event);
-            },
             onState(state) {
-                console.log(state);
+                // console.log('onState', state);
             },
-            onMouseOver(){
-                console.log(arguments);
+            onMouseClick(data, event) {
+                console.log('onMouseClick', data, event);
+            },
+            onMouseLeave(data, event) {
+                console.log('onMouseLeave', data, event);
+            },
+            onMouseOver(data) {
+                console.log('onMouseOver', data, event);
             }
         }
     });
-    map.add(overlay)
+    overlay.on('init', function () {
+        console.log('init');
+    });
+    function mouseLeave() {
+        console.log('mouseLeave2');
+    }
+    overlay.on('mouseLeave', mouseLeave);
+    
+    map.add(overlay);
+    overlay.setData(data);
 </script>

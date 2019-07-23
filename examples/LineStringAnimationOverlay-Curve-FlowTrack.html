@@ -87,7 +87,13 @@
             // deltaAngle: 0  
         },
         data: data2,
-
     });
     map.add(overlay2);
+
+    overlay2.on('init', function () {
+        console.log('init');
+    });
+    overlay2.setData(data2, function () {
+        console.log('callback');
+    });
 </script>

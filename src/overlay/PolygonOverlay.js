@@ -26,7 +26,7 @@ export default class PolygonOverlay extends Parameter {
             this._compileSplitList(this._styleConfig.colors, this._getTransformData());
         }
         this._patchSplitList();
-        this._setlegend(this._legendConfig, this._styleConfig.splitList);
+        this._setLegend(this._legendConfig, this._styleConfig.splitList);
     }
 
     setCustomZoom(zoom) {
@@ -79,13 +79,10 @@ export default class PolygonOverlay extends Parameter {
         }
         this.refresh();
     }
-    setOptionStyle(ops) {
-        this._setStyle(this._option, ops);
+    setOptionStyle(ops, callback) {
+        this._setStyle(this._option, ops, callback);
     }
-    _setState(val) {
-        this._state = val;
-        this._eventConfig.onState(this._state, this);
-    }
+
     _onOptionChange() {
         this._map && this._initLegend();
     }
@@ -156,8 +153,8 @@ export default class PolygonOverlay extends Parameter {
         }
 
     }
-    _toDraw() {
-        this._drawMap();
+    _toDraw(callback) {
+        this._drawMap(callback);
     }
     _getGeoCenter(geo) {
         let minX = geo[0][0];
@@ -202,7 +199,7 @@ export default class PolygonOverlay extends Parameter {
         this._drawPolygon(this.getRenderData());
         this._setState(State.drawAfter);
     }
-    _drawMap() {
+    _drawMap(callback) {
         this._setState(State.computeBefore);
         let parameter = {
             data: this._getTransformData(),
@@ -216,9 +213,33 @@ export default class PolygonOverlay extends Parameter {
                 return;
             }
             this._setWorkerData(pixels);
-            this._setState(State.conputeAfter);
+            this._setState(State.computeAfter);
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             pixels = null, margin = null;
+            callback && callback(this);
+            this._emitInit();
+        });
+    }
+
+    pushData(data, callback) {
+        if (!Array.isArray(data)) return;
+        this._setState(State.computeBefore);
+        let parameter = {
+            data: data,
+            enable: this._styleConfig.normal.label.enable,
+            centerType: this._styleConfig.normal.label.centerType,
+            customZoom: this._customZoom
+        };
+
+        this._postMessage('PolygonOverlay.calculatePixel', parameter, (pixels, margin) => {
+            if (this._eventType == 'onmoving') {
+                return;
+            }
+            this._workerData.push(...pixels);
+            this._setState(State.computeAfter);
+            this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
+            pixels = null, margin = null;
+            callback && callback(this);
         });
     }
 

@@ -14,9 +14,9 @@ export default class MoveLineOverlay extends MultiOverlay {
         this._isDispose = false;
         this._data = opts.data || [];
         this._opts = merge(config, opts);
-        this._PointOverlay = this._creataPointOverlay(this._opts);
-        this._LineStringOverlay = this._createLineStringOverlay(this._opts);
-        this._LineStringAnimationOverlay = this._createLineStringAnimationOverlay(this._opts);
+        this._PointOverlay = this._creatPointOverlay(this._opts);
+        this._LineStringOverlay = this._creatLineStringOverlay(this._opts);
+        this._LineStringAnimationOverlay = this._creatLineStringAnimationOverlay(this._opts);
     }
     _init(map) {
         map.addOverlay(this._LineStringOverlay);
@@ -107,7 +107,7 @@ export default class MoveLineOverlay extends MultiOverlay {
             };
         });
     }
-    _creataPointOverlay(opts) {
+    _creatPointOverlay(opts) {
 
         return new PointOverlay({
             ...opts.style.point,
@@ -115,7 +115,7 @@ export default class MoveLineOverlay extends MultiOverlay {
             zIndex: this._zIndex + 1
         });
     }
-    _createLineStringOverlay(opts) {
+    _creatLineStringOverlay(opts) {
 
         return new LineStringOverlay({
             ...opts.style.line,
@@ -123,7 +123,7 @@ export default class MoveLineOverlay extends MultiOverlay {
             zIndex: this._zIndex + 2
         });
     }
-    _createLineStringAnimationOverlay(opts) {
+    _creatLineStringAnimationOverlay(opts) {
 
         return new LineStringAnimationOverlay({
             ...opts.style.lineAnimation,

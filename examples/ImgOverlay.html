@@ -46,7 +46,7 @@
             max: 18,
             min: 5
         },
-    })
+    });
 
 
     var img = "./img/bso.svg";
@@ -71,39 +71,73 @@
                 }
             },
             splitList: [{ //设置区间颜色
-                    start: 0,
-                    end: 2,
-                    icon: img,
-                },
-                {
-                    start: 2,
-                    end: 5,
-                    icon: img2,
+                start: 0,
+                end: 2,
+                icon: img,
+            },
+            {
+                start: 2,
+                end: 5,
+                icon: img2,
 
-                },
-                {
-                    start: 5,
-                    end: 7,
-                    icon: img,
-                },
-                {
-                    start: 7,
-                    icon: img,
-                }
+            },
+            {
+                start: 5,
+                end: 7,
+                icon: img,
+            },
+            {
+                start: 7,
+                icon: img,
+            }
             ],
         },
         data: data,
         event: {
-            onMouseClick: function (item) {
-                //能获取当前点的信息
-            },
-            onMouseOver:function(item,event,overlay){
-                console.log(item,event,overlay);
-            },
             onState(state) {
-                console.log(state);
+                // console.log('onState', state);
+            },
+            onMouseClick(data, event) {
+                console.log('onMouseClick', data, event);
+            },
+            onMouseLeave(data, event) {
+                console.log('onMouseLeave', data, event);
+            },
+            onMouseOver(data) {
+                console.log('onMouseOver', data, event);
             }
         }
     });
+    overlay.on('init', function () {
+        console.log('init');
+    });
+    function mouseLeave() {
+        console.log('mouseLeave2');
+    }
+    overlay.on('mouseLeave', mouseLeave);
+
     map.add(overlay);
+    overlay.setData(data, (e) => {
+        console.log('setData callback');
+
+    });
+    var other = [{
+        geometry: {
+            type: 'Point',
+            coordinates: ["126.262876", "43.678846"]
+        },
+        name: "",
+        count: 0 //权重
+    }];
+
+    overlay.pushData(other, function () {
+        console.log('pushData callback');
+        overlay.filter((item) => {
+            return item.count > 1;
+        });
+    });
+
+
+
+
 </script>

@@ -159,33 +159,49 @@
                 borderColor: 'rgba(184,0,0,1)',
             },
             splitList: [{
-                    start: 0,
-                    end: 1,
-                    borderWidth: 1,
-                    borderColor: 'rgba(156,200,249,1)'
-                },
-                {
-                    start: 1,
-                    end: 2,
-                    borderWidth: 2,
-                    borderColor: 'rgba(93,158,247,1)'
-                },
-                {
-                    start: 3,
-                    end: 4,
-                    borderWidth: 3,
-                    borderColor: 'rgba(134,207,55,1)'
-                },
-                {
-                    start: 5,
-                    borderWidth: 4,
-                    borderColor: "rgba(252,198,10,1)"
-                }
+                start: 0,
+                end: 1,
+                borderWidth: 1,
+                borderColor: 'rgba(156,200,249,1)'
+            },
+            {
+                start: 1,
+                end: 2,
+                borderWidth: 2,
+                borderColor: 'rgba(93,158,247,1)'
+            },
+            {
+                start: 3,
+                end: 4,
+                borderWidth: 3,
+                borderColor: 'rgba(134,207,55,1)'
+            },
+            {
+                start: 5,
+                borderWidth: 4,
+                borderColor: "rgba(252,198,10,1)"
+            }
             ]
         },
-        data: data,
-        selected:[data[8]]
+        // data: data,
+        selected: [data[8]]
 
     });
     inmap.add(overlay);
+    function mouseLeave(item, e, layer) {
+        console.log('mouseLeave', item, e, layer);
+    }
+    overlay.on('mouseLeave', mouseLeave);
+    overlay.on('mouseOver', function(){
+        console.log('mouseOver');
+    });
+    overlay.on('mouseClick', function () {
+        console.log('mouseClick');
+    });
+    overlay.on('init', function () {
+        console.log('init');
+    });
+    overlay.setData(data, function () {
+        console.log('callback');
+    });
 </script>

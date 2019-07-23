@@ -65,11 +65,11 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
         this._markLineData = [];
         this._setStyle(LineStringAnimationConfig, ops);
     }
-    setOptionStyle(ops) {
+    setOptionStyle(ops, callback) {
         this._setStyle(this._option, ops);
-        this._map && this._drawMap();
+        this._map && this._drawMap(callback);
     }
-    _setStyle(config, ops) {
+    _setStyle(config, ops, callback) {
         ops = ops || {};
         let option = this._option = merge(config, ops);
         this._styleConfig = option.style;
@@ -79,7 +79,7 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
         delete this._option.data;
 
         if (ops.data !== undefined) {
-            this.setData(ops.data);
+            this.setData(ops.data, callback);
         } else {
             this._map && this.refresh();
         }
@@ -96,7 +96,7 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
         }
         this.refresh();
     }
-    setData(points) {
+    setData(points, callback) {
         if (points) {
             this._data = points;
             checkGeoJSON(points, this._option.checkDataType.name, this._option.checkDataType.count);
@@ -104,7 +104,7 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
             this._data = [];
         }
         clearPushArray(this._workerData);
-        this._map && this._drawMap();
+        this._map && this._drawMap(callback);
     }
     _toDraw() {
         if (!this.animationDraw) {
@@ -115,7 +115,7 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
     _getTransformData() {
         return this._workerData.length > 0 ? this._workerData : this._data;
     }
-    _drawMap() {
+    _drawMap(callback) {
         let zoomUnit = Math.pow(2, 18 - this._map.getZoom());
         let projection = this._map.getMapType().getProjection();
         let mcCenter = projection.lngLatToPoint(this._map.getCenter());
@@ -142,6 +142,8 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             params = null;
             margin = null;
+            callback && callback(this);
+            this._emitInit();
         });
     }
     _createMarkLine(data) {

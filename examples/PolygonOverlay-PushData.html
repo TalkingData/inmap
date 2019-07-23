@@ -23,6 +23,13 @@
             margin-left: 5px;
             font-size: 14px;
         }
+
+        .top {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
     </style>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
     <script src="./data/geojson.js"></script>
@@ -32,6 +39,9 @@
 
 <body>
     <div id="allmap"></div>
+    <div class="top">
+        <button onclick="pushData()">pushData</button>
+    </div>
 </body>
 
 </html>
@@ -54,6 +64,10 @@
             show: true,
             max: 22
         }
+    });
+    var geoData = data.features.map((item) => {
+        item.count = item.properties.OBJECTID_1;
+        return item;
     });
 
     var overlay = new inMap.PolygonOverlay({
@@ -146,14 +160,25 @@
         }
     });
     inmap.add(overlay);
-    overlay.on('init', function () {
-        console.log('init');
+    overlay.setData([geoData.pop()], function (a) {
+        console.log(a)
     });
-    var polygonData = data.features.map((item) => {
-        item.count = item.properties.OBJECTID_1;
-        return item;
-    });
-    overlay.setData(polygonData, function () {
-        console.log('setData');
-    });
+    window.pushData = function () {
+        for (const iterator of geoData) {
+
+            overlay.pushData([iterator], function (then) {
+                console.log(then);
+            });
+
+        }
+        // let lastItem = geoData.pop();
+        // let lastItem2 = geoData.pop();
+
+        // if (lastItem && lastItem2) {
+        //     overlay.pushData([lastItem, lastItem2], function (then) {
+        //         console.log(then);
+        //     });
+    }
+
+
 </script>

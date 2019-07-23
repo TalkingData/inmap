@@ -6,12 +6,12 @@ import Label from './../worker/helper/Label';
 import Parameter from './base/Parameter';
 import {
     isEmpty,
-    detectmob,
+    detection,
 } from '../common/Util.js';
 import BatchesData from './base/BatchesData';
 import PointConfig from '../config/PointConfig';
 import State from './../config/OnStateConfig';
-let isMobile = detectmob();
+let isMobile = detection();
 export default class PointOverlay extends Parameter {
     constructor(opts) {
         super(PointConfig, opts);
@@ -30,7 +30,7 @@ export default class PointOverlay extends Parameter {
         if (this._styleConfig.splitList.length === 0 && this._styleConfig.colors.length > 0) {
             this._compileSplitList(this._getTransformData());
         } else {
-            this._setlegend(this._legendConfig, this._styleConfig.splitList);
+            this._setLegend(this._legendConfig, this._styleConfig.splitList);
         }
 
     }
@@ -50,20 +50,17 @@ export default class PointOverlay extends Parameter {
         this._map.addOverlay(this._mouseLayer);
         this._initLegend();
     }
-    setOptionStyle(ops) {
-        this._setStyle(this._option, ops);
+    setOptionStyle(ops, callback) {
+        this._setStyle(this._option, ops, callback);
         if (!isEmpty(this._option.draw)) {
             this._batchesData = new BatchesData(this._option.draw);
         } else {
             this._batchesData = null;
         }
     }
-    _setState(val) {
-        this._state = val;
-        this._eventConfig.onState(this._state, this);
-    }
-    _toDraw() {
-        this._drawMap();
+  
+    _toDraw(callback) {
+        this._drawMap(callback);
     }
     _calculateMpp(size) {
         let normal = this._styleConfig.normal,
@@ -121,7 +118,7 @@ export default class PointOverlay extends Parameter {
         this._mouseLayer._clearCanvas();
         this._clearCanvas();
     }
-    _drawMap() {
+    _drawMap(callback) {
         if (this._batchesData) {
             this._batchesData.clear();
             this._batchesData.setUsable(false);
@@ -132,7 +129,7 @@ export default class PointOverlay extends Parameter {
         this._setState(State.computeBefore);
         this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin, zoom) => {
 
-            this._setState(State.conputeAfter);
+            this._setState(State.computeAfter);
             this._setWorkerData(pixels);
             this._updateOverClickItem();
 
@@ -146,7 +143,8 @@ export default class PointOverlay extends Parameter {
             }
             margin = null;
             pixels = null;
-
+            callback && callback(this);
+            this._emitInit();
         });
     }
     _updateOverClickItem() {
@@ -217,7 +215,7 @@ export default class PointOverlay extends Parameter {
         }
 
         this._styleConfig.splitList = result;
-        this._setlegend(this._legendConfig, this._styleConfig.splitList);
+        this._setLegend(this._legendConfig, this._styleConfig.splitList);
     }
 
     _getTarget(mouseX, mouseY) {
@@ -334,7 +332,7 @@ export default class PointOverlay extends Parameter {
         //     borderWidth: this._styleConfig.normal.borderWidth,
         //     byteWidth: byteWidth
         // };
-        // this._postMessage('LablEvading.merge', param, (labels) => {
+        // this._postMessage('LabelEvading.merge', param, (labels) => {
         //     if (this._eventType == 'onmoving') {
         //         return;
         //     }
@@ -402,7 +400,7 @@ export default class PointOverlay extends Parameter {
             ctx.stroke();
         }
     }
-    _Tdispose() {
+    _TDispose() {
         this._batchesData && this._batchesData.clear();
         this._map.removeOverlay(this._mouseLayer);
         this._mouseLayer.dispose();
@@ -415,7 +413,7 @@ export default class PointOverlay extends Parameter {
 
         let result = this._getTarget(event.pixel.x, event.pixel.y);
         let temp = result.item;
-
+        const preOverItem = this._overItem;
         if (temp != this._overItem) { //防止过度重新绘画
             this._overItem = temp;
             this._eventType = 'mousemove';
@@ -425,13 +423,14 @@ export default class PointOverlay extends Parameter {
         }
         if (temp) {
             this._map.setDefaultCursor('pointer');
-            this._eventConfig.onMouseOver(temp, event, this);
+            this._emit('onMouseOver', this._overItem, event, this);
         } else {
             this._map.setDefaultCursor('default');
+            this._emit('onMouseLeave', preOverItem, event, this);
         }
 
         this._setTooltip(event);
-
+        return result;
     }
     _tMouseClick(event) {
         if (this._eventType == 'onmoving') return;
@@ -455,7 +454,7 @@ export default class PointOverlay extends Parameter {
             this._selectItem = [result.item];
         }
 
-        this._eventConfig.onMouseClick(this._selectItem, event, this);
+        this._emit('onMouseClick', this._selectItem, event, this);
 
 
         if (isMobile) {
@@ -463,7 +462,7 @@ export default class PointOverlay extends Parameter {
             this._setTooltip(event);
         }
         this._drawMouseLayer();
-
+        return result;
 
     }
 }

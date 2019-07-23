@@ -148,7 +148,7 @@ export function isPolyContainsPt(lng, lat, geos) {
 
 
 
-export function detectmob() {
+export function detection() {
     if (navigator.userAgent.match(/Android/i) ||
         navigator.userAgent.match(/webOS/i) ||
         navigator.userAgent.match(/iPhone/i) ||

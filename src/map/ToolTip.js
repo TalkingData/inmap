@@ -8,6 +8,7 @@ export default class ToolTip {
         this._dom = this._create(toolDom);
         this._tooltipTemplate = null;
         this._opts = {};
+        this.isShow = null;
         this.hide();
     }
     _create(toolDom) {
@@ -38,25 +39,27 @@ export default class ToolTip {
         } = this._opts.offsets;
         this._dom.style.left = x + left + 'px';
         this._dom.style.top = y + top + 'px';
-        this._dom.style.display = 'block';
+        this._show();
     }
-    showCenterText(text, x, y) {
-        this._dom.innerHTML = text;
-        this._dom.style.display = 'block';
-        this._dom.style.visibility = 'hidden';
-        let width = this._dom.offsetWidth;
-        this._dom.style.left = x - (width / 2) + 'px';
-        this._dom.style.top = y + 'px';
-        this._dom.style.visibility = 'visible';
-    }
+
     showText(text, x, y) {
         this._dom.innerHTML = text;
         this._dom.style.left = x + 'px';
         this._dom.style.top = y + 'px';
-        this._dom.style.display = 'block';
+        this._show();
+    }
+    _show() {
+        if (this.isShow != true) {
+            this.isShow = true;
+            this._dom.style.display = 'block';
+        }
     }
     hide() {
-        this._dom.style.display = 'none';
+        if (this.isShow != false) {
+            this.isShow = false;
+            this._dom.style.display = 'none';
+        }
+
     }
     setOption(opts) {
         let result = merge(this._opts, opts);

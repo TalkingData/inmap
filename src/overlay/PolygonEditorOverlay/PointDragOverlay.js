@@ -38,7 +38,7 @@ export default class PointOverlay extends Parameter {
 
         this._mouseLayer.setZIndex(this._zIndex + 1);
     }
-    _onDataChangee() {
+    _onDataChange() {
 
     }
     _parameterInit() {
@@ -189,7 +189,7 @@ export default class PointOverlay extends Parameter {
         this._map.removeEventListener('dblclick', this._dblclickFun);
 
     }
-    _Tdispose() {
+    _TDispose() {
         this._removeMoveEvent();
         this._map.removeOverlay(this._mouseLayer);
         this._mouseLayer.dispose();
@@ -251,11 +251,11 @@ export default class PointOverlay extends Parameter {
         }
 
         this._selectItem = [result.item];
-        console.log('_selectItem', this._selectItem);
+       
         this._drawMouseLayer();
     }
     _mouseupFun(event) {
-        console.log('_selectItem', this._selectItem);
+        
         if (this._isDragging) {
             let dragEndPixel = {
                 x: event.offsetX,

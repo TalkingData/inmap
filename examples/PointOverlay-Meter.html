@@ -75,7 +75,6 @@
 
 
     var overlay = new inMap.PointOverlay({
-
         legend: {
             show: true,
             title: "标题",
@@ -110,5 +109,13 @@
             }
         }
     });
+    // inmap.add(overlay);
+  
+    overlay.on('init', function () {
+        console.log('on init');
+    });
     inmap.add(overlay);
+    overlay.setData(data, function () {
+        console.log('setData');
+    });
 </script>
