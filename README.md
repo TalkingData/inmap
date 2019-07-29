@@ -74,9 +74,7 @@ npm run dev & npm run start
 
 在浏览器地址栏输入：http://localhost:8088/examples/index.html
 ```
-# 捐赠
-![image](http://ozjyavyki.bkt.clouddn.com/WX20180906-140345.png)
-![image](http://ozjyavyki.bkt.clouddn.com/inmap/WX20180906-125056.png)
+ 
 
 ## Major Contributors
 |Name|Avatar|
