@@ -57,14 +57,7 @@ export default class Parameter extends CanvasOverlay {
         this.emitEvent = this._eventConfig.emitEvent;
         this._bindEmit();
     }
-    _bindEmit() {
-        for (const name in this._eventConfig) {
-            const fun = this._eventConfig[name];
-            if (isFunction(fun)) {
-                this.on(name, fun);
-            }
-        }
-    }
+  
     _checkGeoJSON(data) {
         let isCheckCount = this._styleConfig.colors.length > 0 || this._styleConfig.splitList.length > 0;
         checkGeoJSON(data, this._option.checkDataType.name, isCheckCount);

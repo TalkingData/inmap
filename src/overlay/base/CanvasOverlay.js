@@ -93,7 +93,9 @@ export default class CanvasOverlay extends BaseClass {
         if (this.emitEvent) {
             EventManage.register(map, this);
         } else {
+            
             map.addEventListener('mousemove', this._tMousemove);
+            map.addEventListener('mouseout', this._tMouseout);
             if (isMobile) {
                 map.addEventListener('touchstart', this._tMouseClick);
             } else {
@@ -103,7 +105,14 @@ export default class CanvasOverlay extends BaseClass {
 
 
     }
-
+    _bindEmit() {
+        for (const name in this._eventConfig) {
+            const fun = this._eventConfig[name];
+            if (isFunction(fun)) {
+                this.on(name, fun);
+            }
+        }
+    }
     _tMapStyle(skin) {
         let styleJson = null;
         if (isString(skin)) {
