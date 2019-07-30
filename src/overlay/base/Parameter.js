@@ -9,7 +9,7 @@ import {
 } from '../../common/Util';
 import CanvasOverlay from './CanvasOverlay';
 import Color from './../../common/Color';
-import { isFunction } from 'util';
+
 let isMobile = detection();
 /**
  * 接头定义 参数解析类
