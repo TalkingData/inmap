@@ -299,7 +299,9 @@ export default class CanvasOverlay extends BaseClass {
             this._container.style.zIndex = this._zIndex;
         }
     }
-
+    getDataURL() {
+        return this._container.toDataURL();
+    }
     _TClear() {
 
     }
