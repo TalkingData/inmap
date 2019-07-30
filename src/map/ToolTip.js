@@ -32,11 +32,12 @@ export default class ToolTip {
         });
         this._tooltipTemplate = new Function('overItem', 'return ' + formatter);
     }
-    show(x, y) {
+    show(x, y, text) {
         let {
             left,
             top
         } = this._opts.offsets;
+        this._dom.innerHTML = text;
         this._dom.style.left = x + left + 'px';
         this._dom.style.top = y + top + 'px';
         this._show();
@@ -83,12 +84,13 @@ export default class ToolTip {
         if (!this._opts.show) return;
         if (overItem) {
             let formatter = this._opts.formatter;
+            let text = null;
             if (isFunction(formatter)) {
-                this._dom.innerHTML = formatter(overItem);
+                text = formatter(overItem);
             } else if (isString(formatter)) {
-                this._dom.innerHTML = this._tooltipTemplate(overItem);
+                text = this._tooltipTemplate(overItem);
             }
-            this.show(event.offsetX, event.offsetY);
+            this.show(event.offsetX, event.offsetY, text);
         } else {
             this.hide();
         }

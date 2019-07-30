@@ -12,9 +12,16 @@ export default class HeatOverlay extends CanvasOverlay {
         super(ops);
         this._data = [];
         this._workerData = [];
+        this._subscriptions = {
+            onMouseMove: [],
+            onState: [],
+            onInit: [],
+            isInit: true,
+            preEmitName: null
+        };
         this._setStyle(HeatConfig, ops);
-        this._delteOption();
         this._state = null;
+
     }
     setOptionStyle(ops, callback) {
         this._setStyle(this._option, ops, callback);
@@ -32,6 +39,7 @@ export default class HeatOverlay extends CanvasOverlay {
         ops = ops || {};
         const option = merge(config, ops);
         this._option = option;
+        this._tooltipConfig = option.tooltip;
         this._styleConfig = option.style;
         this._eventConfig = option.event;
         this._gradient = option.style.gradient;
@@ -43,7 +51,13 @@ export default class HeatOverlay extends CanvasOverlay {
         } else {
             this._map && this.refresh();
         }
+
+        this.emitEvent = this._eventConfig.emitEvent;
         this._tMapStyle(option.skin);
+        this._bindEmit();
+    }
+    _canvasInit() {
+        this.toolTip && this.toolTip.setOption(this._tooltipConfig);
 
     }
     _checkGeoJSON(data) {
@@ -60,17 +74,7 @@ export default class HeatOverlay extends CanvasOverlay {
         this._map && this._drawMap(callback);
     }
 
-    /**
-     * 屏蔽参数
-     */
-    _delteOption() {
-        this._tooltipConfig = {
-            show: false
-        };
-        this._legendConfig = {
-            show: false
-        };
-    }
+
     _getMax() {
         if (this._workerData.length == 0) {
             return 0;
@@ -149,6 +153,7 @@ export default class HeatOverlay extends CanvasOverlay {
         if (mapSize.width <= 0) {
             return;
         }
+        this.maxValue = maxValue, this.minValue = minValue;
         const tpl = this._templates;
         let ctx = this._ctx;
         for (let i = 0, len = this._workerData.length; i < len; i++) {
@@ -171,7 +176,7 @@ export default class HeatOverlay extends CanvasOverlay {
 
         const max_opacity = normal.maxOpacity * 255;
         const min_opacity = normal.minOpacity * 255;
-       
+
         const len = imgData.length, opacity = 0;
         for (let i = 3; i < len; i += 4) {
             let alpha = imgData[i];
@@ -259,5 +264,18 @@ export default class HeatOverlay extends CanvasOverlay {
         paletteCtx.fillRect(0, 0, 256, 1);
         return paletteCtx.getImageData(0, 0, 256, 1).data;
     }
+    getValueAt(x, y) {
+        let value;
+        const img = this._ctx.getImageData(x * this._devicePixelRatio, y * this._devicePixelRatio, 1, 1);
+        let data = img.data[3];
+        value = (Math.abs(this.maxValue - this.minValue) * (data / 255)) >> 0;
 
+        return value;
+    }
+
+    _tMousemove() {
+        if (this._eventType == 'onmoving') return;
+        this._emit('onMouseMove', event, this);
+        this._subscriptions.preEmitName = null;
+    }
 }
