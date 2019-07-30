@@ -54,13 +54,15 @@
         },
         data: [],
         event: {
-            onState(state) {
-                console.log(state);
-            }
+           
         }
     });
     inmap.add(overlay)
-    overlay.setData(data,function(){
-        console.log(overlay.getDataURL());
+    overlay.setData(data);
+    overlay.on('mouseMove', function (event, layer) {
+        const { offsetX, offsetY } = event;
+        console.log(offsetX,offsetY);
+        const value = layer.getValueAt(offsetX, offsetY);
+        layer.toolTip.show(event.offsetX, event.offsetY, value);
     });
 </script>
