@@ -10,15 +10,29 @@ import State from '../config/OnStateConfig.js';
 export default class PolygonOverlay extends Parameter {
     constructor(ops) {
         super(PolygonConfig, ops);
+        this._TRightClick = this._TRightClick.bind(this);
+        this._subscriptions = {
+            onMouseClick: [],
+            onMouseOver: [],
+            onMouseLeave: [],
+            onRightClick: [],
+            onState: [],
+            onInit: [],
+            isInit: true,
+            preEmitName: null
+        };
+
         this._patchSplitList();
         this._state = null;
         this._customZoom = null;
         if (!this._styleConfig.isHighlight) {
             this._swopData = () => { };
         }
+        this._bindEmit();
     }
     _parameterInit() {
         this._initLegend();
+        this._map.addEventListener('rightclick', this._TRightClick);
     }
     _initLegend() {
         const splitList = this._styleConfig.splitList;
@@ -182,7 +196,16 @@ export default class PolygonOverlay extends Parameter {
         }
         return maxX - minX;
     }
+    _TRightClick(event) {
+        if (this._eventType == 'onmoving') return;
 
+        let result = this._getTarget(event.pixel.x, event.pixel.y);
+        if (result.index == -1) {
+            return;
+        }
+
+        this._emit('onRightClick', [result.item], event, this);
+    }
     _findIndexSelectItem(item) {
         let index = -1;
         if (item) {
@@ -207,7 +230,6 @@ export default class PolygonOverlay extends Parameter {
             centerType: this._styleConfig.normal.label.centerType,
             customZoom: this._customZoom
         };
-
         this._postMessage('PolygonOverlay.calculatePixel', parameter, (pixels, margin) => {
             if (this._eventType == 'onmoving') {
                 return;
@@ -445,5 +467,8 @@ export default class PolygonOverlay extends Parameter {
             }
 
         }
+    }
+    _TDispose() {
+        this._map.removeEventListener('rightclick', this._TRightClick);
     }
 }

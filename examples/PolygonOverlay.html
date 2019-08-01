@@ -149,6 +149,9 @@
     overlay.on('init', function () {
         console.log('init');
     });
+    overlay.on('rightClick', function ( item, event, layer) {
+        console.log('rightClick',item);
+    });
     var polygonData = data.features.map((item) => {
         item.count = item.properties.OBJECTID_1;
         return item;
