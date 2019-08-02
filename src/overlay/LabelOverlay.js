@@ -52,6 +52,19 @@ export default class LabelOverlay extends Parameter {
             this._emitInit();
         });
     }
+    pushData(data, callback) {
+        if (!Array.isArray(data)) return;
+        this._setState(State.computeBefore);
+        this._postMessage('HeatOverlay.pointsToPixels', data, (pixels, margin) => {
+            if (this._eventType == 'onmoving') {
+                return;
+            }
+            this._workerData.push(...pixels);
+            this._setState(State.computeAfter);
+            this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
+            callback && callback(this);
+        });
+    }
     _updateOverClickItem() {
         let overArr = this._overItem ? [this._overItem] : [];
         let allItems = this._selectItem.concat(overArr);
