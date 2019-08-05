@@ -14,12 +14,13 @@ class EventManage {
         }
         if (!this.isContains(layer)) {
             this.layers.push(layer);
-
-            this.layers.sort((a, b) => {
-                return b._zIndex - a._zIndex;
-            });
-
+            this.sort();
         }
+    }
+    sort() {
+        this.layers.sort((a, b) => {
+            return b._zIndex - a._zIndex;
+        });
     }
     bindEvent() {
 

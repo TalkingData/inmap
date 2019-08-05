@@ -304,9 +304,11 @@ export default class CanvasOverlay extends BaseClass {
      */
     setZIndex(zIndex) {
         this._zIndex = zIndex;
+        
         if (this._container) {
             this._container.style.zIndex = this._zIndex;
         }
+        EventManage.sort();
     }
     getDataURL() {
         return this._container.toDataURL();
