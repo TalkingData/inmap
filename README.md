@@ -62,7 +62,7 @@ var inmap = new inMap.Map({
 })
 </script>
 ```
-###### [示例代码demo](https://github.com/fengluhome/inMapWebApp)
+###### [examples](https://github.com/fengluhome/inMapWebApp)
 
 ## 预览当前项目所有demo
 ```shell
