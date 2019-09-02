@@ -17,7 +17,7 @@ export default class GriddingOverlay extends Parameter {
         this._setStyle(this._option, ops, callback);
     }
 
-    
+
     draw() {
         this._toDraw();
     }
@@ -244,6 +244,16 @@ export default class GriddingOverlay extends Parameter {
                 }
                 this._ctx.fillStyle = drawStyle.backgroundColor;
                 this._ctx.fillRect(x, y, gridStep - style.padding, gridStep - style.padding);
+
+                if (style.label.show) {
+                    const text = item.count.toFixed(0);
+                    this._ctx.font = style.label.font;
+                    this._ctx.fillStyle = style.label.color;
+                    let width = this._ctx.measureText(text).width;
+                    const labelX = (x + gridStep / 2 - width / 2);
+                    const labelY = y + gridStep / 2;
+                    this._ctx.fillText(text, labelX, labelY);
+                }
             }
 
         }
