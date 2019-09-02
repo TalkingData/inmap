@@ -14,7 +14,7 @@ import {
     Blueness
 } from '../../config/MapStyleConfig';
 import Toolbar from '../../map/Toolbar';
-import ToolTip from '../../map/ToolTip';
+import Tooltip from '../../map/Tooltip';
 let zIndex = 0;
 const isMobile = detection();
 
@@ -75,7 +75,7 @@ export default class CanvasOverlay extends BaseClass {
         }
 
         this.legend = new Legend(map._inmapToolBar.legendContainer);
-        this.toolTip = new ToolTip(map._inmapToolBar.container);
+        this.toolTip = new Tooltip(map._inmapToolBar.container);
 
         this._canvasInit();
         return this._container;

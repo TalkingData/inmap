@@ -3,7 +3,7 @@ import {
     isFunction,
     merge
 } from '../common/Util';
-export default class ToolTip {
+export default class Tooltip {
     constructor(toolDom) {
         this._dom = this._create(toolDom);
         this._tooltipTemplate = null;
