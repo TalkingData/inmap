@@ -32,7 +32,7 @@ export default {
                 font: '12px sans-serif',
                 shadowBlur: 0,
                 lineWidth: 1,
-                color: 'rgba(75,80,86,1)',
+                color: 'rgba(255,255,255,1)'
             },
         },
         mouseOver: {

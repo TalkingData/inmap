@@ -12,7 +12,7 @@ export default class HoneycombOverlay extends Parameter {
     setOptionStyle(ops, callback) {
         this._setStyle(this._option, ops, callback);
     }
-    
+
     draw() {
         this._toDraw();
     }
@@ -226,6 +226,15 @@ export default class HoneycombOverlay extends Parameter {
             if (item.list.length > 0 && x > -gridsW && y > -gridsW && x < mapSize.width + gridsW && y < mapSize.height + gridsW) {
                 let drawStyle = this._getStyle(item, i);
                 this._drawLine(x, y, gridsW - style.padding, drawStyle, this._ctx);
+                if (style.label.show) {
+                    const text = item.count.toFixed(0);
+                    this._ctx.font = style.label.font;
+                    this._ctx.fillStyle = style.label.color;
+                    let width = this._ctx.measureText(text).width;
+                    const labelX = (x - width / 2);
+                    const labelY = y;
+                    this._ctx.fillText(text, labelX, labelY);
+                }
             }
         }
     }
