@@ -38,13 +38,13 @@ describe('PolygonOverlay ', () => {
                 type: 'Polygon',
                 coordinates: [
                     [ //外环
-                        [123, 23], 
-                        [123, 23], 
+                        [123, 23],
+                        [123, 23],
                         [123, 23]
                     ],
                     [ //内环
-                        [124, 21], 
-                        [124, 21], 
+                        [124, 21],
+                        [124, 21],
                         [124, 21]
                     ]
                 ]
@@ -82,13 +82,13 @@ describe('PolygonOverlay ', () => {
                 type: 'Polygon',
                 coordinates: [
                     [ //外环
-                        [123, 23], 
-                        [123, 23], 
+                        [123, 23],
+                        [123, 23],
                         [123, 23]
                     ],
                     [ //内环
-                        [124, 21], 
-                        [124, 21], 
+                        [124, 21],
+                        [124, 21],
                         [124, 21]
                     ]
                 ]
@@ -110,7 +110,7 @@ describe('PolygonOverlay ', () => {
                     }
                 }
             },
-            data:data
+            data: data
         });
         expect(overlay._data).to.eql(data);
         expect(overlay._workerData).to.eql([]);
@@ -154,7 +154,13 @@ describe('PolygonOverlay ', () => {
                 }
             },
             data: data,
+            event: {
+                onInit() {
+
+                }
+            }
         });
+        
         overlay.setOptionStyle({
             tooltip: {
                 show: true,
@@ -171,10 +177,19 @@ describe('PolygonOverlay ', () => {
                     }
                 }
             },
+            event: {
+                onInit() {
+
+                }
+            }
+
         });
         expect(overlay._data).to.eql(data);
         expect(overlay._workerData).to.eql([]);
-
+        //事件
+        const onInitList = overlay._subscriptions.onInit;
+        expect(onInitList.length).to.eql(1);
+        expect(onInitList[0]).to.eql(overlay._eventConfig.onInit);
 
         overlay.setOptionStyle();
         expect(overlay._data).to.eql(data);

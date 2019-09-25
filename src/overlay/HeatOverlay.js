@@ -54,6 +54,7 @@ export default class HeatOverlay extends CanvasOverlay {
 
         this.emitEvent = this._eventConfig.emitEvent;
         this._tMapStyle(option.skin);
+        this._clearBindEmit(config.event);
         this._bindEmit();
     }
     _canvasInit() {

@@ -93,7 +93,7 @@ export default class CanvasOverlay extends BaseClass {
         if (this.emitEvent) {
             EventManage.register(map, this);
         } else {
-            
+
             map.addEventListener('mousemove', this._tMousemove);
             map.addEventListener('mouseout', this._tMouseout);
             if (isMobile) {
@@ -112,6 +112,15 @@ export default class CanvasOverlay extends BaseClass {
                 this.on(name, fun);
             }
         }
+    }
+    _clearBindEmit(eventConfig = {}) {
+        for (const name in eventConfig) {
+            const fun = eventConfig[name];
+            if (isFunction(fun)) {
+                this.off(name, fun);
+            }
+        }
+
     }
     _tMapStyle(skin) {
         let styleJson = null;
@@ -199,10 +208,10 @@ export default class CanvasOverlay extends BaseClass {
 
     }
     /**
-    * 移除事件
-    * @param {} name 
-    * @param {*} callback 
-    */
+     * 移除事件
+     * @param {} name 
+     * @param {*} callback 
+     */
     off(name, callback) {
         if (name.length > 2 && name.indexOf('on') === -1) {
             name = 'on' + name[0].toUpperCase() + name.substr(1);
@@ -218,7 +227,7 @@ export default class CanvasOverlay extends BaseClass {
             }
         }
     }
-    _emitInit(){
+    _emitInit() {
         if (this._subscriptions.isInit) {
             this._subscriptions.isInit = false;
             this._emit('onInit', this);
@@ -304,7 +313,7 @@ export default class CanvasOverlay extends BaseClass {
      */
     setZIndex(zIndex) {
         this._zIndex = zIndex;
-        
+
         if (this._container) {
             this._container.style.zIndex = this._zIndex;
         }

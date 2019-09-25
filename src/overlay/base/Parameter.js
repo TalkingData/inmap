@@ -55,6 +55,7 @@ export default class Parameter extends CanvasOverlay {
         this._tMapStyle(option.skin);
         this.toolTip && this.toolTip.setOption(this._tooltipConfig);
         this.emitEvent = this._eventConfig.emitEvent;
+        this._clearBindEmit(config.event);
         this._bindEmit();
     }
   
