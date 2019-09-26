@@ -28,8 +28,8 @@ inMap 是一款基于百度地图的大数据可视化库，专注于大数据�
 [http://inmap.talkingdata.com/](http://inmap.talkingdata.com/)
 
 ## 示例效果图
-![image](http://ozjyavyki.bkt.clouddn.com/demo/demoe%E6%88%AA%E5%9B%BE.jpg)
-![image](http://ozjyavyki.bkt.clouddn.com/demo/demo%E6%88%AA%E5%9B%BE2.jpg)
+![image](https://raw.githubusercontent.com/TalkingData/inmap/master/examples/img/cover1.jpg)
+![image](https://raw.githubusercontent.com/TalkingData/inmap/master/examples/img/cover2.jpg)
 ## 首先引用地图
 ```html
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=0lPULNZ5PmrFVg76kFuRjezF"></script>
