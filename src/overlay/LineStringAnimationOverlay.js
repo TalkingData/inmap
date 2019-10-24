@@ -2,7 +2,8 @@ import CanvasOverlay from './base/CanvasOverlay.js';
 import {
     merge,
     clearPushArray,
-    checkGeoJSON
+    checkGeoJSON,
+    geoJsonLineStringRectangle
 } from '../common/Util.js';
 
 import LineStringAnimationConfig from './../config/LineStringAnimationConfig';
@@ -200,5 +201,8 @@ export default class LineStringAnimationOverlay extends CanvasOverlay {
             let markLine = _markLineData[i];
             markLine.drawMoveCircle(this._ctx, _styleConfig, this._map);
         }
+    }
+    getLngLatRectangle() {
+        return geoJsonLineStringRectangle(this._getTransformData());
     }
 }

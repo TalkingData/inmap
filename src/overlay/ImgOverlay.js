@@ -2,8 +2,10 @@ import Parameter from './base/Parameter';
 import ImgConfig from './../config/ImgConfig';
 import {
     isString,
-    clearPushArray
+    clearPushArray,
+    geoJsonPointRectangle
 } from './../common/Util';
+
 import State from './../config/OnStateConfig';
 /*
  * 点的绘制
@@ -215,5 +217,8 @@ export default class ImgOverlay extends Parameter {
     }
     _drawImage(ctx, img, x, y, width, height) {
         ctx.drawImage(img, x, y, width, height);
+    }
+    getLngLatRectangle() {
+        return geoJsonPointRectangle(this._getTransformData());
     }
 }

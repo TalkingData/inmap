@@ -50,7 +50,7 @@
         skin: "Blueness",
         center: ["114.16248337214269", "22.559515429553684"],
         zoom: {
-            value: 11,
+            value: 5,
             show: true,
             max: 22
         }
@@ -149,8 +149,8 @@
     overlay.on('init', function () {
         console.log('init');
     });
-    overlay.on('rightClick', function ( item, event, layer) {
-        console.log('rightClick',item);
+    overlay.on('rightClick', function (item, event, layer) {
+        console.log('rightClick', item);
     });
     var polygonData = data.features.map((item) => {
         item.count = item.properties.OBJECTID_1;
@@ -159,4 +159,9 @@
     overlay.setData(polygonData, function () {
         console.log('setData');
     });
+    inmap.setAutoFitView({
+        zoomFactor:0,
+        delay:400
+    });
+    console.log(inmap.getLayers())
 </script>

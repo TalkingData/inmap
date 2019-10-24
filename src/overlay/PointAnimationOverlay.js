@@ -1,7 +1,8 @@
 import CanvasOverlay from './base/CanvasOverlay.js';
 import {
     merge,
-    isArray
+    isArray,
+    geoJsonPointRectangle
 } from './../common/Util';
 import config from '../config/PointAnimation';
 
@@ -127,5 +128,8 @@ export default class PointAnimationOverlay extends CanvasOverlay {
             let marker = this._markers[i];
             marker.draw(ctx);
         }
+    }
+    getLngLatRectangle() {
+        return geoJsonPointRectangle(this._data);
     }
 }

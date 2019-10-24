@@ -144,5 +144,7 @@ export default class MoveLineOverlay extends MultiOverlay {
         me._isDispose = true;
         me = null;
     }
-
+    getLngLatRectangle() {
+        return this._PointOverlay.getLngLatRectangle();
+    }
 }

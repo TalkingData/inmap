@@ -1,7 +1,8 @@
 import Parameter from './base/Parameter.js';
 import Color from '../common/Color.js';
 import {
-    clearPushArray
+    clearPushArray,
+    geoJsonPolygonRectangle
 } from '../common/Util.js';
 import PolygonConfig from '../config/PolygonConfig.js';
 import State from '../config/OnStateConfig.js';
@@ -470,5 +471,8 @@ export default class PolygonOverlay extends Parameter {
     }
     _TDispose() {
         this._map.removeEventListener('rightclick', this._TRightClick);
+    }
+    getLngLatRectangle() {
+        return geoJsonPolygonRectangle(this._getTransformData());
     }
 }

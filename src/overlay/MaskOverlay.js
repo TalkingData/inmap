@@ -4,6 +4,7 @@ import State from '../config/OnStateConfig.js';
 import {
     clearPushArray,
     checkGeoJSON,
+    geoJsonPolygonRectangle,
     merge
 } from '../common/Util';
 
@@ -181,5 +182,8 @@ export default class MaskOverlay extends CanvasOverlay {
                 pixel = item;
             }
         }
+    }
+    getLngLatRectangle() {
+        return geoJsonPolygonRectangle(this._getTransformData());
     }
 }

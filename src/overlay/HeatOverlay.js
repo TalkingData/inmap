@@ -2,7 +2,8 @@ import CanvasOverlay from './base/CanvasOverlay';
 import {
     merge,
     clearPushArray,
-    checkGeoJSON
+    checkGeoJSON,
+    geoJsonPointRectangle
 } from './../common/Util';
 
 import HeatConfig from './../config/HeatConfig';
@@ -279,4 +280,7 @@ export default class HeatOverlay extends CanvasOverlay {
         this._emit('onMouseMove', event, this);
         this._subscriptions.preEmitName = null;
     }
+    getLngLatRectangle(){
+        return geoJsonPointRectangle(this._data);
+     }
 }

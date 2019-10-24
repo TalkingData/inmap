@@ -1,7 +1,10 @@
 import Parameter from './base/Parameter';
 import Config from '../config/LabelConfig';
 import State from './../config/OnStateConfig';
-import { isString } from './../common/Util';
+import {
+    isString,
+    geoJsonPointRectangle
+} from './../common/Util';
 
 export default class LabelOverlay extends Parameter {
     constructor(opts) {
@@ -175,5 +178,8 @@ export default class LabelOverlay extends Parameter {
             ctx.fillText(item.name, x, y);
             ctx.fill();
         }
+    }
+    getLngLatRectangle() {
+        return geoJsonPointRectangle(this._getTransformData());
     }
 }

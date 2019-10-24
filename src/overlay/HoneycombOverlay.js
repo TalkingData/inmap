@@ -1,7 +1,9 @@
 import Parameter from './base/Parameter.js';
 import HoneycombConfig from './../config/HoneycombConfig.js';
 import State from './../config/OnStateConfig';
-
+import {
+    geoJsonPointRectangle
+} from './../common/Util.js';
 export default class HoneycombOverlay extends Parameter {
     constructor(ops) {
         super(HoneycombConfig, ops);
@@ -258,4 +260,7 @@ export default class HoneycombOverlay extends Parameter {
         ctx.fill();
         ctx.closePath();
     }
+    getLngLatRectangle(){
+        return geoJsonPointRectangle(this._data);
+     }
 }

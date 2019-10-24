@@ -7,6 +7,7 @@ import Parameter from './base/Parameter';
 import {
     isEmpty,
     detection,
+    geoJsonPointRectangle
 } from '../common/Util.js';
 import BatchesData from './base/BatchesData';
 import PointConfig from '../config/PointConfig';
@@ -464,5 +465,8 @@ export default class PointOverlay extends Parameter {
         this._drawMouseLayer();
         return result;
 
+    }
+    getLngLatRectangle() {
+        return geoJsonPointRectangle(this._getTransformData());
     }
 }

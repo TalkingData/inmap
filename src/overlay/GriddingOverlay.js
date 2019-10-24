@@ -1,6 +1,9 @@
 import Parameter from './base/Parameter.js';
 import GriddingConfig from './../config/GriddingConfig.js';
 import State from './../config/OnStateConfig';
+import {
+    geoJsonPointRectangle
+} from './../common/Util.js';
 
 export default class GriddingOverlay extends Parameter {
     constructor(ops) {
@@ -16,7 +19,6 @@ export default class GriddingOverlay extends Parameter {
     setOptionStyle(ops, callback) {
         this._setStyle(this._option, ops, callback);
     }
-
 
     draw() {
         this._toDraw();
@@ -257,5 +259,8 @@ export default class GriddingOverlay extends Parameter {
             }
 
         }
+    }
+    getLngLatRectangle() {
+        return geoJsonPointRectangle(this._data);
     }
 }

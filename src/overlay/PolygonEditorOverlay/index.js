@@ -48,7 +48,7 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
         this._zIndex = zIndex;
         if (this._container) this._container.style.zIndex = this._zIndex;
 
-        this._polygonOverlay && this.www.setZIndex(this._zIndex + 1);
+        this._polygonOverlay && this._polygonOverlay.setZIndex(this._zIndex + 1);
         this._pointOverlay && this._pointOverlay.setZIndex(this._zIndex + 2);
         this._virtualPointOverlay && this._virtualPointOverlay.setZIndex(this._zIndex + 4);
     }
@@ -692,6 +692,9 @@ export default class PolygonEditorOverlay extends CanvasOverlay {
         }
         this._ctx.stroke();
         this._ctx.restore();
+    }
+    getLngLatRectangle() {
+        return this._polygonOverlay.getLngLatRectangle();
     }
 
 }

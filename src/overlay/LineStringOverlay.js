@@ -1,8 +1,10 @@
 import {
     isEmpty,
     detection,
-    clearPushArray
+    clearPushArray,
+    geoJsonLineStringRectangle
 } from '../common/Util';
+
 import CanvasOverlay from './base/CanvasOverlay.js';
 import Parameter from './base/Parameter';
 import LineStringConfig from '../config/LineStringConfig';
@@ -256,5 +258,8 @@ export default class LineStringOverlay extends Parameter {
             this._setTooltip(event);
         }
         this._drawMouseLayer();
+    }
+    getLngLatRectangle() {
+        return geoJsonLineStringRectangle(this._getTransformData());
     }
 }

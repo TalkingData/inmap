@@ -19,6 +19,7 @@ export default class Map {
         this._map = null;
         this._option = merge(MapConfig, ops);
         this._create();
+        this._layers = [];
     }
     _tMapStyle(map, skin) {
         let styleJson = null;
@@ -27,7 +28,7 @@ export default class Map {
         } else if (isArray(skin)) {
             styleJson = skin;
         }
-         
+
         skin && map && map.setMapStyle({
             styleJson: styleJson
         });
@@ -88,14 +89,50 @@ export default class Map {
             overlay._init(this._map);
         } else {
             this._map.addOverlay(overlay);
+
         }
+        this._layers.push(overlay);
 
     }
     remove(overlay) {
         if (overlay && !overlay._isDispose) {
             overlay.dispose();
         }
+        const findIndex = this._layers.findIndex((item) => {
+            return item == overlay;
+        });
+        if (findIndex > -1) {
+            delete this._layers[findIndex];
+        }
         overlay = null;
+    }
+    
+    getLayers() {
+        return this._layers;
+    }
+
+    clearAllLayer() {
+        this._layers.forEach((overlay) => {
+            this.remove(overlay);
+        });
+    }
+
+    setAutoFitView(ViewportOptions) {
+        this.setFitView(this.getLayers(), ViewportOptions);
+    }
+
+    setFitView(overlayList = [], ViewportOptions = {}) {
+        let points = [];
+        for (let index = 0; index < overlayList.length; index++) {
+            const overlay = overlayList[index];
+            points = points.concat(overlay.getLngLatRectangle());
+        }
+        const bPoint = points.map((point) => {
+            return new BMap.Point(point[0], point[1]);
+        });
+
+        this.getMap().setViewport(bPoint, ViewportOptions);
+
     }
 
 }

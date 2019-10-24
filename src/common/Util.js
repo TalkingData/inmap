@@ -243,3 +243,54 @@ export function checkGeoJSON(data, isCheckName, isCheckCount) {
     }
 
 }
+export function rectangleLngLats(geo) {
+    let minX = geo[0][0];
+    let minY = geo[0][1];
+    let maxX = geo[0][0];
+    let maxY = geo[0][1];
+    for (let i = 1; i < geo.length; i++) {
+        minX = Math.min(minX, geo[i][0]);
+        maxX = Math.max(maxX, geo[i][0]);
+        minY = Math.min(minY, geo[i][1]);
+        maxY = Math.max(maxY, geo[i][1]);
+    }
+    return [
+        [minX, minY],
+        [maxX, minY],
+        [maxX, maxY],
+        [minX, maxY]
+    ];
+}
+
+export function geoJsonPointRectangle(geoJsonPoint = []) {
+    const points = geoJsonPoint.map((item) => {
+        return item.geometry.coordinates;
+    });
+    return rectangleLngLats(points);
+}
+
+export function geoJsonLineStringRectangle(geoJsonPoint = []) {
+    let points = [];
+    geoJsonPoint.forEach((item) => {
+        points = points.concat(item.geometry.coordinates);
+    });
+    return rectangleLngLats(points);
+}
+
+export function geoJsonPolygonRectangle(data = []) {
+    let points = [];
+    for (let j = 0; j < data.length; j++) {
+        let geometry = data[j].geometry;
+        let type = geometry.type;
+        let coordinates = geometry.coordinates;
+        if (type == 'MultiPolygon') {
+            for (let k = 0; k < coordinates.length; k++) {
+                points = points.concat(coordinates[k][0]);
+            }
+        } else {
+            const coordinates = geometry.coordinates;
+            points = points.concat(coordinates[0]);
+        }
+    }
+    return rectangleLngLats(points);
+}
