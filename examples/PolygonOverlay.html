@@ -48,14 +48,18 @@
     var inmap = new inMap.Map({
         id: 'allmap',
         skin: "Blueness",
-        center: ["114.16248337214269", "22.559515429553684"],
+
+        center: ["114.07627844266054", "22.65227643687138"],
         zoom: {
-            value: 5,
+            value: 11,
             show: true,
             max: 22
         }
     });
-
+    var polygonData = data.features.map((item) => {
+        item.count = item.properties.OBJECTID_1;
+        return item;
+    });
     var overlay = new inMap.PolygonOverlay({
         tooltip: {
             show: true
@@ -135,7 +139,7 @@
 
             ],
         },
-        data: [],
+        data: polygonData,
         event: {
             onState(state) {
                 console.log(state);
@@ -152,16 +156,15 @@
     overlay.on('rightClick', function (item, event, layer) {
         console.log('rightClick', item);
     });
-    var polygonData = data.features.map((item) => {
-        item.count = item.properties.OBJECTID_1;
-        return item;
+   
+    // overlay.setData(polygonData, function () {
+    //     console.log('setData');
+    // });
+    
+    inmap.setFitView([overlay], {
+        enableAnimation: true
     });
-    overlay.setData(polygonData, function () {
-        console.log('setData');
-    });
-    inmap.setAutoFitView({
-        zoomFactor:0,
-        delay:400
-    });
-    console.log(inmap.getLayers())
+   
+
+    // console.log(inmap.getLayers())
 </script>

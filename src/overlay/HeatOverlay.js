@@ -123,11 +123,11 @@ export default class HeatOverlay extends CanvasOverlay {
         this._setState(State.computeBefore);
 
         this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin) => {
-
+            this._setWorkerData(pixels);
             if (this._eventType == 'onmoving') {
                 return;
             }
-            this._setWorkerData(pixels);
+          
             this._setState(State.computeAfter);
 
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);

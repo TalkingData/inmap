@@ -147,11 +147,11 @@ export default class LineStringOverlay extends Parameter {
         };
         this._setState(State.computeBefore);
         this._postMessage('LineStringOverlay.calculatePixel', params, (pixels, margin) => {
+            clearPushArray(this._workerData, pixels);
             if (this._eventType == 'onmoving') {
                 return;
             }
             this._setState(State.computeAfter);
-            clearPushArray(this._workerData, pixels);
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
 
             params = null;

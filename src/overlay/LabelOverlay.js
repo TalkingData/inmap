@@ -37,11 +37,12 @@ export default class LabelOverlay extends Parameter {
         this._clearCanvas();
         this._setState(State.computeBefore);
         this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin, zoom) => {
+            this._setWorkerData(pixels);
             if (this._eventType == 'onmoving') {
                 return;
             }
             this._setState(State.computeAfter);
-            this._setWorkerData(pixels);
+          
             this._updateOverClickItem();
 
             if (this._map.getZoom() == zoom) {

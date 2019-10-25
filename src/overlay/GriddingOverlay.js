@@ -98,11 +98,12 @@ export default class GriddingOverlay extends Parameter {
         };
         this._setState(State.computeBefore);
         this._postMessage('GriddingOverlay.toRecGrids', params, (gridsObj) => {
+            this._workerData = gridsObj.grids;
             if (this._eventType == 'onmoving') {
                 return;
             }
             this._canvasResize();
-            this._workerData = gridsObj.grids;
+           
             this._setState(State.computeAfter);
 
             this._drawSize = size / zoomUnit;

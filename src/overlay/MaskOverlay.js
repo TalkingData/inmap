@@ -62,10 +62,10 @@ export default class MaskOverlay extends CanvasOverlay {
         };
 
         this._postMessage('PolygonOverlay.calculatePixel', parameter, (pixels, margin) => {
+            this._setWorkerData(pixels);
             if (this._eventType == 'onmoving') {
                 return;
             }
-            this._setWorkerData(pixels);
             this._setState(State.computeAfter);
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             pixels = null, margin = null;

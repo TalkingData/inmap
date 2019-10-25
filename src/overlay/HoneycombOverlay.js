@@ -95,13 +95,14 @@ export default class HoneycombOverlay extends Parameter {
         this._setState(State.computeBefore);
 
         this._postMessage('HoneycombOverlay.toRecGrids', params, (gridsObj) => {
+            this._workerData = gridsObj.grids;
             if (this._eventType == 'onmoving') {
                 return;
             }
             this._canvasResize();
             this._setState(State.computeAfter);
 
-            this._workerData = gridsObj.grids;
+          
             this._drawSize = size / zoomUnit;
 
             if (this._eventType != 'onmoveend' || this._styleConfig.splitList == null || this._styleConfig.splitList.length < this._styleConfig.colors.length) {
