@@ -244,6 +244,10 @@ export function checkGeoJSON(data, isCheckName, isCheckCount) {
 
 }
 export function rectangleLngLats(geo) {
+    if (geo.length == 0) {
+        return [];
+    }
+
     let minX = geo[0][0];
     let minY = geo[0][1];
     let maxX = geo[0][0];

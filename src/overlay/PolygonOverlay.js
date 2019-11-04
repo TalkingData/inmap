@@ -27,7 +27,7 @@ export default class PolygonOverlay extends Parameter {
         this._state = null;
         this._customZoom = null;
         if (!this._styleConfig.isHighlight) {
-            this._swopData = () => { };
+            this._swopData = () => {};
         }
         this._bindEmit();
     }
@@ -254,12 +254,16 @@ export default class PolygonOverlay extends Parameter {
             customZoom: this._customZoom
         };
 
+
         this._postMessage('PolygonOverlay.calculatePixel', parameter, (pixels, margin) => {
             if (this._eventType == 'onmoving') {
                 return;
             }
             this._workerData.push(...pixels);
             this._setState(State.computeAfter);
+            if (data.length > 0 && data.length === this._workerData.length && this._styleConfig.splitList == 0) {
+                this._initLegend();
+            }
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
             pixels = null, margin = null;
             callback && callback(this);
