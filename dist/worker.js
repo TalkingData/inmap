@@ -1407,6 +1407,10 @@ function checkGeoJSON(data, isCheckName, isCheckCount) {
     }
 }
 function rectangleLngLats(geo) {
+    if (geo.length == 0) {
+        return [];
+    }
+
     var minX = geo[0][0];
     var minY = geo[0][1];
     var maxX = geo[0][0];
