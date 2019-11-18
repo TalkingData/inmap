@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HeatOverlay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="./data/data.js"></script>
+    <script src="../dist/inmap.js"></script>
+
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    var inmap = new inMap.Map({
+        id: document.getElementById('allmap'),
+        // skin: "Blueness",
+        center: ["105.403119", "38.028658"],
+        zoom: {
+            value: 5,
+            show: true,
+
+        }
+    });
+
+
+    var overlay = new inMap.HeatOverlay({
+        style: {
+            maxValue: 3,
+            radius: 30, // 半径
+            minScope: 0, // 最小区间,小于此区间的不显示
+            maxScope: 1 // 最大区间,大于此区间的不显示
+        },
+
+        data: []
+    });
+    inmap.add(overlay);
+    var heatData = [];
+    inmap.getMap().addEventListener('mousemove', function (e) {
+        heatData.push({
+            geometry: {
+                type: 'Point',
+                coordinates: [e.point.lng, e.point.lat]
+            },
+            name: "",
+            count: 1//权重
+        })
+        overlay.setData(heatData);
+    });
+</script>
