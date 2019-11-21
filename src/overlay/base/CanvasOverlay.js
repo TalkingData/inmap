@@ -41,7 +41,10 @@ export default class CanvasOverlay extends BaseClass {
         this._animationFlag = true;
         this._isDispose = false; //是否已销毁
         this.emitEvent = false;
-
+        this.size = {
+            width: 0,
+            height: 0
+        };
         this._subscriptions = {
             onMouseClick: [],
             onMouseOver: [],
@@ -253,6 +256,14 @@ export default class CanvasOverlay extends BaseClass {
         });
 
     }
+    _getSize() {
+        return this.size;
+    }
+    _clear() {
+        const context = this._ctx;
+        let size = this._getSize();
+        context.clearRect(0, 0, size.width, size.height);
+    }
 
     _canvasResize() {
         let map = this._map;
@@ -295,7 +306,7 @@ export default class CanvasOverlay extends BaseClass {
     _clearCanvas() {
         if (!this._map) return;
 
-        let size = this._map.getSize();
+        let size = this._getSize();
         this._getContext().clearRect(0, 0, size.width, size.height); //调整画布
     }
 
@@ -303,6 +314,8 @@ export default class CanvasOverlay extends BaseClass {
         let size = this._map.getSize();
         this._container.width = size.width;
         this._container.height = size.height;
+        this.size.width = size.width;
+        this.size.height = size.height;
         setDevicePixelRatio(this._ctx);
     }
     _getContext() {

@@ -1,9 +1,13 @@
 import CanvasOverlay from './base/CanvasOverlay';
+import TWEEN from '../lib/Tween';
+
+
 import {
     merge,
     clearPushArray,
     checkGeoJSON,
-    geoJsonPointRectangle
+    geoJsonPointRectangle,
+    setDevicePixelRatio
 } from './../common/Util';
 
 import HeatConfig from './../config/HeatConfig';
@@ -22,7 +26,17 @@ export default class HeatOverlay extends CanvasOverlay {
         };
         this._setStyle(HeatConfig, ops);
         this._state = null;
+        if (ops.canvasDom) {
+            this._initCanvas(ops.canvasDom);
+        }
 
+    }
+    _initCanvas(dom) {
+        this._container = dom;
+        this._ctx = dom.getContext('2d');
+        this.size.width = dom.offsetWidth;
+        this.size.height = dom.offsetHeight;
+        // setDevicePixelRatio(this._ctx);
     }
     setOptionStyle(ops, callback) {
         this._setStyle(this._option, ops, callback);
@@ -44,19 +58,51 @@ export default class HeatOverlay extends CanvasOverlay {
         this._styleConfig = option.style;
         this._eventConfig = option.event;
         this._gradient = option.style.gradient;
+        this._animationOptions = option.animation;
         this._palette = this._getColorPaint();
-        const { radius, blur } = this._styleConfig;
+        const {
+            radius,
+            blur
+        } = this._styleConfig;
         this._templates = this._getPointTemplate(radius, blur);
         if (ops.data !== undefined) {
             this.setData(ops.data);
         } else {
-            this._map && this.refresh();
+            this.refresh();
         }
 
         this.emitEvent = this._eventConfig.emitEvent;
         this._tMapStyle(option.skin);
         this._clearBindEmit(config.event);
         this._bindEmit();
+        
+    }
+
+    _initAniator() {
+
+        if (this._isEnabledTime()) {
+
+
+            const steps = {
+                step: this._animationOptions.stepsRange.start
+            };
+            const duration = this._animationOptions.duration * 1000 || 5000;
+            if (this.animator) {
+                this.animator.stop();
+            }
+            // const self = this;
+            this.animator = new TWEEN.Tween(steps) // Create a new tween that modifies 'coords'.
+                .to({
+                    step: this._animationOptions.stepsRange.end
+                }, duration)
+                .onUpdate((step) => { // Called after tween.js updates 'coords'.
+                    this.refresh(step);
+                }).repeat(0)
+                .start();
+
+        } else {
+            this.animator && this.animator.stop();
+        }
     }
     _canvasInit() {
         this.toolTip && this.toolTip.setOption(this._tooltipConfig);
@@ -73,10 +119,24 @@ export default class HeatOverlay extends CanvasOverlay {
             this._data = [];
         }
         clearPushArray(this._workerData, []);
+        this._initAniator();
         this._map && this._drawMap(callback);
+        
     }
-
-
+    setPixelData(data) {
+        this._workerData = data.map((item) => {
+            return {
+                geometry: {
+                    pixel: {
+                        x: item.x,
+                        y: item.y
+                    }
+                },
+                count: item.count
+            };
+        });
+        this._initAniator();
+    }
     _getMax() {
         if (this._workerData.length == 0) {
             return 0;
@@ -111,7 +171,10 @@ export default class HeatOverlay extends CanvasOverlay {
             pixel.y = pixel.y + distanceY;
         }
         this._setState(State.drawBefore);
-        this.refresh();
+        if (!this._isEnabledTime()) {
+            this.refresh();
+        }
+
         this._setState(State.drawAfter);
 
     }
@@ -120,6 +183,7 @@ export default class HeatOverlay extends CanvasOverlay {
         clearPushArray(this._workerData, val);
     }
     _drawMap(callback) {
+        if (!this._map) return;
         this._setState(State.computeBefore);
 
         this._postMessage('HeatOverlay.pointsToPixels', this._getTransformData(), (pixels, margin) => {
@@ -127,7 +191,7 @@ export default class HeatOverlay extends CanvasOverlay {
             if (this._eventType == 'onmoving') {
                 return;
             }
-          
+
             this._setState(State.computeAfter);
 
             this._translation(margin.left - this._margin.left, margin.top - this._margin.top);
@@ -138,11 +202,31 @@ export default class HeatOverlay extends CanvasOverlay {
             this._emitInit();
         });
     }
-    refresh() {
-        this._clearCanvas();
+    _isEnabledTime() {
+        return this._animationOptions && this._animationOptions.enabled !== false;
+    }
+    refresh(time) {
+
+
+        if (!this._ctx) return;
+        if (this._isEnabledTime()) {
+            if (time === undefined) {
+                this._clear();
+                return;
+            }
+            let prev = this._ctx.globalCompositeOperation;
+            // this._ctx.save();
+            this._ctx.globalCompositeOperation = 'destination-in';
+            this._ctx.fillStyle = 'rgba(0, 0, 0, .1)';
+            this._ctx.fillRect(0, 0, this._ctx.canvas.width, this._ctx.canvas.height);
+            this._ctx.globalCompositeOperation = prev;
+            // this._ctx.restore();
+        } else {
+            this._clear();
+        }
 
         let normal = this._styleConfig;
-        let mapSize = this._map.getSize();
+        let mapSize = this._getSize();
         let maxValue = normal.maxValue;
         if (normal.maxValue == null) {
             maxValue = this._getMax();
@@ -151,14 +235,18 @@ export default class HeatOverlay extends CanvasOverlay {
         if (normal.minValue == null) {
             minValue = this._getMin();
         }
-
-        if (mapSize.width <= 0) {
+        let length = this._workerData.length;
+        if (mapSize.width <= 0 || length == 0) {
             return;
         }
         this.maxValue = maxValue, this.minValue = minValue;
         const tpl = this._templates;
         let ctx = this._ctx;
-        for (let i = 0, len = this._workerData.length; i < len; i++) {
+
+        if (time !== undefined && length !== 0) {
+            length = Math.floor(length * time);
+        }
+        for (let i = 0, len = length; i < len; i++) {
             let item = this._workerData[i];
             let pixel = item.geometry.pixel;
             if (pixel.x > -normal.radius && pixel.y > -normal.radius && pixel.x < mapSize.width + normal.radius && pixel.y < mapSize.height + normal.radius) {
@@ -179,7 +267,8 @@ export default class HeatOverlay extends CanvasOverlay {
         const max_opacity = normal.maxOpacity * 255;
         const min_opacity = normal.minOpacity * 255;
 
-        const len = imgData.length, opacity = 0;
+        const len = imgData.length,
+            opacity = 0;
         for (let i = 3; i < len; i += 4) {
             let alpha = imgData[i];
             let offset = alpha * 4;
@@ -280,7 +369,7 @@ export default class HeatOverlay extends CanvasOverlay {
         this._emit('onMouseMove', event, this);
         this._subscriptions.preEmitName = null;
     }
-    getLngLatRectangle(){
+    getLngLatRectangle() {
         return geoJsonPointRectangle(this._data);
-     }
+    }
 }

@@ -1,5 +1,5 @@
 import './lib/require-babel-polyfill.js';
-
+import TWEEN  from './lib/Tween';
 import LabelOverlay from './overlay/LabelOverlay';
 import PointOverlay from './overlay/PointOverlay';
 
@@ -20,7 +20,11 @@ import Map from './map/index';
 import * as utils from './common/Util';
 import WorkerMrg from './common/WorkerMrg';
 import config from './config/Config';
-
+function animate(time) {
+    requestAnimationFrame(animate);
+    TWEEN.update(time);
+}
+requestAnimationFrame(animate);
 let version = VERSION;
 console.log(`inMap v${version}`);
 const inMap = {

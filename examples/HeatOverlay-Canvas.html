@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HeatOverlay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="./data/pixels.js"></script>
+    <script src="../dist/inmap.js"></script>
+
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+
+</body>
+
+</html>
+<script>
+    var canvas = document.getElementById('canvas');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    var overlay = new inMap.HeatOverlay({
+        canvasDom: document.getElementById('canvas'),
+        style: {
+            radius: 22, // 半径
+        },
+        animation: {
+            type: 'time',
+            stepsRange: {
+                start: 0,
+                end: 100
+            },
+            trails: 10,
+            duration: 1,
+        },
+    });
+
+    overlay.setPixelData(data);
+    setTimeout(() => {
+        overlay.setPixelData(data, function () {
+            // console.log(overlay.getDataURL());
+        });
+    }, 5000);
+
+</script>
