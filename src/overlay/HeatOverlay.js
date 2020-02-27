@@ -7,7 +7,6 @@ import {
     clearPushArray,
     checkGeoJSON,
     geoJsonPointRectangle,
-    setDevicePixelRatio
 } from './../common/Util';
 
 import HeatConfig from './../config/HeatConfig';
@@ -57,7 +56,7 @@ export default class HeatOverlay extends CanvasOverlay {
         this._tooltipConfig = option.tooltip;
         this._styleConfig = option.style;
         this._eventConfig = option.event;
-        this._gradient = option.style.gradient;
+        this._gradient = ops.gradient ? ops.gradient : config.style.gradient;
         this._animationOptions = option.animation;
         this._palette = this._getColorPaint();
         const {
@@ -75,7 +74,7 @@ export default class HeatOverlay extends CanvasOverlay {
         this._tMapStyle(option.skin);
         this._clearBindEmit(config.event);
         this._bindEmit();
-        
+
     }
 
     _initAniator() {
@@ -121,7 +120,7 @@ export default class HeatOverlay extends CanvasOverlay {
         clearPushArray(this._workerData, []);
         this._initAniator();
         this._map && this._drawMap(callback);
-        
+
     }
     setPixelData(data) {
         this._workerData = data.map((item) => {
@@ -171,9 +170,9 @@ export default class HeatOverlay extends CanvasOverlay {
             pixel.y = pixel.y + distanceY;
         }
         this._setState(State.drawBefore);
-        if (!this._isEnabledTime()) {
-            this.refresh();
-        }
+
+        this.refresh();
+
 
         this._setState(State.drawAfter);
 
@@ -209,7 +208,8 @@ export default class HeatOverlay extends CanvasOverlay {
 
 
         if (!this._ctx) return;
-        if (this._isEnabledTime()) {
+
+        if (this._isEnabledTime() && time != null) {
             if (time === undefined) {
                 this._clear();
                 return;
