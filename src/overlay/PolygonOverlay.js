@@ -35,6 +35,9 @@ export default class PolygonOverlay extends Parameter {
         this._initLegend();
         this._map.addEventListener('rightclick', this._TRightClick);
     }
+    clearSplitList() {
+        this._styleConfig.splitList = [];
+    }
     _initLegend() {
         const splitList = this._styleConfig.splitList;
         if (splitList.length === 0) {
