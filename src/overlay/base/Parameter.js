@@ -58,7 +58,7 @@ export default class Parameter extends CanvasOverlay {
         this._clearBindEmit(config.event);
         this._bindEmit();
     }
-  
+
     _checkGeoJSON(data) {
         let isCheckCount = this._styleConfig.colors.length > 0 || this._styleConfig.splitList.length > 0;
         checkGeoJSON(data, this._option.checkDataType.name, isCheckCount);
@@ -167,6 +167,7 @@ export default class Parameter extends CanvasOverlay {
 
         for (let i = 0; i < len; i++) {
             let condition = splitList[i];
+
             if (i == splitList.length - 1) {
                 if (condition.end == null) {
                     if (count >= condition.start) {
@@ -178,7 +179,7 @@ export default class Parameter extends CanvasOverlay {
                     break;
                 }
             } else {
-                if (count >= condition.start && count < condition.end) {
+                if ((condition.start === condition.end && count === condition.start) || count >= condition.start && count < condition.end) {
                     result = this._mergeCondition(result, condition);
                     break;
                 }

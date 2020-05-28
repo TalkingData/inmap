@@ -41,12 +41,33 @@ export default class PolygonOverlay extends Parameter {
     _initLegend() {
         const splitList = this._styleConfig.splitList;
         if (splitList.length === 0) {
-            this._compileSplitList(this._styleConfig.colors, this._getTransformData());
+            const groups = this._groupBy(this._getTransformData());
+            //先分组，判断分组类型数量是否大于 colors.length 采用不同的策略分割
+            if (groups.size > this._styleConfig.colors.length) { 
+                this._compileSplitList(this._styleConfig.colors, this._getTransformData());
+            } else {
+                let split = [];
+                Array.from(groups).sort().forEach((item, index) => {
+                    split.push({
+                        start: item,
+                        end: item,
+                        backgroundColor: this._styleConfig.colors[index],
+                    });
+                });
+                this._styleConfig.splitList = split;
+            }
+
         }
         this._patchSplitList();
         this._setLegend(this._legendConfig, this._styleConfig.splitList);
     }
-
+    _groupBy(data) {
+        let group = new Set();
+        data.forEach(item => {
+            group.add(item.count);
+        });
+        return group;
+    }
     setCustomZoom(zoom) {
         this._customZoom = zoom;
         this._drawMap();
@@ -116,6 +137,8 @@ export default class PolygonOverlay extends Parameter {
         data = data.sort((a, b) => {
             return parseFloat(a.count) - parseFloat(b.count);
         });
+
+
         let splitCount = data.length / colors.length;
         let colorIndex = 0;
         let split = [];
