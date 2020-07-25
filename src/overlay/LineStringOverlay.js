@@ -70,7 +70,7 @@ export default class LineStringOverlay extends Parameter {
             let item = this._workerData[i];
             let pixels = item.geometry.pixels;
             let style = this._setDrawStyle(item, false, i);
-            for (let k = 0, len = pixels.length; k < len - 2; k++) {
+            for (let k = 0, len = pixels.length; k < len - 1; k++) {
                 let pixel1 = pixels[k];
                 let pixel2 = pixels[k + 1];
                 if (this._calcIsInsideThickLineSegment(pixel1, pixel2, mouseX, mouseY, style.borderWidth)) {
