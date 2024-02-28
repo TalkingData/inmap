@@ -25,7 +25,7 @@ inMap 是一款基于百度地图的大数据可视化库，专注于大数据�
 - 可以自定义主题.
 
 ## 文档
-[http://inmap.talkingdata.com/](http://inmap.talkingdata.com/)
+[https://fengluhome.github.io/inmap-doc](http://inmap.talkingdata.com/)
 
 ## 示例效果图
 ![image](https://raw.githubusercontent.com/TalkingData/inmap/master/examples/img/cover1.jpg)
